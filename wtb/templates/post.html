@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block title %} 測試: 各post {% endblock %}
+
+{% block headmsg %} 
+    <h3 style='font-family:標楷體;'>本站文章列表</a>
+{% endblock %}
+
+{% block content %} 
+    <h3>now: {{now}}</h3>
+	<h1>{{post.title}}</h1>
+    <p>{{post.body}}</p>
+	<p><a href="/index">回首頁</a></p> 
+{% endblock %}

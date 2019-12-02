@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <title>測試部落格</title>
-</head>
-<body>
-    <h3>now: {{now}}</h1>
+{% extends 'base.html' %}
+
+
+{% block title %} 歡迎光臨我的部落格 {% endblock %}
+
+{% block headmsg %} 
+    <h3 style='font-family:標楷體;'>本站文章列表</a>
+{% endblock %}
+
+{% block content %} 
     {% for post in posts %}
-        <!--<h2>{{post.title}}</h2>
-        <p>{{post.body}}</p>
-        -->
+
         <p><a href="/post/{{post.slug}}">{{post.title}}</a></p>
 
     {% endfor %}
-
-</body>
-
-</html>
+{% endblock %}
