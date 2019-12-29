@@ -2,6 +2,8 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
+#from django.core.urlresolvers import reverse
+from django.urls import reverse
 from datetime import datetime
 from .models import Post
 
@@ -11,15 +13,47 @@ def homepage(request):
     #now = datetime.now()
     return render(request, 'index.html', locals())
 
-def homepage_1(request):
+def homepage_1(request,AAA):
     posts = Post.objects.all()
     post_list=[]
     for c,post in enumerate(posts):
         post_list.append(f"No.{str(c)+': '+str(post)+'<br>'}")
         post_list.append("<h1>"+post.body+"</h1>")
     #
+    a='''
+    <style>
+        
+        .rwd{
+            width:auto;height:auto;color:red;border:1px solid red;font-size:22px;
+        }
+    @media (max-width:970px){
+        
+        .rwd{
+            width:60%; 
+        }
+    }
+    </style>
+    
+    <html>
+    <head>
+     <meta name="viewport" content="width=device-width, min-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no ,shrink-to-fit=no" />
+    </head>
+    <body>
+    <p style="font-size: 22px">我</p> 
+    <img class='rwd' src='https://www.taaze.tw//new_ec/rwd/include/images/sell_image/pic/pic_486x320_a.jpg'>
+    <img class='rwd' src='https://www.taaze.tw//new_ec/rwd/include/images/sell_image/pic/pic_486x320_a.jpg'>
+    </body>
+    <script>//alert(screen.width);alert(window.innerWidth);</script>
+    </html>
+    '''
     #return HttpResponse(post_list) 
-    return HttpResponse(["<h1>222","我</h1>"])
+    b=str(123)
+    return HttpResponse(AAA)
+
+def homepage_2(request,AAA,BBB):
+    a=reverse('test-url',args=('swsw','%%@@@'))
+    return HttpResponse('<a href='+a+'>dede</a>')
+    
     
 def showpost(request, slug):
     try:
