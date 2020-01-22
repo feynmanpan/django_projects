@@ -2,6 +2,7 @@
 
 {% load markdown_deux_tags %}
 {% load my_replace %}
+{% load humanize %}
 
 {% block title %} 歡迎光臨我的部落格AA {% endblock %}
 {% block headmessage %} 
@@ -22,12 +23,19 @@
             </div>
             <div class='panel-footer'  style='background-color:#efefef'>
                 <p>
-                    發佈時間：{{post.pub_date|date:"Y M d, h:m:s"|my_filter1|my_filter2:"9"}}
-					
-					
-					
+                    發佈時間：{{post.pub_date|date:"Y M d, h:m:s"|my_filter1|my_filter2:22}}
+                    <br>
+                    {{tv.name}}
 					<br>
-					{% url 'test-url' 'QWeedede' 'dedede' %}
+                    price={{tv.price|floatformat:4|intcomma}}					
+					<br>
+                    {{now}} 
+                    <br>
+					{% now 'D M Y' %} 
+                    <br>
+                    {% lorem 2 p random %}
+					<br>
+                    {% url 'test-url' 'QWeedede' 'dedede' %}
                 </p>
             </div>
         </div>

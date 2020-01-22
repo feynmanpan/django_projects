@@ -27,7 +27,7 @@ urlpatterns = [
     path('index/', homepage),
     #path('index_1/', homepage_1,{'AAA':2345}),
     #path('index_1/', include(test_patterns)),
-    path('index_2/<str:AAA>/_<str:BBB>', homepage_2,name='test-url'),
+    path('index_2/<str:AAA>/<str:BBB>', homepage_2,name='test-url'),
     path('post/<slug:slug>/', showpost),
     path('post_1/<slug:slug>/', showpost_1),
 ]

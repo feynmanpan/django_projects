@@ -11,6 +11,7 @@ from .models import Post
 def homepage(request):
     posts = Post.objects.all()
     #now = datetime.now()
+    tv={'name':'wed'}
     return render(request, 'index.html', locals())
 
 def homepage_1(request,AAA):
@@ -51,8 +52,12 @@ def homepage_1(request,AAA):
     return HttpResponse(AAA)
 
 def homepage_2(request,AAA,BBB):
-    a=reverse('test-url',args=('swsw','%%@@@'))
-    return HttpResponse('<a href='+a+'>dede</a>')
+    #a=reverse('test-url',args=('swsw','%%@@@'))
+    #return HttpResponse('<a href='+a+'>dede</a>')
+    posts = Post.objects.all()
+    now = datetime.now()
+    tv={'name':'wed','price':87654321.12345}    
+    return render(request, 'index.html', locals())
     
     
 def showpost(request, slug):
