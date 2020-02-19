@@ -139,6 +139,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/ 
 
-STATIC_URL = '/AQW/'
+# apache設定完/etc/httpd/conf.d/django.conf，底下兩行不再有作用，由apache決定 
+STATIC_URL = '/mystatic/'
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static'),'/home/pan/img']
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')

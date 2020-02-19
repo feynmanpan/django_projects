@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
 from datetime import datetime
-from .models import Post
+from .models import Store,Post
 
 # Create your views here.
 def homepage(request):
