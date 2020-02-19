@@ -8,8 +8,9 @@ from django.utils import timezone
 
 class Store(models.Model):
     name      = models.CharField(max_length=200)
-    url       = models.URLField(default='')    
-    url_logo  = models.URLField(default='')
+    url       = models.URLField(default=None, blank=True, null=True)    
+    url_logo  = models.URLField(default=None, blank=True, null=True)
+    url_href  = models.CharField(max_length=200,default=None, blank=True, null=True)
     create_dt = models.DateTimeField(default=timezone.now,verbose_name='建立日期')	
 
     def __str__(self):

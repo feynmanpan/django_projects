@@ -1,0 +1,29 @@
+{% extends 'wtb_base.html' %}
+
+{% block title %} 嘩！找書 {% endblock %}
+
+{% block content %} 
+
+	<div id='body_store' align=''>
+		<div>
+			<h1>嘩！找書</h1>
+			<p>
+			本站從底下所列之網路平台蒐集價目及書籍資料，方便書友比價。
+			<br>
+			請於頁首搜尋欄位輸入關鍵字，謝謝。
+			</p>
+		</div>
+		<div id='store_logo_area'>
+			{% for store in stores %}
+				<a href='{{ store.url }}' title='{{ store.name }}' target='_blank'>
+					{% if store.url_logo %}
+						<img class='store_logo' src='{{ store.url_logo }}'/>
+					{% else %}						
+						<img class='store_logo' src='{{ store.url_href }}'/>
+					{% endif %}
+				</a>	
+			{% endfor %}
+		</div>
+	</div>	
+	
+{% endblock %}

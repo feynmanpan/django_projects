@@ -8,6 +8,12 @@ from datetime import datetime
 from .models import Store,Post
 
 # Create your views here.
+def wtb_index(request):
+    stores = Store.objects.all().order_by('create_dt')
+    return render(request, 'wtb_index.html', locals())
+
+
+
 def homepage(request):
     posts = Post.objects.all()
     #now = datetime.now()

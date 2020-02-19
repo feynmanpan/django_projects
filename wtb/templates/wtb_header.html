@@ -1,0 +1,20 @@
+<!--
+wtb_header.html
+每個html都要load static
+-->
+{% load static %}
+<div id='header'>
+	
+	<div id="header_navarea">
+		<span title='首頁'><a href='/'>What The Book</a></span>
+	</div>
+	
+	<div id='header_kwarea'>					
+		<input id='kw_input' class='nooutline' type='text' name='kw' placeholder='書名? 作者? ISBN?'/>
+		
+		<button id='kw_submit' class='nooutline' type="submit" title='按下去找看看'>
+			<img src="{% static 'images/search.png' %}";>
+		</button>
+	</div>	
+	
+</div>

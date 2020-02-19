@@ -1,0 +1,145 @@
+html{
+	
+}
+
+body{
+	
+	font-family:微軟正黑體;
+	font-size:20px;
+	padding:0px; 
+}
+
+
+#header{
+	display:block;
+	
+	position:fixed;
+	left:0px;
+	top:0px;
+	
+	padding-left: 0px;
+	padding-top: 10px;
+    padding-bottom: 10px;	
+	margin-top:0px;
+	
+	width:100%;
+    height:auto;	
+	
+	background: #fff;	
+    box-shadow: 0 1px 6px 0 rgba(32,33,36,.28);	
+	border:0px solid red;
+	
+	/*white-space: nowrap;*/
+	text-align:center;
+}
+
+#header_navarea{
+	display:inline-block;
+	vertical-align:middle;
+}
+
+#header_navarea a{
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
+#header_kwarea{
+    display: inline-block;
+    height: 35px;
+	width: 550px;
+    vertical-align: middle;
+	text-align: left;
+
+    margin-left: 14px;
+    padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+    border: 1px solid lightgrey;	
+	border-radius: 24px;
+}
+
+#kw_input{
+	height: 30px;
+    width: 80%;
+    /*vertical-align: bottom;*/
+	background: rgba(0,0,0,0);
+	font-size: 16px;
+	border:0px solid red;
+}
+
+#kw_submit{
+    background: rgba(0,0,0,0);
+	float:right;
+	text-align:right;
+	/*vertical-align: bottom;*/
+	padding:0px;
+    height: 100%;
+	width:30px;
+    cursor: pointer;
+	border:0px solid red;
+}
+
+#kw_submit img{
+	vertical-align: middle;
+	height:70%;
+	border:0px solid blue;
+}
+
+.nooutline:focus{
+	outline: none;
+}
+
+
+
+#body_store{
+	margin:0 auto;
+	margin-top:100px;
+	width:992px;
+	
+	border:0px solid red;
+}
+#store_logo_area a{
+	color: inherit; /* blue colors for links too */
+	text-decoration: inherit; /* no underline */
+	
+}
+
+
+
+img.store_logo{
+	max-height:300px;
+	max-width: 200px; 
+	margin-right:5px;
+	margin-top:10px;	
+	padding:20px;
+}
+
+img.store_logo:hover{
+	/*border:0.5px solid grey;*/
+	box-shadow: 0 1px 6px 0 rgba(32,33,36,1);	
+	border-radius: 10px;
+}
+
+@media screen and (max-width: 992px) {
+	#header_kwarea{
+		width:85%;
+		margin-left:0px;
+	}
+	#body_store{
+		width:100%;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
