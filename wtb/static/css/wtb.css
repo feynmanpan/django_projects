@@ -112,7 +112,7 @@ body{
 
 
 img.store_logo{
-	max-height:300px;
+	max-height:200px;
 	max-width: 200px; 
 	margin-right:5px;
 	margin-top:10px;	
@@ -133,6 +133,9 @@ img.store_logo:hover{
 	}
 	#body_store{
 		width:100%;
+	}
+	#store_logo_area{
+		text-align:center;
 	}
 }
 

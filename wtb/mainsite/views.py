@@ -7,9 +7,10 @@ from django.urls import reverse
 from datetime import datetime
 from .models import Store,Post
 
-# Create your views here.
+# Create your views here. 
 def wtb_index(request):
     stores = Store.objects.all().order_by('create_dt')
+    stores_count=stores.count()
     return render(request, 'wtb_index.html', locals())
 
 
