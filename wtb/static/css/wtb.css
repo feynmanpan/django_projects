@@ -39,9 +39,23 @@ body{
 }
 
 #header_navarea a{
-  color: inherit; /* blue colors for links too */
-  text-decoration: inherit; /* no underline */
+	color: inherit; /* blue colors for links too */
+	text-decoration: inherit; /* no underline */
+    background: -webkit-gradient(linear,left top,right top,from(#ff8a00),to(#da1b60));
+    background: linear-gradient(to right,#ff8a00,#da1b60);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    text-shadow: none;
+    font-weight: 700;  
 }
+
+#header_navarea span{
+
+}
+
+
 
 #header_kwarea{
     display: inline-block;
@@ -101,11 +115,12 @@ body{
 }
 
 #store_logo_area{
-	
+	border-top: 1px solid orangered;
+	margin-bottom:100px;
 }
 
 #store_logo_area a{
-	color: inherit; /* blue colors for links too */
+	color: inherit; /* blue colors for links too */ 
 	text-decoration: inherit; /* no underline */	
 }
 
