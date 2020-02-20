@@ -25,7 +25,7 @@ SECRET_KEY = '37irddih2k@s=v*&u_cio$oho)@3z21lt)es)by_&h@!1mlxzb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["35.221.198.157"]
+ALLOWED_HOSTS = ["35.221.198.157","wtb.nctu.me"]
 
 
 # Application definition       

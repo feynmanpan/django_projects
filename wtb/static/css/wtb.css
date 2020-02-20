@@ -99,10 +99,14 @@ body{
 	
 	border:0px solid red;
 }
+
+#store_logo_area{
+	
+}
+
 #store_logo_area a{
 	color: inherit; /* blue colors for links too */
-	text-decoration: inherit; /* no underline */
-	
+	text-decoration: inherit; /* no underline */	
 }
 
 
@@ -112,7 +116,8 @@ img.store_logo{
 	max-width: 200px; 
 	margin-right:5px;
 	margin-top:10px;	
-	padding:20px;
+	padding:15px;
+	vertical-align:middle;
 }
 
 img.store_logo:hover{
