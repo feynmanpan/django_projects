@@ -9,6 +9,19 @@ body{
 	padding:0px; 
 }
 
+#tail{
+	width:992px;
+	/*background:lightgrey;*/
+	margin:0 auto;
+	margin-top:100px;
+	padding:2px;
+	border-top:1px solid orangered;
+}
+#tail p{
+	font-size:15px;
+	text-align:center;
+	color:#8b8a8a;
+}
 
 #header{
 	display:block;
@@ -121,10 +134,10 @@ body{
 
 #store_logo_area{
 	border-top:1px solid orangered;
-	border-bottom:1px solid orangered; 
+	/*border-bottom:1px solid orangered;*/
 	padding-top:10px;
 	padding-bottom:20px;
-	margin-bottom:100px;
+	/*margin-bottom:100px;*/
 }
 
 #store_logo_area a{
@@ -150,6 +163,9 @@ img.store_logo:hover{
 }
 
 @media screen and (max-width: 992px) {
+	#tail{
+		width:100%;
+	}
 	#header_kwarea{
 		width:85%;
 		margin-left:0px;

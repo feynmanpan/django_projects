@@ -9,6 +9,7 @@ from django.utils import timezone
 # null   : False時，''照存 
 #          True時，為 - ，不存''
 # 所以文字欄位可blank時，用null=False保持以''存取，所有操作只有非空及空字串兩種情形
+# max_length: 字數(unicode數)，不是byte數 
 
 class Store(models.Model):
     code      = models.CharField(default='00',max_length=2)
