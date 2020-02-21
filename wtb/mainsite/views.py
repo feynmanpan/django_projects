@@ -9,7 +9,7 @@ from .models import Store,Post
 
 # Create your views here. 
 def wtb_index(request):
-    stores = Store.objects.all().order_by('create_dt')
+    stores = Store.objects.all().order_by('code')
     stores_count=stores.count()
     return render(request, 'wtb_index.html', locals())
 
