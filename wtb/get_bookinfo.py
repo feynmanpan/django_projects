@@ -13,4 +13,4 @@ from mainsite.models import Store
 #__________________________
 stores = Store.objects.all().order_by('code')
 for s in stores:
-    print(s.name)
+    print(s.code)

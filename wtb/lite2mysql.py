@@ -15,7 +15,7 @@ def main():
       name = m.group(1)
       sub  = m.group(2)
       sub  = sub.replace('"','').replace("DEFERRABLE INITIALLY DEFERRED",'')
-      line = '''DROP TABLE IF EXISTS %(name)s;
+      line = '''DROP TABLE IF EXISTS %(name)s; 
 CREATE TABLE IF NOT EXISTS %(name)s%(sub)s
 '''
       line = line % dict(name=name, sub=sub)
