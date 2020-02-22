@@ -1,3 +1,5 @@
+
+
 html{
 	
 }
@@ -9,6 +11,7 @@ body{
 	padding:0px; 
 }
 
+/*頁尾*/
 #tail{
 	width:992px;
 	/*background:lightgrey;*/
@@ -23,6 +26,7 @@ body{
 	color:#8b8a8a;
 }
 
+/*頁首搜尋*/ 
 #header{
 	display:block;
 	
@@ -101,23 +105,26 @@ body{
 }
 
 #kw_submit{
-    background: rgba(0,0,0,0);
 	float:right;
-	text-align:right;
-	/*vertical-align: bottom;*/
-	padding:0px;
+	
+    background: rgba(0,0,0,0);
+	background-image: url('/mystatic/images/search.png');
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: 25px 25px;	
+ 
     height: 100%;
 	width:30px;
     cursor: pointer;
 	border:0px solid red;
 }
-
+/*
 #kw_submit img{
 	vertical-align: middle;
 	height:70%;
 	border:0px solid blue;
 }
-
+*/
 .nooutline:focus{
 	outline: none;
 }
