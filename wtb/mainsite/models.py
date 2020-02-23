@@ -9,11 +9,12 @@ from django.utils import timezone
 # null   : False時，''照存 
 #          True時，為 - ，不存''
 # 所以文字欄位可blank時，用null=False保持以''存取，所有操作只有非空及空字串兩種情形
-# max_length: 字數(unicode數)，不是byte數 
+# max_length: 字數(unicode數)，不是byte數   
 
 class Bookinfo(models.Model):
-    bookid    = models.CharField(default='0123456789',max_length=10) #博客來的店內碼
-    isbn      = models.CharField(default='9789571234567',max_length=13)
+	#博客來的店內碼做PK
+    bookid    = models.CharField(primary_key=True,default='0123456789',max_length=10) 
+    isbn      = models.CharField(unique=True,default='9789571234567',max_length=13)
     title     = models.CharField(default='書名',max_length=200)
     author    = models.CharField(default='作者',max_length=200)
     publisher = models.CharField(default='出版社',max_length=200)
