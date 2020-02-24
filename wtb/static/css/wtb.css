@@ -76,7 +76,7 @@ body{
 
 #header_kwarea{
     display: inline-block;
-    height: 35px;
+    height: auto;
 	width: 550px;
     vertical-align: middle;
 	text-align: left;
@@ -97,7 +97,10 @@ body{
 
 #kw_input{
 	height: 30px;
-    width: 80%;
+    width: -webkit-calc(100% - 40px);
+    width:    -moz-calc(100% - 40px);
+    width:         calc(100% - 40px);
+	padding:0px;
     /*vertical-align: bottom;*/
 	background: rgba(0,0,0,0);
 	font-size: 16px;
@@ -112,9 +115,11 @@ body{
     background-repeat: no-repeat, repeat;
     background-position: center;
     background-size: 25px 25px;	
- 
-    height: 100%;
-	width:30px;
+	
+	/*vertical-align:middle;*/
+    height: 30px;
+	width : 30px;
+	
     cursor: pointer;
 	border:0px solid red;
 }
@@ -184,7 +189,6 @@ img.store_logo:hover{
 		text-align:center;
 	}
 }
-
 
 
 
