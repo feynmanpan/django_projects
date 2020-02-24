@@ -1,63 +1,63 @@
 
 
 html{
-	
+    
 }
 
 body{
-	
-	font-family:微軟正黑體;
-	font-size:20px;
-	padding:0px; 
+    
+    font-family:微軟正黑體;
+    font-size:20px;
+    padding:0px; 
 }
 
 /*頁尾*/
 #tail{
-	width:992px;
-	/*background:lightgrey;*/      
-	margin:0 auto;
-	margin-top:100px;
-	padding:2px;
-	border-top:1px solid orangered;
+    width:992px;
+    /*background:lightgrey;*/      
+    margin:0 auto;
+    margin-top:100px;
+    padding:2px;
+    border-top:1px solid orangered;
 }
 #tail p{
-	font-size:15px;
-	text-align:center;
-	color:#8b8a8a;
+    font-size:15px;
+    text-align:center;
+    color:#8b8a8a;
 }
 
 /*頁首搜尋*/ 
 #header{
-	display:block;
-	
-	position:fixed;
-	left:0px;
-	top:0px;
-	
-	padding-left: 0px;
-	padding-top: 10px;
-    padding-bottom: 10px;	
-	margin-top:0px;
-	
-	width:100%;
-    height:auto;	
-	
-	background: #fff;	
-    box-shadow: 0 1px 6px 0 rgba(32,33,36,.28);	
-	border:0px solid red;
-	
-	/*white-space: nowrap;*/
-	text-align:center;
+    display:block;
+    
+    position:fixed;
+    left:0px;
+    top:0px;
+    
+    padding-left: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;    
+    margin-top:0px;
+    
+    width:100%;
+    height:auto;    
+    
+    background: #fff;    
+    box-shadow: 0 1px 6px 0 rgba(32,33,36,.28);    
+    border:0px solid red;
+    
+    /*white-space: nowrap;*/
+    text-align:center;
 }
 
 #header_navarea{
-	display:inline-block;
-	vertical-align:middle;
+    display:inline-block;
+    vertical-align:middle;
 }
 
 #header_navarea a{
-	color: inherit; /* blue colors for links too */
-	text-decoration: inherit; /* no underline */
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
     background: -webkit-gradient(linear,left top,right top,from(#ff8a00),to(#da1b60));
     background: linear-gradient(to right,#ff8a00,#da1b60);
     -webkit-background-clip: text;
@@ -77,117 +77,117 @@ body{
 #header_kwarea{
     display: inline-block;
     height: auto;
-	width: 550px;
+    width: 550px;
     vertical-align: middle;
-	text-align: left;
+    text-align: left;
 
     margin-left: 14px;
     padding-left: 15px;
-	padding-right: 15px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-    border: 1px solid lightgrey;	
-	border-radius: 24px;
+    padding-right: 15px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border: 1px solid lightgrey;    
+    border-radius: 24px;
 }
 
 #header_kwarea:hover{
-	/*border:1px solid orangered;*/ 
-	box-shadow: 0 1px 6px 0 rgba(32,33,36,.28);	
+    /*border:1px solid orangered;*/ 
+    box-shadow: 0 1px 6px 0 rgba(32,33,36,.28);    
 }
 
 #kw_input{
-	height: 30px;
+    height: 30px;
     width: -webkit-calc(100% - 40px);
     width:    -moz-calc(100% - 40px);
     width:         calc(100% - 40px);
-	padding:0px;
+    padding:0px;
     /*vertical-align: bottom;*/
-	background: rgba(0,0,0,0);
-	font-size: 16px;
-	border:0px solid red;
+    background: rgba(0,0,0,0);
+    font-size: 16px;
+    border:0px solid red;
 }
 
 #kw_submit{
-	float:right;
-	
+    float:right;
+    
     background: rgba(0,0,0,0);
-	background-image: url('/mystatic/images/search.png');
+    background-image: url('/mystatic/images/search.png');
     background-repeat: no-repeat, repeat;
     background-position: center;
-    background-size: 25px 25px;	
-	
-	/*vertical-align:middle;*/
+    background-size: 25px 25px;    
+    
+    /*vertical-align:middle;*/
     height: 30px;
-	width : 30px;
-	
+    width : 30px;
+    
     cursor: pointer;
-	border:0px solid red;
+    border:0px solid red;
 }
 /*
 #kw_submit img{
-	vertical-align: middle;
-	height:70%;
-	border:0px solid blue;
+    vertical-align: middle;
+    height:70%;
+    border:0px solid blue;
 }
 */
 .nooutline:focus{
-	outline: none;
+    outline: none;
 }
 
 
 
 #body_store{
-	margin:0 auto;
-	margin-top:100px;
-	width:992px;
-	
-	border:0px solid red;
+    margin:0 auto;
+    margin-top:100px;
+    width:992px;
+    
+    border:0px solid red;
 }
 
 #store_logo_area{
-	border-top:1px solid orangered;
-	/*border-bottom:1px solid orangered;*/
-	padding-top:10px;
-	padding-bottom:20px;
-	/*margin-bottom:100px;*/
+    border-top:1px solid orangered;
+    /*border-bottom:1px solid orangered;*/
+    padding-top:10px;
+    padding-bottom:20px;
+    /*margin-bottom:100px;*/
 }
 
 #store_logo_area a{
-	color: inherit; /* blue colors for links too */ 
-	text-decoration: inherit; /* no underline */	
+    color: inherit; /* blue colors for links too */ 
+    text-decoration: inherit; /* no underline */    
 }
 
 
 
 img.store_logo{
-	max-height:200px;
-	max-width: 200px; 
-	margin-right:5px;
-	margin-top:10px;	
-	padding:15px;
-	vertical-align:middle;
+    max-height:200px;
+    max-width: 200px; 
+    margin-right:5px;
+    margin-top:10px;    
+    padding:15px;
+    vertical-align:middle;
 }
 
 img.store_logo:hover{
-	/*border:1px solid grey; */  
-	box-shadow: 0 1px 6px 0 rgba(32,33,36,1);	
-	border-radius: 10px;
+    /*border:1px solid grey; */  
+    box-shadow: 0 1px 6px 0 rgba(32,33,36,1);    
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 992px) {
-	#tail{
-		width:100%;
-	}
-	#header_kwarea{
-		width:85%;
-		margin-left:0px;
-	}
-	#body_store{
-		width:100%;
-	}
-	#store_logo_area{
-		text-align:center;
-	}
+    #tail{
+        width:100%;
+    }
+    #header_kwarea{
+        width:85%;
+        margin-left:0px;
+    }
+    #body_store{
+        width:100%;
+    }
+    #store_logo_area{
+        text-align:center;
+    }
 }
 
 
