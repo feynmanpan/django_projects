@@ -19,13 +19,13 @@ from django.utils import timezone
 
 class Bookinfo(models.Model):
     #博客來的店內碼做PK
-    err       = models.CharField(default='', blank=True, null=False, max_length=100)
-    bookid    = models.CharField(primary_key=True,default='',max_length=10) 
-    isbn      = models.CharField(unique=False,default='',max_length=13)
-    title     = models.CharField(max_length=200)
-    author    = models.CharField(max_length=200)
-    publisher = models.CharField(max_length=200)
-    url_cover = models.URLField(default='', blank=True, null=False)
+    err       = models.CharField(default='', blank=True, null=False, max_length=50)
+    bookid    = models.CharField(default='', blank=False,null=False, max_length=10, primary_key=True) 
+    isbn      = models.CharField(default='', blank=True, null=False, max_length=13)
+    title     = models.CharField(default='', blank=True, null=False, max_length=200)
+    author    = models.CharField(default='', blank=True, null=False, max_length=200)
+    publisher = models.CharField(default='', blank=True, null=False, max_length=200)
+    url_cover = models.URLField( default='', blank=True, null=False)
 
     def __str__(self):
         return self.title

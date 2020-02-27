@@ -48,10 +48,10 @@ def get_bookinfo(bookid,tryDB=True):
     if tryDB:
         row=Bookinfo.objects.filter(bookid=bookid)
         if row:
+            bookinfo.update(row.values()[0])        
             bookinfo['tryDB']=tryDB
             bookinfo['fromDB']=True
-            bookinfo['create']=None
-            bookinfo.update(row.values()[0])        
+            bookinfo['create']=None            
             return bookinfo
     
     #3.Web: 沒有才從博客來抓===============================
