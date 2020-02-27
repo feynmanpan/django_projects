@@ -1,7 +1,7 @@
 #%load get_bookinfo.py
 #%run get_bookinfo.py
 # -*- coding: utf-8 -*-
-#_____________________
+#_____________________tt
 import os
 import django
 from django.utils import timezone
@@ -36,7 +36,20 @@ from mainsite.models import Bookinfo,Store,Post
 #p.save()
 #
 def get_bookinfo(bookid):
-    bookid=bookid
+    bookinfo={'err':'','bookid':bookid}
+    #1.確認是否10位數字串
+    if type(bookid) is not str or len(bookid)!=10:
+        bookinfo['err']='bookid有誤'
+        return bookinfo
+    
+    #2.確認bookinfo表是否已有資料
+    tmp=Bookinfo.objects.filter(bookid=bookid)
+    if tmp:
+        bookinfo['fromDB']='Y'
+        bookinfo.update(tmp.values()[0])        
+        return bookinfo
+    
+    #3.沒有才從博客來抓
     url_q="https://www.books.com.tw/products/"+bookid
     fake_header = Headers(
         browser="chrome",  # Generate only Chrome UA
@@ -53,32 +66,45 @@ def get_bookinfo(bookid):
                          timeout=3)    
         r.encoding='utf8'
         htmlstr=r.text
-        #________________________________________________
-        #result=BeautifulSoup(r.text,"lxml")    
-        #print(htmlstr)
-        bookinfo={}
+        #________________開始收集________________________________
         doc=pq(htmlstr)
+        #
+        #ISBN，只抓有isbn的        
         isbn=doc.find(".mod_b.type02_m058.clearfix .bd").find("ul").eq(0).find("li").eq(0).text()
-        #只抓有isbn的
-        if 'ISBN' not in isbn:
-            print('noisbn')
-            return None
+        if 'ISBN' in isbn:
+            raise Exception('noisbn')
         else:
             isbn=isbn.replace("ISBN：","")
-        #
+        #書名
         title=doc.find(".mod.type02_p002.clearfix > h1").text()
         tmp=doc.find(".type02_p003.clearfix").find("ul").eq(0)
+        #作者
         author=tmp.find("li").eq(0).find("a[href*='adv_author']").text()
+        #出版社
         publisher=tmp.find("a[href*='sys_puballb']").text()
-        
-        #________________________________________________
-        bookinfo['bookid']=bookid
+
+        #
+    except Exception as e:
+    #except requests.exception.Timeout as e:
+        #有任何例外，紀錄error
+        error=str(e)
+        if 'timeout' in error:
+            bookinfo['err']='timeout'
+        else:    
+            bookinfo['err']=error[:50]            
+    else:
+        #
         bookinfo['isbn']=isbn
         bookinfo['title']=title
         bookinfo['author']=author
-        bookinfo['publisher']=publisher
+        bookinfo['publisher']=publisher  
+        
+    finally:
+        #存DB
+        row = Bookinfo.objects.create(**bookinfo)
+        row.save()   
         #
+        bookinfo['fromDB']='N'
         return bookinfo
-    except:
-        print('NG')
-        return None
+        #
+            

@@ -12,12 +12,13 @@ from django.utils import timezone
 # max_length: 字數(unicode數)，不是byte數   
 
 class Bookinfo(models.Model):
-	#博客來的店內碼做PK
-    bookid    = models.CharField(primary_key=True,default='0123456789',max_length=10) 
-    isbn      = models.CharField(unique=True,default='9789571234567',max_length=13)
-    title     = models.CharField(default='書名',max_length=200)
-    author    = models.CharField(default='作者',max_length=200)
-    publisher = models.CharField(default='出版社',max_length=200)
+    #博客來的店內碼做PK
+    err       = models.CharField(default=None, blank=True, null=False,max_length=100)
+    bookid    = models.CharField(primary_key=True,default='',max_length=10) 
+    isbn      = models.CharField(unique=False,default='',max_length=13)
+    title     = models.CharField(max_length=200)
+    author    = models.CharField(max_length=200)
+    publisher = models.CharField(max_length=200)
 
     def __str__(self):
         return self.title
