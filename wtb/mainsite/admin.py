@@ -3,7 +3,7 @@ from .models import Bookinfo,Store,Post
 # Register your models here
 
 class BookinfoAdmin(admin.ModelAdmin):
-    list_display=('err','bookid','isbn','title','author','publisher')
+    list_display=('err','bookid','isbn','title','author','publisher','url_cover')
 
 class StoreAdmin(admin.ModelAdmin):
     list_display=('name','code','url','url_logo','url_href')
