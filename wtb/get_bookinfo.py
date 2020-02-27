@@ -41,7 +41,7 @@ def get_bookinfo(bookid,tryDB=True):
     
     #1.確認是否10位數字串
     if type(bookid) is not str or len(bookid)!=10:
-        bookinfo['err']='bookid有誤'
+        bookinfo['err']='wrongbookid'
         return bookinfo
     
     #2.DB: 確認bookinfo表是否已有資料=======================
