@@ -6,7 +6,7 @@ import os
 import django
 from django.utils import timezone
 #from django.utils.dateparse import parse_datetime
-from datetime import datetime,date
+from datetime import datetime,date#,timezone
 import pytz
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
@@ -156,7 +156,7 @@ def get_bookinfo(bookid,tryDB=True):
         
     finally:
         #--爬成功或失敗，都存DB
-        bookinfo['create_dt']=timezone.now() #django會存UTC時間_datetime.now()
+        bookinfo['create_dt']=timezone.now() #django會抓OS的UTC時間
         row, create = Bookinfo.objects.update_or_create(bookid=bookid,defaults=bookinfo)          
         #--整理回傳
         bookinfo['tryDB']=tryDB
