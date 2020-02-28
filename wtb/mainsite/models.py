@@ -15,7 +15,7 @@ from django.utils import timezone
 #                  ORM:    None    > - 
 #                          ''      > ''
 # 所以null=False保持以''存取，所有操作只有非空及空字串兩種情形
-# max_length: 字數(unicode數)，不是byte數    
+# max_length: 字數(unicode數)，不是byte數      
 
 class Bookinfo(models.Model):
     #博客來的店內碼做PK
@@ -29,7 +29,9 @@ class Bookinfo(models.Model):
     lang      = models.CharField(default='', blank=True, null=False, max_length=200)
     url_cover = models.URLField( default='', blank=True, null=False)
 	#
-    create_dt = models.DateTimeField(default=timezone.now,verbose_name='更新日期')   
+    create_dt = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  
+
+    #	
     def __str__(self):
         return self.title
     class Meta:

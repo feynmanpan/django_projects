@@ -38,8 +38,8 @@ from mainsite.models import Bookinfo,Store,Post
 #p = Post.objects.create(AA='55',title='dede',slug='S7',body='dede',pub_date=timezone.now())
 #p.save()
 #
-def get_bookinfo(bookid,tryDB=True):
-    
+def get_bookinfo(bookid:str,tryDB=True)->dict:
+
     bookinfo={'err':'','bookid':bookid}
     tw = pytz.timezone('Asia/Taipei')
     
@@ -121,9 +121,8 @@ def get_bookinfo(bookid,tryDB=True):
         author=author.rstrip('/')
         #--出版社
         publisher=tmp.find("a[href*='sys_puballb']").text()
-        #--出版日期YYYY-MM-DD
+        #--出版日期YYYY-MM-DD，字串轉存datetime物件
         pub_dt=tmp.find("li:Contains('出版日期')").text().replace('出版日期：','').replace('/','-')
-        #pub_dt=parse_datetime(pub_dt)
         pub_dt=datetime.strptime(pub_dt, "%Y-%m-%d").date()
         #print(pub_dt)
         #--語言
@@ -162,9 +161,8 @@ def get_bookinfo(bookid,tryDB=True):
         bookinfo['tryDB']=tryDB
         bookinfo['fromDB']=False
         bookinfo['create']=create
-        #回傳顯示台北時間
+        #回傳顯示UTC轉台北時間
         bookinfo['create_dt']=bookinfo['create_dt'].astimezone(tw)
         #
         return bookinfo
         #
-            
