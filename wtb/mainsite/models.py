@@ -25,12 +25,15 @@ class Bookinfo(models.Model):
     title     = models.CharField(default='', blank=True, null=False, max_length=200)
     author    = models.CharField(default='', blank=True, null=False, max_length=200)
     publisher = models.CharField(default='', blank=True, null=False, max_length=200)
+    pub_dt    = models.DateField(default=None,blank=True, null=True,verbose_name='出版日期')
+    lang      = models.CharField(default='', blank=True, null=False, max_length=200)
     url_cover = models.URLField( default='', blank=True, null=False)
-
+	#
+    create_dt = models.DateTimeField(default=timezone.now,verbose_name='更新日期')   
     def __str__(self):
         return self.title
     class Meta:
-        ordering = ('bookid',)	
+        ordering = ('bookid',)    
 
 
 class Store(models.Model):
@@ -39,14 +42,14 @@ class Store(models.Model):
     url       = models.URLField( default='', blank=True, null=False)    
     url_logo  = models.URLField( default='', blank=True, null=False)
     url_href  = models.CharField(default='', blank=True, null=False,max_length=100)
-    create_dt = models.DateTimeField(default=timezone.now,verbose_name='建立日期')	
+    create_dt = models.DateTimeField(default=timezone.now,verbose_name='建立日期')    
 
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ('code',)		
-		
-	
+        ordering = ('code',)        
+        
+    
 
 class Post(models.Model):
     AA = models.CharField(max_length=200,default='')

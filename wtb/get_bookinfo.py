@@ -5,6 +5,9 @@
 import os
 import django
 from django.utils import timezone
+#from django.utils.dateparse import parse_datetime
+from datetime import datetime,date
+import pytz
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 from difflib import SequenceMatcher
@@ -38,6 +41,7 @@ from mainsite.models import Bookinfo,Store,Post
 def get_bookinfo(bookid,tryDB=True):
     
     bookinfo={'err':'','bookid':bookid}
+    tw = pytz.timezone('Asia/Taipei')
     
     #1.確認是否10位數字串
     if type(bookid) is not str or len(bookid)!=10:
@@ -51,7 +55,10 @@ def get_bookinfo(bookid,tryDB=True):
             bookinfo.update(row.values()[0])        
             bookinfo['tryDB']=tryDB
             bookinfo['fromDB']=True
-            bookinfo['create']=None            
+            bookinfo['create']=None   
+            #回傳顯示台北時間
+            bookinfo['create_dt']=bookinfo['create_dt'].astimezone(tw)     
+            #
             return bookinfo
     
     #3.Web: 沒有才從博客來抓===============================
@@ -70,10 +77,16 @@ def get_bookinfo(bookid,tryDB=True):
                          #cookies=cookies,
                          timeout=3)    
         r.encoding='utf8'
-        htmlstr=r.text
-        doc=pq(htmlstr)
-        #________________例外收集________________________________                    
-        #(1)頁面連結錯誤        
+        #
+        doc=pq(r.text)
+        #________________例外收集________________________________                            
+        #(0)狀態碼400~599        
+        if r.status_code != 200:
+            #print(r.raise_for_status())
+            #print(r.status_code)
+            raise Exception(r.status_code)
+            
+        #(1)404頁面連結錯誤        
         msg_info=doc.find("h2.msg_info").eq(0).text()
         if '錯誤' in msg_info:
             raise Exception('notfound')
@@ -88,11 +101,34 @@ def get_bookinfo(bookid,tryDB=True):
         isbn=isbn.replace("ISBN：","")
         #書名
         title=doc.find(".mod.type02_p002.clearfix > h1").text()
+        #===
         tmp=doc.find(".type02_p003.clearfix").find("ul").eq(0)
-        #作者
-        author=tmp.find("li").eq(0).find("a[href*='adv_author']").text()
-        #出版社
+        #--作者/原文作者/譯者
+        #author=tmp.find("li").eq(0).find("a[href*='adv_author']").text()
+        authors=tmp.find("li").find("a[href*='adv_author']")
+        author=''
+        for au in authors:
+            if '追蹤作者' in pq(au).parent().text():
+                author+='作者_'+pq(au).text()+"/"
+                continue
+            if '原文作者' in pq(au).parent().text():
+                author+='原文作者_'+pq(au).text()+"/"                
+                continue
+            if '譯者' in pq(au).parent().text():
+                author+='譯者_'+pq(au).text()+"/"                
+                continue
+        #
+        author=author.rstrip('/')
+        #--出版社
         publisher=tmp.find("a[href*='sys_puballb']").text()
+        #--出版日期YYYY-MM-DD
+        pub_dt=tmp.find("li:Contains('出版日期')").text().replace('出版日期：','').replace('/','-')
+        #pub_dt=parse_datetime(pub_dt)
+        pub_dt=datetime.strptime(pub_dt, "%Y-%m-%d").date()
+        #print(pub_dt)
+        #--語言
+        lang=tmp.find("li:Contains('語言')").text().replace('語言：','').strip()
+        #===
         #封面
         url_cover=doc.find(".cover_img > img.cover").attr("src")
 
@@ -104,25 +140,31 @@ def get_bookinfo(bookid,tryDB=True):
         if 'timeout' in error:
             bookinfo['err']='timeout'
         else:    
-            bookinfo['err']=error[:50]            
+            bookinfo['err']=error[:50]
+        #失敗不存出版日期
+        bookinfo['pub_dt']=None    
     else:
         #
         bookinfo['isbn']=isbn
         bookinfo['title']=title
         bookinfo['author']=author
-        bookinfo['publisher']=publisher  
+        bookinfo['publisher']=publisher
+        bookinfo['pub_dt']=pub_dt
+        bookinfo['lang']=lang
+        #
         bookinfo['url_cover']=url_cover  
         
     finally:
-        #爬成功或失敗，都存DB
-        #row = Bookinfo.objects.create(**bookinfo)
-        #row.save()   
-        #增加tryDB選擇，直接爬可能update
+        #--爬成功或失敗，都存DB
+        bookinfo['create_dt']=timezone.now() #django會存UTC時間_datetime.now()
         row, create = Bookinfo.objects.update_or_create(bookid=bookid,defaults=bookinfo)          
-        #
+        #--整理回傳
         bookinfo['tryDB']=tryDB
         bookinfo['fromDB']=False
         bookinfo['create']=create
+        #回傳顯示台北時間
+        bookinfo['create_dt']=bookinfo['create_dt'].astimezone(tw)
+        #
         return bookinfo
         #
             
