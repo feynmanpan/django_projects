@@ -1,7 +1,7 @@
 #%load get_bookinfo.py
 #%run get_bookinfo.py
 # -*- coding: utf-8 -*-
-#_____________________tt
+#________________________________________________
 import os
 import django
 from django.utils import timezone
@@ -30,14 +30,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
 from mainsite.models import Bookinfo,Store,Post
-#__________________________
-#stores = Store.objects.all().order_by('code')
-#for s in stores:
-#    print(s.name) 
-    
-#p = Post.objects.create(AA='55',title='dede',slug='S7',body='dede',pub_date=timezone.now())
-#p.save()
-#
+#________________________________________________
+
 def get_bookinfo(bookid:str,tryDB=True)->dict:
 
     bookinfo={'err':'','bookid':bookid}
@@ -56,7 +50,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
             bookinfo['tryDB']=tryDB
             bookinfo['fromDB']=True
             bookinfo['create']=None   
-            #回傳顯示台北時間
+            #回傳顯示CST台北時間
             bookinfo['create_dt']=bookinfo['create_dt'].astimezone(tw)     
             #
             return bookinfo
@@ -101,7 +95,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         isbn=isbn.replace("ISBN：","")
         #書名
         title=doc.find(".mod.type02_p002.clearfix > h1").text()
-        #===
+        #=========================
         tmp=doc.find(".type02_p003.clearfix").find("ul").eq(0)
         #--作者/原文作者/譯者
         #author=tmp.find("li").eq(0).find("a[href*='adv_author']").text()
@@ -124,10 +118,9 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #--出版日期YYYY-MM-DD，字串轉存datetime物件
         pub_dt=tmp.find("li:Contains('出版日期')").text().replace('出版日期：','').replace('/','-')
         pub_dt=datetime.strptime(pub_dt, "%Y-%m-%d").date()
-        #print(pub_dt)
         #--語言
         lang=tmp.find("li:Contains('語言')").text().replace('語言：','').strip()
-        #===
+        #=========================
         #封面
         url_cover=doc.find(".cover_img > img.cover").attr("src")
 
@@ -144,24 +137,29 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         bookinfo['pub_dt']=None    
     else:
         #
-        bookinfo['isbn']=isbn
-        bookinfo['title']=title
-        bookinfo['author']=author
-        bookinfo['publisher']=publisher
-        bookinfo['pub_dt']=pub_dt
-        bookinfo['lang']=lang
+        cols=['isbn','title','author','publisher',
+              'pub_dt','lang',
+              'url_cover']
         #
-        bookinfo['url_cover']=url_cover  
+        for col in cols:
+            bookinfo[col]=locals()[col]
+        #bookinfo['isbn']=isbn
+        #bookinfo['title']=title
+        #bookinfo['author']=author
+        #bookinfo['publisher']=publisher
+        #bookinfo['pub_dt']=pub_dt
+        #bookinfo['lang']=lang
+        #bookinfo['url_cover']=url_cover  
         
     finally:
         #--爬成功或失敗，都存DB
-        bookinfo['create_dt']=timezone.now() #django會抓OS的UTC時間
+        bookinfo['create_dt']=timezone.now() #django timezone會抓OS的UTC時間
         row, create = Bookinfo.objects.update_or_create(bookid=bookid,defaults=bookinfo)          
         #--整理回傳
         bookinfo['tryDB']=tryDB
         bookinfo['fromDB']=False
         bookinfo['create']=create
-        #回傳顯示UTC轉台北時間
+        #回傳顯示CST台北時間
         bookinfo['create_dt']=bookinfo['create_dt'].astimezone(tw)
         #
         return bookinfo
