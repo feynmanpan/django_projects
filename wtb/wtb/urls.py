@@ -15,17 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from mainsite.views import wtb_index,homepage, homepage_1,homepage_2,showpost,showpost_1
+from mainsite.views import wtb_index,wtb_book,homepage, homepage_1,homepage_2,showpost,showpost_1
 
 
 test_patterns=[
-	path('<str:AAA>/', homepage_1,name='test-url'),
+    path('<str:AAA>/', homepage_1,name='test-url'),
 ]
 
 urlpatterns = [
     path('admin/', admin.site.urls), 
-	path('', wtb_index),
-	
+    path('', wtb_index),
+    path('book/<str:bookid>/', wtb_book),
     path('index/', homepage),
     #path('index_1/', homepage_1,{'AAA':2345}),
     #path('index_1/', include(test_patterns)),

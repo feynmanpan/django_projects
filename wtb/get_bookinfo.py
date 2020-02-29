@@ -164,6 +164,6 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #
 
         
-bookinfo=get_bookinfo('0010829817',tryDB=False)
+#bookinfo=get_bookinfo('0010829817',tryDB=False)
 #
-bookinfo        
+#bookinfo        

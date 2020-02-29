@@ -6,12 +6,26 @@ from django.http import HttpResponse, Http404
 from django.urls import reverse
 from datetime import datetime
 from .models import Store,Post
+from get_bookinfo import get_bookinfo
+import json
 
-# Create your views here. 
+# 處理首頁 
 def wtb_index(request):
     stores = Store.objects.all().order_by('code')
     stores_count=stores.count()
+    #
     return render(request, 'wtb_index.html', locals())
+
+
+# 處理單書頁
+def wtb_book(request,bookid='0010829817'):
+    bookinfo=get_bookinfo(bookid,tryDB=True)
+    #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示
+    jsonstr=json.dumps(bookinfo,default=str,ensure_ascii=False)
+    #
+    return HttpResponse(jsonstr)
+
+
 
 
 
