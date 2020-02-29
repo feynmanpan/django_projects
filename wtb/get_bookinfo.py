@@ -1,5 +1,3 @@
-#%load get_bookinfo.py
-#%run get_bookinfo.py
 # -*- coding: utf-8 -*-
 #________________________________________________
 import os
@@ -164,3 +162,8 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #
         return bookinfo
         #
+
+        
+bookinfo=get_bookinfo('0010829817',tryDB=False)
+#
+bookinfo        
