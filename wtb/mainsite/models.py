@@ -43,6 +43,7 @@ class Bookinfo(models.Model):
 class Bookprice(models.Model):
     err       = models.CharField(default='', blank=True, null=False, max_length=50)
     bookid    = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
+	#
     store     = models.CharField(default='', blank=True, null=False, max_length=10)
     price_sale= models.CharField(default='', blank=True, null=False, max_length=10)
 
