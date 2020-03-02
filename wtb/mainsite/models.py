@@ -42,6 +42,7 @@ class Bookinfo(models.Model):
 
 class Bookprice(models.Model):
     err       = models.CharField(default='', blank=True, null=False, max_length=50)
+	#DB存的欄位是bookid_id
     bookid    = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
     isbn      = models.CharField(default='', blank=True, null=False, max_length=13)
     #
@@ -53,7 +54,7 @@ class Bookprice(models.Model):
 
     #    
     def __str__(self):
-        return str(self.bookid)
+        return str(self.bookid) #ORM的Bookprice.bookid必須是Bookinfo物件，所以要再轉一次str
     class Meta:
         ordering = ('bookid',)         
 
