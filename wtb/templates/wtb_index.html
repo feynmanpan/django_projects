@@ -4,34 +4,34 @@
 
 {% block content %} 
 
-	<div id='body_store' align=''>
-		<div>
-			<h1>嘩！找書</h1>
-			<ol style=''>
-				<li style='color:'>
-					<span style='color:black'>
-						本站從下列共{{stores_count}}家網路平台蒐集價目及書籍資料，方便書友比價。
-					</span>
-				</li>
-				<li style='color:'>
-					<span style='color:black'>
-						請於頁首搜尋欄位輸入關鍵字。
-					</span>
-				</li>				
-				
-			</ol>
-		</div>
-		<div id='store_logo_area'>
-			{% for store in stores %}
-				<a href='{{ store.url }}' title='{{ store.name }}' target='_blank'>
-					{% if store.url_logo %}
-						<img class='store_logo' src='{{ store.url_logo }}'/>
-					{% else %}						
-						<img class='store_logo' src='{{ store.url_href }}'/>
-					{% endif %}
-				</a>	
-			{% endfor %}
-		</div>
-	</div>	
-	
+    <div id='body_store' align=''>
+        <div>
+            <h1>嘩！找書</h1>
+            <ol style=''>
+                <li style='color:'>
+                    <span style='color:black'>
+                        本站從下列共{{stores_count}}家網路平台蒐集價目及書籍資料，方便書友比價。
+                    </span>
+                </li>
+                <li style='color:'>
+                    <span style='color:black'>
+                        請於頁首搜尋欄位輸入關鍵字。
+                    </span>
+                </li>                
+                
+            </ol>
+        </div>
+        <div id='store_logo_area'>
+            {% for store in stores %}
+                <a href='{{ store.url }}' title='{{ store.name }}' target='_blank'>
+                    {% if store.url_logo %}
+                        <img class='store_logo' src='{{ store.url_logo }}'/>
+                    {% else %}                        
+                        <img class='store_logo' src='{{ store.url_href }}'/>
+                    {% endif %}
+                </a>    
+            {% endfor %}
+        </div>
+    </div>    
+    
 {% endblock %}

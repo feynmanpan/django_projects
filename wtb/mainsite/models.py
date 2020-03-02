@@ -36,14 +36,15 @@ class Bookinfo(models.Model):
 
     #    
     def __str__(self):
-        return self.title
+        return self.bookid #在admin，給bookprice顯示下拉
     class Meta:
         ordering = ('bookid',)  
 
 class Bookprice(models.Model):
     err       = models.CharField(default='', blank=True, null=False, max_length=50)
     bookid    = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
-	#
+    isbn      = models.CharField(default='', blank=True, null=False, max_length=13)
+    #
     store     = models.CharField(default='', blank=True, null=False, max_length=10)
     price_sale= models.CharField(default='', blank=True, null=False, max_length=10)
 
@@ -52,7 +53,7 @@ class Bookprice(models.Model):
 
     #    
     def __str__(self):
-        return self.bookid
+        return str(self.bookid)
     class Meta:
         ordering = ('bookid',)         
 

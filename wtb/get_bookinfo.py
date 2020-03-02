@@ -45,7 +45,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
     #2.DB: 確認bookinfo表是否已有資料=======================
     if tryDB:
         row=Bookinfo.objects.filter(bookid=bookid)
-        if row:
+        if row.count()==1:
             bookinfo.update(row.values()[0])        
             bookinfo['tryDB']=tryDB
             bookinfo['fromDB']=True
@@ -69,7 +69,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
                          headers=UA,
                          #proxies=proxies,
                          #cookies=cookies,
-                         timeout=3)    
+                         timeout=5)    
         r.encoding='utf8'
         #
         doc=pq(r.text)

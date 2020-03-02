@@ -6,7 +6,7 @@ class BookinfoAdmin(admin.ModelAdmin):
     list_display=('bookid','err','isbn','title','author','publisher','pub_dt','price_list','create_dt')
 
 class BookpriceAdmin(admin.ModelAdmin):
-    list_display=('bookid','err','store','price_sale','create_dt')
+    list_display=('bookid','err','isbn','store','price_sale','create_dt')
 
 
 class StoreAdmin(admin.ModelAdmin):
