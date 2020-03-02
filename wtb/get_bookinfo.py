@@ -1,3 +1,5 @@
+#%load get_bookinfo.py
+#%run get_bookinfo.py
 # -*- coding: utf-8 -*-
 #________________________________________________
 import os
@@ -109,6 +111,9 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
             if '譯者' in pq(au).parent().text():
                 author+='譯者_'+pq(au).text()+"/"                
                 continue
+            if '編者' in pq(au).parent().text():
+                author+='編者_'+pq(au).text()+"/"                
+                continue                
         #
         author=author.rstrip('/')
         #--出版社
@@ -118,6 +123,10 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         pub_dt=datetime.strptime(pub_dt, "%Y-%m-%d").date()
         #--語言
         lang=tmp.find("li:Contains('語言')").text().replace('語言：','').strip()
+        #--定價
+        tmp2=doc.find(".cnt_prod002.clearfix ul.price").eq(0)
+        price_list=tmp2.find("em").text()
+        price_sale=tmp2.find("strong.price01 b").text()
         #=========================
         #封面
         url_cover=doc.find(".cover_img > img.cover").attr("src")
@@ -136,7 +145,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
     else:
         #
         cols=['isbn','title','author','publisher',
-              'pub_dt','lang',
+              'pub_dt','lang','price_list','price_sale',
               'url_cover']
         #
         for col in cols:
@@ -150,10 +159,10 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #bookinfo['url_cover']=url_cover  
         
     finally:
-        #--爬成功或失敗，都存DB
+        #(1)爬成功或失敗，都存DB
         bookinfo['create_dt']=timezone.now() #django timezone會抓OS的UTC時間
         row, create = Bookinfo.objects.update_or_create(bookid=bookid,defaults=bookinfo)          
-        #--整理回傳
+        #(2)整理回傳
         bookinfo['tryDB']=tryDB
         bookinfo['fromDB']=False
         bookinfo['create']=create
@@ -161,9 +170,5 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         bookinfo['create_dt']=bookinfo['create_dt'].astimezone(tw)
         #
         return bookinfo
+        #return json.dumps(bookinfo,default=str,ensure_ascii=False)
         #
-
-        
-#bookinfo=get_bookinfo('0010829817',tryDB=False)
-#
-#bookinfo        

@@ -27,15 +27,33 @@ class Bookinfo(models.Model):
     publisher = models.CharField(default='', blank=True, null=False, max_length=200)
     pub_dt    = models.DateField(default=None,blank=True, null=True,verbose_name='出版日期')
     lang      = models.CharField(default='', blank=True, null=False, max_length=200)
+    price_list= models.CharField(default='', blank=True, null=False, max_length=10)
+    price_sale= models.CharField(default='', blank=True, null=False, max_length=10)
+    #
     url_cover = models.URLField( default='', blank=True, null=False)
-	#
+    #
     create_dt = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  
 
-    #	
+    #    
     def __str__(self):
         return self.title
     class Meta:
-        ordering = ('bookid',)    
+        ordering = ('bookid',)  
+
+class Bookprice(models.Model):
+    err       = models.CharField(default='', blank=True, null=False, max_length=50)
+    bookid    = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
+    store     = models.CharField(default='', blank=True, null=False, max_length=10)
+    price_sale= models.CharField(default='', blank=True, null=False, max_length=10)
+
+    #
+    create_dt = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  
+
+    #    
+    def __str__(self):
+        return self.bookid
+    class Meta:
+        ordering = ('bookid',)         
 
 
 class Store(models.Model):
