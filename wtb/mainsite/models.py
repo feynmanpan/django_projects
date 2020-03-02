@@ -54,13 +54,13 @@ class Bookprice(models.Model):
 
     #    
     def __str__(self):
-        return str(self.bookid) #ORM的Bookprice.bookid必須是Bookinfo物件，所以要再轉一次str
+        return str(self.bookid) #ORM的Bookprice.bookid必須是Bookinfo物件，所以要再轉一次str 
     class Meta:
         ordering = ('bookid',)         
 
 
 class Store(models.Model):
-    code      = models.CharField(default='00',max_length=2)
+    code      = models.CharField(default='999',max_length=3)
     name      = models.CharField(max_length=200)
     url       = models.URLField( default='', blank=True, null=False)    
     url_logo  = models.URLField( default='', blank=True, null=False)
