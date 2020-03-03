@@ -25,18 +25,18 @@ def wtb_index(request):
 def wtb_book(request,bookid='0010829817'):
     start_time = time()
     jsonstr=""
-    book={'time':'0'}
+    book={'info':'','price':[],'time':'0'} 
     #
     bookinfo=get_bookinfo(bookid,tryDB=True)
     if not bookinfo['err']:
-        book={'info':bookinfo,'price':[]} 
+        book['info']=bookinfo
         #
         #用多執行緒____________________________        
         stores=['elite','ks']
         n=len(stores)
         bookids=[bookid]*n
         isbns=['']*n        
-        tryDBs=[False]*n
+        tryDBs=[True]*n
         #
         with ThreadPoolExecutor(max_workers=n) as executor:
             for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs):
