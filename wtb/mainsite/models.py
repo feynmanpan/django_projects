@@ -20,7 +20,7 @@ from django.utils import timezone
 class Bookinfo(models.Model):
     #博客來的店內碼做PK
     err       = models.CharField(default='', blank=True, null=False, max_length=50)
-    bookid    = models.CharField(default='', blank=False,null=False, max_length=10, primary_key=True) 
+    bookid    = models.CharField(default='', blank=False,null=False, max_length=15, primary_key=True) 
     isbn      = models.CharField(default='', blank=True, null=False, max_length=13)
     title     = models.CharField(default='', blank=True, null=False, max_length=200)
     author    = models.CharField(default='', blank=True, null=False, max_length=200)
@@ -29,6 +29,9 @@ class Bookinfo(models.Model):
     lang      = models.CharField(default='', blank=True, null=False, max_length=200)
     price_list= models.CharField(default='', blank=True, null=False, max_length=10)
     price_sale= models.CharField(default='', blank=True, null=False, max_length=10)
+    #電子書
+    price_sale_ebook= models.CharField(default='', blank=True, null=False, max_length=10)
+    bookid_ebook    = models.CharField(default='', blank=True, null=False, max_length=15) 
     #
     url_cover = models.URLField( default='', blank=True, null=False)
     #

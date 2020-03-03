@@ -128,6 +128,11 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         tmp2=doc.find(".cnt_prod002.clearfix ul.price").eq(0)
         price_list=tmp2.find("em").text()
         price_sale=tmp2.find("strong.price01 b").text()
+        #--電子書
+        tmp3=doc.find("#li_M201106_0_getEbkRitems_P00a400020119-0")
+        price_sale_ebook=tmp3.find(".price em").text() or ''
+        bookid_ebook=tmp3.find("a").attr("href") or ''
+        bookid_ebook=bookid_ebook.replace("https://www.books.com.tw/products/","")
         #=========================
         #封面
         url_cover=doc.find(".cover_img > img.cover").attr("src")
@@ -146,7 +151,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
     else:
         #
         cols=['isbn','title','author','publisher',
-              'pub_dt','lang','price_list','price_sale',
+              'pub_dt','lang','price_list','price_sale','price_sale_ebook','bookid_ebook',
               'url_cover']
         #
         for col in cols:

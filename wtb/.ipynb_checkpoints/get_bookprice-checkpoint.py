@@ -31,7 +31,7 @@ import csv
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
-from mainsite.models import Bookinfo,Bookprice,Store
+from mainsite.models import Bookinfo,Bookprice,Store,Post
 
 #________________________________________________
 
@@ -156,8 +156,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         else:    
             bookprice['err']=error[:50]
     else:
-        cols=['price_sale','url_book',
-              'price_sale_ebook','url_ebook']
+        cols=['price_sale','url_book','price_sale_ebook','url_ebook']
         #
         for col in cols:         
             bookprice[col]=locals().get(col,'')
