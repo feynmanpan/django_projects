@@ -6,7 +6,7 @@ from django.http import HttpResponse, Http404
 from django.urls import reverse
 from datetime import datetime
 from time import sleep, time
-from .models import Store,Post
+from .models import Bookinfo,Bookprice,Store,Post
 from get_bookinfo import get_bookinfo
 from get_bookprice import get_bookprice
 from threading import Thread
@@ -31,25 +31,24 @@ def wtb_book(request,bookid='0010829817'):
     if not bookinfo['err']:
         book['info']=bookinfo
         #
-        #用多執行緒____________________________        
-        stores=['elite','ks']
-        n=len(stores)
-        bookids=[bookid]*n
-        isbns=['']*n        
-        tryDBs=[True]*n
-        #
-        with ThreadPoolExecutor(max_workers=n) as executor:
-            for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs):
-                book['price'].append(bookprice)
-
-        #threads = []
-        #for store in stores:
-        #    thread = Thread(target=get_bookprice, args=(bookid,'',store,False))
-        #    threads.append(thread)
-        #    thread.start()
-        #for thread in threads:
-        #    thread.join()        
-        
+        bookprice_all=Bookprice.objects.filter(bookid=bookid)
+        if bookprice_all:
+            for bookprice in bookprice_all.values():
+                bookprice['tryDB'] =True
+                bookprice['fromDB']=True
+                bookprice['create']=None            
+                book['price'].append(bookprice) #取dict塞  
+        else:
+            #DB沒有就全部重抓       
+            stores  =['elite','ks']
+            n       =len(stores)
+            bookids =[bookid]*n
+            isbns   =['']*n        
+            tryDBs  =[False]*n
+            #用多執行緒____________________________
+            with ThreadPoolExecutor(max_workers=n) as executor:
+                for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs):
+                    book['price'].append(bookprice)            
     #
     end_time = time()
     book['time']=f'{end_time-start_time:.5f}'

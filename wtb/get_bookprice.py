@@ -115,7 +115,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                          timeout=20)    
         r.encoding='utf8'
         #
-        doc=pq(r.text)    
+        doc=pq(r.text)
+        r.close()
         #________________例外收集________________________________                            
         #狀態碼400~599        
         if r.status_code != 200:

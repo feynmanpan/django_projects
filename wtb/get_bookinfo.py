@@ -73,6 +73,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         r.encoding='utf8'
         #
         doc=pq(r.text)
+        r.close()
         #________________例外收集________________________________                            
         #(0)狀態碼400~599        
         if r.status_code != 200:
