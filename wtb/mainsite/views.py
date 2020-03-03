@@ -29,9 +29,7 @@ def wtb_book(request,bookid='0010829817'):
     #
     bookinfo=get_bookinfo(bookid,tryDB=True)
     if not bookinfo['err']:
-        book={'info':bookinfo}
-        #book['elite']=get_bookprice(bookid=bookid,store='elite',tryDB=True)
-        #book['ks']=get_bookprice(bookid=bookid,store='ks',tryDB=True)  
+        book={'info':bookinfo,'price':[]} 
         #
         #用多執行緒____________________________        
         stores=['elite','ks']
@@ -40,7 +38,6 @@ def wtb_book(request,bookid='0010829817'):
         isbns=['']*n        
         tryDBs=[False]*n
         #
-        book['price']=[]
         with ThreadPoolExecutor(max_workers=n) as executor:
             for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs):
                 book['price'].append(bookprice)
