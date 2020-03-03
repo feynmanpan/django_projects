@@ -2,6 +2,7 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
+from django.utils import timezone
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
 from datetime import datetime
@@ -24,35 +25,41 @@ def wtb_index(request):
 # 處理單書頁
 def wtb_book(request,bookid='0010829817'):
     start_time = time()
+    #
     jsonstr=""
-    book={'info':'','price':[],'time':'0'} 
+    book={'info':None,'price':None,'time':None} 
+    #
+    stores  =['elite','ks']
+    n       =len(stores)  
+    bookids =[bookid]*n
+    isbns   =['']*n        
+    tryDBs  =[False]*n    
     #
     bookinfo=get_bookinfo(bookid,tryDB=True)
+    #
     if not bookinfo['err']:
-        book['info']=bookinfo
-        #
-        bookprice_all=Bookprice.objects.filter(bookid=bookid)
-        if bookprice_all:
-            for bookprice in bookprice_all.values():
-                bookprice['tryDB'] =True
-                bookprice['fromDB']=True
-                bookprice['create']=None            
-                book['price'].append(bookprice) #取dict塞  
-        else:
-            #DB沒有就全部重抓       
-            stores  =['elite','ks']
-            n       =len(stores)
-            bookids =[bookid]*n
-            isbns   =['']*n        
-            tryDBs  =[False]*n
-            #用多執行緒____________________________
+        #(1)檢查更新時間，超過一天就全部重爬
+        delta=timezone.now().date()-bookinfo['create_dt'].date()
+        if delta.days!=0:
+            #更新bookinfo
+            bookinfo=get_bookinfo(bookid,tryDB=False)
+            #更新bookprice_用多執行緒
             with ThreadPoolExecutor(max_workers=n) as executor:
-                for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs):
-                    book['price'].append(bookprice)            
+                bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs)]
+        else:
+            bookprice_all=Bookprice.objects.filter(bookid=bookid)
+            #筆數不對也重爬
+            if bookprice_all.count()<n:
+                with ThreadPoolExecutor(max_workers=n) as executor:
+                    bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs)]
+        #(2)整理    
+        book['info']=bookinfo
+        book['price']=bookprice_all
+        #
     #
     end_time = time()
     book['time']=f'{end_time-start_time:.5f}'
-    #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示
+    #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示 
     jsonstr=json.dumps(book,default=str,ensure_ascii=False)
     return HttpResponse(jsonstr)
 

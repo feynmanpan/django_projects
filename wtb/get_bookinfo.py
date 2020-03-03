@@ -29,7 +29,7 @@ import csv
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
-from mainsite.models import Bookinfo,Store,Post
+from mainsite.models import Bookinfo,Bookprice,Store
 #________________________________________________
 
 def get_bookinfo(bookid:str,tryDB=True)->dict:
@@ -151,13 +151,6 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #
         for col in cols:
             bookinfo[col]=locals().get(col,'')
-        #bookinfo['isbn']=isbn
-        #bookinfo['title']=title
-        #bookinfo['author']=author
-        #bookinfo['publisher']=publisher
-        #bookinfo['pub_dt']=pub_dt
-        #bookinfo['lang']=lang
-        #bookinfo['url_cover']=url_cover  
         
     finally:
         #(1)爬成功或失敗，都存DB
