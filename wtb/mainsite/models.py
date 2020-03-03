@@ -41,16 +41,18 @@ class Bookinfo(models.Model):
         ordering = ('bookid',)  
 
 class Bookprice(models.Model):
-    err       = models.CharField(default='', blank=True, null=False, max_length=50)
-	#DB存的欄位是bookid_id
-    bookid    = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
-    isbn      = models.CharField(default='', blank=True, null=False, max_length=13)
+    err              = models.CharField(default='', blank=True, null=False, max_length=50)
+    #DB存的欄位是bookid_id 
+    bookid           = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
+    isbn             = models.CharField(default='', blank=True, null=False, max_length=13)
     #
-    store     = models.CharField(default='', blank=True, null=False, max_length=10)
-    price_sale= models.CharField(default='', blank=True, null=False, max_length=10)
-
+    store            = models.CharField(default='', blank=True, null=False, max_length=10)
+    price_sale       = models.CharField(default='', blank=True, null=False, max_length=10)
+    price_sale_ebook = models.CharField(default='', blank=True, null=False, max_length=10)
+    url_book         = models.URLField( default='', blank=True, null=False)
+    url_ebook        = models.URLField( default='', blank=True, null=False)
     #
-    create_dt = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  
+    create_dt        = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  
 
     #    
     def __str__(self):

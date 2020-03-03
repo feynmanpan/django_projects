@@ -5,8 +5,12 @@ from django.http import HttpResponse, Http404
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
 from datetime import datetime
+from time import sleep, time
 from .models import Store,Post
 from get_bookinfo import get_bookinfo
+from get_bookprice import get_bookprice
+from threading import Thread
+from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor 
 import json
 
 # 處理首頁 
@@ -19,10 +23,41 @@ def wtb_index(request):
 
 # 處理單書頁
 def wtb_book(request,bookid='0010829817'):
-    bookinfo=get_bookinfo(bookid,tryDB=True)
-    #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示
-    jsonstr=json.dumps(bookinfo,default=str,ensure_ascii=False)
+    start_time = time()
+    jsonstr=""
+    book={'time':'0'}
     #
+    bookinfo=get_bookinfo(bookid,tryDB=True)
+    if not bookinfo['err']:
+        book={'info':bookinfo}
+        #book['elite']=get_bookprice(bookid=bookid,store='elite',tryDB=True)
+        #book['ks']=get_bookprice(bookid=bookid,store='ks',tryDB=True)  
+        #
+        #用多執行緒____________________________        
+        stores=['elite','ks']
+        n=len(stores)
+        bookids=[bookid]*n
+        isbns=['']*n        
+        tryDBs=[False]*n
+        #
+        book['price']=[]
+        with ThreadPoolExecutor(max_workers=n) as executor:
+            for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs):
+                book['price'].append(bookprice)
+
+        #threads = []
+        #for store in stores:
+        #    thread = Thread(target=get_bookprice, args=(bookid,'',store,False))
+        #    threads.append(thread)
+        #    thread.start()
+        #for thread in threads:
+        #    thread.join()        
+        
+    #
+    end_time = time()
+    book['time']=f'{end_time-start_time:.5f}'
+    #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示
+    jsonstr=json.dumps(book,default=str,ensure_ascii=False)
     return HttpResponse(jsonstr)
 
 

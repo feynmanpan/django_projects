@@ -69,7 +69,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
                          headers=UA,
                          #proxies=proxies,
                          #cookies=cookies,
-                         timeout=5)    
+                         timeout=20)    
         r.encoding='utf8'
         #
         doc=pq(r.text)
@@ -149,7 +149,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
               'url_cover']
         #
         for col in cols:
-            bookinfo[col]=locals()[col]
+            bookinfo[col]=locals().get(col,'')
         #bookinfo['isbn']=isbn
         #bookinfo['title']=title
         #bookinfo['author']=author
