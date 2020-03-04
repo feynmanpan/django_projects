@@ -1,7 +1,7 @@
-dict_stores={
-        'elite':{'search':"http://www.eslite.com/Search_BW.aspx?searchType=&query=",
-                 'pq_count':"#ctl00_ContentPlaceHolder1_lbTotalResultCount",
-                 'pq_pricesale':".summary .price_sale font",
-                 'pq_urlbook':".box_list td.name a[title]"
-                }
+url_qs={
+        'elite':"http://www.eslite.com/Search_BW.aspx?searchType=&query=",
+        'ks':"https://www.kingstone.com.tw/search/search?q=",
+        #'momo':"https://www.momoshop.com.tw/search/searchShop.jsp?keyword="
+        #momo用手機板查
+        'momo':"https://m.momoshop.com.tw/search.momo?searchKeyword="
     }

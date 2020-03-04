@@ -18,7 +18,12 @@ from threading import Thread
 from fake_useragent import UserAgent
 from fake_headers import Headers
 from pyquery import PyQuery as pq
-#from dict_stores import dict_stores
+#
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 #
 import requests
 import pandas as pd
@@ -32,6 +37,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
 from mainsite.models import Bookinfo,Bookprice,Store
+from dict_stores import url_qs
 
 #________________________________________________
 
@@ -39,11 +45,15 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
     
     bookprice={'err':'','bookid':bookid,'isbn':isbn,'store':store}
     tw = pytz.timezone('Asia/Taipei')
-    url_qs={
-        'elite':"http://www.eslite.com/Search_BW.aspx?searchType=&query=",
-        'ks':"https://www.kingstone.com.tw/search/search?q="
-    }
-    #global dict_stores
+    #用匯入的
+    #url_qs={
+    #    'elite':"http://www.eslite.com/Search_BW.aspx?searchType=&query=",
+    #    'ks':"https://www.kingstone.com.tw/search/search?q=",
+        #'momo':"https://www.momoshop.com.tw/search/searchShop.jsp?keyword="
+        #momo用手機板查
+    #    'momo':"https://m.momoshop.com.tw/search.momo?searchKeyword="
+    #}
+    
     
     #1.確認====================================
     #(0)一定要指定店家
@@ -97,6 +107,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         
     #3.開始抓==================================== 
     #根據store抓不同搜尋頁面
+    #isbn='9789571380041' #9789571380049 #9789571380041AAA
     url_q=url_qs[store]+isbn
     #print(url_q)
     #
@@ -147,6 +158,32 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             price_sale_ebook=doc.find("div.buymixbox:Contains('電子書')>span:Contains('特價')>b").text() or ''
             tmp=doc.find("div.buymixbox:Contains('電子書')").parent().find(".pdnamebox>a").attr("href")
             url_ebook=(tmp and "https://www.kingstone.com.tw"+tmp) or ''
+        #(3)MOMO
+        if store=='momo':
+            #(1)先從手機板抓店內碼
+            goodsItemLi=doc.find("article.prdListArea li.goodsItemLi")
+            count=goodsItemLi.find("p.publishInfo").size().__str__()
+            #print(count)
+            if count!='1':
+                raise Exception('count='+count)
+            #
+            #抓店內碼
+            href=goodsItemLi.find("a[href*='goods']").attr("href")
+            m=re.search(r'i_code=(.+?)&',href)
+            i_code=m.group(1)
+            #(2)從商品頁面抓price
+            url_book="https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code="+i_code
+            r = requests.get(url_book, 
+                             headers=UA,
+                             #proxies=proxies,
+                             #cookies=cookies,
+                             timeout=20)    
+            r.encoding='utf8'
+            #
+            doc_prod=pq(r.text)            
+            #________________price收集________________________________
+            price_sale=doc_prod.find(".prdPrice .special span").text()
+            
             
             
     except Exception as e:

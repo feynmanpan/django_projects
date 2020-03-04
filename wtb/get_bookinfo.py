@@ -134,6 +134,8 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         bookid_ebook=tmp3.find("a").attr("href") or ''
         bookid_ebook=bookid_ebook.replace("https://www.books.com.tw/products/","")
         #=========================
+        #規格
+        spec=doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").text().replace(" ","")
         #封面
         url_cover=doc.find(".cover_img > img.cover").attr("src")
 
@@ -152,7 +154,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #
         cols=['isbn','title','author','publisher',
               'pub_dt','lang','price_list','price_sale','price_sale_ebook','bookid_ebook',
-              'url_cover']
+              'spec','url_cover']
         #
         for col in cols:
             bookinfo[col]=locals().get(col,'')

@@ -7,9 +7,12 @@ from django.utils import timezone
 from django.urls import reverse
 from datetime import datetime
 from time import sleep, time
+#
 from .models import Bookinfo,Bookprice,Store,Post
 from get_bookinfo import get_bookinfo
 from get_bookprice import get_bookprice
+from dict_stores import url_qs
+#
 from threading import Thread
 from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor 
 import json
@@ -29,7 +32,7 @@ def wtb_book(request,bookid='0010829817'):
     jsonstr=""
     book={'info':None,'price':None,'time':None} 
     #
-    stores  =['elite','ks']
+    stores  =list(url_qs.keys())#['elite','ks']
     n       =len(stores)  
     bookids =[bookid]*n
     isbns   =['']*n        

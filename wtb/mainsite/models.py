@@ -33,6 +33,7 @@ class Bookinfo(models.Model):
     price_sale_ebook= models.CharField(default='', blank=True, null=False, max_length=10)
     bookid_ebook    = models.CharField(default='', blank=True, null=False, max_length=15) 
     #
+    spec      = models.CharField(default='', blank=True, null=False, max_length=100)
     url_cover = models.URLField( default='', blank=True, null=False)
     #
     create_dt = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  
