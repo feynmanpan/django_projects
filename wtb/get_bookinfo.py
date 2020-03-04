@@ -135,7 +135,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         bookid_ebook=bookid_ebook.replace("https://www.books.com.tw/products/","")
         #=========================
         #規格
-        spec=doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").text().replace(" ","")
+        spec=doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").text().replace(" ","").replace("規格：","")
         #封面
         url_cover=doc.find(".cover_img > img.cover").attr("src")
 
