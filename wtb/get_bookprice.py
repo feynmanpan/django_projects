@@ -180,7 +180,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                              timeout=20)    
             r.encoding='utf8'
             #
-            doc_prod=pq(r.text)            
+            doc_prod=pq(r.text)  
+            r.close()
             #________________price收集________________________________
             price_sale=doc_prod.find(".prdPrice .special span").text()
             
