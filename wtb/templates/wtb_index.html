@@ -227,13 +227,13 @@
 					const u = i / (numBirds - 1);
 					const mesh = orig.clone();
 					mesh.position.set(
-						rand(-6000, minMax*5),
+						rand(-8000, minMax*5),
 						rand(-100,100)+500,//(u * 2 - 1) * 200,
 						//(minMax * 2 * i * 1.7) % (minMax * 2) - minMax / 2,
 						-3000,
 					);
 					mesh.rotation.x=0;
-					mesh.rotation.y=1;
+					mesh.rotation.y=Math.PI/2;//鳥頭朝+x
 					mesh.rotation.z=0;
 					//
 					scene.add(mesh);
