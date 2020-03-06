@@ -146,42 +146,45 @@
 			//scene.add( sphere ); 
 			
 			//logo處理=================================
-			var xo=-15;
-			var yo=20;
-			var zo=0;
-			var Dx=10;
+			var xo=-16;
+			var yo=23;			
+			if (window.matchMedia("(max-width: 992px)").matches) {
+			  var zo=3;
+			} else {
+			  var zo=20;
+			}						
+			var Dx=Math.abs(xo/2);
+			var Dy=5;
+			var Dz=3;
+			var grid=5;
             {% for store in stores %}
-				var n='{{forloop.counter0}}';
-                //var url='{{ store.url }}';
-				var this['url_'+n]='{{ store.url }}';
-				//var title='{{ store.name }}';
-				var this['title_'+n]='{{ store.url }}';
-				var logo_src='{{ store.url_href }}';
 				//var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png");
 				var logo_loader = new THREE.TextureLoader();
-				logo_loader.load(logo_src, function ( logo_texture ) {
-					var logo_material = new THREE.MeshBasicMaterial( { map: logo_texture } );
-					var w=logo_texture.image.width/50;
-					var h=logo_texture.image.height/50;
+				logo_loader.load('{{ store.url_href }}', function ( logo_texture ) {
+					var logo_material = new THREE.MeshBasicMaterial( { map: logo_texture,
+					                                                   side: THREE.DoubleSide,
+																	   wireframe: false 
+																   } );
+					var w=logo_texture.image.width/40;
+					var h=logo_texture.image.height/40;
 					//
 					var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
 					var logo=new THREE.Mesh(logo_geometry, logo_material);
 					//
-					logo.position.x=xo+n;//+n*Dx;
-					alert(xo+"_"+n);
-					logo.position.y=yo;
-					logo.position.z=zo;					
+					logo.position.x=xo+({{forloop.counter0}}%grid)*Dx;					
+					logo.position.y=yo-(Math.floor({{forloop.counter0}}/grid))*Dy;
+					logo.position.z=zo-({{forloop.counter0}}%2)*Dz;					
 					//
 					scene.add(logo); 
 					//事件綁定
 					var domEvents = new THREEx.DomEvents(camera, renderer.domElement);
 					//點擊
 					domEvents.addEventListener(logo, 'click', function(e){
-						window.open(url, '_blank');						  
+						window.open('{{ store.url }}', '_blank');						  
 					}, false);
 					//mouseover
 					domEvents.addEventListener(logo, 'mouseover', function(e){
-						$("#three_container").css('cursor','pointer').attr("title",title);						  
+						$("#three_container").css('cursor','pointer').attr("title",'前往{{ store.name }}');						  
 					}, false);	
 					//mouseout
 					domEvents.addEventListener(logo, 'mouseout', function(e){
@@ -191,10 +194,6 @@
 				});//logo_loader
 				
             {% endfor %}			
-			
-			
-
-			
 			
 
 			controls = new OrbitControls( camera, renderer.domElement );
