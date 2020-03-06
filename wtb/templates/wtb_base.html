@@ -5,11 +5,13 @@ wtb_base.html
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang=zh-TW>
 <head>
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, min-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no ,shrink-to-fit=no" />
-
+	<meta property="og:title" content="嘩！找書" ></meta>
+	<meta property="og:image" content='{% static "images/favicon.png" %}?v=2' ></meta>	
+	<meta property="og:description" content="專業找書比價" ></meta>	
 
     <title>
         {% block title %} {% endblock %}
