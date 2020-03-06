@@ -228,9 +228,9 @@
 					const mesh = orig.clone();
 					mesh.position.set(
 						rand(-8000, minMax*5),
-						rand(-100,100)+500,//(u * 2 - 1) * 200,
+						500+rand(-100,100),//(u * 2 - 1) * 200,
 						//(minMax * 2 * i * 1.7) % (minMax * 2) - minMax / 2,
-						-3000,
+						-3000+rand(-100,100),
 					);
 					mesh.rotation.x=0;
 					mesh.rotation.y=Math.PI/2;//鳥頭朝+x
