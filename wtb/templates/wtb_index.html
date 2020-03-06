@@ -25,7 +25,7 @@
 		var camera, scene, renderer, light;
 		var controls, water, sphere,sky,cubeCamera,parameters;
 		//
-		const numBirds = 50;
+		const numBirds = 80;
 		const minMax = 700;			
 		const birds = [];
 		const birdSpeed = 100;
@@ -227,7 +227,7 @@
 					const u = i / (numBirds - 1);
 					const mesh = orig.clone();
 					mesh.position.set(
-						rand(-6000, minMax*7),
+						rand(-6000, minMax*5),
 						rand(-100,100)+500,//(u * 2 - 1) * 200,
 						//(minMax * 2 * i * 1.7) % (minMax * 2) - minMax / 2,
 						-3000,
@@ -322,7 +322,7 @@
 			for (const {mesh, mixer} of birds) {
 				mixer.update(deltaTime);
 				//沿x軸循環飛行
-				mesh.position.x = (mesh.position.x + minMax*10 + mixer.timeScale * birdSpeed * deltaTime) % (minMax * 20) - minMax*10;
+				mesh.position.x = (mesh.position.x + minMax*10 + mixer.timeScale * birdSpeed * deltaTime) % (minMax * 18) - minMax*10;
 			}			
 			/*
 			sphere.position.y = Math.sin( time ) * 20 + 5;
