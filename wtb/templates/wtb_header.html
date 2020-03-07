@@ -1,6 +1,6 @@
 <!--
 wtb_header.html
-每個html都要load static 
+每個html都要load static  
 -->
 {% load static %}
 <div id='header'>
@@ -13,9 +13,9 @@ wtb_header.html
         </span>
     </div>
     <!-- --> 
-    <div id='header_kwarea'>                    
+    <form id='header_kwarea' action='/search' method='GET' accept-charset="utf-8">     
         <input autofocus id='kw_input' class='nooutline' type='text' name='kw' placeholder='輸入書籍關鍵字，替您蒐集比價'/>
         <button id='kw_submit' class='nooutline' type="submit" title='按下去找看看'/>
-    </div>    
+    </form>    
     
 </div>

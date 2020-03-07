@@ -79,7 +79,7 @@ body{
 
 #header_kwarea{
     display: inline-block;
-    height: auto;
+    height: 31px;
     width: 550px;
     vertical-align: middle;
     text-align: left;
@@ -99,6 +99,7 @@ body{
 }
 
 #kw_input{
+
     height: 30px;
     width: -webkit-calc(100% - 40px);
     width:    -moz-calc(100% - 40px);

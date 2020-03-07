@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from mainsite.views import wtb_index,wtb_book,homepage, homepage_1,homepage_2,showpost,showpost_1
+from mainsite.views import wtb_index,wtb_book,wtb_search,homepage, homepage_1,homepage_2,showpost,showpost_1
 
 
 test_patterns=[
@@ -26,6 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls), 
     path('', wtb_index),
     path('book/<str:bookid>/', wtb_book),
+    path('search/', wtb_search),
+    #
     path('index/', homepage),
     #path('index_1/', homepage_1,{'AAA':2345}),
     #path('index_1/', include(test_patterns)),
