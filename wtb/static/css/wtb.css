@@ -79,7 +79,7 @@ body{
 
 #header_kwarea{
     display: inline-block;
-    height: 31px;
+    height: 30px;
     width: 550px;
     vertical-align: middle;
     text-align: left;
@@ -99,17 +99,20 @@ body{
 }
 
 #kw_input{
-
+    font-size: 15px;
+	line-height:30px;
     height: 30px;
     width: -webkit-calc(100% - 40px);
     width:    -moz-calc(100% - 40px);
     width:         calc(100% - 40px);
     padding:0px;
-    /*vertical-align: bottom;*/
+    vertical-align: top;
     background: rgba(0,0,0,0);
-    font-size: 16px;
+	
     border:0px solid red;
 }
+
+
 
 #kw_submit{
     float:right;
@@ -120,7 +123,7 @@ body{
     background-position: center;
     background-size: 20px 20px;    
     
-    /*vertical-align:middle;*/
+    vertical-align:top;
     height: 30px;
     width : 30px;
     
@@ -182,10 +185,16 @@ img.store_logo:hover{
     #tail{
         width:100%;
     }
+	#header{
+		padding-top:0px;
+	}
     #header_kwarea{
         width:85%;
         margin-left:0px;
     }
+	#kw_input{
+		line-height:normal;
+	}	
     #body_store{
         width:100%;
     }
