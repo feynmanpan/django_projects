@@ -27,6 +27,7 @@ body{
     font-size:15px;
     text-align:center;
     color:#8b8a8a;
+	margin-bottom:5px;
 }
 
 /*頁首搜尋*/ 
@@ -176,21 +177,31 @@ img.store_logo{
 }
 
 img.store_logo:hover{
-    /*border:1px solid grey; */  
+    /*border:1px solid grey; */    
     box-shadow: 0 1px 6px 0 rgba(32,33,36,1);    
     border-radius: 10px;
 }
 
 @media screen and (max-width: 992px) {
-    #tail{
-        width:100%;
-    }
+
+	#tail p{
+		margin-bottom:0px;
+		line-height:17px;
+		font-size:11px;
+	}	
 	#header{
 		padding-top:0px;
+	}
+	#header_navarea {
+		margin-top:-9px;
+	}
+	#header_navarea	span{
+		font-size:15px;
 	}
     #header_kwarea{
         width:85%;
         margin-left:0px;
+		margin-top: -5px;
     }
 	#kw_input{
 		line-height:normal;
