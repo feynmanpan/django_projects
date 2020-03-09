@@ -9,11 +9,11 @@ wtb_base.html
 <head>
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, min-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no ,shrink-to-fit=no" />
-	<meta property="og:title" content="嘩！找書" ></meta>
-	<meta property="og:image" content="http://wtb.nctu.me{% static 'images/favicon.png' %}"/>
-	<meta property="og:image:width" content="348">
-	<meta property="og:image:height" content="348">	
-	<meta property="og:description" content="專業找書比價"></meta>	
+    <meta property="og:title" content="嘩！找書" ></meta>
+    <meta property="og:image" content="http://wtb.nctu.me{% static 'images/favicon.png' %}"/>
+    <meta property="og:image:width" content="348">
+    <meta property="og:image:height" content="348">    
+    <meta property="og:description" content="專業找書比價"></meta>    
 
     <title>
         {% block title %} {% endblock %}
@@ -24,10 +24,10 @@ wtb_base.html
     </script>
     <link rel="icon" href='{% static "images/favicon.ico" %}' type="image/x-icon" />
     <link rel="stylesheet" media="all" href='{% static "css/wtb.css" %}?v=2'><!--v放裡面會被encode-->
-	<!--Three-->
-	{% block three %} {% endblock %}
-	
-	    
+    <!--Three-->
+    {% block three %} {% endblock %}
+    
+        
     <!--bootstrape 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
@@ -42,7 +42,7 @@ wtb_base.html
     {% include 'wtb_header.html' %}
 
     {% block content %} {% endblock %}
-	
+    
     
     {% include 'wtb_tail.html' %}
 </body>
