@@ -163,8 +163,9 @@
             var Dz=3;
             var grid=5;
 
-			//var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png");
+			//var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png"); 
 			var logo_loader = new THREE.TextureLoader();
+			var domEvents = new THREEx.DomEvents(camera, renderer.domElement);			
             {% for store in stores %}
                 logo_loader.load('{{ store.url_href }}', function ( logo_texture ) {
                     var logo_material = new THREE.MeshBasicMaterial( { map: logo_texture,
@@ -182,8 +183,7 @@
                     logo.position.z=zo-({{forloop.counter0}}%2)*Dz;                    
                     //
                     scene.add(logo); 
-                    //事件綁定
-                    var domEvents = new THREEx.DomEvents(camera, renderer.domElement);
+					//事件綁定
                     //點擊
                     domEvents.addEventListener(logo, 'click', function(e){
                         window.open('{{ store.url }}', '_blank');                          
