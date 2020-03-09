@@ -162,9 +162,10 @@
             var Dy=5;
             var Dz=3;
             var grid=5;
+
+			//var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png");
+			var logo_loader = new THREE.TextureLoader();
             {% for store in stores %}
-                //var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png");
-                var logo_loader = new THREE.TextureLoader();
                 logo_loader.load('{{ store.url_href }}', function ( logo_texture ) {
                     var logo_material = new THREE.MeshBasicMaterial( { map: logo_texture,
                                                                        side: THREE.DoubleSide,
