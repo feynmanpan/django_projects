@@ -150,7 +150,7 @@
             //不加球
             //scene.add( sphere ); 
             
-            //(1)logo處理=================================
+            //(1)logo處理================================= 
             var xo=-16;
             var yo=23;            
             if (window.matchMedia("(max-width: 992px)").matches) {
@@ -163,15 +163,16 @@
             var Dz=3;
             var grid=5;
 
-			//var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png"); 
+			//var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png");
 			var logo_loader = new THREE.TextureLoader();
-			var domEvents = new THREEx.DomEvents(camera, renderer.domElement);			
+			var domEvents = new THREEx.DomEvents(camera, renderer.domElement);	
             {% for store in stores %}
                 logo_loader.load('{{ store.url_href }}', function ( logo_texture ) {
-                    var logo_material = new THREE.MeshBasicMaterial( { map: logo_texture,
-                                                                       side: THREE.DoubleSide,
-                                                                       wireframe: false 
-                                                                   } );
+                    var logo_material = new THREE.MeshBasicMaterial({ 
+					                                               map: logo_texture,
+                                                                   side: THREE.DoubleSide,
+                                                                   wireframe: false 
+                                                                });
                     var w=logo_texture.image.width/40;
                     var h=logo_texture.image.height/40;
                     //
@@ -183,7 +184,7 @@
                     logo.position.z=zo-({{forloop.counter0}}%2)*Dz;                    
                     //
                     scene.add(logo); 
-					//事件綁定
+					//事件綁定____________________ 
                     //點擊
                     domEvents.addEventListener(logo, 'click', function(e){
                         window.open('{{ store.url }}', '_blank');                          
