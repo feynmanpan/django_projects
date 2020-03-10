@@ -222,14 +222,14 @@
                 const orig = gltf.scene.children[0];
                 orig.castShadow = true;
                 orig.receiveShadow = true;
-    //
+                //
                 for (let i = 0; i < numBirds; ++i) {
                     const u = i / (numBirds - 1);
                     const mesh = orig.clone();
                     mesh.position.set(
                         rand(-8000, minMax*5),
                         500+rand(-100,100),//(u * 2 - 1) * 200,
-            -3000+rand(-100,100),//(minMax * 2 * i * 1.7) % (minMax * 2) - minMax / 2,
+                        -3000+rand(-100,100),//(minMax * 2 * i * 1.7) % (minMax * 2) - minMax / 2,
                     );
                     mesh.rotation.x=0;
                     mesh.rotation.y=Math.PI/2;//鳥頭朝+x
@@ -238,12 +238,12 @@
                     scene.add(mesh);
                     mesh.material = mesh.material.clone();
                     mesh.material.color.setHSL(rand(), 1, 0.8);
-        //
+                    //
                     const mixer = new THREE.AnimationMixer(mesh);
                     mixer.clipAction(gltf.animations[0]).setDuration(1).play();
                     mixer.update(rand(10));
                     mixer.timeScale = rand(0.9, 1.1);
-        //
+                    //
                     birds.push({
                         mixer,
                         mesh,

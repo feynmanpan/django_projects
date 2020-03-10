@@ -183,9 +183,39 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             doc_prod=pq(r.text)  
             r.close()
             #________________price收集________________________________
-            price_sale=doc_prod.find(".prdPrice .special span").text()
-            
-            
+            price_sale=doc_prod.find(".prdPrice .special span").text()            
+        #(4)TAAZE
+        if store=='taaze':
+            price_sale=''
+            url_book=''
+            ms=doc.find("div.media[rel]")   
+            if ms.size()==0:
+                raise Exception('count=0')            
+            #________________price收集________________________________
+            for m in ms:
+                #子店內碼
+                media=pq(m)
+                pid=media.attr('rel')                
+                #(a)電子書
+                if pid[:2]=='14':
+                    price_sale_ebook=media.attr("data-saleprice_28")
+                    url_ebook=media.find(".titleMain").find("a").attr("href")
+                    continue
+                #(b)第三碼判斷
+                #--紙本新書    
+                if pid[2]=='1' and pid[:2]!='14':
+                    if not price_sale and not url_book:
+                        price_sale=media.attr("data-saleprice_28")
+                        url_book=media.find(".titleMain").find("a").attr("href")
+                    #
+                    continue                    
+                #--回頭或二手    
+                if pid[2] in ['2','3'] and pid[:2]!='14':
+                    if media.attr('data-qty_28')!='undefined' and media.attr("data-min_sale_price")!='nodata':
+                        price_sale=media.attr("data-min_sale_price")#要用小寫
+                        url_book=media.find(".titleMain").find("a").attr("href") 
+                    #
+                    continue            
             
     except Exception as e:
         error=str(e)
@@ -213,4 +243,4 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         #回傳顯示CST台北時間
         bookprice['create_dt']=bookprice['create_dt'].astimezone(tw)
         #
-        return bookprice    
+        return bookprice
