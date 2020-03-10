@@ -7,6 +7,14 @@
 
 {% block title %} 嘩！找書 {% endblock %}
 {% block js %} 
+	<script>
+		const bookprices=[
+			{% for bookprice in book.price %}
+				['{{ bookprice.store }}','{{bookprice.price_sale}}'],
+			{% endfor %}
+		];
+
+	</script>
 	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
 {% endblock %}
 
@@ -16,20 +24,22 @@
 			<img id='cover' src='{{book.info.url_cover}}'>
 			<div id='info_list'>
 				<h4>{{book.info.title}}</h4>
-				<p>{{book.info.author}}</p>
-				<p>出版社：{{book.info.publisher}}</p>
-				<p>出版日期：{{book.info.pub_dt}}</p>
-				<p>語言：{{book.info.lang}}</p>
-				<p>定價：<span style='color:red'>{{book.info.price_list}}</span> 元</p>
-				<p>規格：{{book.info.spec}}</p>
-				<p>ISBN：{{book.info.isbn}}</p>
-				
+				<div id='info_listp'>
+					<p>{{book.info.author}}</p>
+					<p>出版社：{{book.info.publisher}}</p>
+					<p>出版日期：{{book.info.pub_dt}}</p>
+					<p>語言：{{book.info.lang}}</p>
+					<p>定價：<span id="price_list" style='color:red'>{{book.info.price_list}}</span> 元</p>
+					<p>規格：{{book.info.spec}}</p>
+					<p>ISBN：{{book.info.isbn}}</p>
+				</div>
 			</div>
 		</div>
 		
 		
 		<div id='price'>
 			{{jsonstr}}
+			<svg id='bar'/>
 		</div>				
 	</div>	
 {% endblock %}
