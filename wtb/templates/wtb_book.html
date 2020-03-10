@@ -13,7 +13,10 @@
 				['{{ bookprice.store }}','{{bookprice.price_sale}}'],
 			{% endfor %}
 		];
-
+		const stores=[];
+		for (var i = 0; i < bookprices.length; i++) {
+		  stores.push(bookprices[i][0]);
+		} 
 	</script>
 	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
 {% endblock %}

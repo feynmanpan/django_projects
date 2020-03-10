@@ -19,11 +19,11 @@ function bar(){
 	svg.attr("width", TW)
 	   .attr("height", TH);
 	const chart = svg.append('g').attr('transform', 'translate('+margin+','+margin+')');
-	//
+	//以定價為最高點
 	const price_list=parseInt($("#price_list").text());
 	const xScale = d3.scaleBand()
 					 .range([0,width])
-					 .domain(['taa', '222','2222##']);	
+					 .domain(stores);	
 	const yScale = d3.scaleLinear()
 					 .range([height, 0])
 					 .domain([0, price_list]);	
