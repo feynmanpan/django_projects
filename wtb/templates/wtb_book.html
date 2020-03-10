@@ -8,15 +8,19 @@
 {% block title %} 嘩！找書 {% endblock %}
 {% block js %} 
 	<script>
+		const stores=[];
+		{% for store in stores %}
+			stores.push('{{store}}');
+		{% endfor %}
+		//	
 		const bookprices=[
 			{% for bookprice in book.price %}
 				['{{ bookprice.store }}','{{bookprice.price_sale}}'],
 			{% endfor %}
 		];
-		const stores=[];
-		for (var i = 0; i < bookprices.length; i++) {
-		  stores.push(bookprices[i][0]);
-		} 
+		//
+
+
 	</script>
 	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
 {% endblock %}

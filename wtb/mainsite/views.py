@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.urls import reverse
 from datetime import datetime
 from time import sleep, time
+import pytz
 #
 from .models import Bookinfo,Bookprice,Store,Post
 from get_bookinfo import get_bookinfo
@@ -43,7 +44,8 @@ def wtb_book(request,bookid='0010829817'):
     #
     if not bookinfo['err']:
         #(1)檢查更新時間，超過一天就全部重爬
-        delta=timezone.now().date()-bookinfo['create_dt'].date()
+        tw=pytz.timezone('Asia/Taipei')
+        delta=timezone.now().astimezone(tw).date()-bookinfo['create_dt'].date()
         if delta.days!=0:
             #更新bookinfo
             bookinfo=get_bookinfo(bookid,tryDB=False)
@@ -59,6 +61,7 @@ def wtb_book(request,bookid='0010829817'):
         #(2)整理    
         book['info']=bookinfo
         book['price']=bookprice_all
+        #book['delta']=delta.days
         #
     #
     end_time = time()
