@@ -104,16 +104,16 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         author=''
         for au in authors:
             if '追蹤作者' in pq(au).parent().text():
-                author+='作者_'+pq(au).text()+"/"
+                author+='作者：'+pq(au).text()+"/"
                 continue
             if '原文作者' in pq(au).parent().text():
-                author+='原文作者_'+pq(au).text()+"/"                
+                author+='原文作者：'+pq(au).text()+"/"                
                 continue
             if '譯者' in pq(au).parent().text():
-                author+='譯者_'+pq(au).text()+"/"                
+                author+='譯者：'+pq(au).text()+"/"                
                 continue
             if '編者' in pq(au).parent().text():
-                author+='編者_'+pq(au).text()+"/"                
+                author+='編者：'+pq(au).text()+"/"                
                 continue                
         #
         author=author.rstrip('/')

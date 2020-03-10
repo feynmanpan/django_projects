@@ -1,0 +1,35 @@
+{% extends 'wtb_base.html' %}
+
+
+{% load static %}
+{% load my_replace %}
+
+
+{% block title %} 嘩！找書 {% endblock %}
+
+
+{% block content %} 
+	<div id='body_book' class='body' align='' style="">
+		<div id='info'>
+			<img id='cover' src='{{book.info.url_cover}}'>
+			<div id='info_list'>
+				<h4>{{book.info.title}}</h4>
+				<p>{{book.info.author}}</p>
+				<p>出版社：{{book.info.publisher}}</p>
+				<p>出版日期：{{book.info.pub_dt}}</p>
+				<p>語言：{{book.info.lang}}</p>
+				<p>定價：<span style='color:red'>{{book.info.price_list}}</span> 元</p>
+				<p>規格：{{book.info.spec}}</p>
+				<p>ISBN：{{book.info.isbn}}</p>
+				
+			</div>
+		</div>
+		
+		
+		<div id='price'>
+			{{jsonstr}}
+		</div>				
+	</div>	
+{% endblock %}
+
+

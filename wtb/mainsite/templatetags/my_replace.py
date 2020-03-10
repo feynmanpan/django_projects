@@ -4,6 +4,12 @@ register = template.Library()
 
 #register.filter('mrp', filter_my_replace)
 
+@register.filter
+def author(authorstr):
+    authorstr=authorstr.replace("_","：")
+    return authorstr
+
+
 @register.filter(name='my_filter1')
 def filter_my_replace(value):
     """Removes all values of arg from the given string""" 
