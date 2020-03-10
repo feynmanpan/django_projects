@@ -163,7 +163,6 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             #(1)先從手機板抓店內碼
             goodsItemLi=doc.find("article.prdListArea li.goodsItemLi")
             count=goodsItemLi.find("p.publishInfo").size().__str__()
-            #print(count)
             if count!='1':
                 raise Exception('count='+count)
             #

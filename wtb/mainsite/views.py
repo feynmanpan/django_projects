@@ -39,6 +39,7 @@ def wtb_book(request,bookid='0010829817'):
     tryDBs  =[False]*n    
     #
     bookinfo=get_bookinfo(bookid,tryDB=True)
+    middle_time=time()
     #
     if not bookinfo['err']:
         #(1)檢查更新時間，超過一天就全部重爬
@@ -61,7 +62,7 @@ def wtb_book(request,bookid='0010829817'):
         #
     #
     end_time = time()
-    book['time']=f'{end_time-start_time:.5f}'
+    book['time']=f'{end_time-start_time:.5f}_{middle_time-start_time:.5f}'
     #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示 
     jsonstr=json.dumps(book,default=str,ensure_ascii=False)
     return HttpResponse(jsonstr)
