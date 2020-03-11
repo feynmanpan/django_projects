@@ -9,14 +9,18 @@
 {% block js %} 
 	<script>
 		//店家名稱及代碼
-		const stores_name=['博客來'];
-		{% for name in names %}
-			stores_name.push('{{name}}');
-		{% endfor %}
-		const stores=['books'];
-		{% for store in stores %}
-			stores.push('{{store}}');
-		{% endfor %}		
+		const stores_name=['博客來',
+			{% for name in names %}
+				'{{name}}',
+			{% endfor %}		
+		];
+
+		const stores=['books',
+			{% for store in stores %}
+				'{{store}}',
+			{% endfor %}		
+		];
+
 		//整理定價及售價
 		const price_list={{book.info.price_list}};
 		const bookprices=[
@@ -27,20 +31,18 @@
 				'price_sale_ebook':'{{book.info.price_sale_ebook}}',
 				'url_book'        :'https://www.books.com.tw/products/{{book.info.bookid}}',
 				'url_ebook'       :'{{book.info.bookid_ebook}}'!=''?'https://www.books.com.tw/products/{{book.info.bookid_ebook}}':''		
-			}
-		];
-		{% for bookprice in book.price %}
-			bookprices.push(
+			},
+			{% for bookprice in book.price %}				
 				{
 					'store_name'      :stores_name[stores.indexOf('{{bookprice.store}}')],
 					'store'           :'{{bookprice.store}}',
 					'price_sale'      :'{{bookprice.price_sale}}',
 					'price_sale_ebook':'{{bookprice.price_sale_ebook}}',
-					'url_book'        :'{{bookprice.url_book}}',
-					'url_ebook'       :'{{bookprice.url_ebook}}'			
-				}
-			);
-		{% endfor %}
+					'url_book'        :'{{bookprice.url_book}}'.replace(/&amp;/g, '&'),//ORM出來會變$amp;
+					'url_ebook'       :'{{bookprice.url_ebook}}'.replace(/&amp;/g, '&')			
+				},				
+			{% endfor %}			
+		];
 		//alert(JSON.stringify(bookprices));
 		//
 		

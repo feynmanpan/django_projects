@@ -26,6 +26,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 #
 import requests
+import urllib.parse
 import pandas as pd
 import numpy as np
 import random
@@ -133,6 +134,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         if r.status_code != 200:
             raise Exception(r.status_code) 
         #________________各家price收集________________________________
+        #url_book=''
+        #price_sale_ebook='';
         #(1)誠品
         if store=='elite':
             count=doc.find("#ctl00_ContentPlaceHolder1_lbTotalResultCount").text()
@@ -141,7 +144,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             #
             #________________price收集________________________________
             price_sale=doc.find(".summary .price_sale font").text()
-            url_book=doc.find(".box_list td.name a[title]").attr("href")
+            url_book=doc.find(".box_list td.name a[title]").attr("href")            
         #(2)金石堂    
         if store=='ks':
             #count=doc.find(".searchResultTitle > span:nth-child(2)").text()
@@ -215,7 +218,9 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                         url_book=media.find(".titleMain").find("a").attr("href") 
                     #
                     continue            
-            
+        #在js處理&amp;
+        #url_book=urllib.parse.quote(url_book)
+        #price_sale_ebook=urllib.parse.quote(price_sale_ebook)
     except Exception as e:
         error=str(e)
         if 'timeout' in error:
