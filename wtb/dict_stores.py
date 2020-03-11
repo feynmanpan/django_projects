@@ -6,3 +6,5 @@ url_qs={
         'momo':"https://m.momoshop.com.tw/search.momo?searchKeyword=",
         'taaze':"https://www.taaze.tw/rwd_searchResult.html?keyType%5B%5D=0&keyword%5B%5D="
     }
+
+stores_name=['誠品','金石堂','momo','讀冊']

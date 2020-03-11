@@ -8,21 +8,44 @@
 {% block title %} 嘩！找書 {% endblock %}
 {% block js %} 
 	<script>
-		const stores=[];
+		//店家名稱及代碼
+		const stores_name=['博客來'];
+		{% for name in names %}
+			stores_name.push('{{name}}');
+		{% endfor %}
+		const stores=['books'];
 		{% for store in stores %}
 			stores.push('{{store}}');
-		{% endfor %}
-		//	
+		{% endfor %}		
+		//整理價錢	
 		const bookprices=[
-			{% for bookprice in book.price %}
-				['{{ bookprice.store }}','{{bookprice.price_sale}}'],
-			{% endfor %}
+			{
+				'store_name'      :stores_name[0],
+				'store'           :stores[0],
+				'price_sale'      :'{{book.info.price_sale}}',
+				'price_sale_ebook':'{{book.info.price_sale_ebook}}',
+				'url_book'        :'https://www.books.com.tw/products/{{book.info.bookid}}',
+				'url_ebook'       :'{{book.info.bookid_ebook}}'!=''?'https://www.books.com.tw/products/{{book.info.bookid_ebook}}':''		
+			}
 		];
+		{% for bookprice in book.price %}
+			bookprices.push(
+				{
+					'store_name'      :stores_name[stores.indexOf('{{bookprice.store}}')],
+					'store'           :'{{bookprice.store}}',
+					'price_sale'      :'{{bookprice.price_sale}}',
+					'price_sale_ebook':'{{bookprice.price_sale_ebook}}',
+					'url_book'        :'{{bookprice.url_book}}',
+					'url_ebook'       :'{{bookprice.url_ebook}}'			
+				}
+			);
+		{% endfor %}
+		//alert(JSON.stringify(bookprices));
 		//
-
+		
 
 	</script>
-	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
+	<script src='{% static "js/wtb_book.js" %}?v=2'></script>
 {% endblock %}
 
 {% block content %} 
@@ -38,7 +61,7 @@
 					<p>語言：{{book.info.lang}}</p>
 					<p>定價：<span id="price_list" style='color:red'>{{book.info.price_list}}</span> 元</p>
 					<p>規格：{{book.info.spec}}</p>
-					<p>ISBN：{{book.info.isbn}}</p>
+					<p data-bookid='{{book.info.bookid}}'>ISBN：{{book.info.isbn}}</p>
 				</div>
 			</div>
 		</div>
@@ -46,6 +69,7 @@
 		
 		<div id='price'>
 			{{jsonstr}}
+			<h4>紙本售價</h4>
 			<svg id='bar'/>
 		</div>				
 	</div>	

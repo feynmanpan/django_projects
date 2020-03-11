@@ -12,13 +12,13 @@ import pytz
 from .models import Bookinfo,Bookprice,Store,Post
 from get_bookinfo import get_bookinfo
 from get_bookprice import get_bookprice
-from dict_stores import url_qs
+from dict_stores import url_qs,stores_name
 #
 from threading import Thread
 from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor 
 import json
 
-# 處理首頁 
+# 處理首頁  
 def wtb_index(request):
     stores = Store.objects.all().order_by('code')
     stores_count=stores.count()
@@ -33,6 +33,7 @@ def wtb_book(request,bookid='0010829817'):
     jsonstr=""
     book={'info':None,'price':None,'time':None} 
     #
+    names   =stores_name
     stores  =list(url_qs.keys())#['elite','ks']
     n       =len(stores)  
     bookids =[bookid]*n
