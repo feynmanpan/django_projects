@@ -15,13 +15,14 @@ from django.utils import timezone
 #                  ORM:    None    > - 
 #                          ''      > ''
 # 所以null=False保持以''存取，所有操作只有非空及空字串兩種情形
-# max_length: 字數(unicode數)，不是byte數      
+# max_length: 字數(unicode數)，不是byte數       
 
 class Bookinfo(models.Model):
     #博客來的店內碼做PK
     err       = models.CharField(default='', blank=True, null=False, max_length=50)
     bookid    = models.CharField(default='', blank=False,null=False, max_length=15, primary_key=True) 
     isbn      = models.CharField(default='', blank=True, null=False, max_length=13)
+    isbn13    = models.CharField(default='', blank=True, null=False, max_length=13)
     title     = models.CharField(default='', blank=True, null=False, max_length=200)
     title2    = models.CharField(default='', blank=True, null=False, max_length=200)
     author    = models.CharField(default='', blank=True, null=False, max_length=200)
@@ -50,6 +51,7 @@ class Bookprice(models.Model):
     #DB存的欄位是bookid_id 
     bookid           = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
     isbn             = models.CharField(default='', blank=True, null=False, max_length=13)
+    isbn13           = models.CharField(default='', blank=True, null=False, max_length=13)
     #
     store            = models.CharField(default='', blank=True, null=False, max_length=10)
     price_sale       = models.CharField(default='', blank=True, null=False, max_length=10)

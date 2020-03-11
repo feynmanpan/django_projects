@@ -71,7 +71,7 @@ def wtb_book(request,bookid='0010829817'):
     book['time']=f'{end_time-start_time:.5f}_{middle_time-start_time:.5f}'
     #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示 
     jsonstr=json.dumps(book,default=str,ensure_ascii=False)
-    #return HttpResponse(jsonstr)
+    #return HttpResponse(jsonstr) 
     return render(request, 'wtb_book.html', locals())
 
 def wtb_search(request):

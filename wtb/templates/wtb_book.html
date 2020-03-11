@@ -76,6 +76,10 @@
 					<p>定價：<span id="price_list" style='color:red'>{{book.info.price_list}}</span> 元</p>
 					<p>規格：{{book.info.spec}}</p>
 					<p data-bookid='{{book.info.bookid}}'>ISBN：{{book.info.isbn}}</p>
+					{% if book.info.isbn13 %}
+						<p data-bookid='{{book.info.bookid}}'>ISBN13：{{book.info.isbn13}}</p>
+					{% endif %}					
+					
 				</div>
 			</div>
 		</div>

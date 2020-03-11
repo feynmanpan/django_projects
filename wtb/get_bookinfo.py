@@ -18,6 +18,7 @@ from fake_useragent import UserAgent
 from fake_headers import Headers
 from pyquery import PyQuery as pq
 #
+import isbnlib
 import requests
 import pandas as pd
 import numpy as np
@@ -94,6 +95,8 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #________________info收集________________________________
         #ISBN
         isbn=isbn.replace("ISBN：","")
+        if len(isbn)==10:
+            isbn13=isbnlib.to_isbn13(isbn)
         #書名
         title=doc.find(".mod.type02_p002.clearfix > h1").text()
         title2=doc.find(".mod.type02_p002.clearfix > h2").text() or ''
@@ -154,7 +157,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         bookinfo['pub_dt']=None    
     else:
         #
-        cols=['isbn','title','title2','author','publisher',
+        cols=['isbn','isbn13','title','title2','author','publisher',
               'pub_dt','lang','price_list','price_sale','price_sale_ebook','bookid_ebook',
               'spec','url_cover']
         #

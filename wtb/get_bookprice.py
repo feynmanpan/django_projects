@@ -44,7 +44,7 @@ from dict_stores import url_qs
 
 def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
     
-    bookprice={'err':'','bookid':bookid,'isbn':isbn,'store':store}
+    bookprice={'err':'','bookid':bookid,'isbn':isbn,'isbn13':'','store':store}
     tw = pytz.timezone('Asia/Taipei')
     #用匯入的
     #url_qs={
@@ -79,7 +79,9 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         if row.count()==1:
             bookprice['bookid']=row.first() #要使用instance，update_or_create才能存           
             bookprice['isbn']=row.first().isbn
+            bookprice['isbn13']=row.first().isbn13
             isbn=row.first().isbn            
+            isbn13=row.first().isbn13            
         else:
             bookprice['err']='nosuchbookid'
             return bookprice 
@@ -109,8 +111,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
     #3.開始抓==================================== 
     #根據store抓不同搜尋頁面
     #isbn='9789571380041' #9789571380049 #9789571380041AAA
-    url_q=url_qs[store]+isbn
-    #print(url_q)
+    url_q=url_qs[store]+isbn+"+"+isbn13
+    print(url_q)
     #
     fake_header = Headers(
         browser="chrome",  # Generate only Chrome UA
