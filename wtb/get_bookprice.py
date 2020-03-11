@@ -213,7 +213,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                     continue                    
                 #--回頭或二手    
                 if pid[2] in ['2','3'] and pid[:2]!='14':
-                    if media.attr('data-qty_28')!='undefined' and media.attr("data-min_sale_price")!='nodata':
+                    if media.attr("data-min_sale_price")!='nodata':#media.attr('data-qty_28')!='undefined' and 
                         price_sale=media.attr("data-min_sale_price")#要用小寫
                         url_book=media.find(".titleMain").find("a").attr("href") 
                     #
