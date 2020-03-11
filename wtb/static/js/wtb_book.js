@@ -9,8 +9,8 @@ function tail(){
 }
 
 function bar(){
-	const margin = 60;
-	const TW=992;
+	const margin = 60; 
+	const TW=982;
 	const TH=350;
     const width = TW;
     const height = TH - margin*2;
@@ -19,7 +19,7 @@ function bar(){
 	svg.attr("width", TW)
 	   .attr("height", TH);
 	//繪圖區   
-	const chart = svg.append('g').attr('transform', 'translate('+margin/2+','+margin/2+')');
+	const chart = svg.append('g').attr('transform', 'translate('+(margin/2+5)+','+margin/2+')');
 	//以定價為最高點
 	//const price_list=parseInt($("#price_list").text());
 	const xScale = d3.scaleBand()
