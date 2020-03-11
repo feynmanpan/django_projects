@@ -14,13 +14,14 @@ function bar(){
 	const TH=400;
     const width = TW;
     const height = TH - margin*2;
-	//
+	//SVG
     const svg = d3.select('svg#bar');
 	svg.attr("width", TW)
 	   .attr("height", TH);
-	const chart = svg.append('g').attr('transform', 'translate('+margin+','+margin+')');
+	//繪圖區   
+	const chart = svg.append('g').attr('transform', 'translate('+margin/2+','+margin/2+')');
 	//以定價為最高點
-	const price_list=parseInt($("#price_list").text());
+	//const price_list=parseInt($("#price_list").text());
 	const xScale = d3.scaleBand()
 					 .range([0,width])
 					 .domain(stores_name)
@@ -55,9 +56,7 @@ function bar(){
 		.attr('height', (b) => height-yScale(b.price_sale_ebook))
 		.attr('width', xScale.bandwidth()*0.7)	
 		.attr('style', 'fill:rgb(100, 149, 237)')	
-		;		
-		
-	//$('rect').css('fill','rgb(210, 105, 30)');//調bar顏色
+		;				
 	//紙本price
 	chart.selectAll()
 		.data(bookprices)

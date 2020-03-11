@@ -17,7 +17,8 @@
 		{% for store in stores %}
 			stores.push('{{store}}');
 		{% endfor %}		
-		//整理價錢	
+		//整理定價及售價
+		const price_list={{book.info.price_list}};
 		const bookprices=[
 			{
 				'store_name'      :stores_name[0],
