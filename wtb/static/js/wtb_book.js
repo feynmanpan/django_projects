@@ -146,7 +146,25 @@ function bar(){
 			$('.price').css("opacity","1");
 		}		
 	);
-		
+	//100折	
+	chart.append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', width)
+        .attr('y2', 0)
+        .attr('stroke', 'black')
+		.attr('stroke-width', '0.5px')
+		//.attr('stroke-dasharray', '15,5')
+		;
+	chart.append('text')
+		.text('定價'+price_list)
+	    .attr("text-anchor", "start")		
+		.attr('x', 2)
+		.attr('y', -2)		
+	    .attr("font-family", "sans-serif")
+	    .attr("font-size", "10px")
+	    .attr("fill", "black")
+		;			
 	//79折	
 	chart.append('line')
         .attr('x1', 0)
