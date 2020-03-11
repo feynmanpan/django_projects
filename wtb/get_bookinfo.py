@@ -96,6 +96,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         isbn=isbn.replace("ISBN：","")
         #書名
         title=doc.find(".mod.type02_p002.clearfix > h1").text()
+        title2=doc.find(".mod.type02_p002.clearfix > h2").text() or ''
         #=========================
         tmp=doc.find(".type02_p003.clearfix").find("ul").eq(0)
         #--作者/原文作者/譯者
@@ -103,7 +104,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         authors=tmp.find("li").find("a[href*='adv_author']")
         author=''
         for au in authors:
-            if '追蹤作者' in pq(au).parent().text():
+            if '作者' in pq(au).parent().text() and '原文作者' not in pq(au).parent().text():
                 author+='作者：'+pq(au).text()+"/"
                 continue
             if '原文作者' in pq(au).parent().text():
@@ -130,9 +131,10 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         price_sale=tmp2.find("strong.price01 b").text()
         #--電子書
         tmp3=doc.find("#li_M201106_0_getEbkRitems_P00a400020119-0")
-        price_sale_ebook=tmp3.find(".price em").text() or ''
-        bookid_ebook=tmp3.find("a").attr("href") or ''
-        bookid_ebook=bookid_ebook.replace("https://www.books.com.tw/products/","")
+        if tmp3.find("a span").eq(0).text()=="電子書":
+            price_sale_ebook=tmp3.find(".price em").text() or ''
+            bookid_ebook=tmp3.find("a").attr("href") or ''
+            bookid_ebook=bookid_ebook.replace("https://www.books.com.tw/products/","")
         #=========================
         #規格
         spec=doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").text().replace(" ","").replace("規格：","")
@@ -152,7 +154,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         bookinfo['pub_dt']=None    
     else:
         #
-        cols=['isbn','title','author','publisher',
+        cols=['isbn','title','title2','author','publisher',
               'pub_dt','lang','price_list','price_sale','price_sale_ebook','bookid_ebook',
               'spec','url_cover']
         #

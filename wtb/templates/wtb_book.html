@@ -8,24 +8,29 @@
 {% block title %} 嘩！找書 {% endblock %}
 {% block js %} 
 	<script>
-		//店家名稱及代碼
-		const stores_name=['博客來',
-			{% for name in names %}
-				'{{name}}',
+		//店家官網
+		const store_urls=[
+			{% for surl in surls %}
+				'{{surl}}',
+			{% endfor %}		
+		];			
+		//店家名稱
+		const store_names=[
+			{% for sname in snames %}
+				'{{sname}}',
 			{% endfor %}		
 		];
-
+		//店家代碼
 		const stores=['books',
 			{% for store in stores %}
 				'{{store}}',
 			{% endfor %}		
 		];
-
 		//整理定價及售價
 		const price_list={{book.info.price_list}};
 		const bookprices=[
 			{
-				'store_name'      :stores_name[0],
+				'store_name'      :store_names[0],
 				'store'           :stores[0],
 				'price_sale'      :'{{book.info.price_sale}}',
 				'price_sale_ebook':'{{book.info.price_sale_ebook}}',
@@ -34,7 +39,7 @@
 			},
 			{% for bookprice in book.price %}				
 				{
-					'store_name'      :stores_name[stores.indexOf('{{bookprice.store}}')],
+					'store_name'      :store_names[stores.indexOf('{{bookprice.store}}')],
 					'store'           :'{{bookprice.store}}',
 					'price_sale'      :'{{bookprice.price_sale}}',
 					'price_sale_ebook':'{{bookprice.price_sale_ebook}}',
@@ -48,15 +53,21 @@
 		
 
 	</script>
-	<script src='{% static "js/wtb_book.js" %}?v=2'></script>
+	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
 {% endblock %}
 
 {% block content %} 
 	<div id='body_book' class='body' align='' style="">
+		<iframe id="wtb_book_bg" class="background" src="https://threejsfundamentals.org/threejs/background.html"></iframe>
+		
 		<div id='info'>
 			<img id='cover' src='{{book.info.url_cover}}'>
 			<div id='info_list'>
-				<h4>{{book.info.title}}</h4>
+				<h4 style='margin-top:10px;margin-bottom:0px'>{{book.info.title}}</h4>
+				{% if book.info.title2 %}
+					<p style='color:grey;margin-top:0px;'>{{book.info.title2}}</p>
+				{% endif %}
+				
 				<div id='info_listp'>
 					<p>{{book.info.author}}</p>
 					<p>出版社：{{book.info.publisher}}</p>
@@ -69,12 +80,35 @@
 			</div>
 		</div>
 		
+		<div id='price'>			
+			<h4 style="margin-bottom:10px;margin-left: 20px;">
+				<span style="color:rgb(210, 105, 30)">紙本</span>及<span style="color:rgb(100, 149, 237)">電子書</span>售價一覽<span class='ps'>(更新時間:{{book.info.create_dt}})</span>
+			</h4>
+            <ol style='font-size:15px;color:black'>
+                <li style=''>
+                    <span style=''>
+                        書籍基本資訊以紙本為主，其他介紹請至各平台商品頁詳閱。
+                    </span>
+                </li>			
+                <li style=''>
+                    <span style=''>
+                        點擊圖中的售價數字/長條，可前往本書於各平台的商品頁。
+                    </span>
+                </li>
+                <li style=''>
+                    <span style=''>
+                        一天更新一次售價，僅供參考，請以各平台商品頁的資料為準。 
+                    </span>
+                </li>                
+                <li style=''>
+                    <span style=''>
+                        售價有問題或沒有售價的原因很多，如爬蟲失敗，或該平台無銷售(博客來無絕版書)，或平台售價本身也有錯。
+                    </span>
+                </li>                 
+            </ol>
+			<svg id='bar'></svg>
+		</div>	
 		
-		<div id='price'>
-			{{jsonstr}}
-			<h4>紙本售價</h4>
-			<svg id='bar'/>
-		</div>				
 	</div>	
 {% endblock %}
 

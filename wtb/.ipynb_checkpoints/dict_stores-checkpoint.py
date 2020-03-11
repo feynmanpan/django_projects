@@ -1,3 +1,4 @@
+#搜尋故意少博客來
 url_qs={
         'elite':"http://www.eslite.com/Search_BW.aspx?searchType=&query=",
         'ks':"https://www.kingstone.com.tw/search/search?q=",
@@ -6,5 +7,12 @@ url_qs={
         'momo':"https://m.momoshop.com.tw/search.momo?searchKeyword=",
         'taaze':"https://www.taaze.tw/rwd_searchResult.html?keyType%5B%5D=0&keyword%5B%5D="
     }
-
-stores_name=['誠品','金石堂','momo','讀冊']
+#
+store_names=['博客來','誠品','金石堂','momo','讀冊']
+store_urls=[
+    'https://www.books.com.tw/',
+    'http://www.eslite.com/',
+    'https://www.kingstone.com.tw/',
+    'https://www.momoshop.com.tw/main/Main.jsp',
+    'https://www.taaze.tw/index.html'
+]

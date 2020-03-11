@@ -16,7 +16,7 @@ body{
     width:100%;/*992px;*/
     /*background:lightgrey;*/      
     margin:0 auto;
-    margin-top:100px;
+    margin-top:50px;
     padding:2px;
     /*border-top:1px solid orangered;*/
     position:fixed;
@@ -146,7 +146,7 @@ body{
 
 .body{
     margin:0 auto;
-    margin-top:60px;
+    margin-top:100px; 
     width:992px;
     
     border:0px solid red;
@@ -181,12 +181,29 @@ img.store_logo:hover{
     box-shadow: 0 1px 6px 0 rgba(32,33,36,1);    
     border-radius: 10px;
 }
-
-
+#body_book{
+    padding: 10px;
+	padding-top:40px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+#wtb_book_bg{
+	position: fixed;
+    width: 100%;
+    height: 100vh;
+    border: none;
+    top: 0px;
+	left:0px;
+    z-index: -1000;
+}
+#cover{
+	border-radius:20px;
+}
 #info_list {
-    width: -webkit-calc(100% - 360px);
-    width:    -moz-calc(100% - 360px);
-    width:         calc(100% - 360px);
+    width: -webkit-calc(100% - 370px);
+    width:    -moz-calc(100% - 370px);
+    width:         calc(100% - 370px);
+	margin-left:10px;
 	display:inline-block;
 	vertical-align:top;
 }
@@ -195,12 +212,23 @@ img.store_logo:hover{
 	padding-left:10px;
 }
 #info_list p{
-	color:rgb(102, 102, 102);
+	color:black;/*rgb(102, 102, 102);*/
 	font-size:15px;
 }
 
 rect:hover{	
 
+}
+
+#x-axis text{
+	cursor:pointer;
+}
+
+.ps{
+	margin-left:5px;
+	font-size: 14px;
+	font-family: sans-serif;
+	vertical-align: middle;
 }
 
 @media screen and (max-width: 992px) {

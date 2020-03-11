@@ -11,7 +11,7 @@ function tail(){
 function bar(){
 	const margin = 60;
 	const TW=992;
-	const TH=400;
+	const TH=350;
     const width = TW;
     const height = TH - margin*2;
 	//SVG
@@ -24,7 +24,7 @@ function bar(){
 	//const price_list=parseInt($("#price_list").text());
 	const xScale = d3.scaleBand()
 					 .range([0,width])
-					 .domain(stores_name)
+					 .domain(store_names)
 					 .padding(0.9)
 					 ;	
 	const yScale = d3.scaleLinear()
@@ -32,15 +32,29 @@ function bar(){
 					 .domain([0, price_list])
 					 ;	
 	chart.append('g').attr('transform', 'translate(0, '+height+')')
+	                 .attr("id","x-axis") 
 	                 .call(d3.axisBottom(xScale))
 					 ; 
-	chart.append('g').call(d3.axisLeft(yScale));					 
+	chart.append('g').attr("id","y-axis")
+	                 .call(d3.axisLeft(yScale))
+					 ;		
+
+	//x軸跳官網
+	$("#x-axis text").click(function(){
+		var that=$(this);
+		var sname=that.text();
+		var idx=store_names.indexOf(sname);
+		//
+		window.open(store_urls[idx], '_blank');  
+	});
+
 	//BAR紙本售價
 	chart.selectAll()
 		.data(bookprices)
 		.enter()
 		.append('rect')
-		.attr('x', (b) => xScale(b.store_name))
+		.attr('class',(b) => b.store+" price")
+		.attr('x', (b) => xScale(b.store_name)-4) 
 		.attr('y', (b) => yScale(b.price_sale))
 		.attr('height', (b) => height-yScale(b.price_sale))
 		.attr('width', xScale.bandwidth())	
@@ -49,22 +63,17 @@ function bar(){
 			if(b.url_book!=""){	
 				window.open(b.url_book, '_blank');     
 			}
-		})
-		//.on("mouseover", function(b,i){
-			//
-		//})		
+		})	
 		.append('title')
 		.text((b)=>Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁")
 		;
-	function handleMouseOver(d,i){
-		
-	}
 	//BAR電子書
 	chart.selectAll()
 		.data(bookprices)
 		.enter()
 		.append('rect')
-		.attr('x', (b) => xScale(b.store_name)+5)
+		.attr('class',(b) => b.store+" price")
+		.attr('x', (b) => xScale(b.store_name)+10)
 		.attr('y', (b) => yScale(b.price_sale_ebook))
 		.attr('height', (b) => height-yScale(b.price_sale_ebook))
 		.attr('width', xScale.bandwidth()*0.7)	
@@ -77,19 +86,7 @@ function bar(){
 		.append('title')
 		.text((b)=>Math.round(parseInt(b.price_sale_ebook)*100/price_list)+"折 : 前往"+b.store_name+"電子書商品頁")		
 		;	
-	//
-	$('rect').hover(
-		function(){
-			var that=$(this);
-			$('rect').css("opacity","0.5");
-			that.css("opacity","1");
-		},
-		function(){
-			var that=$(this);
-			$('rect').css("opacity","1");
-			//that.css("opacity","1");
-		}		
-	);
+
 		
 	//紙本price
 	chart.selectAll()
@@ -97,8 +94,9 @@ function bar(){
 		.enter()
 		.append('text')
 		.text((b) => b.price_sale)
+		.attr('class',(b) => b.store+" price")
 	    .attr("text-anchor", "start")		
-		.attr('x', (b) => xScale(b.store_name)-5)
+		.attr('x', (b) => xScale(b.store_name)-8)
 		.attr('y', (b) => yScale(b.price_sale)-5)	
 	    .attr("font-family", "sans-serif")
 	    .attr("font-size", "15px")
@@ -118,6 +116,7 @@ function bar(){
 		.enter()
 		.append('text')
 		.text((b) => b.price_sale_ebook)
+		.attr('class',(b) => b.store+" price")
 	    .attr("text-anchor", "start")		
 		.attr('x', (b) => xScale(b.store_name)+0)
 		.attr('y', (b) => yScale(b.price_sale_ebook)+13)	
@@ -133,6 +132,21 @@ function bar(){
 		.append('title')
 		.text((b)=>Math.round(parseInt(b.price_sale_ebook)*100/price_list)+"折 : 前往"+b.store_name+"電子書商品頁")		
 		;	
+		
+
+	//
+	$('.price').hover(
+		function(){
+			var that=$(this);
+			var store=that.attr("class").replace(" price","");
+			$('.price:not(.'+store+')').css("opacity","0.3");
+		},
+		function(){
+			var that=$(this);
+			$('.price').css("opacity","1");
+		}		
+	);
+		
 	//79折	
 	chart.append('line')
         .attr('x1', 0)
@@ -143,6 +157,15 @@ function bar(){
 		.attr('stroke-width', '0.5px')
 		//.attr('stroke-dasharray', '15,5')
 		;
+	chart.append('text')
+		.text('79折')
+	    .attr("text-anchor", "start")		
+		.attr('x', 2)
+		.attr('y', height*(1-0.79)-2)		
+	    .attr("font-family", "sans-serif")
+	    .attr("font-size", "10px")
+	    .attr("fill", "red")
+		;		
 	//7折	
 	chart.append('line')
         .attr('x1', 0)
@@ -152,6 +175,15 @@ function bar(){
         .attr('stroke', 'red')
 		.attr('stroke-width', '0.5px')
 		.attr('stroke-dasharray', '5,5')
+		;	
+	chart.append('text')
+		.text('7折')
+	    .attr("text-anchor", "start")		
+		.attr('x', 2)
+		.attr('y', height*(1-0.7)-2)		
+	    .attr("font-family", "sans-serif")
+	    .attr("font-size", "10px")
+	    .attr("fill", "red")
 		;		
 	//5折	
 	chart.append('line')
@@ -161,7 +193,16 @@ function bar(){
         .attr('y2', height*(1-0.5))
         .attr('stroke', 'green')
 		.attr('stroke-width', '0.5px')
-		;		
+		;	
+	chart.append('text')
+		.text('5折')
+	    .attr("text-anchor", "start")		
+		.attr('x', 2)
+		.attr('y', height*(1-0.5)-2)		
+	    .attr("font-family", "sans-serif")
+	    .attr("font-size", "10px")
+	    .attr("fill", "green")
+		;			
 	//3折	
 	chart.append('line')
         .attr('x1', 0)
@@ -171,6 +212,15 @@ function bar(){
         .attr('stroke', 'blue')
 		.attr('stroke-width', '0.5px')	
 		;
+	chart.append('text')
+		.text('3折')
+	    .attr("text-anchor", "start")		
+		.attr('x', 2)
+		.attr('y', height*(1-0.3)-2)		
+	    .attr("font-family", "sans-serif")
+	    .attr("font-size", "10px")
+	    .attr("fill", "blue")
+		;		
 }
 
 
