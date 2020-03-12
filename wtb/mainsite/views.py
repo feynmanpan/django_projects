@@ -84,11 +84,15 @@ def wtb_search(request):
 
 
 
-def homepage(request):
+def homepage(request,test):
     posts = Post.objects.all()
     #now = datetime.now()
     tv={'name':'wed'}
-    return render(request, 'index.html', locals())
+    if test:
+        return HttpResponse('test')
+    else:
+        return HttpResponse('...')
+    #return render(request, 'index.html', locals())
 
 def homepage_1(request,AAA):
     posts = Post.objects.all()

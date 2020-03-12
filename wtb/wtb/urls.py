@@ -28,7 +28,7 @@ urlpatterns = [
     path('book/<str:bookid>/', wtb_book),
     path('search/', wtb_search),
     #
-    path('index/', homepage),
+    path('index/<str:test>/', homepage),
     #path('index_1/', homepage_1,{'AAA':2345}),
     #path('index_1/', include(test_patterns)),
     path('index_2/<str:AAA>/<str:BBB>', homepage_2,name='test-url'),

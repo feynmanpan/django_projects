@@ -122,7 +122,10 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #
         author=author.rstrip('/')
         #--出版社
-        publisher=tmp.find("a[href*='sys_puballb']").text()
+        publisher=tmp.find("a[href*='sys_puballb']").text() or ''
+        #--原文出版社
+        if not publisher:
+            publisher=tmp.find("li:Contains('原文出版社')").text().replace('原文出版社：','').strip() or ''        
         #--出版日期YYYY-MM-DD，字串轉存datetime物件
         pub_dt=tmp.find("li:Contains('出版日期')").text().replace('出版日期：','').replace('/','-')
         pub_dt=datetime.strptime(pub_dt, "%Y-%m-%d").date()
