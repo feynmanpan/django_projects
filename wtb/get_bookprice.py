@@ -112,7 +112,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
     #根據store抓不同搜尋頁面
     #isbn='9789571380041' #9789571380049 #9789571380041AAA
     url_q=url_qs[store]+isbn+"+"+isbn13
-    print(url_q)
+    #print(url_q)
     #
     fake_header = Headers(
         browser="chrome",  # Generate only Chrome UA
@@ -148,7 +148,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             price_sale=doc.find(".summary .price_sale font").text()
             url_book=doc.find(".box_list td.name a[title]").attr("href")            
         #(2)金石堂    
-        if store=='ks':
+        elif store=='ks':
             #count=doc.find(".searchResultTitle > span:nth-child(2)").text()
             #只能有一本紙本書
             count=doc.find("span:Contains('加入購物車')").size().__str__()
@@ -164,7 +164,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             tmp=doc.find("div.buymixbox:Contains('電子書')").parent().find(".pdnamebox>a").attr("href")
             url_ebook=(tmp and "https://www.kingstone.com.tw"+tmp) or ''
         #(3)MOMO
-        if store=='momo':
+        elif store=='momo':
             #(1)先從手機板抓店內碼
             goodsItemLi=doc.find("article.prdListArea li.goodsItemLi")
             count=goodsItemLi.find("p.publishInfo").size().__str__()
@@ -189,7 +189,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             #________________price收集________________________________
             price_sale=doc_prod.find(".prdPrice .special span").text()            
         #(4)TAAZE
-        if store=='taaze':
+        elif store=='taaze':
             price_sale=''
             url_book=''
             ms=doc.find("div.media[rel]")   

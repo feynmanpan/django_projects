@@ -40,6 +40,7 @@ function bar(){
 					 ;		
 
 	//x軸跳官網
+	/*
 	$("#x-axis text").click(function(){
 		var that=$(this);
 		var sname=that.text();
@@ -47,6 +48,16 @@ function bar(){
 		//
 		window.open(store_urls[idx], '_blank');  
 	});
+	*/	
+	chart.selectAll('#x-axis .tick') 
+		.data(store_names)
+		.on("click", function(sn,i){
+			var link=store_urls[i]
+			window.open(link, '_blank');     			
+		})		
+		.append('title') 
+		.text((sn)=>"前往"+sn+"官網")
+		;	
 
 	//BAR紙本售價
 	chart.selectAll()
@@ -146,6 +157,7 @@ function bar(){
 			$('.price').css("opacity","1");
 		}		
 	);
+	//水平線=================================
 	//100折	
 	chart.append('line')
         .attr('x1', 0)
