@@ -40,7 +40,7 @@ def get_searchBooks(kw:str='村上春樹',which='free',now=False):
         headers=True  # generate misc headers
     )    
     UA=fake_header.generate()
-    ippo=get_proxy('OK',now)
+    ippo=get_proxy(which,now)
     proxies={"http": "http://"+ippo}
     #
     r = requests.get(url_searchbooks, 
