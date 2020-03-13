@@ -30,7 +30,7 @@ import json
 import csv
 
 
-def get_proxy(which='free'):
+def get_proxy(which='free',now=False):
     which_dict={'kuai':"/home/pan/django_projects/wtb/ips_kuai.txt",
                 'ihuan':"/home/pan/django_projects/wtb/ips_1000_ihuan.txt",
                 'free':"/home/pan/django_projects/wtb/ips_free.txt",
@@ -41,9 +41,10 @@ def get_proxy(which='free'):
             lines=f.readlines()
             for line in lines:
                 line=line.strip()
-                if line:
+                if len(line.split(":"))>1:
                     ippos.append(line)
-    #ippo=random.choice(ippos)#.split(":")
+    if now:
+        return random.choice(ippos)
     #ippo
     #測試代理_________________________________________
     while True:
@@ -68,7 +69,7 @@ def get_proxy(which='free'):
             r.encoding='utf8'
             #
             if(r.status_code == 200 and ip in r.text):
-                print("OK:"+ippo)
+                print("OK:"+which+"_"+ippo)
                 #print(r.status_code)
                 #print(r.text)
                 r.close() 

@@ -30,7 +30,7 @@ import csv
 from get_proxy import get_proxy
 
 #_________________________________________________
-def get_searchBooks(kw:str='村上春樹'):
+def get_searchBooks(kw:str='村上春樹',which='free',now=False):
     #kw="動盪"
     url_searchbooks="https://search.books.com.tw/search/query/cat/BKA/key/"+kw
     #
@@ -40,7 +40,7 @@ def get_searchBooks(kw:str='村上春樹'):
         headers=True  # generate misc headers
     )    
     UA=fake_header.generate()
-    ippo=get_proxy('OK')
+    ippo=get_proxy('OK',now)
     proxies={"http": "http://"+ippo}
     #
     r = requests.get(url_searchbooks, 
@@ -54,18 +54,28 @@ def get_searchBooks(kw:str='村上春樹'):
     searchbooks=doc.find("#searchlist .searchbook")
     items=searchbooks.find(".item")
     n=items.size()
+    results=[]    
     if n==0:
-        return 'noitems'
+        return json.dumps(results,default=str,ensure_ascii=False)
     if n>10:
         n=10
     #最多取10筆結果________________
-    results=[]
     for i in range(n):
         book={}
         item=items.eq(i)
         #整理資料====================================
-        book['bookid']=item.find("div.input_buy input").attr('value')
-        book['src']=item.find("img.itemcov").attr("data-original")
+        #book['bookid']=item.find("div.input_buy input").attr('value')     
+        #有些沒checkbox
+        href=item.find("a[rel=mid_name]").attr('href')                
+        bookid=re.search('/mid/item/(.+?)/page',href).group(1)
+        book['bookid']=bookid        
+        src=item.find("img.itemcov").attr("data-original")
+        if 'restricted18' in src:
+            #18禁先不搜
+            continue
+        #    
+        book['src']=src
+        
         book['title']=item.find("a[rel=mid_name]").text()
         #
         authors=''
@@ -83,6 +93,9 @@ def get_searchBooks(kw:str='村上春樹'):
             price_list=int(count_off) #沒有折扣
         #book['sale']=count_off+"_"+price_sale
         book['price_list']=price_list
+        intro=item.find('span.price').next().text()
+        intro=re.sub('\.+? *more','',intro)
+        book['intro']=intro
         #
         results.append(book)    
     

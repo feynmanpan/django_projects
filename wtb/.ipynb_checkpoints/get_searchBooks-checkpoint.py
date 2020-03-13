@@ -29,8 +29,8 @@ import csv
 #
 from get_proxy import get_proxy
 
-
-def get_searchBooks(kw:str='村上春樹'):
+#_________________________________________________
+def get_searchBooks(kw:str='村上春樹',which='free',now=False):
     #kw="動盪"
     url_searchbooks="https://search.books.com.tw/search/query/cat/BKA/key/"+kw
     #
@@ -40,7 +40,8 @@ def get_searchBooks(kw:str='村上春樹'):
         headers=True  # generate misc headers
     )    
     UA=fake_header.generate()
-    proxies={"http": "http://"+get_proxy('OK')}
+    ippo=get_proxy(which,now)
+    proxies={"http": "http://"+ippo}
     #
     r = requests.get(url_searchbooks, 
                      headers=UA,
@@ -48,23 +49,26 @@ def get_searchBooks(kw:str='村上春樹'):
                      timeout=30)
     r.encoding='utf8'
     doc=pq(r.text)
-    #print(r.text)
     r.close()
     #
     searchbooks=doc.find("#searchlist .searchbook")
     items=searchbooks.find(".item")
     n=items.size()
+    results=[]    
     if n==0:
-        return 'noitems'
+        return json.dumps(results,default=str,ensure_ascii=False)
     if n>10:
         n=10
-    #
-    results=[]
+    #最多取10筆結果________________
     for i in range(n):
         book={}
         item=items.eq(i)
-        #
-        book['bookid']=item.find("div.input_buy input").attr('value')
+        #整理資料====================================
+        #book['bookid']=item.find("div.input_buy input").attr('value')     
+        #有些沒checkbox
+        href=item.find("a[rel=mid_name]").attr('href')                
+        bookid=re.search('/mid/item/(.+?)/page',href).group(1)
+        book['bookid']=bookid        
         book['src']=item.find("img.itemcov").attr("data-original")
         book['title']=item.find("a[rel=mid_name]").text()
         #
@@ -79,13 +83,16 @@ def get_searchBooks(kw:str='村上春樹'):
         price_sale=item.find('span.price').find("b").eq(1).text()
         if price_sale:
             price_list=int(price_sale)*100//int(count_off)
-        else:    
+        else:
             price_list=int(count_off) #沒有折扣
         #book['sale']=count_off+"_"+price_sale
         book['price_list']=price_list
+        intro=item.find('span.price').next().text()
+        intro=re.sub('\.+? *more','',intro)
+        book['intro']=intro
         #
         results.append(book)    
     
-    #
+    #___________________
     results=json.dumps(results,default=str,ensure_ascii=False) 
     return results

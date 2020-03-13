@@ -151,14 +151,22 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         elif store=='ks':
             #count=doc.find(".searchResultTitle > span:nth-child(2)").text()
             #只能有一本紙本書
-            count=doc.find("span:Contains('加入購物車')").size().__str__()
-            if count!='1':
-                raise Exception('count='+count)             
+            count=doc.find("span:Contains('加入購物車')").size()
+            count2=doc.find("span:Contains('可訂購時通知我')").size()  
+            if count+count2<1:
+                raise Exception('count='+str(count)+"_"+str(count2))             
             #
             #________________price收集________________________________
             #--紙本書
             price_sale=doc.find("div.buymixbox:Contains('加入購物車')>span:Contains('特價')>b").text()
-            url_book="https://www.kingstone.com.tw"+doc.find("div.buymixbox:Contains('加入購物車')").parent().find(".pdnamebox>a").attr("href")            
+            if not price_sale:
+                price_sale=doc.find("div.buymixbox:Contains('可訂購時通知我')>span:Contains('特價')>b").text()
+            #
+            url =doc.find("div.buymixbox:Contains('加入購物車')").parent().find(".pdnamebox>a").attr("href") or ''
+            url2=doc.find("div.buymixbox:Contains('可訂購時通知我')").parent().find(".pdnamebox>a").attr("href") or ''
+            url =url or url2
+            if url:
+                url_book="https://www.kingstone.com.tw"+url
             #--電子書
             price_sale_ebook=doc.find("div.buymixbox:Contains('電子書')>span:Contains('特價')>b").text() or ''
             tmp=doc.find("div.buymixbox:Contains('電子書')").parent().find(".pdnamebox>a").attr("href")
