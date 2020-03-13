@@ -38,7 +38,7 @@ $(document).ready(function(){
 			dataType: "json", 
 			async:true,
 			error: function(err){ 
-				alert('爬蟲失敗，請重新查詢，sorry');
+				alert('爬蟲失敗，請重新按一次查詢，sorry');
 				//
 				ing.hide().data('show','N');
 				that.show();					
