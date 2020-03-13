@@ -77,7 +77,10 @@ def get_searchBooks(kw:str='村上春樹'):
         book['pub_dt']=re.search('出版日期[^0-9]+?([0-9\-]+)',item.text()).group(1)
         count_off= item.find('span.price').find("b").eq(0).text().ljust(2,'0')
         price_sale=item.find('span.price').find("b").eq(1).text()
-        price_list=int(price_sale)*100//int(count_off)
+        if price_sale:
+            price_list=int(price_sale)*100//int(count_off)
+        else:
+            price_list=int(count_off) #沒有折扣
         #book['sale']=count_off+"_"+price_sale
         book['price_list']=price_list
         #
