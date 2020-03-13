@@ -12,6 +12,7 @@ import pytz
 from .models import Bookinfo,Bookprice,Store,Post
 from get_bookinfo import get_bookinfo
 from get_bookprice import get_bookprice
+from get_searchBooks import get_searchBooks
 from dict_stores import url_qs,store_names,store_urls
 #
 from threading import Thread
@@ -80,7 +81,10 @@ def wtb_book(request,bookid='0010829817'):
 
 def wtb_search(request):
     kw=request.GET['kw']
-    return HttpResponse(f'關鍵字{kw}，搜尋功能開發中，sorry')
+    jsonstr=get_searchBooks()
+    #return HttpResponse(f'關鍵字:{kw}，搜尋功能開發中，sorry，{num}')
+    return HttpResponse(jsonstr)
+
 
 
 
