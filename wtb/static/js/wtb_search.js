@@ -33,7 +33,7 @@ $(document).ready(function(){
 		$.ajax({   
 			type: "get",
 			url: "/search/",
-			timeout:1000*20,
+			timeout:1000*30,
 			data: "kw="+kw,
 			dataType: "json", 
 			async:true,
