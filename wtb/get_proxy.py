@@ -62,11 +62,14 @@ def get_proxy(which='free',now=False):
         #print("test:"+ippo)    
         #clear_output(wait=True)
         try:
+            test=['http://icanhazip.com/','https://whatismyipaddress.com/']
             r = requests.get("http://icanhazip.com/", 
                              headers=UA,
                              proxies=proxies,
                              timeout=4)
             r.encoding='utf8'
+            #print(r.text)
+            #return 22
             #
             if(r.status_code == 200 and ip in r.text):
                 print("OK:"+which+"_"+ippo)
@@ -80,7 +83,7 @@ def get_proxy(which='free',now=False):
         except Exception as e:
             #print(str(e))
             #clear_output(wait=True) 
-            sleep(0.5+random.uniform(0, 1))
+            sleep(1.5+random.uniform(0, 2))
             continue
         #else:
         #    print(r.text)
