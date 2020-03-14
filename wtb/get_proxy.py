@@ -44,6 +44,7 @@ def get_proxy(which='free',now=False):
                 if len(line.split(":"))>1:
                     ippos.append(line)
     if now:
+        sleep(1.5)
         return random.choice(ippos)
     #ippo
     old=[]

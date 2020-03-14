@@ -34,7 +34,7 @@
 
 
 #result{
-	overflow-y: scroll;
+	overflow-y: overlay;
 	max-height:450px;
 	width:100%;
 	margin: 0 auto;
@@ -46,6 +46,18 @@
 #result a{
 	color: inherit;
 	text-decoration: none;
+}
+#result::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+#result::-webkit-scrollbar:vertical {
+    width: 10px;
+}
+#result::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
 }
 .itemcopy{
 	display:none;

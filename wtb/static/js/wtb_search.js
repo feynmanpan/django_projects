@@ -23,13 +23,29 @@ $(document).ready(function(){
 			alert('請輸入關鍵字');
 			return false;
 		}
-		//
+		//放大鏡切換
 		var that=$(this);
 		var ing=$('#ing');
 		that.hide();
 		ing.show().data('show','Y');
-		//		
-		//
+		//==============================================
+		//若已搜過此kw	
+		var item_kw=$(".item[data-kw="+kw+"]");
+		var item_notkw=$(".item").not(item_kw);
+		if(item_kw.length>0){			
+			item_notkw.hide();			
+			item_kw.show();
+			//
+			$("#kw").text(kw);
+			$("#resultn").text(item_kw.length);
+			$("body").css('overflow','hidden');			
+			//
+			$("#result").slideDown("slow").scrollTop(0);	
+			ing.hide().data('show','N');
+			that.show();			
+			return false;
+		}
+		//此kw沒搜過，重打ajax
 		$.ajax({   
 			type: "get",
 			url: "/search/",
@@ -54,12 +70,13 @@ $(document).ready(function(){
 					return false;
 				}
 				//______________________________________
-				$(".item").remove();
+				//$(".item").remove();
+				item_notkw.hide();
 				//
 				$("#kw").text(kw);
 				$("#resultn").text(n);					
 				$("body").css('overflow','hidden');
-				$("#result").slideDown("slow");
+				//$("#result").slideDown("slow");
 				//
 				var result=$("#result");
 				var forcopy=result.find(".itemcopy");
@@ -69,8 +86,12 @@ $(document).ready(function(){
 					//
 					item.removeClass("itemcopy").addClass("item");
 					item.attr("title","前往本書比價頁面");
-					item.find("a").attr("href","/book/"+item_data['bookid'])
-					item.data('bookid',item_data['bookid']);
+					item.find("a").attr("href","/book/"+item_data['bookid']);
+					item.data('bookid',item_data['bookid'])
+						.data('kw',kw)
+						.attr('data-bookid',item_data['bookid'])
+						.attr('data-kw',kw)
+						;
 					item.find('img').attr('src',item_data['src']);
 					item.find('.title>strong').text(item_data['title']);
 					item.find('.author').text(item_data['author']);
@@ -81,7 +102,7 @@ $(document).ready(function(){
 					//	
 					item.appendTo(result);
 				};//for
-				//$("#result").slideDown("slow");
+				$("#result").slideDown("slow").scrollTop(0); 
 				ing.hide().data('show','N');
 				that.show();
 

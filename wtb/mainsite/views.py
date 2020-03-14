@@ -73,7 +73,7 @@ def wtb_book(request,bookid='0010829817'):
     #
     if bookinfo['err']:    
         book['err']=bookinfo['err']
-        #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示  
+        #datetime物件要用default=str處理。ascii要False，避免\uxxxx的unicode表示   
         jsonstr=json.dumps(book,default=str,ensure_ascii=False)    
         return HttpResponse(jsonstr) 
     else:
@@ -81,7 +81,7 @@ def wtb_book(request,bookid='0010829817'):
 
 def wtb_search(request):
     kw=request.GET['kw']
-    jsonstr=get_searchBooks(kw,which='OK',now=False)
+    jsonstr=get_searchBooks(kw,which='OK',now=True)
     #
     return HttpResponse(jsonstr)
 
