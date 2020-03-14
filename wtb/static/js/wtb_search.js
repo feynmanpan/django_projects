@@ -66,6 +66,7 @@ $(document).ready(function(){
 				$("body").css('overflow','hidden');
 				$("#result").slideDown("slow");
 				$("#kw").text(kw);
+				$("#resultn").text(n);
 				//
 				var result=$("#result");
 				var forcopy=result.find(".itemcopy");
