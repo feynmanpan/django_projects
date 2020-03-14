@@ -81,7 +81,7 @@ def wtb_book(request,bookid='0010829817'):
 
 def wtb_search(request):
     kw=request.GET['kw']
-    jsonstr=get_searchBooks(kw,which='free',now=False)
+    jsonstr=get_searchBooks(kw,which='OK',now=False)
     #
     return HttpResponse(jsonstr)
 
