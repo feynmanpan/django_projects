@@ -28,10 +28,12 @@ $(document).ready(function(){
 		var ing=$('#ing');
 		that.hide();
 		ing.show().data('show','Y');
+		
 		//==============================================
 		//若已搜過此kw	
-		var item_kw=$(".item[data-kw="+kw+"]");
+		var item_kw=$(".item[data-kw='"+kw+"']");//要加單引號，有些kw有點 . 會出錯
 		var item_notkw=$(".item").not(item_kw);
+		
 		if(item_kw.length>0){			
 			item_notkw.hide();			
 			item_kw.show();
@@ -45,6 +47,7 @@ $(document).ready(function(){
 			that.show();			
 			return false;
 		}
+		//==============================================
 		//此kw沒搜過，重打ajax
 		$.ajax({   
 			type: "get",
