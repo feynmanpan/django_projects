@@ -44,10 +44,7 @@ $(document).ready(function(){
 				that.show();					
 			},
 			success: function(data){
-				//alert(data.length);
-				//alert(data[0]['title'])
-				//$("#result").text(data); 					
-				//
+
 				var n=data.length;
 				if(n==0){
 					alert("無搜尋結果，請重新查詢");
@@ -56,17 +53,13 @@ $(document).ready(function(){
 					that.show();										
 					return false;
 				}
-				if($(".item").length>0){
-					$(".item").remove();						
-					//$("#result").slideUp("fast");						
-				}else{
-					//$("body").css('overflow','hidden');
-				};
-					
+				//______________________________________
+				$(".item").remove();
+				//
+				$("#kw").text(kw);
+				$("#resultn").text(n);					
 				$("body").css('overflow','hidden');
 				$("#result").slideDown("slow");
-				$("#kw").text(kw);
-				$("#resultn").text(n);
 				//
 				var result=$("#result");
 				var forcopy=result.find(".itemcopy");

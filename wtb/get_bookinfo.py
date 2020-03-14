@@ -134,7 +134,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #--定價
         tmp2=doc.find(".cnt_prod002.clearfix ul.price").eq(0)
         price_list=tmp2.find("em").text()
-        price_sale=tmp2.find("strong.price01 b").text()
+        price_sale=tmp2.find("strong.price01").eq(-1).find("b").text() #有優惠價跟特價，要找最後一個
         #--電子書
         tmp3=doc.find("#li_M201106_0_getEbkRitems_P00a400020119-0")
         if tmp3.find("a span").eq(0).text()=="電子書":
