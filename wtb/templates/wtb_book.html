@@ -5,7 +5,7 @@
 {% load my_replace %}
 
 
-{% block title %} 嘩！找書 {% endblock %}
+{% block title %} 嘩！找書 | {{book.info.title}} {% endblock %}
 {% block js %} 
 	<script>
 		//店家官網
@@ -111,8 +111,16 @@
                 </li>                 
             </ol>
 			<svg id='bar'></svg>
-		</div>	
+		</div>
 		
+		<div id='intro' style="font-size: 15px;padding: 15px;margin-top: -30px;">
+			{% if book.info.intro %}
+				<h3 style='color: #f28900;border-bottom: 0.5px solid grey'>內容簡介</h3>
+				{% autoescape off %}
+					{{book.info.intro}}
+				{% endautoescape %}	
+			{% endif %}					
+		</div>
 	</div>	
 {% endblock %}
 
