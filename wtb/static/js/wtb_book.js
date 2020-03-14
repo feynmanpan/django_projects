@@ -78,7 +78,7 @@ function bar(){
 		.append('title')
 		.text((b)=>Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁")
 		;
-	//BAR電子書
+	//BAR電子書 
 	chart.selectAll()
 		.data(bookprices)
 		.enter()
