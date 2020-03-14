@@ -137,7 +137,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             raise Exception(r.status_code) 
         #________________各家price收集________________________________
         #url_book=''
-        #price_sale_ebook='';
+        price_sale='';
+        price_sale_ebook='';
         #(1)誠品
         if store=='elite':
             count=doc.find("#ctl00_ContentPlaceHolder1_lbTotalResultCount").text()
@@ -231,6 +232,9 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         #在js處理&amp;
         #url_book=urllib.parse.quote(url_book)
         #price_sale_ebook=urllib.parse.quote(price_sale_ebook)
+        #去掉千分位
+        price_sale=price_sale.replace(',','');
+        price_sale_ebook=price_sale_ebook.replace(',','');
     except Exception as e:
         error=str(e)
         if 'timeout' in error:
