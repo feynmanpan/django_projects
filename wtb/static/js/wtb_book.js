@@ -21,7 +21,7 @@ function taaze_vdo_handle(){
 		});
 		
 		vdo_close.click(function(){
-			vdo.hide();	
+			vdo.hide().get(0).pause();	
 			vdo_close.hide();
 		});
 		
