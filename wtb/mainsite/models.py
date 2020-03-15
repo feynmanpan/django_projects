@@ -37,6 +37,7 @@ class Bookinfo(models.Model):
     #
     spec      = models.CharField(default='', blank=True, null=False, max_length=100)
     intro     = models.TextField(default='', blank=True, null=False, max_length=3000)
+    url_vdo   = models.URLField( default='', blank=True, null=False)
     url_cover = models.URLField( default='', blank=True, null=False)
     #
     create_dt = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  

@@ -126,15 +126,19 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
     proxies={
             "http": "http://"+ippo,
             #"https": "http://"+ippo
-            }  
+            } 
+    if store=='elite':
+        proxies={}
     # 
     try:
         r = requests.get(url_q, 
                          headers=UA,
                          proxies=proxies,
                          #cookies=cookies,
+                         #allow_redirects=False,
                          timeout=20)    
         r.encoding='utf8'
+        #print(r.text)
         #
         doc=pq(r.text)
         r.close()
@@ -161,18 +165,22 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             #只能有一本紙本書
             count=doc.find("span:Contains('加入購物車')").size()
             count2=doc.find("span:Contains('可訂購時通知我')").size()  
-            if count+count2<1:
-                raise Exception('count='+str(count)+"_"+str(count2))             
+            count3=doc.find("span:Contains('停售')").size()  
+            if count+count2+count3<1:
+                raise Exception('count='+str(count)+"_"+str(count2)+"_"+str(count3))             
             #
             #________________price收集________________________________
             #--紙本書
             price_sale=doc.find("div.buymixbox:Contains('加入購物車')>span:Contains('特價')>b").text()
             if not price_sale:
                 price_sale=doc.find("div.buymixbox:Contains('可訂購時通知我')>span:Contains('特價')>b").text()
+            if not price_sale:
+                price_sale=doc.find("div.buymixbox:Contains('停售')>span:Contains('特價')>b").text()
             #
             url =doc.find("div.buymixbox:Contains('加入購物車')").parent().find(".pdnamebox>a").attr("href") or ''
             url2=doc.find("div.buymixbox:Contains('可訂購時通知我')").parent().find(".pdnamebox>a").attr("href") or ''
-            url =url or url2
+            url3=doc.find("div.buymixbox:Contains('停售')").parent().find(".pdnamebox>a").attr("href") or ''
+            url =(url or url2) or url3
             if url:
                 url_book="https://www.kingstone.com.tw"+url
             #--電子書

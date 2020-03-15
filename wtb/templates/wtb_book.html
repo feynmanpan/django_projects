@@ -119,7 +119,13 @@
 				{% autoescape off %}
 					{{book.info.intro}}
 				{% endautoescape %}	
-			{% endif %}					
+			{% endif %}	
+			
+			{% if book.info.url_vdo %}
+				<div style='text-align: center;margin-top: 2em;'>
+					<iframe width="560" height="315" src="{{book.info.url_vdo}}" frameborder="0" allowfullscreen></iframe>
+				</div> 
+			{% endif %}				
 		</div>
 	</div>	
 {% endblock %}
