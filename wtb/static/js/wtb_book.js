@@ -15,7 +15,7 @@ function taaze_vdo_handle(){
 		vdo.attr('src',taaze_vdo);
 		vdo_btn.show();		
 		//
-		vdo_btn.click(function(){
+		vdo_btn.find('img,span:first').click(function(){
 			vdo.show();	
 			vdo_close.show();
 		});
