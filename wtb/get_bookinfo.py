@@ -27,6 +27,8 @@ import re
 import json
 import csv
 #
+from get_proxy import get_proxy
+#
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
@@ -64,15 +66,18 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         headers=True  # generate misc headers
     )    
     UA=fake_header.generate()
+    ippo=get_proxy(which="OK",now=True)
+    proxies={"http": "http://"+ippo}    
     #
     try:        
         r = requests.get(url_q, 
                          headers=UA,
-                         #proxies=proxies,
+                         proxies=proxies,
                          #cookies=cookies,
                          timeout=20)    
         r.encoding='utf8'
         #
+        #print(r.text)
         doc=pq(r.text)
         r.close()
         #________________例外收集________________________________                            

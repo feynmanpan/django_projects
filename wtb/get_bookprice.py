@@ -34,6 +34,8 @@ import re
 import json
 import csv
 #
+from get_proxy import get_proxy
+#
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
@@ -119,12 +121,14 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         os="win",  # Generate ony Windows platform
         headers=True  # generate misc headers
     )    
-    UA=fake_header.generate()    
+    UA=fake_header.generate()  
+    ippo=get_proxy(which="OK",now=True)
+    proxies={"http": "http://"+ippo}     
     # 
     try:
         r = requests.get(url_q, 
                          headers=UA,
-                         #proxies=proxies,
+                         proxies=proxies,
                          #cookies=cookies,
                          timeout=20)    
         r.encoding='utf8'
