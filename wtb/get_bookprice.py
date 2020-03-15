@@ -123,7 +123,10 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
     )    
     UA=fake_header.generate()  
     ippo=get_proxy(which="OK",now=True)
-    proxies={"http": "http://"+ippo}     
+    proxies={
+            "http": "http://"+ippo,
+            #"https": "http://"+ippo
+            }  
     # 
     try:
         r = requests.get(url_q, 

@@ -67,8 +67,11 @@ def get_proxy(which='free',now=False):
             old.append(ippo)
         #    
         ip=ippo.split(":")[0]
-        proxies={"http": "http://"+ippo}  
-        #print("test:"+ippo)    
+        proxies={
+                "http": "http://"+ippo,
+                "https": "http://"+ippo
+                }  
+        print("test:"+ippo)    
         #clear_output(wait=True)
         try:
             test=['http://icanhazip.com/','https://myip.com.tw/','https://www.showmyipaddress.eu/']
@@ -96,8 +99,8 @@ def get_proxy(which='free',now=False):
                 raise Exception('fail')
                
         except Exception as e:
-            #print(str(e))
-            #clear_output(wait=True) 
+            print(str(e))
+            clear_output(wait=True) 
              
             sleep(1.5+random.uniform(0, 2))
             #sleep(0.1)

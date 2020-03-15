@@ -67,7 +67,10 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
     )    
     UA=fake_header.generate()
     ippo=get_proxy(which="OK",now=True)
-    proxies={"http": "http://"+ippo}    
+    proxies={
+            "http": "http://"+ippo,
+            #"https": "http://"+ippo
+            }
     #
     try:        
         r = requests.get(url_q, 
