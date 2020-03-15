@@ -35,6 +35,7 @@ import json
 import csv
 #
 from get_proxy import get_proxy
+from get_mollie import get_mollie
 #
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
@@ -111,6 +112,30 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             return bookprice        
         
     #3.開始抓==================================== 
+    #mollie用get_mollie的selenium
+    if store=='mollie':
+        isbn=isbn13 or isbn
+        result=get_mollie(isbn)        
+        #
+        if 'err' in result:
+            bookprice['err']=result[:50]
+        else:
+            bookprice['stock']=result
+        #
+        bookprice['create_dt']=timezone.now() #django timezone會抓OS的UTC時間
+        where={'bookid':bookprice['bookid'],#要用instance來指定
+               'store':store,#bookid+store決定唯一一筆，update_or_create是get
+               'defaults':bookprice}
+        row, create = Bookprice.objects.update_or_create(**where)          
+        #(2)整理回傳
+        bookprice['tryDB']=tryDB
+        bookprice['fromDB']=False
+        bookprice['create']=create
+        #回傳顯示CST台北時間
+        bookprice['create_dt']=bookprice['create_dt'].astimezone(tw)
+        #
+        return bookprice  
+    
     #根據store抓不同搜尋頁面
     #isbn='9789571380041' #9789571380049 #9789571380041AAA
     url_q=url_qs[store]+isbn+"+"+isbn13
@@ -127,8 +152,9 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             "http": "http://"+ippo,
             #"https": "http://"+ippo
             } 
+    #特殊處理___________________________________
     if store=='elite':
-        proxies={}
+        proxies={}                  
     # 
     try:
         r = requests.get(url_q, 

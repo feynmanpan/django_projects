@@ -82,8 +82,31 @@ function bar(){
 		})		
 		.append('title') 
 		.text((sn)=>"前往"+sn+"官網")
-		;	
-
+		;
+	//針對茉莉處理
+	//提示
+	function title_handle(b){
+		if(b.store!='mollie'){
+			return Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁"
+		}else{
+			return b.stock+'有庫存，點我聯絡'
+		}//if
+	}	
+	//價錢文字
+	function text_handle(b){
+		if(b.store!='mollie'){
+			return b.price_sale
+		}else{
+			if(b.price_sale==price_list){
+				//顯示庫存分店
+				//alert(b.stock);
+				return b.stock.replace(/店/g,'')
+			}else{
+				return ''
+			}
+		}//if		
+	}
+	
 	//BAR紙本售價
 	chart.selectAll()
 		.data(bookprices)
@@ -96,13 +119,23 @@ function bar(){
 		.attr('width', xScale.bandwidth())	
 		.attr('style', 'fill:rgb(210, 105, 30);cursor:pointer')
 		.on("click", function(b,i){
+			
 			if(b.url_book!=""){	
 				window.open(b.url_book, '_blank');     
-			}
+			};
+			/*
+			if(b.store=='mollie'){
+				if(b.price_sale==price_list){
+					window.open(b.url_book, '_blank'); //前往分店
+				}
+			};
+			*/
 		})	
 		.append('title')
-		.text((b)=>Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁")
+		//.text((b)=>Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁")
+		.text(title_handle)
 		;
+
 	//BAR電子書 
 	chart.selectAll()
 		.data(bookprices)
@@ -124,12 +157,13 @@ function bar(){
 		;	
 
 		
-	//紙本price
+	//文字:紙本price
 	chart.selectAll()
 		.data(bookprices)
 		.enter()
 		.append('text')
-		.text((b) => b.price_sale)
+		//.text((b) => b.price_sale)
+		.text(text_handle)
 		.attr('class',(b) => b.store+" price")
 	    .attr("text-anchor", "start")		
 		.attr('x', (b) => xScale(b.store_name)-8)
@@ -144,9 +178,18 @@ function bar(){
 			}
 		})	
 		.append('title')
-		.text((b)=>Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁")
+		//.text((b)=>Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁")
+		.text(title_handle)
 		;	
-	//ebook price
+	//茉莉店名位置處理
+	$("text.mollie.price")
+		.attr('text-anchor','middle')
+		.attr("font-size", "12px")
+		.css('font-weight','bolder')
+		.css('font-family','微軟正黑體')
+		;
+		
+	//文字:ebook price
 	chart.selectAll()
 		.data(bookprices)
 		.enter()

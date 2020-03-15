@@ -39,7 +39,8 @@
 			}
 		];	
 		//開始逐家push
-		{% for bookprice in book.price %}				
+		{% for bookprice in book.price %}
+			//___________________
 			bookprices.push(
 				{
 					'store_name'      :store_names[stores.indexOf('{{bookprice.store}}')],
@@ -49,11 +50,26 @@
 					'url_book'        :'{{bookprice.url_book}}'.replace(/&amp;/g, '&'),//ORM出來會變$amp;
 					'url_ebook'       :'{{bookprice.url_ebook}}'.replace(/&amp;/g, '&')	,
 					'url_vdo'         :'{{bookprice.url_vdo}}',
+					'stock'           :'{{bookprice.stock}}',
 				}
 			);
+			
 			{% ifequal bookprice.store 'taaze' %}
+				//taaze 書況影片
 				const taaze_vdo='{{bookprice.url_vdo}}';
 			{% endifequal %}	
+			
+			{% ifequal bookprice.store 'mollie' %}
+				{% if bookprice.stock %}
+					{% ifnotequal bookprice.stock 'nobook' %}
+						//茉莉有庫存分店名稱的處理
+						bookprices[bookprices.length-1].price_sale=price_list;
+						bookprices[bookprices.length-1].url_book='http://www.mollie.com.tw/Store.asp';
+					{% endifnotequal %}
+				{% endif %}
+			{% endifequal %}
+			
+			//=======================
 		{% endfor %}			
 		
 		//alert(JSON.stringify(bookprices));
@@ -91,7 +107,7 @@
 					<p id='vdo_btn' style='cursor:pointer;display:none'>
 						<img src='/mystatic/images/vdo_btn.png' style='vertical-align: top;'/> 
 						<span style='color:#e3007f;'>Taaze影片參考</span>
-						<span style=''>(影片內的書籍版本可能不同)</span>
+						<span style=''>(影片的書籍版本可能不同。播放問題則請至Taaze反應)</span>
 					</p>
 					<div id='vdo_close' style=''>
 						關閉影片
@@ -127,7 +143,12 @@
                     <span style=''>
                         售價有問題或沒有售價的原因很多，如爬蟲失敗，或該平台無銷售(博客來無絕版書)，或平台售價本身也有錯。
                     </span>
-                </li>                 
+                </li>
+                <li style=''>
+                    <span style=''>
+                        <span class='mollie'>茉莉</span> 若有售價長條，僅為了表示有庫存，實際售價請向顯示有庫存的<a href='http://www.mollie.com.tw/Store.asp' target='_blank' title='分店聯絡方式'>分店</a>洽詢。
+                    </span>
+                </li> 				
             </ol>
 			<svg id='bar'></svg>
 		</div>

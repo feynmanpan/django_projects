@@ -61,6 +61,7 @@ class Bookprice(models.Model):
     url_book         = models.URLField( default='', blank=True, null=False)
     url_ebook        = models.URLField( default='', blank=True, null=False)
     url_vdo          = models.URLField( default='', blank=True, null=False)
+    stock            = models.CharField(default='', blank=True, null=False, max_length=20)
     #
     create_dt        = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  
 

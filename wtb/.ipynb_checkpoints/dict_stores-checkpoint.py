@@ -5,14 +5,16 @@ url_qs={
         #'momo':"https://www.momoshop.com.tw/search/searchShop.jsp?keyword="
         #momo用手機板查
         'momo':"https://m.momoshop.com.tw/search.momo?searchKeyword=",
-        'taaze':"https://www.taaze.tw/rwd_searchResult.html?keyType%5B%5D=0&keyword%5B%5D="
+        'taaze':"https://www.taaze.tw/rwd_searchResult.html?keyType%5B%5D=0&keyword%5B%5D=",
+        'mollie':'http://www.mollie.com.tw/Mobile/Books.asp'
     }
 #
-store_names=['博客來','誠品','金石堂','momo','讀冊']
+store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉']
 store_urls=[
     'https://www.books.com.tw/',
     'http://www.eslite.com/',
     'https://www.kingstone.com.tw/',
     'https://www.momoshop.com.tw/main/Main.jsp',
-    'https://www.taaze.tw/index.html'
+    'https://www.taaze.tw/index.html',
+    'http://www.mollie.com.tw/News_List.asp'
 ]
