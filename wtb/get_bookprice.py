@@ -203,7 +203,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             url_book="https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code="+i_code
             r = requests.get(url_book, 
                              headers=UA,
-                             #proxies=proxies,
+                             proxies=proxies,
                              #cookies=cookies,
                              timeout=20)    
             r.encoding='utf8'
@@ -218,12 +218,26 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             url_book=''
             ms=doc.find("div.media[rel]")   
             if ms.size()==0:
-                raise Exception('count=0')            
+                raise Exception('count=0')  
+            #處理影片
+            oid=ms.eq(0).attr("rel2")
+            url_oid="https://www.taaze.tw/goods/"+oid+".html"
+            r = requests.get(url_oid, 
+                             headers=UA,
+                             proxies=proxies,
+                             #cookies=cookies,
+                             timeout=20)    
+            r.encoding='utf8'
+            #
+            doc_oid=pq(r.text)  
+            r.close() 
+            url_vdo=doc_oid.find('source').attr('src') or ''
             #________________price收集________________________________
             for m in ms:
                 #子店內碼
                 media=pq(m)
-                pid=media.attr('rel')                
+                pid=media.attr('rel')
+                #oid=media.attr('rel2')                                       
                 #(a)電子書
                 if pid[:2]=='14':
                     price_sale_ebook=media.attr("data-saleprice_28")
@@ -258,7 +272,9 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             bookprice['err']=error[:50]
     else:
         cols=['price_sale','url_book',
-              'price_sale_ebook','url_ebook']
+              'price_sale_ebook','url_ebook',
+              'url_vdo'
+             ]
         #
         for col in cols:         
             bookprice[col]=locals().get(col,'')

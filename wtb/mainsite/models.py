@@ -48,7 +48,7 @@ class Bookinfo(models.Model):
     class Meta:
         ordering = ('bookid',)  
 
-class Bookprice(models.Model):
+class Bookprice(models.Model):    
     err              = models.CharField(default='', blank=True, null=False, max_length=50)
     #DB存的欄位是bookid_id 
     bookid           = models.ForeignKey(Bookinfo, on_delete=models.CASCADE)
@@ -60,6 +60,7 @@ class Bookprice(models.Model):
     price_sale_ebook = models.CharField(default='', blank=True, null=False, max_length=10)
     url_book         = models.URLField( default='', blank=True, null=False)
     url_ebook        = models.URLField( default='', blank=True, null=False)
+    url_vdo          = models.URLField( default='', blank=True, null=False)
     #
     create_dt        = models.DateTimeField(default=timezone.now,verbose_name='更新日期')  
 

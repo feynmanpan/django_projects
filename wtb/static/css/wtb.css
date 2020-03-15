@@ -234,6 +234,39 @@ rect:hover{
 	vertical-align: middle;
 }
 
+#vdo{
+	display:none;
+	z-index:100;
+	border-radius: 25px;
+	position: fixed;
+    width: 720px;
+    height: 480px;
+    top: 0;
+    left: 50%;
+    margin-top: 60px;
+    margin-left: -360px;
+}
+
+#vdo_close{
+	display:none;
+	z-index: 101;
+	cursor:pointer;
+    border-radius: 10px;
+    position: fixed;
+    width: 5em;
+    height: 1.5em;
+    top: 0;
+    left: 50%;
+    margin-top: 65px;
+    margin-left: -2.5em;
+    font-size: 15px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    line-height: 1.5em;
+}
+
+
 @media screen and (max-width: 992px) {
 
     #tail p{

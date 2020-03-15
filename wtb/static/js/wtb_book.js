@@ -1,7 +1,32 @@
 $(document).ready(function(){
+	taaze_vdo_handle();
 	tail();
 	bar();
 });
+
+function taaze_vdo_handle(){
+		
+	if(taaze_vdo!=""){
+		
+		var vdo=$("#info_listp").find('video#vdo');
+		var vdo_btn=$('#vdo_btn');
+		var vdo_close=$('#vdo_close');
+		//
+		vdo.attr('src',taaze_vdo);
+		vdo_btn.show();		
+		//
+		vdo_btn.click(function(){
+			vdo.show();	
+			vdo_close.show();
+		});
+		
+		vdo_close.click(function(){
+			vdo.hide();	
+			vdo_close.hide();
+		});
+		
+	};//if
+}
 
 
 function tail(){

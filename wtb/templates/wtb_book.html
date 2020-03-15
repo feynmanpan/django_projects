@@ -36,18 +36,26 @@
 				'price_sale_ebook':'{{book.info.price_sale_ebook}}',
 				'url_book'        :'https://www.books.com.tw/products/{{book.info.bookid}}',
 				'url_ebook'       :'{{book.info.bookid_ebook}}'!=''?'https://www.books.com.tw/products/{{book.info.bookid_ebook}}':''		
-			},
-			{% for bookprice in book.price %}				
+			}
+		];	
+		//開始逐家push
+		{% for bookprice in book.price %}				
+			bookprices.push(
 				{
 					'store_name'      :store_names[stores.indexOf('{{bookprice.store}}')],
 					'store'           :'{{bookprice.store}}',
 					'price_sale'      :'{{bookprice.price_sale}}',
 					'price_sale_ebook':'{{bookprice.price_sale_ebook}}',
 					'url_book'        :'{{bookprice.url_book}}'.replace(/&amp;/g, '&'),//ORM出來會變$amp;
-					'url_ebook'       :'{{bookprice.url_ebook}}'.replace(/&amp;/g, '&')			
-				},				
-			{% endfor %}			
-		];
+					'url_ebook'       :'{{bookprice.url_ebook}}'.replace(/&amp;/g, '&')	,
+					'url_vdo'         :'{{bookprice.url_vdo}}',
+				}
+			);
+			{% ifequal bookprice.store 'taaze' %}
+				const taaze_vdo='{{bookprice.url_vdo}}';
+			{% endifequal %}	
+		{% endfor %}			
+		
 		//alert(JSON.stringify(bookprices));
 		//
 		
@@ -78,8 +86,19 @@
 					<p data-bookid='{{book.info.bookid}}'>ISBN：{{book.info.isbn}}</p>
 					{% if book.info.isbn13 %}
 						<p data-bookid='{{book.info.bookid}}'>ISBN13：{{book.info.isbn13}}</p>
-					{% endif %}					
-					
+					{% endif %}	
+					<!--taaze_vdo-->
+					<p id='vdo_btn' style='cursor:pointer;display:none'>
+						<img src='/mystatic/images/vdo_btn.png' style='vertical-align: top;'/> 
+						<span style='color:#e3007f;'>Taaze影片參考</span>
+						<span style=''>(影片內的書籍版本可能不同)</span>
+					</p>
+					<div id='vdo_close' style=''>
+						關閉影片
+					</div>
+					<video id='vdo' src="" controls="" style='' type="video/mp4">
+						Your browser does not support the video tag.
+					</video>
 				</div>
 			</div>
 		</div>
