@@ -3,7 +3,11 @@
 
 {% load static %}
 
-
+{% block og %} 
+    <meta property="og:title" content="嘩！找書" ></meta>
+    <meta property="og:image" content="http://wtb.nctu.me{% static 'images/favicon.png' %}"/>
+	<meta property="og:description" content="專業找書比價"></meta>
+{% endblock %}
 
 {% block title %} 嘩！找書 {% endblock %}
 

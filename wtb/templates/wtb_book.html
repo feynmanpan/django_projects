@@ -4,6 +4,11 @@
 {% load static %}
 {% load my_replace %}
 
+{% block og %} 
+    <meta property="og:title" content="{{book.info.title}}" ></meta>
+    <meta property="og:image" content="{{book.info.url_cover}}"/>
+	<meta property="og:description" content="定價：{{book.info.price_list}}，{{book.info.author}}，{{book.info.publisher}}"></meta>
+{% endblock %}
 
 {% block title %} 嘩！找書 | {{book.info.title}} {% endblock %}
 {% block js %} 
