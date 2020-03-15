@@ -3,6 +3,11 @@ register = template.Library()
 
 
 #register.filter('mrp', filter_my_replace)
+@register.filter
+def url_amp(urlstr):
+    """Removes all values of arg from the given string""" 
+    return urlstr.replace('&amp;', '&')
+
 
 @register.filter
 def author(authorstr):
