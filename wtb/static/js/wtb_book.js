@@ -7,19 +7,25 @@ $(document).ready(function(){
 function taaze_vdo_handle(){
 		
 	if(taaze_vdo!=""){
+
 		
 		var vdo=$("#info_listp").find('video#vdo');
 		var vdo_btn=$('#vdo_btn');
 		var vdo_close=$('#vdo_close');
 		//
+		var m=window.matchMedia('(max-width: 992px)').matches;		
+		if(m==true){
+
+		}		
+		//
 		vdo.attr('src',taaze_vdo);
 		vdo_btn.show();		
-		//
+		//顯示影片
 		vdo_btn.find('img,span:first').click(function(){
-			vdo.show();	
+			vdo.show().get(0).play();	
 			vdo_close.show();
 		});
-		
+		//隱藏影片
 		vdo_close.click(function(){
 			vdo.hide().get(0).pause();	
 			vdo_close.hide();
@@ -43,6 +49,11 @@ function bar(){
     const svg = d3.select('svg#bar');
 	svg.attr("width", TW)
 	   .attr("height", TH);
+	var m=window.matchMedia('(max-width: 992px)').matches;		
+	if(m==true){		
+		svg.attr("width", "100%")
+		   .attr("height", "auto");
+	}		   
 	//繪圖區   
 	const chart = svg.append('g').attr('transform', 'translate('+(margin/2+5)+','+margin/2+')');
 	//以定價為最高點

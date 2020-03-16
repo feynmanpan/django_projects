@@ -82,7 +82,7 @@
 		
 
 	</script>
-	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
+	<script src='{% static "js/wtb_book.js" %}?v=2'></script>
 {% endblock %}
 
 {% block content %} 
@@ -108,7 +108,7 @@
 					{% if book.info.isbn13 %}
 						<p data-bookid='{{book.info.bookid}}'>ISBN13：{{book.info.isbn13}}</p>
 					{% endif %}	
-					<!--taaze_vdo-->
+					<!--taaze_vdo--> 
 					<p id='vdo_btn' style='display:none'>
 						<img src='/mystatic/images/vdo_btn.png' style='vertical-align:top;cursor:pointer;'/> 
 						<span style='color:#e3007f;cursor:pointer;'>Taaze影片參考</span>
@@ -117,7 +117,7 @@
 					<div id='vdo_close' style=''>
 						關閉影片
 					</div>
-					<video id='vdo' src="" controls="" style='' type="video/mp4">
+					<video id='vdo' src="" controls style='' type="video/mp4">
 						Your browser does not support the video tag.
 					</video>
 				</div>
@@ -126,7 +126,7 @@
 		
 		<div id='price'>			
 			<h4 style="margin-bottom:10px;margin-left: 20px;">
-				<span style="color:rgb(210, 105, 30)">紙本</span>及<span style="color:rgb(100, 149, 237)">電子書</span>售價一覽<span class='ps'>(更新時間:{{book.info.create_dt}})</span>
+				<span style="color:rgb(210, 105, 30)">紙本</span>及<span style="color:rgb(100, 149, 237)">電子書</span>售價一覽圖<span class='ps'>(更新時間:{{book.info.create_dt}})</span>
 			</h4>
             <ol style='font-size:15px;color:black'>
                 <li style=''>
@@ -155,7 +155,7 @@
                     </span>
                 </li> 				
             </ol>
-			<svg id='bar'></svg>
+			<svg id='bar' viewBox="0 0 982 350"></svg>
 		</div>
 		
 		<div id='intro' style="font-size: 15px;padding: 15px;margin-top: -30px;">
@@ -168,7 +168,7 @@
 			
 			{% if book.info.url_vdo %}
 				<div style='text-align: center;margin-top: 2em;'>
-					<iframe width="560" height="315" src="{{book.info.url_vdo}}" frameborder="0" allowfullscreen></iframe>
+					<iframe id='intro_vdo' width="560" height="315" src="{{book.info.url_vdo}}" frameborder="0" allowfullscreen></iframe>
 				</div> 
 			{% endif %}				
 		</div>

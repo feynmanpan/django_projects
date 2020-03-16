@@ -284,7 +284,9 @@ rect:hover{
 }
 
 @media screen and (max-width: 992px) {
-
+	body{
+		overflow-x: hidden;
+	}
     #tail p{
         margin-bottom:0px;
         line-height:17px;
@@ -313,7 +315,64 @@ rect:hover{
     #store_logo_area{
         text-align:center;
     }
+	
+	.body{
+		width:95%;
+		margin-left: -2.5px;
+	}
+	#info{
+		text-align: center;
+		text-align: -webkit-center;		
+	}
+	#cover{
+		display: block;
+		margin:0px;
+		width:85vw;
+	}
+	#info_list{
+		width: 100%;
+		margin: 0px;
+		margin-top: 20px;
+		border-top: 0.5px solid grey;
+		border-bottom: 0.5px solid grey;
+	}
+	#info_listp{
+		text-align: left;
+		border: 0px;
+	}
+	#vdo{
+		/*display: block;*/
+		position: static;
+		width: 97%;
+		height:auto;
+		margin: 0px;
+		/*margin-top: -95px;*/
+		margin-bottom: 15px;
+		border-radius: 0px;
+	}
+	#vdo_close{
+		display:none;
+	}
+	#intro_vdo{
+		display: inline;
+		width: 100%;
+		top: 0px;
+		left: 0;
+		margin-left: 0px;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
