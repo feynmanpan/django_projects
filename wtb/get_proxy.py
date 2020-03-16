@@ -41,7 +41,7 @@ def get_proxy(which='free',now=False):
             lines=f.readlines()
             for line in lines:
                 line=line.strip()
-                if len(line.split(":"))>1:
+                if len(line.split(":"))==2:
                     ippos.append(line)
     if now:
         sleep(1.5)
@@ -71,7 +71,7 @@ def get_proxy(which='free',now=False):
                 "http": "http://"+ippo,
                 "https": "http://"+ippo
                 }  
-        print("test:"+ippo)    
+        #print("test:"+ippo)    
         #clear_output(wait=True)
         try:
             test=['http://icanhazip.com/','https://myip.com.tw/','https://www.showmyipaddress.eu/']
@@ -99,8 +99,8 @@ def get_proxy(which='free',now=False):
                 raise Exception('fail')
                
         except Exception as e:
-            print(str(e))
-            clear_output(wait=True) 
+            #print(str(e))
+            #clear_output(wait=True) 
              
             sleep(1.5+random.uniform(0, 2))
             #sleep(0.1)
