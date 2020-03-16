@@ -18,6 +18,8 @@
     border-radius: 5px;	
 }
 #close{		
+
+    width: fit-content;
 	text-align:center;
 	cursor:pointer;
     background-color: red;
@@ -35,7 +37,7 @@
 
 #result{
 	overflow-y: overlay;
-	max-height:450px;
+	max-height:80vh;
 	width:100%;
 	margin: 0 auto;
 	margin-top:15px;
@@ -113,6 +115,7 @@ p.title{
     padding-left: 8px;
     padding-right: 8px;
     border-radius: 5px;
+	width: fit-content;
 }
 .intro{
 	display: -webkit-box;
@@ -127,4 +130,23 @@ p.title{
     margin-top: 5px;
     padding-top: 5px;
 	text-align: justify;	
+}
+
+@media screen and (max-width: 992px) {
+	#result{
+		max-height:70vh;
+	}
+	.item{
+		width:90%;
+	}
+	.price_list {
+		top: 88%;
+		left: -84px;
+	}
+	#close{
+		display: block;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	
 }
