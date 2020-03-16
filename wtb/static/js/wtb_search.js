@@ -53,25 +53,31 @@ $(document).ready(function(){
 			type: "get",
 			url: "/search/",
 			timeout:1000*30,
-			data: "kw="+kw,
+			data: {kw:kw},//"kw="+kw,
 			dataType: "json", 
 			async:true,
-			error: function(err){ 
+		})
+		.fail(
+			function(err){ 
 				alert('爬蟲失敗，請重新按一次查詢，sorry');
 				//
-				ing.hide().data('show','N');
-				that.show();					
-			},
-			success: function(data){
+				//ing.hide().data('show','N');
+				//that.show();					
+			}//
+		)//fail
+		.done(
+			function(data){
 
 				var n=data.length;
 				if(n==0){
 					alert("無搜尋結果，請重新查詢");
 					//
-					ing.hide().data('show','N');
-					that.show();										
+					//ing.hide().data('show','N');
+					//that.show();										
+					//alert(1);
 					return false;
 				}
+				//alert(2);
 				//______________________________________
 				//$(".item").remove();
 				item_notkw.hide();
@@ -106,11 +112,18 @@ $(document).ready(function(){
 					item.appendTo(result);
 				};//for
 				$("#result").slideDown("slow").scrollTop(0); 
-				ing.hide().data('show','N');
-				that.show();
+				//ing.hide().data('show','N');
+				//that.show();
 
 			}//success
-		});//ajax
+		)//done
+		.always(
+			function(){
+				ing.hide().data('show','N');
+				that.show();	
+				//alert(1);
+			}
+		)//always
 	});//click
 	
 });//ready

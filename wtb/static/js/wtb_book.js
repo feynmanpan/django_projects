@@ -63,7 +63,8 @@ function bar(){
 	chart.append('g').attr("id","y-axis")
 	                 .call(d3.axisLeft(yScale))
 					 ;		
-
+	//加強讀冊顏色
+	$(".tick text:Contains('讀冊')").attr('fill','#e3007f').css('font-weight','bold');
 	//x軸跳官網
 	/*
 	$("#x-axis text").click(function(){
