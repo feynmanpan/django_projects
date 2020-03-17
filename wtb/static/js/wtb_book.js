@@ -47,13 +47,26 @@ function bar(){
     const height = TH - margin*2;
 	//SVG
     const svg = d3.select('svg#bar');
-	svg.attr("width", TW)
-	   .attr("height", TH);
+	//
 	var m=window.matchMedia('(max-width: 992px)').matches;		
 	if(m==true){		
 		svg.attr("width", "100%")
 		   .attr("height", "auto");
-	}		   
+	}else{
+		svg.attr("width", TW)
+		   .attr("height", TH);			
+	}	  
+	//
+	$(window).resize(function() {
+		var m=window.matchMedia('(max-width: 992px)').matches;		
+		if(m==true){		
+			svg.attr("width", "100%")
+			   .attr("height", "auto");
+		}else{
+			svg.attr("width", TW)
+			   .attr("height", TH);			
+		}
+	});	
 	//繪圖區   
 	const chart = svg.append('g').attr('transform', 'translate('+(margin/2+5)+','+margin/2+')');
 	//以定價為最高點
