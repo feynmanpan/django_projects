@@ -75,7 +75,7 @@ def get_proxy(which='free',now=False):
         #clear_output(wait=True)
         try:
             test=['http://icanhazip.com/','https://myip.com.tw/','https://www.showmyipaddress.eu/']
-            r = requests.get(test[0], 
+            r = requests.get(random.choice(test),#test[1], 
                              headers=UA,
                              proxies=proxies,
                              timeout=4)
