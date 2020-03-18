@@ -36,7 +36,8 @@
 
 
 #result{
-	overflow-y: overlay;
+	overflow-y: scroll;
+	overflow-y: overlay;/*FF不支援*/
 	max-height:80vh;
 	width:100%;
 	margin: 0 auto;
