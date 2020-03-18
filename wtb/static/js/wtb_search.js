@@ -1,5 +1,29 @@
 
 $(document).ready(function(){ 
+	//autocomplete
+	$("#kw_input").autocomplete({
+		source: function( request, response ) {
+			$.ajax({   
+				type: "get",
+				url: "/autocom/",
+				timeout:1000*30,
+				data:{kw:request.term},
+				dataType: "json", 
+				async:true,
+			})
+			.done(function(data){
+				response(
+					$.map(
+						//data.suggestions, 
+						data,
+						function (item){   
+							return item.substr(0,33) 
+						}
+					)//map
+				);
+			});//ajax
+		}//source
+	});		
 	//關閉搜尋結果
 	$('#close').click(function(){
 		$("#result").slideUp("slow");

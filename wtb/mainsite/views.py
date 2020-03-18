@@ -13,13 +13,14 @@ from .models import Bookinfo,Bookprice,Store,Post
 from get_bookinfo import get_bookinfo
 from get_bookprice import get_bookprice
 from get_searchBooks import get_searchBooks
+from get_biggoKW import get_biggoKW
 from dict_stores import url_qs,store_names,store_urls
 #
 from threading import Thread
 from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor 
 import json
 
-# 處理首頁  
+# 處理首頁    
 def wtb_index(request):
     stores = Store.objects.all().order_by('code')
     stores_count=stores.count()
@@ -79,13 +80,19 @@ def wtb_book(request,bookid='0010829817'):
     else:
         return render(request, 'wtb_book.html', locals())
 
+# 搜尋結果
 def wtb_search(request):
     kw=request.GET['kw']
     jsonstr=get_searchBooks(kw,which='OK',now=True)
     #
     return HttpResponse(jsonstr)
 
-
+# 推薦關鍵字
+def wtb_autocom(request):
+    kw=request.GET['kw']
+    jsonstr=get_biggoKW(kw,which='OK',now=True)
+    #
+    return HttpResponse(jsonstr)
 
 
 def homepage(request,test):
