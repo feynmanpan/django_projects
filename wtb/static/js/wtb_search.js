@@ -14,10 +14,11 @@ $(document).ready(function(){
 			.done(function(data){
 				response(
 					$.map(
-						//data.suggestions, 
-						data,
+						//data.suggestions,//biggo 
+						data,//taaze_elite 
 						function (item){   
 							return item.substr(0,33) 
+							//return item['value'].substr(0,33) //elite
 						}
 					)//map
 				);

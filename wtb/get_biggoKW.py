@@ -35,8 +35,12 @@ django.setup()
 def get_biggoKW(kw:str='村上春樹',which='free',now=False):    
     #E:\00_Taaze\01_Taaze\doc\eclipse-workspace\taaze\src\new-service\com\xsx\ec\service\impl\EcSearchResultImp.java
     #注意ajax response格式
-    url_q='https://searchapi.biggo.com/taaze/suggestion.php?query='+kw    
+    #url_q='https://searchapi.biggo.com/taaze/suggestion.php?query='+kw    
     #url_q='https://biggo.com.tw/api/suggestion.php?query='+kw
+    #url_q='http://www.eslite.com/Search_BW_DataSrc.aspx?term='+kw
+    
+    #https://www.taaze.tw/new_ec/rwd/include/js/main.js?v=6
+    url_q='https://www.taaze.tw/beta/autocompleted.jsp?k='+kw
     fake_header = Headers(
         browser="chrome",  # Generate only Chrome UA
         os="win",  # Generate ony Windows platform
@@ -48,19 +52,21 @@ def get_biggoKW(kw:str='村上春樹',which='free',now=False):
     #ippo=get_proxy(which,now)
     #ippo="94.205.140.158:34561"
     #proxies={
-            #"http": "http://"+ippo,
+     #       "http": "http://"+ippo,
             ##"https": "http://"+ippo
-            #}
+      #      }
     try:
         r = requests.get(url_q,                 
                          headers=UA,
+                         #data={'k':'村'},
                          #proxies=proxies,
                          #cookies=cookies,
                          timeout=15)    
         r.encoding='utf8'
-        #r.text
+        ans=r.text
+        r.close()
         #json.loads(r.text)        
-        return r.text
+        return ans
     except Exception as err:
         return ''#str(err)
     
