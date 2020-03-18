@@ -30,14 +30,48 @@ wtb_base.html
 	<!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>-->
 	<link rel="stylesheet" href='{% static "css/jquery-ui_1_12_1.css" %}?v=1'/>
 	<style>
-		.ui-autocomplete{
-			z-index:1000;
-		}
+
 		.ui-widget.ui-widget-content {
 			border-top: 0px;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			max-height: 60vh;
+			max-width:450px;
+			padding-top:5px;			
+		}	
+		.ui-autocomplete{
+			z-index:1000;
+			position: fixed;
+			padding-bottom: 10px;
+			padding-left: 5px;
 		}		
-		.ui-menu-item div{
-			font-size:14px
+		.ui-autocomplete::-webkit-scrollbar {
+			-webkit-appearance: none;
+		}
+
+		.ui-autocomplete::-webkit-scrollbar:vertical {
+			width: 10px;
+		}
+		.ui-autocomplete::-webkit-scrollbar-thumb {
+			border-radius: 8px;
+			border: 2px solid white; /* should match background, can't be transparent */
+			background-color: rgba(0, 0, 0, .5);
+		}	
+		
+		.ui-menu .ui-menu-item-wrapper{			
+		}
+		.ui-menu-item {			
+			font-size:13px;
+		}		
+		.ui-widget-content .ui-state-active {			
+			background: lightgrey;/*rgb(210, 105, 30);*/
+			color:black;			
+			border:1px solid lightgrey;/*屬性要全部寫出來*/
+		}		
+		@media screen and (max-width: 992px) {
+			.ui-widget.ui-widget-content {
+				width:80vw;
+			}
 		}
     </style>
 	<!--D3.js-->
