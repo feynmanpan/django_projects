@@ -82,14 +82,15 @@ def wtb_book(request,bookid='0010829817'):
         return render(request, 'wtb_book.html', locals())
 
 # 搜尋結果
-@cache_page(60*60*12)
+@cache_page(60*60*24)
 def wtb_search(request):
     kw=request.GET['kw']
     jsonstr=get_searchBooks(kw,which='OK',now=True)
     #
     return HttpResponse(jsonstr)
 
-# 推薦關鍵字
+# 推薦關鍵字  
+@cache_page(60*60*24*3)
 def wtb_autocom(request):
     kw=request.GET['kw']
     jsonstr=get_biggoKW(kw,which='OK',now=True)
