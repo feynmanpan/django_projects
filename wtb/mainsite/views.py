@@ -3,6 +3,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.utils import timezone
+from django.views.decorators.cache import cache_page
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
 from datetime import datetime
@@ -81,6 +82,7 @@ def wtb_book(request,bookid='0010829817'):
         return render(request, 'wtb_book.html', locals())
 
 # 搜尋結果
+@cache_page(60*60*12)
 def wtb_search(request):
     kw=request.GET['kw']
     jsonstr=get_searchBooks(kw,which='OK',now=True)

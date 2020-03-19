@@ -26,7 +26,19 @@ SECRET_KEY = '37irddih2k@s=v*&u_cio$oho)@3z21lt)es)by_&h@!1mlxzb'
 DEBUG = True
 
 ALLOWED_HOSTS = ["wtb.nctu.me","35.221.198.157","35.185.150.98"]
-
+#https://docs.djangoproject.com/en/3.0/topics/cache/
+CACHES = {
+    'default': {
+        #'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        #'LOCATION': '35.185.150.98:11211',
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',  # 指定快取使用的引擎 
+        'LOCATION': 'unique-snowflake',         # 寫在記憶體中的變數的唯一值         
+        'OPTIONS':{
+            'MAX_ENTRIES': 600,            # 最大快取記錄的數量（預設300）
+            'CULL_FREQUENCY': 3,           # 快取到達最大個數之後，剔除快取個數的比例，即：1/CULL_FREQUENCY（預設3）
+        }        
+    }
+}
 
 # Application definition       
 
@@ -37,11 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	#
-	'django.contrib.humanize',	#千分位
-	'mainsite',
-	'markdown_deux'
-	
+    #
+    'django.contrib.humanize',    #千分位
+    'mainsite',
+    'markdown_deux'
+    
 ]
 
 MIDDLEWARE = [

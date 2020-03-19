@@ -53,7 +53,7 @@ $(document).ready(function(){
 		var ing=$('#ing');
 		that.hide();
 		ing.show().data('show','Y');
-		
+		var stime=Date.now();
 		//==============================================
 		//若已搜過此kw	
 		var item_kw=$(".item[data-kw='"+kw+"']");//要加單引號，有些kw有點 . 會出錯
@@ -69,7 +69,12 @@ $(document).ready(function(){
 			//
 			$("#result").slideDown("slow").scrollTop(0);	
 			ing.hide().data('show','N');
-			that.show();			
+			that.show();
+			//
+			var etime=Date.now();
+			D=(etime-stime)/1000;
+			$("#process_time span").text(D).attr('data-from','local');
+			//
 			return false;
 		}
 		//==============================================
@@ -137,6 +142,7 @@ $(document).ready(function(){
 					item.appendTo(result);
 				};//for
 				$("#result").slideDown("slow").scrollTop(0); 
+
 				//ing.hide().data('show','N');
 				//that.show();
 
@@ -147,6 +153,9 @@ $(document).ready(function(){
 				ing.hide().data('show','N');
 				that.show();	
 				//alert(1);
+				var etime=Date.now();
+				D=(etime-stime)/1000;
+				$("#process_time span").text(D).attr('data-from','server');				
 			}
 		)//always
 	});//click
