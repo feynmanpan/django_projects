@@ -30,6 +30,15 @@ $(document).ready(function(){
 		$("#result").slideUp("slow");
 		$("body").css('overflow','visible');
 	});
+	
+	$(document).on('keyup',function(evt) {
+		//ESC
+		if (evt.keyCode == 27) {
+			$('#close').trigger('click');
+		}
+	});
+	
+
 
 	$("#kw_input").keyup(function(event) {
 		// Number 13 is the "Enter" key on the keyboard
