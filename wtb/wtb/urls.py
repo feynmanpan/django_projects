@@ -9,13 +9,13 @@ Function views
 Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
+Including another URLconf    
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls')) 
 """
 from django.contrib import admin
 from django.urls import path,include
-from mainsite.views import wtb_index,wtb_book,wtb_search,wtb_autocom,homepage, homepage_1,homepage_2,showpost,showpost_1
+from mainsite.views import wtb_index,wtb_book,wtb_search,wtb_autocom,wtb_hybook,homepage, homepage_1,homepage_2,showpost,showpost_1
 
 
 test_patterns=[
@@ -28,6 +28,7 @@ urlpatterns = [
     path('book/<str:bookid>/', wtb_book),
     path('search/', wtb_search),
     path('autocom/', wtb_autocom),
+    path('hybook/<int:page>/', wtb_hybook),
     #
     path('index/<str:test>/', homepage),
     #path('index_1/', homepage_1,{'AAA':2345}),

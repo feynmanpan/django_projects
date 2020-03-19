@@ -15,6 +15,7 @@ from get_bookinfo import get_bookinfo
 from get_bookprice import get_bookprice
 from get_searchBooks import get_searchBooks
 from get_biggoKW import get_biggoKW
+from get_hybook import get_hybook
 from dict_stores import url_qs,store_names,store_urls
 #
 from threading import Thread
@@ -89,14 +90,21 @@ def wtb_search(request):
     #
     return HttpResponse(jsonstr)
 
-# 推薦關鍵字  
+# 推薦關鍵字
 @cache_page(60*60*24*3)
 def wtb_autocom(request):
     kw=request.GET['kw']
     jsonstr=get_biggoKW(kw,which='OK',now=True)
     #
     return HttpResponse(jsonstr)
-
+# 曉園_http://www.hybook.com.tw/search.asp?page=12 
+def wtb_hybook(request,page):
+    s=time()
+    rows=get_hybook(page)
+    e=time()
+    ans=f'第{page}頁(花{e-s}秒)<br>'+'<br>'.join(rows)
+    #
+    return HttpResponse(ans)
 
 def homepage(request,test):
     posts = Post.objects.all()
