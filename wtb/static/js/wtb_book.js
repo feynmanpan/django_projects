@@ -30,6 +30,12 @@ function taaze_vdo_handle(){
 			vdo.hide().get(0).pause();	
 			vdo_close.hide();
 		});
+		$(document).on('keyup',function(evt) {
+			//ESC
+			if (evt.keyCode == 27) {
+				vdo_close.trigger('click');
+			}
+		});		
 		
 	};//if
 }
