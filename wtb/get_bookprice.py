@@ -139,6 +139,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
     #根據store抓不同搜尋頁面
     #isbn='9789571380041' #9789571380049 #9789571380041AAA
     url_q=url_qs[store]+isbn+"+"+isbn13
+    url_q_13=url_qs[store]+isbn13
     #print(url_q)
     #
     fake_header = Headers(
@@ -244,7 +245,18 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             url_book=''
             ms=doc.find("div.media[rel]")   
             if ms.size()==0:
-                raise Exception('count=0')  
+                #單獨用isbn13再查一次
+                r = requests.get(url_q_13, 
+                                 headers=UA,
+                                 proxies=proxies,
+                                 #cookies=cookies,
+                                 #allow_redirects=False,
+                                 timeout=20) 
+                doc=pq(r.text)
+                r.close() 
+                ms=doc.find("div.media[rel]") 
+                if ms.size()==0:
+                    raise Exception('count=0')  
             #處理影片
             oid=ms.eq(0).attr("rel2")
             url_oid="https://www.taaze.tw/goods/"+oid+".html"

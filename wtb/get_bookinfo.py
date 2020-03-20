@@ -28,6 +28,7 @@ import json
 import csv
 #
 from get_proxy import get_proxy
+from get_isbn_from_elite import get_isbn_from_elite
 #
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
@@ -67,10 +68,10 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
     )    
     UA=fake_header.generate()
     ippo=get_proxy(which="OK",now=True)
-    #ippo="94.205.140.158:34561"
+    #ippo="103.236.114.38:49638"
     proxies={
             "http": "http://"+ippo,
-            #"https": "http://"+ippo
+            #"https": "http://"+ippo  #https有問題
             }
     #
     try:        
@@ -78,7 +79,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
                          headers=UA,
                          proxies=proxies,
                          #cookies=cookies,
-                         timeout=60)    
+                         timeout=30)    
         r.encoding='utf8'
         #
         #print(r.text)
@@ -96,15 +97,21 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         if '錯誤' in msg_info:
             raise Exception('notfound')
   
-        #(2)只抓有isbn的        
+        #(2)只抓有isbn的，博客來有時完全沒有isbn，如刺蝟的優雅十周年版
         isbn=doc.find(".mod_b.type02_m058.clearfix .bd").find("ul").eq(0).find("li").eq(0).text()
+        isbn13=''
         if 'ISBN' not in isbn:
-            raise Exception('noisbn')
+            title=doc.find(".mod.type02_p002.clearfix > h1").text()
+            isbns=get_isbn_from_elite(title)
+            if not isbns:
+                raise Exception('noisbn')
+            isbn=isbns[0]
+            isbn13=isbns[1]
             
         #________________info收集________________________________
         #ISBN
         isbn=isbn.replace("ISBN：","")
-        if len(isbn)==10:
+        if len(isbn)==10 and not isbn13:
             isbn13=isbnlib.to_isbn13(isbn)
         #書名
         title=doc.find(".mod.type02_p002.clearfix > h1").text()

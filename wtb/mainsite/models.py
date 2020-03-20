@@ -46,7 +46,7 @@ class Bookinfo(models.Model):
     def __str__(self):
         return self.bookid #在admin，給bookprice顯示下拉
     class Meta:
-        ordering = ('bookid',)  
+        ordering = ('-create_dt',)  
 
 class Bookprice(models.Model):    
     err              = models.CharField(default='', blank=True, null=False, max_length=50)

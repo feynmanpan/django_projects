@@ -77,19 +77,19 @@
 			//=======================
 		{% endfor %}			
 		
-		//alert(JSON.stringify(bookprices));
+		//alert(JSON.stringify(bookprices));     
 		//
 		
 
 	</script>
-	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
+	<script src='{% static "js/wtb_book.js" %}?v=2'></script>
 {% endblock %}
 
 {% block content %} 
 	<div id='body_book' class='body' align='' style="">
 		<iframe id="wtb_book_bg" class="background" src="https://threejsfundamentals.org/threejs/background.html"></iframe>
 		
-		<div id='info'>
+		<div id='info' data-bookid='{{book.info.bookid}}'>
 			<img id='cover' src='{{book.info.url_cover}}'>
 			<div id='info_list'>
 				<h4 style='margin-top:10px;margin-bottom:0px'>{{book.info.title}}</h4>
