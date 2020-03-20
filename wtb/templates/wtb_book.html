@@ -82,7 +82,7 @@
 		
 
 	</script>
-	<script src='{% static "js/wtb_book.js" %}?v=3'></script>
+	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
 {% endblock %}
 
 {% block content %} 
@@ -155,10 +155,12 @@
                     </span>
                 </li> 				
             </ol>
-			<svg id='bar' viewBox="0 0 982 350"></svg>
+			<div style='text-align:center'>
+				<svg id='bar' viewBox="0 0 982 350" style="background-color:white"></svg>
+			</div>
 		</div>
 		
-		<div id='intro' style="font-size: 15px;padding: 15px;margin-top: -30px;">
+		<div id='intro' style="font-size: 15px;padding: 15px;margin-top: 10px;">
 			{% if book.info.intro %}
 				<h3 style='color: #f28900;border-bottom: 0.5px solid grey'>內容簡介</h3>
 				{% autoescape off %}

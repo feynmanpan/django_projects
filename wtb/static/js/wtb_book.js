@@ -50,7 +50,7 @@ function bar(){
 	const TW=982;
 	const TH=350;
     const width = TW;
-    const height = TH - margin*2;
+    const height = TH - margin*1;
 	//SVG
     const svg = d3.select('svg#bar');
 	//
