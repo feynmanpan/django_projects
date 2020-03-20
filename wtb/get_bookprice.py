@@ -288,6 +288,12 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         elif store=='iread':
             price_sale=doc.find('.PP').find('.redword2').eq(-1).text() or ''
             url_book=doc.find('meta[property="og:url"]').attr('content') or ''
+        #(6)城邦
+        elif store=='cite':
+            price_sale=doc.find('.book-info-2 ul').find('span.font-color01').eq(-1).text() or ''
+            url_book=doc.find('.book-img.book_div a').attr('href') or ''
+            if url_book:
+                url_book='https://www.cite.com.tw'+url_book            
         
         #在js處理&amp;
         #url_book=urllib.parse.quote(url_book)

@@ -123,6 +123,9 @@ function bar(){
 			return b.stock+'有庫存，點我聯絡'
 		}//if
 	}	
+	function title_handle_e(b){
+		return b.price_sale_ebook+"元("+Math.round(parseInt(b.price_sale_ebook)*100/price_list)+"折):前往"+b.store_name+"電子書商品頁"
+	}		
 	//價錢文字
 	function text_handle(b){
 		if(b.store!='mollie'){
@@ -166,6 +169,9 @@ function bar(){
 		//.text((b)=>Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁")
 		.text(title_handle)
 		;
+	$("rect.books.price").css('fill','#94c722');
+	$("rect.taaze.price").css('fill','#e3007f');
+		
 
 	//BAR電子書 
 	chart.selectAll()
@@ -184,7 +190,8 @@ function bar(){
 			}
 		})
 		.append('title')
-		.text((b)=>Math.round(parseInt(b.price_sale_ebook)*100/price_list)+"折 : 前往"+b.store_name+"電子書商品頁")		
+		//.text((b)=>Math.round(parseInt(b.price_sale_ebook)*100/price_list)+"折 : 前往"+b.store_name+"電子書商品頁")		
+		.text(title_handle_e)
 		;	
 
 		
@@ -219,6 +226,10 @@ function bar(){
 		.css('font-weight','bolder')
 		.css('font-family','微軟正黑體')
 		;
+	$("rect.mollie.price")
+		.css('stroke','rgb(52, 19, 16)')
+		.css('stroke-width','2px')
+		;
 		
 	//文字:ebook price
 	chart.selectAll()
@@ -240,7 +251,8 @@ function bar(){
 			}
 		})		
 		.append('title')
-		.text((b)=>Math.round(parseInt(b.price_sale_ebook)*100/price_list)+"折 : 前往"+b.store_name+"電子書商品頁")		
+		//.text((b)=>Math.round(parseInt(b.price_sale_ebook)*100/price_list)+"折 : 前往"+b.store_name+"電子書商品頁")	
+		.text(title_handle_e)
 		;	
 		
 

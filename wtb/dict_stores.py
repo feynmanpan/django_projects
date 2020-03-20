@@ -7,10 +7,12 @@ url_qs={
         'momo':"https://m.momoshop.com.tw/search.momo?searchKeyword=",
         'taaze':"https://www.taaze.tw/rwd_searchResult.html?keyType%5B%5D=0&keyword%5B%5D=",
         'mollie':'http://www.mollie.com.tw/Mobile/Books.asp',
-        'iread':'https://www.iread.com.tw/search_results.aspx?Condition=0&skeyword='
+        'iread':'https://www.iread.com.tw/search_results.aspx?Condition=0&skeyword=',
+        'cite':'https://www.cite.com.tw/search_result?keywords=',
     }
-#
-store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊']
+#顯示在svg的店家名稱
+store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦']
+#顯示在svg的店家官網
 store_urls=[
     'https://www.books.com.tw/',
     'http://www.eslite.com/',
@@ -18,5 +20,6 @@ store_urls=[
     'https://www.momoshop.com.tw/main/Main.jsp',
     'https://www.taaze.tw/index.html',
     'http://www.mollie.com.tw/News_List.asp',
-    'https://www.iread.com.tw/index.aspx'
+    'https://www.iread.com.tw/index.aspx',
+    'https://www.cite.com.tw/',
 ]
