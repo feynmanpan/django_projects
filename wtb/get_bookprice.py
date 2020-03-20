@@ -283,7 +283,12 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                         price_sale=media.attr("data-min_sale_price")#要用小寫
                         url_book=media.find(".titleMain").find("a").attr("href") 
                     #
-                    continue            
+                    continue 
+        #(5)灰熊
+        elif store=='iread':
+            price_sale=doc.find('.PP').find('.redword2').eq(-1).text() or ''
+            url_book=doc.find('meta[property="og:url"]').attr('content') or ''
+        
         #在js處理&amp;
         #url_book=urllib.parse.quote(url_book)
         #price_sale_ebook=urllib.parse.quote(price_sale_ebook)

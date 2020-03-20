@@ -118,7 +118,7 @@ function bar(){
 	//提示
 	function title_handle(b){
 		if(b.store!='mollie'){
-			return Math.round(parseInt(b.price_sale)*100/price_list)+"折 : 前往"+b.store_name+"紙本商品頁"
+			return b.price_sale+"元("+Math.round(parseInt(b.price_sale)*100/price_list)+"折):前往"+b.store_name+"紙本商品頁"
 		}else{
 			return b.stock+'有庫存，點我聯絡'
 		}//if
@@ -173,7 +173,7 @@ function bar(){
 		.enter()
 		.append('rect')
 		.attr('class',(b) => b.store+" price")
-		.attr('x', (b) => xScale(b.store_name)+10)
+		.attr('x', (b) => xScale(b.store_name)+7)
 		.attr('y', (b) => yScale(b.price_sale_ebook))
 		.attr('height', (b) => height-yScale(b.price_sale_ebook))
 		.attr('width', xScale.bandwidth()*0.7)	
