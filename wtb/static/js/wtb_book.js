@@ -80,7 +80,7 @@ function bar(){
 	const xScale = d3.scaleBand()
 					 .range([0,width])
 					 .domain(store_names)
-					 .padding(0.85)
+					 .padding(0.85)//越小bar寬越大
 					 ;	
 	const yScale = d3.scaleLinear()
 					 .range([height, 0])
