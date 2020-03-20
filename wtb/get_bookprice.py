@@ -293,7 +293,13 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             price_sale=doc.find('.book-info-2 ul').find('span.font-color01').eq(-1).text() or ''
             url_book=doc.find('.book-img.book_div a').attr('href') or ''
             if url_book:
-                url_book='https://www.cite.com.tw'+url_book            
+                url_book='https://www.cite.com.tw'+url_book     
+        #(7)天瓏
+        elif store=='tenlong':
+            price_sale=doc.find('.pricing .price').text().replace('售價: $','') or ''
+            url_book=doc.find('.cover').attr('href') or ''
+            if url_book:
+                url_book='https://www.tenlong.com.tw'+url_book               
         
         #在js處理&amp;
         #url_book=urllib.parse.quote(url_book)

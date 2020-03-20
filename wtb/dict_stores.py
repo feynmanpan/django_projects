@@ -9,9 +9,10 @@ url_qs={
         'mollie':'http://www.mollie.com.tw/Mobile/Books.asp',
         'iread':'https://www.iread.com.tw/search_results.aspx?Condition=0&skeyword=',
         'cite':'https://www.cite.com.tw/search_result?keywords=',
+        'tenlong':'https://www.tenlong.com.tw/search?keyword=',
     }
 #顯示在svg的店家名稱
-store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦']
+store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏']
 #顯示在svg的店家官網
 store_urls=[
     'https://www.books.com.tw/',
@@ -22,4 +23,5 @@ store_urls=[
     'http://www.mollie.com.tw/News_List.asp',
     'https://www.iread.com.tw/index.aspx',
     'https://www.cite.com.tw/',
+    'https://www.tenlong.com.tw/',
 ]
