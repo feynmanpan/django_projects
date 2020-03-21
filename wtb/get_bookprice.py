@@ -155,7 +155,13 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             } 
     #特殊處理___________________________________
     if store=='elite':
-        proxies={}                  
+        proxies={}  
+    if store=='ruten':
+        url_api1="https://rtapi.ruten.com.tw/api/search/v2/index.php/core/prod?sort=prc%2Fac&q="
+        url_api2="https://rtapi.ruten.com.tw/api/search/v2/index.php/m/core/prod?sort=prc%2Fac&q="
+        url_apis=[url_api1,url_api2]
+        isbn=isbn13 or isbn
+        url_q=random.choice(url_apis)+isbn
     # 
     try:
         r = requests.get(url_q, 
@@ -167,7 +173,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         r.encoding='utf8'
         #print(r.text)
         #
-        doc=pq(r.text)
+        doc=pq(r.text)                    
         r.close()
         #________________例外收集________________________________                            
         #狀態碼400~599        
@@ -311,7 +317,32 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             price_sale=doc.find('.pricing .price').text().replace('售價: $','') or ''
             url_book=doc.find('.cover').attr('href') or ''
             if url_book:
-                url_book='https://www.tenlong.com.tw'+url_book               
+                url_book='https://www.tenlong.com.tw'+url_book 
+        #(8)露天
+        elif store=='ruten': 
+            #先決定最低價的店內碼
+            ans_dict=json.loads(r.text)
+            TotalRows=ans_dict['TotalRows']
+            if TotalRows>0:
+                rt_id=ans_dict['Rows'][0]['Id']             
+            #再去商品頁查
+            if rt_id:
+                url_book="https://goods.ruten.com.tw/item/show?"+rt_id  
+                url_book_m="https://m.ruten.com.tw/goods/show.php?g="+rt_id
+                r = requests.get(url_book_m, #PC版常有亂碼
+                                 headers=UA,
+                                 proxies=proxies,
+                                 #allow_redirects=False,
+                                 timeout=30) 
+                r.encoding='utf8'
+                #
+                doc_prod=pq(r.text)
+                r.close()
+                #
+                #desc=doc_prod.find('meta[property="og:description"]').attr('content') #PC版常有亂碼
+                desc=doc_prod.find("script[type='application/ld+json']").eq(0).text() or ''
+                price_sale=re.search('直購價：([0-9]+?)元',desc).group(1) or ''            
+                
         
         #在js處理&amp;
         #url_book=urllib.parse.quote(url_book)
