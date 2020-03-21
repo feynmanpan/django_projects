@@ -166,18 +166,21 @@
 		</div>
 		
 		<div id='intro' style="font-size: 15px;padding: 15px;margin-top: 10px;">
+			
 			{% if book.info.intro %}
 				<h3 style='color: #f28900;border-bottom: 0.5px solid grey'>內容簡介</h3>
+				<!---->
+				{% if book.info.url_vdo %}
+					<div style='text-align: center;margin-top: 2em;margin-bottom: 2em;'>
+						<iframe id='intro_vdo' width="560" height="315" src="{{book.info.url_vdo}}" frameborder="0" allowfullscreen></iframe>
+					</div> 
+				{% endif %}		
+				<!---->
 				{% autoescape off %}
 					{{book.info.intro}}
 				{% endautoescape %}	
-			{% endif %}	
-			
-			{% if book.info.url_vdo %}
-				<div style='text-align: center;margin-top: 2em;'>
-					<iframe id='intro_vdo' width="560" height="315" src="{{book.info.url_vdo}}" frameborder="0" allowfullscreen></iframe>
-				</div> 
 			{% endif %}				
+			
 		</div>
 	</div>	
 {% endblock %}
