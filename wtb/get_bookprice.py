@@ -341,7 +341,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                 #
                 #desc=doc_prod.find('meta[property="og:description"]').attr('content') #PC版常有亂碼
                 desc=doc_prod.find("script[type='application/ld+json']").eq(0).text() or ''
-                price_sale=re.search('直購價：([0-9]+?)元',desc).group(1) or ''            
+                price_sale=re.search('直購價：([0-9,]+?)元',desc).group(1) or ''            
                 
         
         #在js處理&amp;
