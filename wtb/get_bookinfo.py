@@ -165,7 +165,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #簡介
         intro=doc.find(".bd .content").eq(0).html() or ''
         #YT影片
-        url_vdo=doc.find('.cont iframe').attr('src') or ''
+        url_vdo=doc.find('.cont iframe').eq(0).attr('src') or ''
         #封面
         url_cover=doc.find(".cover_img > img.cover").attr("src")
 
