@@ -51,12 +51,13 @@ def get_hybook(page):
             #
             r = requests.get(url_hybook, 
                              headers=UA,
-                             proxies=proxies,
+                             #proxies=proxies,
                              timeout=8,
                              allow_redirects=False
                             )
-            r.encoding='utf-8'
-            doc=pq(r.content)
+            #r.encoding='utf-8'
+            r.encoding='big5'
+            doc=pq(r.text)
             #print(r.content) #text有亂碼
             r.close()
 
