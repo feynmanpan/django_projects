@@ -314,7 +314,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                 url_book='https://www.cite.com.tw'+url_book     
         #(7)天瓏
         elif store=='tenlong':
-            price_sale=doc.find('.pricing .price').text().replace('售價: $','').replace('貴賓價: $','') or ''
+            price_sale=doc.find('.pricing .price').eq(0).text().replace('售價: $','').replace('貴賓價: $','') or ''
             url_book=doc.find('.cover').attr('href') or ''
             if url_book:
                 url_book='https://www.tenlong.com.tw'+url_book 
