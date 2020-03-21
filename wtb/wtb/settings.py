@@ -34,7 +34,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',  # 指定快取使用的引擎 
         'LOCATION': 'unique-snowflake',         # 寫在記憶體中的變數的唯一值         
         'OPTIONS':{
-            'MAX_ENTRIES': 600,            # 最大快取記錄的數量（預設300）
+            'MAX_ENTRIES': 1800,            # 最大快取記錄的數量（預設300） 
             'CULL_FREQUENCY': 3,           # 快取到達最大個數之後，剔除快取個數的比例，即：1/CULL_FREQUENCY（預設3）
         }        
     }
