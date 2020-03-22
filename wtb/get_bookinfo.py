@@ -100,7 +100,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #(2)只抓有isbn的，博客來有時完全沒有isbn，如刺蝟的優雅十周年版
         isbn=doc.find(".mod_b.type02_m058.clearfix .bd").find("ul").eq(0).find("li").eq(0).text()
         isbn13=''
-        if 'ISBN' not in isbn:
+        if 'ISBN' not in isbn:# or (len(isbn.replace("ISBN：",""))==10 and not isbnlib.to_isbn13(isbn)):
             title=doc.find(".mod.type02_p002.clearfix > h1").text()
             isbns=get_isbn_from_elite(title)
             if not isbns:
@@ -112,7 +112,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         #ISBN
         isbn=isbn.replace("ISBN：","")
         if len(isbn)==10 and not isbn13:
-            isbn13=isbnlib.to_isbn13(isbn)
+            isbn13=isbnlib.to_isbn13(isbn) or '' #0010847679轉不出13碼_Column 'isbn13' cannot be null
         #書名
         title=doc.find(".mod.type02_p002.clearfix > h1").text()
         title2=doc.find(".mod.type02_p002.clearfix > h2").text() or ''

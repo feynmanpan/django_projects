@@ -341,7 +341,13 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                 #
                 #desc=doc_prod.find('meta[property="og:description"]').attr('content') #PC版常有亂碼
                 desc=doc_prod.find("script[type='application/ld+json']").eq(0).text() or ''
-                price_sale=re.search('直購價：([0-9,]+?)元',desc).group(1) or ''            
+                price_sale=re.search('直購價：([0-9,]+?)元',desc).group(1) or ''
+        #(9)三民
+        elif store=='sanmin':
+            price_sale=doc.find(".price").text() or ''
+            url_book=doc.find(".resultBooksInfor h3 a").attr("href") or ''
+            if url_book:
+                url_book="https://www.sanmin.com.tw"+url_book                
                 
         
         #在js處理&amp;

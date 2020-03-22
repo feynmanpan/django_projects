@@ -84,7 +84,7 @@ def wtb_book(request,bookid='0010829817'):
         return render(request, 'wtb_book.html', locals())
 
 # 搜尋結果
-@cache_page(60*60*24)
+@cache_page(60*60*24*3)
 def wtb_search(request):
     kw=request.GET['kw']
     jsonstr=get_searchBooks(kw,which='OK',now=True)
@@ -98,8 +98,10 @@ def wtb_autocom(request):
     jsonstr=get_biggoKW(kw,which='OK',now=True)
     #
     return HttpResponse(jsonstr)
-    
-    
+
+
+#============================================================    
+# 北市圖     
 def wtb_tpml(request):
     isbn=request.GET['isbn']
     ans=get_tpml(isbn)#
