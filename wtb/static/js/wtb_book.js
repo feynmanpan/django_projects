@@ -82,7 +82,7 @@ function tail(){
 function bar(){
 	const margin = 60; 
 	const TW=982;
-	const TH=350;
+	const TH=400;
     const width = TW;
     const height = TH - margin*1;
 	//SVG
