@@ -129,7 +129,7 @@ function bar(){
 					 ;		
 	//加強讀冊顏色 
 	
-	$(".tick text:Contains('博客來')").attr('fill','#94c722').css('font-weight','bold');
+	//$(".tick text:Contains('博客來')").attr('fill','#94c722').css('font-weight','bold');
 	$(".tick text:Contains('讀冊')").attr('fill','#e3007f').css('font-weight','bold');
 	$(".tick text:Contains('天瓏')").attr('fill','#2481aa').css('font-weight','bold');
 	$(".tick text:Contains('Y拍')").attr('fill','#2e0b53').css('font-weight','bold');
