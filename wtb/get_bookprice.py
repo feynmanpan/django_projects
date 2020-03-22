@@ -347,7 +347,11 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             price_sale=doc.find(".price").text() or ''
             url_book=doc.find(".resultBooksInfor h3 a").attr("href") or ''
             if url_book:
-                url_book="https://www.sanmin.com.tw"+url_book                
+                url_book="https://www.sanmin.com.tw"+url_book   
+        #(10)Yahoo
+        elif store=='yahoo':
+            price_sale=doc.find(".gridList span.BaseGridItem__price___31jkj em").eq(0).text().replace('$','') or ''
+            url_book=doc.find(".gridList a.BaseGridItem__content___3LORP").eq(0).attr("href") or ''             
                 
         
         #在js處理&amp;

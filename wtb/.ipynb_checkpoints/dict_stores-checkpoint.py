@@ -1,4 +1,4 @@
-#搜尋故意少博客來
+#搜尋故意少博客來 
 url_qs={
         'elite':"http://www.eslite.com/Search_BW.aspx?searchType=&query=",
         'ks':"https://www.kingstone.com.tw/search/search?q=",
@@ -12,9 +12,10 @@ url_qs={
         'tenlong':'https://www.tenlong.com.tw/search?keyword=',
         'ruten':'https://find.ruten.com.tw/s/?q=',
         'sanmin':'https://www.sanmin.com.tw/search/index/?ct=ISBN&ls=SD&qu=',
+        'yahoo':'https://tw.bid.yahoo.com/search/auction/product?sort=curp&p=',
     }
 #顯示在svg的店家名稱
-store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏','露天','三民']
+store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏','露天','三民','Y拍']
 #顯示在svg的店家官網
 store_urls=[
     'https://www.books.com.tw/',
@@ -28,4 +29,5 @@ store_urls=[
     'https://www.tenlong.com.tw/',
     'https://www.ruten.com.tw/',
     'https://www.sanmin.com.tw/home/index',
+    'https://tw.bid.yahoo.com/',
 ]
