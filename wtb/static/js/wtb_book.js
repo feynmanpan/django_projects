@@ -208,6 +208,7 @@ function bar(){
 		;
 	$("rect.books.price").css('fill','#94c722');
 	$("rect.taaze.price").css('fill','#e3007f');
+	$("rect.yahoo.price").css('fill','rgb(46, 11, 150)');
 		
 
 	//BAR電子書 
