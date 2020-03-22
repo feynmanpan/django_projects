@@ -36,6 +36,7 @@ import csv
 #
 from get_proxy import get_proxy
 from get_mollie import get_mollie
+from get_shopee import get_shopee
 #
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
@@ -113,14 +114,22 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         
     #3.開始抓==================================== 
     #mollie用get_mollie的selenium
-    if store=='mollie':
+    if store in ['mollie','shopee']:
         isbn=isbn13 or isbn
-        result=get_mollie(isbn)        
-        #
-        if 'err' in result:
-            bookprice['err']=result[:50]
-        else:
-            bookprice['stock']=result
+        if store=='mollie':
+            result=get_mollie(isbn)        
+            #
+            if 'err' in result:
+                bookprice['err']=result[:50]
+            else:
+                bookprice['stock']=result
+        elif store=="shopee":
+            result=get_shopee(isbn)  
+            if 'err' in result:
+                bookprice['err']=result[:50]
+            else:
+                bookprice['price_sale']=result[0]            
+                bookprice['url_book']=result[1]            
         #
         bookprice['create_dt']=timezone.now() #django timezone會抓OS的UTC時間
         where={'bookid':bookprice['bookid'],#要用instance來指定

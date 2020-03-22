@@ -114,7 +114,7 @@ function bar(){
 	const xScale = d3.scaleBand()
 					 .range([0,width])
 					 .domain(store_names)
-					 .padding(0.8)//越小bar寬越大
+					 .padding(0.7)//越小bar寬越大
 					 ;	
 	const yScale = d3.scaleLinear()
 					 .range([height, 0])
@@ -128,9 +128,13 @@ function bar(){
 	                 .call(d3.axisLeft(yScale))
 					 ;		
 	//加強讀冊顏色 
+	
+	$(".tick text:Contains('博客來')").attr('fill','#94c722').css('font-weight','bold');
 	$(".tick text:Contains('讀冊')").attr('fill','#e3007f').css('font-weight','bold');
 	$(".tick text:Contains('天瓏')").attr('fill','#2481aa').css('font-weight','bold');
 	$(".tick text:Contains('Y拍')").attr('fill','#2e0b53').css('font-weight','bold');
+	$(".tick text:Contains('蝦皮')").attr('fill','#ee4d2d').css('font-weight','bold');
+	
 	
 	//x軸跳官網
 	/*
@@ -184,7 +188,7 @@ function bar(){
 		.enter()
 		.append('rect')
 		.attr('class',(b) => b.store+" price")
-		.attr('x', (b) => xScale(b.store_name)-4) 
+		.attr('x', (b) => xScale(b.store_name)-0) //不左移
 		.attr('y', (b) => yScale(b.price_sale))
 		.attr('height', (b) => height-yScale(b.price_sale))
 		.attr('width', xScale.bandwidth())	
@@ -209,6 +213,8 @@ function bar(){
 	$("rect.books.price").css('fill','#94c722');
 	$("rect.taaze.price").css('fill','#e3007f');
 	$("rect.yahoo.price").css('fill','rgb(46, 11, 150)');
+	$("rect.shopee.price").css('fill','#ee4d2d');
+	$("rect.tenlong.price").css('fill','#2481aa');
 		
 
 	//BAR電子書 
@@ -217,7 +223,7 @@ function bar(){
 		.enter()
 		.append('rect')
 		.attr('class',(b) => b.store+" price")
-		.attr('x', (b) => xScale(b.store_name)+7)
+		.attr('x', (b) => xScale(b.store_name)+15)
 		.attr('y', (b) => yScale(b.price_sale_ebook))
 		.attr('height', (b) => height-yScale(b.price_sale_ebook))
 		.attr('width', xScale.bandwidth()*0.7)	
@@ -242,7 +248,7 @@ function bar(){
 		.text(text_handle)
 		.attr('class',(b) => b.store+" price")
 	    .attr("text-anchor", "start")		
-		.attr('x', (b) => xScale(b.store_name)-8)
+		.attr('x', (b) => xScale(b.store_name)-11)
 		.attr('y', (b) => yScale(b.price_sale)-5)	
 	    .attr("font-family", "sans-serif")
 	    .attr("font-size", "15px")
@@ -277,7 +283,7 @@ function bar(){
 		.text((b) => b.price_sale_ebook)
 		.attr('class',(b) => b.store+" price")
 	    .attr("text-anchor", "start")		
-		.attr('x', (b) => xScale(b.store_name)+0)
+		.attr('x', (b) => xScale(b.store_name)+16)
 		.attr('y', (b) => yScale(b.price_sale_ebook)+13)	
 	    .attr("font-family", "sans-serif")
 	    .attr("font-size", "13px")

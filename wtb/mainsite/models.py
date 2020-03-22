@@ -58,8 +58,8 @@ class Bookprice(models.Model):
     store            = models.CharField(default='', blank=True, null=False, max_length=10)
     price_sale       = models.CharField(default='', blank=True, null=False, max_length=10)
     price_sale_ebook = models.CharField(default='', blank=True, null=False, max_length=10)
-    url_book         = models.URLField( default='', blank=True, null=False)
-    url_ebook        = models.URLField( default='', blank=True, null=False)
+    url_book         = models.URLField( default='', blank=True, null=False, max_length=600)
+    url_ebook        = models.URLField( default='', blank=True, null=False, max_length=600)
     url_vdo          = models.URLField( default='', blank=True, null=False)
     stock            = models.CharField(default='', blank=True, null=False, max_length=20)
     #

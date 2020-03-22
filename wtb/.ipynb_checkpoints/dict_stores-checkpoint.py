@@ -13,9 +13,10 @@ url_qs={
         'ruten':'https://find.ruten.com.tw/s/?q=',
         'sanmin':'https://www.sanmin.com.tw/search/index/?ct=ISBN&ls=SD&qu=',
         'yahoo':'https://tw.bid.yahoo.com/search/auction/product?sort=curp&p=',
+        'shopee':'https://shopee.tw/search?keyword='
     }
 #顯示在svg的店家名稱
-store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏','露天','三民','Y拍']
+store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏','露天','三民','Y拍','蝦皮']
 #顯示在svg的店家官網
 store_urls=[
     'https://www.books.com.tw/',
@@ -30,4 +31,5 @@ store_urls=[
     'https://www.ruten.com.tw/',
     'https://www.sanmin.com.tw/home/index',
     'https://tw.bid.yahoo.com/',
+    'https://shopee.tw/',
 ]
