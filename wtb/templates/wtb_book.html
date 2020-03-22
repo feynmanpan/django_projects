@@ -82,7 +82,7 @@
 		
 
 	</script>
-	<script src='{% static "js/wtb_book.js" %}?v=1'></script>
+	<script src='{% static "js/wtb_book.js" %}?v=5'></script>
 {% endblock %}
 
 {% block content %} 
@@ -104,10 +104,14 @@
 					<p>語言：{{book.info.lang}}</p>
 					<p>定價：<span id="price_list" style='color:red;font-weight:bold'>{{book.info.price_list}}</span> 元</p>
 					<p>規格：{{book.info.spec}}</p>
-					<p data-bookid='{{book.info.bookid}}'>ISBN：{{book.info.isbn}}</p>
+					<p id='isbn' data-bookid='{{book.info.bookid}}'>ISBN：<span>{{book.info.isbn}}</span></p>
 					{% if book.info.isbn13 %}
-						<p data-bookid='{{book.info.bookid}}'>ISBN13：{{book.info.isbn13}}</p>
+						<p id='isbn13' data-bookid='{{book.info.bookid}}'>ISBN13：<span>{{book.info.isbn13}}</span></p>
 					{% endif %}	
+					<p id="tpml" style="display:">
+						<img src="https://webcat.tpml.edu.tw/webpac/images/favacon.ico" style="vertical-align: middle;cursor:pointer;width: auto;height: 1.5em;">
+						<a href='' target='_blank'>北市圖館藏查詢</a>(以isbn查詢，同書不同版本請自行以書名查詢)
+					</p>
 					<!--taaze_vdo--> 
 					<p id='vdo_btn' style='display:none'>
 						<img src='/mystatic/images/vdo_btn.png' style='vertical-align:top;cursor:pointer;'/> 

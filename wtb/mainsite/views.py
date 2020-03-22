@@ -15,6 +15,7 @@ from get_bookinfo import get_bookinfo
 from get_bookprice import get_bookprice
 from get_searchBooks import get_searchBooks
 from get_biggoKW import get_biggoKW
+from get_tpml import get_tpml
 from get_hybook import get_hybook
 from dict_stores import url_qs,store_names,store_urls
 #
@@ -97,6 +98,13 @@ def wtb_autocom(request):
     jsonstr=get_biggoKW(kw,which='OK',now=True)
     #
     return HttpResponse(jsonstr)
+    
+    
+def wtb_tpml(request):
+    isbn=request.GET['isbn']
+    ans=get_tpml(isbn)#
+    return HttpResponse(ans)    
+    
 # 曉園_http://www.hybook.com.tw/search.asp?page=12 
 def wtb_hybook(request,page):
     s=time()

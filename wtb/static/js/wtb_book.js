@@ -1,10 +1,42 @@
 $(document).ready(function(){
 	var sn=stores.length;
 	$("#sn").text(sn);
+	//
+	tpml();
 	taaze_vdo_handle();
 	tail();
 	bar();
 });
+
+function tpml(){
+	var isbn=$("#isbn span").text();
+	var isbn13=$("#isbn13 span").text();
+	isbn=isbn13||isbn;
+	var title=$("#info_list h4").text();
+	var href="http://book.tpml.edu.tw/webpac/bookSearchList.do?searchtype=simplesearch&search_field=ISBN&search_input="+isbn;
+	//var href="http://book.tpml.edu.tw/webpac/bookSearchList.do?searchtype=adsearch&search_field=ISBN&search_input="+isbn+"&op=or&search_field=OTI&search_input="+title;
+	$("#tpml").attr("data-isbn",isbn)
+			  .find("a").attr("href",href)
+			  ;
+	/*
+	$.ajax({   
+		type: "get",
+		url: "/tpml/",
+		timeout:1000*30,
+		data:{isbn:isbn},
+		dataType: "text", 
+		async:true,
+	})
+	.done(function(href){
+		var ans="<a href='"+href+"' target='_blank'>前往</a>";
+		if(href!=""){
+			$("#tpml").find("span").html(ans);
+		}else{
+			$("#tpml").find("span").text('無');
+		}		
+	});//ajax	
+	*/
+}
 
 function taaze_vdo_handle(){
 		
