@@ -199,8 +199,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                 raise Exception('count='+count)             
             #
             #________________price收集________________________________
-            price_sale=doc.find(".summary .price_sale font").text()
-            url_book=doc.find(".box_list td.name a[title]").attr("href")            
+            price_sale=doc.find(".summary .price_sale font").eq(0).text()
+            url_book=doc.find(".box_list td.name a[title]").eq(0).attr("href")            
         #(2)金石堂    
         elif store=='ks':
             #count=doc.find(".searchResultTitle > span:nth-child(2)").text()
@@ -238,7 +238,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                 raise Exception('count='+count)
             #
             #抓店內碼
-            href=goodsItemLi.find("a[href*='goods']").attr("href")
+            href=goodsItemLi.find("a[href*='goods']").eq(0).attr("href")
             m=re.search(r'i_code=(.+?)&',href)
             i_code=m.group(1)
             #(2)從商品頁面抓price
@@ -253,7 +253,9 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             doc_prod=pq(r.text)  
             r.close()
             #________________price收集________________________________
-            price_sale=doc_prod.find(".prdPrice .special span").text()            
+            #記得找第一個span，有時後面有"下單再折"
+            price_sale=doc_prod.find(".prdPrice .special span").eq(0).text()  
+           #print(i_code,price_sale)
         #(4)TAAZE
         elif store=='taaze':
             price_sale=''
@@ -314,17 +316,17 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         #(5)灰熊
         elif store=='iread':
             price_sale=doc.find('.PP').find('.redword2').eq(-1).text() or ''
-            url_book=doc.find('meta[property="og:url"]').attr('content') or ''
+            url_book=doc.find('meta[property="og:url"]').eq(0).attr('content') or ''
         #(6)城邦
         elif store=='cite':
             price_sale=doc.find('.book-info-2 ul').find('span.font-color01').eq(-1).text() or ''
-            url_book=doc.find('.book-img.book_div a').attr('href') or ''
+            url_book=doc.find('.book-img.book_div a').eq(0).attr('href') or ''
             if url_book:
                 url_book='https://www.cite.com.tw'+url_book     
         #(7)天瓏
         elif store=='tenlong':
             price_sale=doc.find('.pricing .price').eq(0).text().replace('售價: $','').replace('貴賓價: $','') or ''
-            url_book=doc.find('.cover').attr('href') or ''
+            url_book=doc.find('.cover').eq(0).attr('href') or ''
             if url_book:
                 url_book='https://www.tenlong.com.tw'+url_book 
         #(8)露天
@@ -353,8 +355,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                 price_sale=re.search('直購價：([0-9,]+?)元',desc).group(1) or ''
         #(9)三民
         elif store=='sanmin':
-            price_sale=doc.find(".price").text() or ''
-            url_book=doc.find(".resultBooksInfor h3 a").attr("href") or ''
+            price_sale=doc.find(".price").eq(0).text() or ''
+            url_book=doc.find(".resultBooksInfor h3 a").eq(0).attr("href") or ''
             if url_book:
                 url_book="https://www.sanmin.com.tw"+url_book   
         #(10)Yahoo
