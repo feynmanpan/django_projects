@@ -69,7 +69,7 @@ class Bookprice(models.Model):
     def __str__(self):
         return str(self.bookid)+"_"+self.store #ORM的Bookprice.bookid必須是Bookinfo物件，所以要再轉一次str 
     class Meta:
-        ordering = ('bookid',)         
+        ordering = ('-create_dt',)         
 
 
 class Store(models.Model):
