@@ -208,6 +208,43 @@
                 });//logo_loader
                 
             {% endfor %}            
+			
+			//站長推薦
+			logo_loader.load('mystatic/images/goodbooks/dontsleep.jpg', function ( logo_texture ) {
+				var logo_material = new THREE.MeshBasicMaterial({ 
+															   map: logo_texture,
+															   side: THREE.DoubleSide,
+															   wireframe: false 
+															});
+				var w=logo_texture.image.width/40;
+				var h=logo_texture.image.height/40;
+				//
+				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
+				var logo=new THREE.Mesh(logo_geometry, logo_material);
+				//
+				logo.position.x=5;//+(0%grid)*Dx;                    
+				logo.position.y=5;//-(Math.floor(0/grid))*Dy;
+				logo.position.z=25;//-(0%2)*Dz;                    
+				//
+				scene.add(logo); 
+				//事件綁定____________________     
+				//點擊
+				domEvents.addEventListener(logo, 'click', function(e){
+					window.open('http://wtb.nctu.me/book/0010844226/', '_blank');                          
+				}, false);
+				domEvents.addEventListener(logo, 'touchstart', function(e){
+					window.open('http://wtb.nctu.me/book/0010844226/', '_blank');                          
+				}, false);                    
+				//mouseover
+				domEvents.addEventListener(logo, 'mouseover', function(e){
+					$("#three_container").css('cursor','pointer').attr("title",'【別睡，這裡有蛇！】\n\n"即便沒有天堂的慰藉與地獄的恐懼，\n  也能有尊嚴並心滿意足地面對生命，\n   帶著微笑航向生命的混沌深淵。"\n\n->推薦 by 站長');                          
+				}, false);    
+				//mouseout
+				domEvents.addEventListener(logo, 'mouseout', function(e){
+					$("#three_container").css('cursor','').attr("title","");;                          
+				}, false);     
+			
+			});//logo_loader
 
 
             //(2)飛鳥處理=================================
