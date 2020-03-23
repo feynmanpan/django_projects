@@ -337,6 +337,7 @@ rect:hover{
 		width: 100%;
 		margin: 0px;
 		margin-top: 20px;
+		padding-bottom: 2px;
 		border-top: 0.5px solid grey;
 		border-bottom: 0.5px solid grey;
 	}
@@ -345,8 +346,9 @@ rect:hover{
 		border: 0px;
 	}
 	#info_list p{
-		line-height: 20px;
-		margin-top: -8px;
+		/*line-height: 20px;*/
+		margin-top: -5px;
+		margin-bottom: 10px;
 	}
 	#info_list p:nth-child(1){
 		margin-top: 10px;
