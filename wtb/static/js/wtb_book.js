@@ -83,7 +83,7 @@ function bar(){
 	const margin = 60; 
 	const TW=982;
 	const TH=400;
-    const width = TW;
+    const width  = TW - margin*0.8;
     const height = TH - margin*1;
 	//SVG
     const svg = d3.select('svg#bar');
@@ -108,7 +108,7 @@ function bar(){
 		}
 	});	
 	//繪圖區   
-	const chart = svg.append('g').attr('transform', 'translate('+(margin/2+5)+','+margin/2+')');
+	const chart = svg.append('g').attr('transform', 'translate('+(margin/2+10)+','+margin/2+')');
 	//以定價為最高點
 	//const price_list=parseInt($("#price_list").text());
 	const xScale = d3.scaleBand()
