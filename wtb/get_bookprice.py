@@ -334,6 +334,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             #先決定最低價的店內碼
             ans_dict=json.loads(r.text)
             TotalRows=ans_dict['TotalRows']
+            rt_id=''
             if TotalRows>0:
                 rt_id=ans_dict['Rows'][0]['Id']             
             #再去商品頁查
