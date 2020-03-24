@@ -216,14 +216,14 @@
 															   side: THREE.DoubleSide,
 															   wireframe: false 
 															});
-				var w=logo_texture.image.width/40;
-				var h=logo_texture.image.height/40;
+				var w=logo_texture.image.width/50;
+				var h=logo_texture.image.height/50;
 				//
 				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
 				var logo=new THREE.Mesh(logo_geometry, logo_material);
 				//
-				logo.position.x=5;//+(0%grid)*Dx;                    
-				logo.position.y=5;//-(Math.floor(0/grid))*Dy;
+				logo.position.x=7;//+(0%grid)*Dx;                    
+				logo.position.y=4;//-(Math.floor(0/grid))*Dy;
 				logo.position.z=25;//-(0%2)*Dz;                    
 				//
 				scene.add(logo); 

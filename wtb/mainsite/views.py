@@ -25,7 +25,8 @@ import json
 
 # 處理首頁    
 def wtb_index(request):
-    stores = Store.objects.all().order_by('code')
+    #stores = Store.objects.all().order_by('code')
+    stores = Store.objects.filter(enable='Y').order_by('code')
     stores_count=stores.count()
     #
     return render(request, 'wtb_index.html', locals())
