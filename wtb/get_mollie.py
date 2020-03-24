@@ -74,6 +74,7 @@ def get_mollie(isbn):
         WebDriverWait(driver, 5, 0.5).until(EC.presence_of_element_located((By.CSS_SELECTOR, nobook_selector)))
         p=driver.find_element_by_css_selector(nobook_selector)
         if '很抱歉' in p.text:
+            driver.close()
             driver.quit()
             return 'nobook'
 
@@ -86,8 +87,11 @@ def get_mollie(isbn):
         td=driver.find_element_by_css_selector("#A > table > tbody > tr:nth-child(2) > td")
         m=re.findall(r'\[(.+?)\]',td.text)
         stores='/'.join(list(set(m)))
+        #
+        driver.close()
         driver.quit()
         return stores
     except Exception as err:
+        driver.close()
         driver.quit()
         return 'err_'+str(err)

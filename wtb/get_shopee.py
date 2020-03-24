@@ -60,9 +60,11 @@ def get_shopee(isbn):
         #
         price_sale=driver.find_element_by_css_selector(price_selector).text.replace(',','')    
         url_book=driver.find_element_by_css_selector(url_selector).get_attribute("href")  
-    
+        #
+        driver.close()
         driver.quit()
         return [price_sale,url_book]
     except Exception as err:
+        driver.close()
         driver.quit()
         return 'err_'+str(err)
