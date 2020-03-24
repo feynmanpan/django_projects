@@ -74,6 +74,7 @@ class Bookprice(models.Model):
 
 class Store(models.Model):
     code      = models.CharField(default='999',max_length=3)
+    enable    = models.CharField(default='Y',max_length=1)
     name      = models.CharField(max_length=200)
     url       = models.URLField( default='', blank=True, null=False)    
     url_logo  = models.URLField( default='', blank=True, null=False)

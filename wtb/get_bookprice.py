@@ -363,7 +363,21 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         #(10)Yahoo
         elif store=='yahoo':
             price_sale=doc.find(".gridList span.BaseGridItem__price___31jkj em").eq(0).text().replace('$','') or ''
-            url_book=doc.find(".gridList a.BaseGridItem__content___3LORP").eq(0).attr("href") or ''             
+            url_book=doc.find(".gridList a.BaseGridItem__content___3LORP").eq(0).attr("href") or ''  
+        #(11)聯經
+        elif store=='linking':
+            url_book=doc.find(".books_title a").eq(0).attr('href') or ''
+            if url_book:
+                url_book="https://www.linkingbooks.com.tw/LNB/"+url_book
+                #
+                r = requests.get(url_book, 
+                             headers=UA,
+                             proxies=proxies,
+                             #allow_redirects=False,
+                             timeout=30)
+                doc_book=pq(r.text)
+                r.close()
+                price_sale=doc_book.find('.books_off_price').eq(0).text() or ''      
                 
         
         #在js處理&amp;

@@ -12,7 +12,7 @@ class BookpriceAdmin(admin.ModelAdmin):
 
 
 class StoreAdmin(admin.ModelAdmin):
-    list_display=('name','code','url','url_logo','url_href','create_dt')
+    list_display=('name','enable','code','url','url_logo','url_href','create_dt')
 
 class PostAdmin(admin.ModelAdmin):
     list_display=('AA','title','slug','pub_date')
