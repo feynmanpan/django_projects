@@ -98,7 +98,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
             raise Exception('notfound')
   
         #(2)只抓有isbn的，博客來有時完全沒有isbn，如刺蝟的優雅十周年版
-        isbn=doc.find(".mod_b.type02_m058.clearfix .bd").find("ul").eq(0).find("li").eq(0).text()
+        isbn=doc.find(".mod_b.type02_m058.clearfix .bd").find("ul").eq(0).find("li").eq(0).text() or ''
         isbn13=''
         if 'ISBN' not in isbn:# or (len(isbn.replace("ISBN：",""))==10 and not isbnlib.to_isbn13(isbn)):
             title=doc.find(".mod.type02_p002.clearfix > h1").text()
