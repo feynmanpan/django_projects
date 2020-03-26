@@ -169,7 +169,8 @@
 
             //var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png");
             var logo_loader = new THREE.TextureLoader();
-            var domEvents = new THREEx.DomEvents(camera, renderer.domElement);    
+            var domEvents = new THREEx.DomEvents(camera, renderer.domElement); 
+			/* logo算了
             {% for store in stores %}
                 logo_loader.load('{{ store.url_href }}', function ( logo_texture ) {
                     var logo_material = new THREE.MeshBasicMaterial({ 
@@ -208,6 +209,116 @@
                 });//logo_loader
                 
             {% endfor %}            
+			*/
+			
+			//誠品活動
+			var today=new Date();
+			var end_day_elite=new Date(2020,3,28);//4月27
+			var end_day_MH=new Date(2020,3,6);//4月5
+			//
+			if(today < end_day_elite){
+
+				logo_loader.load('mystatic/images/activity/elite_activity_0327_0427.jpg', function ( logo_texture ) {
+					var logo_material = new THREE.MeshBasicMaterial({ 
+																   map: logo_texture,
+																   side: THREE.DoubleSide,
+																   wireframe: false 
+																});
+					var w=logo_texture.image.width/100;
+					var h=logo_texture.image.height/100;
+					//
+					var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
+					var logo=new THREE.Mesh(logo_geometry, logo_material);
+					//
+
+					if (window.matchMedia("(max-width: 992px)").matches) {
+						//logo.position.x=4;//+(0%grid)*Dx;                    
+						//logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
+						//logo.position.z=33;//-(0%2)*Dz;     
+						logo.position.x=10;//+(0%grid)*Dx;                    
+						logo.position.y=3.5;//-(Math.floor(0/grid))*Dy;
+						logo.position.z=33;//-(0%2)*Dz;						
+					} else {
+						logo.position.x=10;//+(0%grid)*Dx;                    
+						logo.position.y=3.5;//-(Math.floor(0/grid))*Dy;
+						logo.position.z=33;//-(0%2)*Dz;                     
+					}   					
+					//
+					scene.add(logo); 
+					//事件綁定____________________     
+					//點擊
+					var url='https://meet.eslite.com/tw/tc/news/202003260003';
+					//
+					domEvents.addEventListener(logo, 'click', function(e){
+						window.open(url, '_blank');                          
+					}, false);
+					domEvents.addEventListener(logo, 'touchstart', function(e){
+						window.open(url, '_blank');                          
+					}, false);                    
+					//mouseover
+					domEvents.addEventListener(logo, 'mouseover', function(e){
+						$("#three_container").css('cursor','pointer').attr("title",'【敦南晒書節】\n\n"囤書時間到！誠品最後一場\n把喜歡的書帶回家吧"\n\n->沒錢 by 站長');                          
+					}, false);    
+					//mouseout
+					domEvents.addEventListener(logo, 'mouseout', function(e){
+						$("#three_container").css('cursor','').attr("title","");;                          
+					}, false);     
+				
+				});//logo_loader
+
+			}
+			
+			if(today < end_day_MH){
+
+				logo_loader.load('mystatic/images/activity/MH_2020_0405.jpg', function ( logo_texture ) {
+					var logo_material = new THREE.MeshBasicMaterial({ 
+																   map: logo_texture,
+																   side: THREE.DoubleSide,
+																   wireframe: false 
+																});
+					var w=logo_texture.image.width/100;
+					var h=logo_texture.image.height/100;
+					//
+					var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
+					var logo=new THREE.Mesh(logo_geometry, logo_material);
+					//
+ 
+					if (window.matchMedia("(max-width: 992px)").matches) {
+						//logo.position.x=-4;//+(0%grid)*Dx;                    
+						//logo.position.y=4;//-(Math.floor(0/grid))*Dy;
+						//logo.position.z=40;//-(0%2)*Dz; 
+						logo.position.x=-2;//+(0%grid)*Dx;                    
+						logo.position.y=3;//-(Math.floor(0/grid))*Dy;
+						logo.position.z=30;//-(0%2)*Dz; 						
+					} else {
+						logo.position.x=-2;//+(0%grid)*Dx;                    
+						logo.position.y=3;//-(Math.floor(0/grid))*Dy;
+						logo.position.z=30;//-(0%2)*Dz;                    
+					}   					
+					//
+					scene.add(logo); 
+					//事件綁定____________________     
+					//點擊
+					var url='https://m.facebook.com/story.php?story_fbid=2744831458933514&id=113198042096882&fs=0&focus_composer=0';
+					//
+					domEvents.addEventListener(logo, 'click', function(e){
+						window.open(url, '_blank');                          
+					}, false);
+					domEvents.addEventListener(logo, 'touchstart', function(e){
+						window.open(url, '_blank');                          
+					}, false);                    
+					//mouseover
+					domEvents.addEventListener(logo, 'mouseover', function(e){
+						$("#three_container").css('cursor','pointer').attr("title",'【中正紀念堂回頭書展】\n\n"時報的有一些超新書!"\n\n->撿到<動盪> by 站長');                          
+					}, false);    
+					//mouseout
+					domEvents.addEventListener(logo, 'mouseout', function(e){
+						$("#three_container").css('cursor','').attr("title","");;                          
+					}, false);     
+				
+				});//logo_loader
+
+			}			
 			
 			//站長推薦
 			logo_loader.load('mystatic/images/goodbooks/dontsleep.jpg', function ( logo_texture ) {
@@ -222,18 +333,28 @@
 				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
 				var logo=new THREE.Mesh(logo_geometry, logo_material);
 				//
-				logo.position.x=7;//+(0%grid)*Dx;                    
-				logo.position.y=4;//-(Math.floor(0/grid))*Dy;
-				logo.position.z=25;//-(0%2)*Dz;                    
+				if (window.matchMedia("(max-width: 992px)").matches) {
+					//logo.position.x=-7;//+(0%grid)*Dx;                       
+					//logo.position.y=6;//-(Math.floor(0/grid))*Dy;
+					//logo.position.z=25;//-(0%2)*Dz; 
+					logo.position.x=-15;//+(0%grid)*Dx;                        
+					logo.position.y=3.7;//-(Math.floor(0/grid))*Dy;
+					logo.position.z=25;//-(0%2)*Dz; 					
+				} else {
+					logo.position.x=-15;//+(0%grid)*Dx;                        
+					logo.position.y=3.7;//-(Math.floor(0/grid))*Dy;
+					logo.position.z=25;//-(0%2)*Dz;                    
+				}                        
 				//
 				scene.add(logo); 
-				//事件綁定____________________     
+				//事件綁定____________________      
 				//點擊
+				var url='https://wtb.nctu.me/book/0010844226/';
 				domEvents.addEventListener(logo, 'click', function(e){
-					window.open('https://wtb.nctu.me/book/0010844226/', '_blank');                          
+					window.open(url, '_blank');                          
 				}, false);
 				domEvents.addEventListener(logo, 'touchstart', function(e){
-					window.open('https://wtb.nctu.me/book/0010844226/', '_blank');                          
+					window.open(url, '_blank');                          
 				}, false);                    
 				//mouseover
 				domEvents.addEventListener(logo, 'mouseover', function(e){
