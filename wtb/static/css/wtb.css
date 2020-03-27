@@ -303,6 +303,10 @@ rect:hover{
 	padding-right: 4px;
 	border-radius: 5px;
 }
+#price h4{
+	margin-bottom:10px;
+	margin-left: 20px;
+}
 
 @media screen and (max-width: 992px) {
 	body{
@@ -389,6 +393,13 @@ rect:hover{
 		top: 0px;
 		left: 0;
 		margin-left: 0px;
+	}
+	#price h4{
+		margin-left:0px;
+	}
+	#price ol{
+		padding-right: 10px;
+		padding-left: 25px;
 	}
 }
 
