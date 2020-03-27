@@ -213,15 +213,15 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             #
             #________________price收集________________________________
             #--紙本書
-            price_sale=doc.find("div.buymixbox:Contains('加入購物車')>span:Contains('特價')>b").text()
+            price_sale=doc.find("div.buymixbox:Contains('加入購物車')>span:Contains('特價')>b").eq(0).text()
             if not price_sale:
-                price_sale=doc.find("div.buymixbox:Contains('可訂購時通知我')>span:Contains('特價')>b").text()
+                price_sale=doc.find("div.buymixbox:Contains('可訂購時通知我')>span:Contains('特價')>b").eq(0).text()
             if not price_sale:
-                price_sale=doc.find("div.buymixbox:Contains('停售')>span:Contains('特價')>b").text()
+                price_sale=doc.find("div.buymixbox:Contains('停售')>span:Contains('特價')>b").eq(0).text()
             #
-            url =doc.find("div.buymixbox:Contains('加入購物車')").parent().find(".pdnamebox>a").attr("href") or ''
-            url2=doc.find("div.buymixbox:Contains('可訂購時通知我')").parent().find(".pdnamebox>a").attr("href") or ''
-            url3=doc.find("div.buymixbox:Contains('停售')").parent().find(".pdnamebox>a").attr("href") or ''
+            url =doc.find("div.buymixbox:Contains('加入購物車')").parent().find(".pdnamebox>a").eq(0).attr("href") or ''
+            url2=doc.find("div.buymixbox:Contains('可訂購時通知我')").parent().find(".pdnamebox>a").eq(0).attr("href") or ''
+            url3=doc.find("div.buymixbox:Contains('停售')").parent().find(".pdnamebox>a").eq(0).attr("href") or ''
             url =(url or url2) or url3
             if url:
                 url_book="https://www.kingstone.com.tw"+url
