@@ -226,8 +226,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             if url:
                 url_book="https://www.kingstone.com.tw"+url
             #--電子書
-            price_sale_ebook=doc.find("div.buymixbox:Contains('電子書')>span:Contains('特價')>b").text() or ''
-            tmp=doc.find("div.buymixbox:Contains('電子書')").parent().find(".pdnamebox>a").attr("href")
+            price_sale_ebook=doc.find("div.buymixbox:Contains('電子書')>span:Contains('特價')>b").eq(0).text() or ''
+            tmp=doc.find("div.buymixbox:Contains('電子書')").parent().find(".pdnamebox>a").eq(0).attr("href")
             url_ebook=(tmp and "https://www.kingstone.com.tw"+tmp) or ''
         #(3)MOMO
         elif store=='momo':
