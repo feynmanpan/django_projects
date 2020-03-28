@@ -1,5 +1,9 @@
 
 $(document).ready(function(){ 
+	//clear
+	$("#clear").click(function(){
+		$("#kw_input").val("").focus();
+	});
 	//autocomplete
 	$("#kw_input").autocomplete({
 		source: function( request, response ) {
