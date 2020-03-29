@@ -305,11 +305,17 @@ function bar(){
 		function(){
 			var that=$(this);
 			var store=that.attr("class").replace(" price","");
-			$('.price:not(.'+store+')').css("opacity","0.3");
+			$('.price:not(.'+store+')')
+				//.css("opacity","0.3")
+				.animate({"opacity": "0.3"}, 300)
+				;
 		},
 		function(){
 			var that=$(this);
-			$('.price').css("opacity","1");
+			$('.price')
+				//.css("opacity","1")
+				.animate({"opacity": "1"}, 100)
+				;
 		}		
 	);
 	//水平線=================================
