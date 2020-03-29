@@ -366,7 +366,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             price_sale=doc.find(".gridList span.BaseGridItem__price___31jkj").eq(0).text().strip() or ''
             #print(price_sale)
             if price_sale:
-                m=re.search(r'\$([0-9]+)',price_sale)
+                m=re.search(r'\$([0-9,]+)',price_sale)
                 if m:
                     price_sale=m.group(1)
                 else:
@@ -385,7 +385,16 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
                              timeout=30)
                 doc_book=pq(r.text)
                 r.close()
-                price_sale=doc_book.find('.books_off_price').eq(0).text() or ''      
+                price_sale=doc_book.find('.books_off_price').eq(0).text() or ''  
+        #(12)天下文化
+        elif store=='cwgv':
+            grid_book=doc.find(".result-grids").find(".grid.book").eq(0)
+            #
+            price_sale=grid_book.find(".discount.clean span").eq(-1).text() or ''
+            if not price_sale:
+                price_sale=grid_book.find(".price.clean span").eq(0).text() or ''
+            #
+            url_book=grid_book.find("h3.title a").eq(0).attr("href") or ''                  
                 
         
         #在js處理&amp;

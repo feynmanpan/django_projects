@@ -15,9 +15,10 @@ url_qs={
         'yahoo':'https://tw.bid.yahoo.com/search/auction/product?sort=curp&p=',
         'shopee':'https://shopee.tw/search?keyword=',
         'linking':'https://www.linkingbooks.com.tw/LNB/SearchBook.aspx?ID=&text=',
+        'cwgv':'https://bookzone.cwgv.com.tw/search/index/',
     }
 #顯示在svg的店家名稱
-store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏','露天','三民','Y拍','蝦皮','聯經']
+store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏','露天','三民','Y拍','蝦皮','聯經','天下']
 #顯示在svg的店家官網
 store_urls=[
     'https://www.books.com.tw/',
@@ -34,4 +35,5 @@ store_urls=[
     'https://tw.bid.yahoo.com/',
     'https://shopee.tw/',
     'https://www.linkingbooks.com.tw/LNB/index.aspx',
+    'https://bookzone.cwgv.com.tw/home/index',
 ]
