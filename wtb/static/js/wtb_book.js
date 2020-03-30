@@ -307,7 +307,7 @@ function bar(){
 			var store=that.attr("class").replace(" price","");
 			$('.price:not(.'+store+')')
 				//.css("opacity","0.3")
-				.animate({"opacity": "0.3"}, 300)
+				.animate({"opacity": "0.3"}, 100)
 				;
 		},
 		function(){
