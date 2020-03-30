@@ -48,7 +48,31 @@ def get_shopee(isbn):
     #0.開chrome_記得查chrome版本，用同版本的driver:google-chrome -version
     driver = webdriver.Chrome("/home/pan/chromedriver80",options=chrome_options)
     driver.implicitly_wait(10)
-    url = "https://shopee.tw/search?order=asc&page=0&sortBy=price&keyword="+isbn
+
+    facet={
+        '75':'娛樂',
+        '24583':'教科書',
+        '24584':'教科書',
+        '24585':'雜誌',
+        '24587':'文學小說',
+        '24588':'文學小說',
+        '24589':'旅遊',
+        '24593':'漫畫',
+        '24595':'其他',
+        '24596':'',
+        '24597':'輕小說',
+        '24600':'電腦資訊',
+        '24601':'宗教命理',
+        '24609':'科普',
+        '24611':'文創_社會人文',
+        '24614':'生活風格',
+        '24616':'商業',
+        '24618':'心理勵志',
+        '24620':'18lock',
+        '24687':'社會人文',
+    }
+    facet='&facet='+'%2C'.join(facet.keys())
+    url = "https://shopee.tw/search?order=asc&page=0&sortBy=price"+facet+"&keyword="+isbn
     driver.get(url)
     print(driver.current_url+"_____")
 
