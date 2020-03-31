@@ -134,6 +134,7 @@ function bar(){
 	$(".tick text:Contains('天瓏')").attr('fill','#2481aa').css('font-weight','bold');
 	$(".tick text:Contains('Y拍')").attr('fill','#2e0b53').css('font-weight','bold');
 	$(".tick text:Contains('蝦皮')").attr('fill','#ee4d2d').css('font-weight','bold');
+	$(".tick text:Contains('天下')").attr('fill','#ca1b1d').css('font-weight','bold');
 	
 	
 	//x軸跳官網
@@ -215,6 +216,8 @@ function bar(){
 	$("rect.yahoo.price").css('fill','rgb(46, 11, 150)');
 	$("rect.shopee.price").css('fill','#ee4d2d');
 	$("rect.tenlong.price").css('fill','#2481aa');
+	$("rect.cwgv.price").css('fill','#ca1b1d');
+	
 		
 
 	//BAR電子書 
