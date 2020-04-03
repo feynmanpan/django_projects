@@ -29,7 +29,7 @@ import re
 import json
 import csv
 
-
+#https://free-proxy-list.net/
 def get_proxy(which='free',now=False):
     which_dict={'kuai':"/home/pan/django_projects/wtb/ips_kuai.txt",
                 'ihuan':"/home/pan/django_projects/wtb/ips_1000_ihuan.txt",
@@ -38,11 +38,11 @@ def get_proxy(which='free',now=False):
                }
     ippos=[]
     with open(which_dict[which], 'r') as f:
-            lines=f.readlines()
-            for line in lines:
-                line=line.strip()
-                if len(line.split(":"))==2:
-                    ippos.append(line)
+        lines=f.readlines()
+        for line in lines:
+            line=line.strip()
+            if len(line.split(":"))==2:
+                ippos.append(line)
     if now:
         sleep(1.5)
         return random.choice(ippos)
@@ -91,8 +91,22 @@ def get_proxy(which='free',now=False):
                 #print(r.text)
                 r.close() 
                 if which!='OK':
-                    with open('/home/pan/django_projects/wtb/ips_OKs.txt', 'a+') as f:
-                        f.write(ippo+"\r\n")                
+                    fn='/home/pan/django_projects/wtb/ips_OKs.txt'
+                    mode=0                    
+                    if mode==0:
+                        #加到最後一行
+                        with open(fn, 'a+') as f:
+                            f.write(ippo+"\r\n")      
+                    else:
+                        #刪掉第一行_加到最後一行
+                        with open(fn, 'r+') as f: # open file in read / write mode
+                            firstLine = f.readline() # read the first line and throw it out
+                            data = f.read() # read the rest
+                            data += ippo+"\r\n"
+                            f.seek(0) # set the cursor to the top of the file
+                            f.write(data) # write the data back
+                            f.truncate() # set the file size to the current size 
+                #______________
                 return ippo
             else:#if not (r.status_code == 200 and ip in r.text):
                 r.close()
