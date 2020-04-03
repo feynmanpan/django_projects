@@ -163,8 +163,11 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             #"https": "http://"+ippo
             } 
     #特殊處理___________________________________
-    if store=='elite':
+    if store in ['elite','rtimes']:
         proxies={}  
+    if store=='rtimes':
+        isbn=isbn13 or isbn
+        url_q="http://www.readingtimes.com.tw/ReadingTimes/site/q__"+isbn+"/414/default.aspx"
     if store=='ruten':
         url_api1="https://rtapi.ruten.com.tw/api/search/v2/index.php/core/prod?sort=prc%2Fac&q="
         url_api2="https://rtapi.ruten.com.tw/api/search/v2/index.php/m/core/prod?sort=prc%2Fac&q="
@@ -394,8 +397,14 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
             if not price_sale:
                 price_sale=grid_book.find(".price.clean span").eq(0).text() or ''
             #
-            url_book=grid_book.find("h3.title a").eq(0).attr("href") or ''                  
-                
+            url_book=grid_book.find("h3.title a").eq(0).attr("href") or ''
+        #(13)時報
+        elif store=='rtimes':
+            table=doc.find("div:Contains('商品名稱')").parent().parent()
+            if table:
+                tmp=table.find('td.etext8red')
+                url_book  =tmp.eq(0).parent().find('a').eq(0).attr('href') or ''
+                price_sale=tmp.eq(1).text() or ''                                                
         
         #在js處理&amp;
         #url_book=urllib.parse.quote(url_book)

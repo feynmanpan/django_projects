@@ -16,9 +16,10 @@ url_qs={
         'shopee':'https://shopee.tw/search?keyword=',
         'linking':'https://www.linkingbooks.com.tw/LNB/SearchBook.aspx?ID=&text=',
         'cwgv':'https://bookzone.cwgv.com.tw/search/index/',
+        'rtimes':'http://www.readingtimes.com.tw/ReadingTimes/site/q__9789571380049/414/default.aspx',
     }
 #顯示在svg的店家名稱
-store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏','露天','三民','Y拍','蝦皮','聯經','天下']
+store_names=['博客來','誠品','金石堂','momo','讀冊','茉莉','灰熊','城邦','天瓏','露天','三民','Y拍','蝦皮','聯經','天下','時報']
 #顯示在svg的店家官網
 store_urls=[
     'https://www.books.com.tw/',
@@ -36,4 +37,5 @@ store_urls=[
     'https://shopee.tw/',
     'https://www.linkingbooks.com.tw/LNB/index.aspx',
     'https://bookzone.cwgv.com.tw/home/index',
+    'http://www.readingtimes.com.tw/ReadingTimes/default.aspx',
 ]
