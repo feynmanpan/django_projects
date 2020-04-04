@@ -11,6 +11,7 @@ from time import sleep, time
 import pytz
 #
 from .models import Bookinfo,Bookprice,Store,Post
+from get_proxy import get_proxy
 from get_bookinfo import get_bookinfo
 from get_bookprice import get_bookprice
 from get_searchBooks import get_searchBooks
@@ -42,11 +43,13 @@ def wtb_book(request,bookid='0010829817'):
     snames =store_names
     surls  =store_urls
     #
-    stores  =list(url_qs.keys())#不爬博客來
+    stores  =list(url_qs.keys())#不爬博客來，其餘的店家 
     n       =len(stores)  
     bookids =[bookid]*n
     isbns   =['']*n        
     tryDBs  =[False]*n    
+    ippos   =get_proxy(which='OK',now=True,sample=True,sampleN=n)
+    #return HttpResponse(ippos)
     #
     bookinfo=get_bookinfo(bookid,tryDB=True)
     middle_time=time()
@@ -60,13 +63,13 @@ def wtb_book(request,bookid='0010829817'):
             bookinfo=get_bookinfo(bookid,tryDB=False)
             #更新bookprice_用多執行緒
             with ThreadPoolExecutor(max_workers=n) as executor:
-                bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs)]
+                bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs,ippos)]
         else:
             bookprice_all=Bookprice.objects.filter(bookid=bookid)
             #筆數不對也重爬
             if bookprice_all.count()<n:
                 with ThreadPoolExecutor(max_workers=n) as executor:
-                    bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs)]
+                    bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs,ippos)]
         #(2)整理    
         book['info']=bookinfo
         book['price']=bookprice_all

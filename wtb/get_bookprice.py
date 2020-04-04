@@ -46,7 +46,7 @@ from dict_stores import url_qs
 
 #________________________________________________
 
-def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
+def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True,ippo=None)->dict:
     
     bookprice={'err':'','bookid':bookid,'isbn':isbn,'isbn13':'','store':store}
     tw = pytz.timezone('Asia/Taipei')
@@ -157,7 +157,10 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True)->dict:
         headers=True  # generate misc headers
     )    
     UA=fake_header.generate()  
-    ippo=get_proxy(which="OK",now=True)
+    #print(ippo)
+    if not ippo:
+        ippo=get_proxy(which="OK",now=True)
+        #print(ippo+'_')
     proxies={
             "http": "http://"+ippo,
             #"https": "http://"+ippo

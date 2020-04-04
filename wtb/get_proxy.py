@@ -30,7 +30,7 @@ import json
 import csv
 
 #https://free-proxy-list.net/
-def get_proxy(which='free',now=False):
+def get_proxy(which='free',now=False,sample=False,sampleN=0):
     which_dict={'kuai':"/home/pan/django_projects/wtb/ips_kuai.txt",
                 'ihuan':"/home/pan/django_projects/wtb/ips_1000_ihuan.txt",
                 'free':"/home/pan/django_projects/wtb/ips_free.txt",
@@ -43,8 +43,11 @@ def get_proxy(which='free',now=False):
             line=line.strip() #remove space_\t_\n
             if len(line.split(":"))==2:
                 ippos.append(line)
+    #
+    if sample and sampleN>0:        
+        return random.sample(ippos,sampleN)
     if now:
-        s=1+random.uniform(0, 0.5)
+        s=0.5+random.uniform(0, 1)
         sleep(s)
         return random.choice(ippos)
     #ippo
