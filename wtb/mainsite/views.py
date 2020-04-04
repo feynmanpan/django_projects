@@ -55,21 +55,25 @@ def wtb_book(request,bookid='0010829817'):
     middle_time=time()
     #
     if not bookinfo['err']:
-        #(1)檢查更新時間，超過一天就全部重爬
+        #(1)檢查更新時間，超過一天就全部重爬  
         tw=pytz.timezone('Asia/Taipei')
         delta=timezone.now().astimezone(tw).date()-bookinfo['create_dt'].date()
         if delta.days!=0:
             #更新bookinfo
             bookinfo=get_bookinfo(bookid,tryDB=False)
+            row=bookinfo['row']#Bookinfo.objects.filter(bookid=bookid).first()  
+            rows=[row]*n
             #更新bookprice_用多執行緒
             with ThreadPoolExecutor(max_workers=n) as executor:
-                bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs,ippos)]
+                bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs,ippos,rows)]
         else:
             bookprice_all=Bookprice.objects.filter(bookid=bookid)
             #筆數不對也重爬
             if bookprice_all.count()<n:
+                row=bookinfo['row']#Bookinfo.objects.filter(bookid=bookid).first() 
+                rows=[row]*n
                 with ThreadPoolExecutor(max_workers=n) as executor:
-                    bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs,ippos)]
+                    bookprice_all=[ bookprice for bookprice in executor.map(get_bookprice,bookids,isbns,stores,tryDBs,ippos,rows)]
         #(2)整理    
         book['info']=bookinfo
         book['price']=bookprice_all

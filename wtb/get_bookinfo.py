@@ -48,10 +48,11 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
     
     #2.DB: 確認bookinfo表是否已有資料=======================
     if tryDB:
-        row=Bookinfo.objects.filter(bookid=bookid)
-        if row.count()==1:
-            bookinfo.update(row.values()[0])        
-            bookinfo['tryDB']=tryDB
+        rows=Bookinfo.objects.filter(bookid=bookid)
+        if rows.count()==1:
+            bookinfo.update(rows.values()[0])  
+            bookinfo['row']   =rows.first() #存Bookinfo物件，不要傳queryset
+            bookinfo['tryDB'] =tryDB
             bookinfo['fromDB']=True
             bookinfo['create']=None   
             #回傳顯示CST台北時間
@@ -203,7 +204,8 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         bookinfo['create_dt']=timezone.now() #django timezone會抓OS的UTC時間
         row, create = Bookinfo.objects.update_or_create(bookid=bookid,defaults=bookinfo)          
         #(2)整理回傳
-        bookinfo['tryDB']=tryDB
+        bookinfo['row']   =row
+        bookinfo['tryDB'] =tryDB
         bookinfo['fromDB']=False
         bookinfo['create']=create
         #回傳顯示CST台北時間

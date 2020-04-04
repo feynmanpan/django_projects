@@ -46,7 +46,7 @@ from dict_stores import url_qs
 
 #________________________________________________
 
-def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True,ippo=None)->dict:
+def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True,ippo=None,row=None)->dict:
     
     bookprice={'err':'','bookid':bookid,'isbn':isbn,'isbn13':'','store':store}
     tw = pytz.timezone('Asia/Taipei')
@@ -78,32 +78,32 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True,ippo=None)->
         if type(bookid) is not str or len(bookid)!=10:
             bookprice['err']='wrongbookid'
             return bookprice 
-        #以重查的isbn為準
-        row=Bookinfo.objects.filter(bookid=bookid)
-        if row.count()==1:
-            bookprice['bookid']=row.first() #要使用instance，update_or_create才能存           
-            bookprice['isbn']=row.first().isbn
-            bookprice['isbn13']=row.first().isbn13
-            isbn=row.first().isbn            
-            isbn13=row.first().isbn13            
+        #沒有給引數時，以重查的isbn為準
+        row=row or Bookinfo.objects.filter(bookid=bookid).first()
+        if row:
+            bookprice['bookid']=row #row.first() #要使用bookinfo_instance，update_or_create才能存           
+            bookprice['isbn']  =row.isbn #row.first().isbn
+            bookprice['isbn13']=row.isbn13 #row.first().isbn13
+            isbn  =row.isbn #row.first().isbn            
+            isbn13=row.isbn13 #row.first().isbn13            
         else:
             bookprice['err']='nosuchbookid'
             return bookprice 
     else:
         #沒bookid，就一定要用isbn重查
-        row=Bookinfo.objects.filter(isbn=isbn)
-        if row.count()==1:        
-            bookprice['bookid']=row.first() #要使用instance，update_or_create才能存       
-            bookid=row.first().bookid  
+        rows=Bookinfo.objects.filter(isbn=isbn)
+        if rows.count()==1:        
+            bookprice['bookid']=rows.first() #要使用instance，update_or_create才能存       
+            bookid=rows.first().bookid  
         else:
             bookprice['err']='nosuchisbn'
             return bookprice        
             
     #2.DB: 確認bookprice表是否已有資料=======================
     if tryDB:
-        row=Bookprice.objects.filter(bookid=bookid,store=store)
-        if row.count()==1:
-            bookprice.update(row.values()[0])        
+        rows=Bookprice.objects.filter(bookid=bookid,store=store)
+        if rows.count()==1:
+            bookprice.update(rows.values()[0])        
             bookprice['tryDB']=tryDB
             bookprice['fromDB']=True
             bookprice['create']=None   
