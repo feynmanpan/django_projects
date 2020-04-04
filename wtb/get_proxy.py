@@ -40,11 +40,12 @@ def get_proxy(which='free',now=False):
     with open(which_dict[which], 'r') as f:
         lines=f.readlines()
         for line in lines:
-            line=line.strip()
+            line=line.strip() #remove space_\t_\n
             if len(line.split(":"))==2:
                 ippos.append(line)
     if now:
-        sleep(1.5)
+        s=1+random.uniform(0, 0.5)
+        sleep(s)
         return random.choice(ippos)
     #ippo
     old=[]

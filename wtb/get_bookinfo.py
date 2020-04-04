@@ -164,6 +164,15 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         spec=doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").text().replace(" ","").replace("規格：","")
         #簡介
         intro=doc.find(".bd .content").eq(0).html() or ''
+        emoji_pattern = re.compile("["+
+                           "\U0001F600-\U0001F64F"+  # emoticons
+                           "\U0001F300-\U0001F5FF"+  # symbols & pictographs
+                           "\U0001F680-\U0001F6FF"+  # transport & map symbols
+                           "\U0001F1E0-\U0001F1FF"+  # flags (iOS)
+                           #"\U00002702-\U000027B0"+
+                           #"\U000024C2-\U0001F251"+
+                           "]+")
+        intro= emoji_pattern.sub(r'', intro)
         #YT影片
         url_vdo=doc.find('.cont iframe').eq(0).attr('src') or ''
         #封面
