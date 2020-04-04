@@ -186,7 +186,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         if 'timeout' in error:
             bookinfo['err']='timeout'
         else:    
-            bookinfo['err']=error[:50]
+            bookinfo['err']='err'+error[:45]
         #失敗不存出版日期
         bookinfo['pub_dt']=None    
     else:
