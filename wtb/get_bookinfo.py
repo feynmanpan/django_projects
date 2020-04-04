@@ -101,7 +101,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
         isbn=doc.find(".mod_b.type02_m058.clearfix .bd").find("ul").eq(0).find("li").eq(0).text() or ''
         isbn13=''
         if 'ISBN' not in isbn:# or (len(isbn.replace("ISBN：",""))==10 and not isbnlib.to_isbn13(isbn)):
-            title=doc.find(".mod.type02_p002.clearfix > h1").text()
+            title=doc.find(".mod.type02_p002.clearfix > h1").text().replace('&','')
             isbns=get_isbn_from_elite(title)
             if not isbns:
                 raise Exception('noisbn')
@@ -170,7 +170,7 @@ def get_bookinfo(bookid:str,tryDB=True)->dict:
                            "\U0001F680-\U0001F6FF"+  # transport & map symbols
                            "\U0001F1E0-\U0001F1FF"+  # flags (iOS)
                            #"\U00002702-\U000027B0"+
-                           #"\U000024C2-\U0001F251"+
+                           #"\U000024C2-\U0001F251"+ #中文也會砍到
                            "]+")
         intro= emoji_pattern.sub(r'', intro)
         #YT影片

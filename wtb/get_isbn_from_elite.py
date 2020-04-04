@@ -69,8 +69,8 @@ def get_isbn_from_elite(title):
     doc=pq(r.text)
     r.close()
     
-    count=doc.find("#ctl00_ContentPlaceHolder1_lbTotalResultCount").text()
-    if int(count)<1:
+    count=doc.find("#ctl00_ContentPlaceHolder1_lbTotalResultCount").text() or ''
+    if not count or int(count)<1:
         return []
     
     #(2)查單書頁________________________________
