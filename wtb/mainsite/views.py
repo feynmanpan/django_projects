@@ -77,7 +77,7 @@ def wtb_book(request,bookid='0010829817'):
         #
     #
     end_time = time()
-    book['time']=f'{end_time-start_time:.5f}_{middle_time-start_time:.5f}'
+    book['time']=f'{end_time-start_time:.5f}'#_{middle_time-start_time:.5f}'
     #
     if bookinfo['err']:    
         book['err']=bookinfo['err']

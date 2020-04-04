@@ -86,7 +86,7 @@
 {% endblock %}
 
 {% block content %} 
-	<div id='body_book' class='body' align='' style="">
+	<div id='body_book' class='body' align='' style="" data-time='{{book.time}}'>
 		<iframe id="wtb_book_bg" class="background" src="https://threejsfundamentals.org/threejs/background.html"></iframe>
 		
 		<div id='info' data-bookid='{{book.info.bookid}}'>
@@ -130,7 +130,7 @@
 		
 		<div id='price'>			
 			<h4 style="">
-				<span style="color:rgb(210, 105, 30)">紙本</span>及<span style="color:rgb(100, 149, 237)">電子書</span>──<span id='sn'></span>家售價比較圖<span class='ps'>(更新時間:{{book.info.create_dt}})</span>
+				<span style="color:rgb(210, 105, 30)">紙本</span>及<span style="color:rgb(100, 149, 237)">電子書</span>──<span id='sn'></span>家售價比較圖<span class='ps'>(更新時間:{{book.info.create_dt}}／處理時間:{{book.time}}秒)</span>
 			</h4>
             <ol style='font-size:15px;color:black;text-align: justify;padding-right: 20px;'>
                 <li style=''>
