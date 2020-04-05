@@ -41,7 +41,6 @@ function tpml(){
 function taaze_vdo_handle(){
 		
 	if(taaze_vdo!=""){
-
 		
 		var vdo=$("#info_listp").find('video#vdo');
 		var vdo_btn=$('#vdo_btn');
@@ -49,7 +48,7 @@ function taaze_vdo_handle(){
 		//
 		var m=window.matchMedia('(max-width: 992px)').matches;		
 		if(m==true){
-
+			vdo_close.remove();//小螢幕直接不關
 		}		
 		//
 		vdo.attr('src',taaze_vdo);
