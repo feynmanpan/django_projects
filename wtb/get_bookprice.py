@@ -325,7 +325,7 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True,ippo=None,ro
             url_book=doc.find('meta[property="og:url"]').eq(0).attr('content') or ''
         #(6)城邦
         elif store=='cite':
-            price_sale=doc.find('.book-info-2 ul').find('span.font-color01').eq(-1).text() or ''
+            price_sale=doc.find('.book-info-2 ul').eq(0).find('span.font-color01').eq(-1).text() or ''
             url_book=doc.find('.book-img.book_div a').eq(0).attr('href') or ''
             if url_book:
                 url_book='https://www.cite.com.tw'+url_book     
@@ -377,7 +377,11 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True,ippo=None,ro
                     price_sale=m.group(1)
                 else:
                     price_sale=''
+            #
             url_book=doc.find(".gridList a.BaseGridItem__content___3LORP").eq(0).attr("href") or ''  
+            if url_book and 'https://tw.bid.yahoo.com' not in url_book:
+                url_book='https://tw.bid.yahoo.com'+url_book
+                
         #(11)聯經
         elif store=='linking':
             url_book=doc.find(".books_title a").eq(0).attr('href') or ''
