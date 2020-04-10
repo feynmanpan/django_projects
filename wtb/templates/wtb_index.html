@@ -21,6 +21,7 @@
         import { OrbitControls } from '{% static "three.js-master/examples/jsm/controls/OrbitControls.js" %}';
         import { Water } from '{% static "three.js-master/examples/jsm/objects/Water.js" %}';
         import { Sky } from '{% static "three.js-master/examples/jsm/objects/Sky.js" %}';
+		import { CSS3DRenderer, CSS3DObject } from '{% static "three.js-master/examples/jsm/renderers/CSS3DRenderer.js" %}';
         //threex.domevents.js 有修改首末行的import/export 
         import { THREEx } from '{% static "three.js-master/build/threex.domevents.js" %}';
         import {GLTFLoader} from '{% static "three.js-master/examples/jsm/loaders/GLTFLoader.js" %}';        
@@ -28,6 +29,7 @@
         var container, stats;
         var camera, scene, renderer, light;
         var controls, water, sphere, sky, cubeCamera, parameters;
+		var goodbooks={};
         //
         const numBirds = 80;
         const minMax = 700;            
@@ -268,60 +270,61 @@
 
 			}
 			
-			if(today < end_day_MH){
-
-				logo_loader.load('mystatic/images/activity/MH_2020_0405.jpg', function ( logo_texture ) {
-					var logo_material = new THREE.MeshBasicMaterial({ 
-																   map: logo_texture,
-																   side: THREE.DoubleSide,
-																   wireframe: false 
-																});
-					var w=logo_texture.image.width/100;
-					var h=logo_texture.image.height/100;
-					//
-					var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
-					var logo=new THREE.Mesh(logo_geometry, logo_material);
-					//
- 
-					if (window.matchMedia("(max-width: 992px)").matches) {
-						//logo.position.x=-4;//+(0%grid)*Dx;                    
-						//logo.position.y=4;//-(Math.floor(0/grid))*Dy;
-						//logo.position.z=40;//-(0%2)*Dz; 
-						logo.position.x=-2;//+(0%grid)*Dx;                    
-						logo.position.y=3;//-(Math.floor(0/grid))*Dy;
-						logo.position.z=30;//-(0%2)*Dz; 						
-					} else {
-						logo.position.x=-2;//+(0%grid)*Dx;                    
-						logo.position.y=3;//-(Math.floor(0/grid))*Dy;
-						logo.position.z=30;//-(0%2)*Dz;                    
-					}   					
-					//
-					scene.add(logo); 
-					//事件綁定____________________     
-					//點擊
-					var url='https://m.facebook.com/story.php?story_fbid=2744831458933514&id=113198042096882&fs=0&focus_composer=0';
-					//
-					domEvents.addEventListener(logo, 'click', function(e){
-						window.open(url, '_blank');                          
-					}, false);
-					domEvents.addEventListener(logo, 'touchstart', function(e){
-						window.open(url, '_blank');                          
-					}, false);                    
-					//mouseover
-					domEvents.addEventListener(logo, 'mouseover', function(e){
-						$("#three_container").css('cursor','pointer').attr("title",'【中正紀念堂回頭書展】\n\n"時報的有一些超新書!"\n\n->撿到<動盪> by 站長');                          
-					}, false);    
-					//mouseout
-					domEvents.addEventListener(logo, 'mouseout', function(e){
-						$("#three_container").css('cursor','').attr("title","");;                          
-					}, false);     
-				
-				});//logo_loader
-
-			}			
 			
-			//站長推薦
-			logo_loader.load('mystatic/images/goodbooks/dontsleep.jpg', function ( logo_texture ) {
+			//站長4月推薦
+			logo_loader.load('mystatic/images/goodbooks/2020_04_arrival_raw.jpg', function ( logo_texture ) {
+				var logo_material = new THREE.MeshBasicMaterial({ 
+															   map: logo_texture,
+															   side: THREE.DoubleSide,
+															   wireframe: false 
+															});
+				var w=logo_texture.image.width/40;
+				var h=logo_texture.image.height/40;
+				//
+				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
+				var logo=new THREE.Mesh(logo_geometry, logo_material);
+				//
+
+				if (window.matchMedia("(max-width: 992px)").matches) {
+					//logo.position.x=-4;//+(0%grid)*Dx;                    
+					//logo.position.y=4;//-(Math.floor(0/grid))*Dy;
+					//logo.position.z=40;//-(0%2)*Dz; 
+					logo.position.x=-8;//+(0%grid)*Dx;                    
+					logo.position.y=7;//-(Math.floor(0/grid))*Dy;
+					logo.position.z=30;//-(0%2)*Dz; 						
+				} else {
+					logo.position.x=-8;//+(0%grid)*Dx;                    
+					logo.position.y=7;//-(Math.floor(0/grid))*Dy;
+					logo.position.z=30;//-(0%2)*Dz;                    
+				}
+				goodbooks[4]=logo;	
+				//
+				scene.add(logo); 
+				//事件綁定____________________     
+				//點擊
+				var url='https://wtb.nctu.me/book/0010742886/';
+				//
+				domEvents.addEventListener(logo, 'click', function(e){
+					window.open(url, '_blank');                          
+				}, false);
+				domEvents.addEventListener(logo, 'touchstart', function(e){
+					window.open(url, '_blank');                          
+				}, false);                    
+				//mouseover
+				domEvents.addEventListener(logo, 'mouseover', function(e){
+					$("#three_container").css('cursor','pointer').attr("title",'【你一生的預言】\n\n"喜歡電影異星入境的朋友\n  原著小說的水準一樣高!"\n\n->等待<呼吸> by 站長');                          
+				}, false);    
+				//mouseout
+				domEvents.addEventListener(logo, 'mouseout', function(e){
+					$("#three_container").css('cursor','').attr("title","");;                          
+				}, false);     
+			
+			});//logo_loader
+
+					
+			
+			//站長3月推薦
+			logo_loader.load('mystatic/images/goodbooks/dontsleep_raw.jpg', function ( logo_texture ) {
 				var logo_material = new THREE.MeshBasicMaterial({ 
 															   map: logo_texture,
 															   side: THREE.DoubleSide,
@@ -337,15 +340,17 @@
 					//logo.position.x=-7;//+(0%grid)*Dx;                       
 					//logo.position.y=6;//-(Math.floor(0/grid))*Dy;
 					//logo.position.z=25;//-(0%2)*Dz; 
-					logo.position.x=-15;//+(0%grid)*Dx;                        
+					logo.position.x=-22;//+(0%grid)*Dx;                        
 					logo.position.y=3.7;//-(Math.floor(0/grid))*Dy;
 					logo.position.z=25;//-(0%2)*Dz; 					
 				} else {
-					logo.position.x=-15;//+(0%grid)*Dx;                        
+					logo.position.x=-22;//+(0%grid)*Dx;                        
 					logo.position.y=3.7;//-(Math.floor(0/grid))*Dy;
 					logo.position.z=25;//-(0%2)*Dz;                    
-				}                        
+				}
+				//logo.rotation.y=Math.PI/3;				
 				//
+				goodbooks[3]=logo;
 				scene.add(logo); 
 				//事件綁定____________________      
 				//點擊
@@ -358,7 +363,7 @@
 				}, false);                    
 				//mouseover
 				domEvents.addEventListener(logo, 'mouseover', function(e){
-					$("#three_container").css('cursor','pointer').attr("title",'【別睡，這裡有蛇！】\n\n"即便沒有天堂的慰藉與地獄的恐懼，\n  也能有尊嚴並心滿意足地面對生命，\n   帶著微笑航向生命的混沌深淵。"\n\n->推薦 by 站長');                          
+					$("#three_container").css('cursor','pointer').attr("title",'【別睡，這裡有蛇！】\n\n"即便沒有天堂的慰藉與地獄的恐懼，\n  也能有尊嚴並心滿意足地面對生命，\n   帶著微笑航向生命的混沌深淵。"\n\n->混沌ing by 站長');                          
 				}, false);    
 				//mouseout
 				domEvents.addEventListener(logo, 'mouseout', function(e){
@@ -367,6 +372,8 @@
 			
 			});//logo_loader
 
+
+			
 
             //(2)飛鳥處理=================================
             function rand(min, max) {
@@ -481,8 +488,16 @@
                 mixer.update(deltaTime);
                 //沿x軸循環飛行
                 mesh.position.x = (mesh.position.x + minMax*10 + mixer.timeScale * birdSpeed * deltaTime) % (minMax * 18) - minMax*10;
-            }            
-            /*
+            } 
+			//(3)logo動
+			try {
+				//goodbooks[4].position.y = Math.sin( time/6 ) * 2 + 6;
+			}
+			catch (e) {
+				console.log('fine');
+			}
+            
+			/*
             sphere.position.y = Math.sin( time ) * 20 + 5;
             sphere.rotation.x = time * 0.5;
             sphere.rotation.z = time * 0.51;
