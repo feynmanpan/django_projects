@@ -5,6 +5,7 @@
 import os
 import django
 from django.utils import timezone
+from django.core.cache import cache
 #from django.utils.dateparse import parse_datetime
 from datetime import datetime,date#,timezone
 import pytz
@@ -29,6 +30,10 @@ import re
 import json
 import csv
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wtb.settings')
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+django.setup()
+
 #https://free-proxy-list.net/
 def get_proxy(which='free',now=False,sample=False,sampleN=0):
     which_dict={'kuai':"/home/pan/django_projects/wtb/ips_kuai.txt",
@@ -36,13 +41,18 @@ def get_proxy(which='free',now=False,sample=False,sampleN=0):
                 'free':"/home/pan/django_projects/wtb/ips_free.txt",
                 'OK':"/home/pan/django_projects/wtb/ips_OKs.txt"
                }
-    ippos=[]
-    with open(which_dict[which], 'r') as f:
-        lines=f.readlines()
-        for line in lines:
-            line=line.strip() #remove space_\t_\n
-            if len(line.split(":"))==2:
-                ippos.append(line)
+    #
+    ippos=cache.get('ippos')
+    if not ippos:
+        ippos=[]
+        with open(which_dict[which], 'r') as f:
+            lines=f.readlines()
+            for line in lines:
+                line=line.strip() #remove space_\t_\n
+                if len(line.split(":"))==2:
+                    ippos.append(line)
+        #
+        cache.set('ippos', ippos, 86400)    
     #
     if sample and sampleN>0:        
         return random.sample(ippos,sampleN)

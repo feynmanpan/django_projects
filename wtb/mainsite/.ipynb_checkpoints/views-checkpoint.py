@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
 from datetime import datetime
@@ -47,8 +48,11 @@ def wtb_book(request,bookid='0010829817'):
     n       =len(stores)  
     bookids =[bookid]*n
     isbns   =['']*n        
-    tryDBs  =[False]*n    
-    ippos   =get_proxy(which='OK',now=True,sample=True,sampleN=n)
+    tryDBs  =[False]*n   
+    ippos   =cache.get('ippos')
+    if not ippos:
+        ippos=get_proxy(which='OK',now=True,sample=True,sampleN=n)
+        cache.set('ippos', ippos, 30) 
     #return HttpResponse(ippos)
     #
     bookinfo=get_bookinfo(bookid,tryDB=True)
@@ -197,4 +201,5 @@ def showpost_1(request, slug):
         #return redirect('/index')            
         raise Http404("找不到_"+slug)
     return redirect('/index')        
+
 
