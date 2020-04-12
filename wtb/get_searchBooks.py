@@ -40,7 +40,7 @@ def get_searchBooks(kw:str='村上春樹',which='free',now=False):
         os="win",  # Generate ony Windows platform
         headers=True  # generate misc headers
     )    
-    ua = UserAgent()
+    #ua = UserAgent()  #20200412_突然掛了
     UA={
             'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'Accept-Encoding':'gzip, deflate, br',
@@ -53,8 +53,8 @@ def get_searchBooks(kw:str='村上春樹',which='free',now=False):
             'Sec-Fetch-Site':'nonev',
             'Sec-Fetch-User':'?1',
             'Upgrade-Insecure-Requests':'1',
-            'User-Agent':ua.random,  
-            #'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36',
+            #'User-Agent':ua.random,  
+            'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36',
         }
     UA=fake_header.generate()
     #UA= {'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
