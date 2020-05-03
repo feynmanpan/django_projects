@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>農產品貿易統計視覺化平台</title>
+    <!-- jQ -->
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.js'></script> -->
+    <!-- bootstrap -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="bootstrap.css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <!-- treeview -->
+    <link rel="stylesheet" href="bootstrap-treeview.css?v=1">
+    <script src="bootstrap-treeview.js"></script>
+    <style>
+        * {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            /* overflow: hidden; */
+            font-family: 微軟正黑體;
+
+        }
+
+        a:hover {
+            text-decoration: none;
+            /* color: #b61c1c; */
+            /* For Example */
+        }
+
+        div {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        /*  */
+        #header {
+            background-color: #2C3742;
+            height: 50px;
+        }
+
+        #header p {
+            color: white;
+            line-height: 50px;
+            padding-left: 1em;
+            font-size: 1.5em;
+        }
+
+        /*  */
+        #rest {
+            width: 100%;
+            height: -webkit-calc(100% - 50px);
+            height: -moz-calc(100% - 50px);
+            height: calc(100% - 50px);
+            position: relative;
+            /* background-color: red; */
+        }
+
+        #left {
+            width: 200px;
+            height: 100%;
+            display: inline-block;
+            /* background-color: green; */
+            border-right: 1px solid lightgrey;
+        }
+
+        #right {
+            height: 100%;
+            width: -webkit-calc(100% - 200px);
+            width: -moz-calc(100% - 200px);
+            width: calc(100% - 200px);
+            position: absolute;
+            /* margin-left: -5px; */
+            display: inline-block;
+
+            /* background-color: blue; */
+        }
+
+        #chart {
+            height: 100%;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <p class="">農產品貿易統計視覺化平台</p>
+    </div>
+    <div id="rest">
+        <div id='left'>
+            <div id="tree">
+
+            </div>
+        </div>
+        <div id='right'>
+            <div id="chart"></div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        var L1 = ["1", "2", "3", "4"];
+        var tableau = {
+            "1-1": "<div class='tableauPlaceholder' id='viz1588006166909' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;__&#47;__15875341909370&#47;sheet0&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='__15875341909370&#47;sheet0' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;__&#47;__15875341909370&#47;sheet0&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1588006166909');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1177px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                <\/script>",
+            "1-2": "<div class='tableauPlaceholder' id='viz1588037649726' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;__&#47;__15875341909370&#47;sheet4&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='__15875341909370&#47;sheet4' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;__&#47;__15875341909370&#47;sheet4&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1588037649726');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1227px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                <\/script>",
+            "2-1": "<div class='tableauPlaceholder' id='viz1588037754972' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;-_&#47;-_15879723453860&#47;sheet0&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='-_15879723453860&#47;sheet0' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;-_&#47;-_15879723453860&#47;sheet0&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1588037754972');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1609px';vizElement.style.height='931px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1609px';vizElement.style.height='931px';} else { vizElement.style.width='100%';vizElement.style.height='2027px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                <\/script>",
+            "2-2": "<div class='tableauPlaceholder' id='viz1588037785143' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;-_&#47;-_15879725458760&#47;-&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='-_15879725458760&#47;-' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;-_&#47;-_15879725458760&#47;-&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1588037785143');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1609px';vizElement.style.height='931px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1609px';vizElement.style.height='931px';} else { vizElement.style.width='100%';vizElement.style.height='2027px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                <\/script>",
+            "3-1": "<div class='tableauPlaceholder' id='viz1588037903177' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;21&#47;21507&#47;sheet0&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='21507&#47;sheet0' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;21&#47;21507&#47;sheet0&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1588037903177');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.minWidth='800px';vizElement.style.maxWidth='1600px';vizElement.style.width='100%';vizElement.style.minHeight='427px';vizElement.style.maxHeight='827px';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.minWidth='800px';vizElement.style.maxWidth='1600px';vizElement.style.width='100%';vizElement.style.minHeight='427px';vizElement.style.maxHeight='827px';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1677px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                <\/script>",
+            "3-2": "<div class='tableauPlaceholder' id='viz1588037933784' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;21&#47;21299&#47;sheet0&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='21299&#47;sheet0' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;21&#47;21299&#47;sheet0&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1588037933784');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.minWidth='800px';vizElement.style.maxWidth='1600px';vizElement.style.width='100%';vizElement.style.minHeight='427px';vizElement.style.maxHeight='827px';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.minWidth='800px';vizElement.style.maxWidth='1600px';vizElement.style.width='100%';vizElement.style.minHeight='427px';vizElement.style.maxHeight='827px';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1677px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                <\/script>",
+        }
+        function getTree() {
+            var tree = [
+                {
+                    text: "總體",
+                    href: '#1',
+                    // tags: ['4'],
+                    nodes: [
+                        {
+                            text: "總覽",
+                            href: '#1-1',
+                        },
+                        {
+                            text: "進出口總覽",
+                            href: '#1-2',
+                        }
+                    ]
+                },
+                {
+                    text: "國家(地區)別",
+                    href: '#2',
+                    nodes: [
+                        {
+                            text: "產品別",
+                            href: '#2-1',
+                        },
+                        {
+                            text: "製品別",
+                            href: '#2-2',
+                        }
+                    ]
+                },
+                {
+                    text: "農產品別",
+                    href: '#3',
+                    nodes: [
+                        {
+                            text: "產品別",
+                            href: '#3-1',
+                        },
+                        {
+                            text: "製品別",
+                            href: '#3-2',
+                        }
+                    ]
+                },
+                {
+                    text: "主題式專區",
+                    href: '#4',
+                }
+
+            ]
+
+
+            return tree;
+        }
+
+        $('#tree').treeview({
+            data: getTree(),
+            levels: 1,//只開到第一層
+            enableLinks: true,
+            onhoverColor: 'lightgrey',
+            showBorder: true,
+            borderColor: 'lightgrey'
+        });
+
+
+        //點擊載入tableau
+        $("#tree").on("click", ".list-group-item", function () {
+            // 
+            var that = $(this);
+            var href = that.find("a").attr("href").replace("#", "");
+            if (!L1.includes(href)) {
+                var chart = tableau[href];
+                $("#chart").empty().html(chart);
+            }
+
+        })
+        //init
+        $("#tree .list-group-item").has("a[href='#1']")
+            .find("span").eq(0).trigger("click");
+        $("#tree .list-group-item").has("a[href='#1-1']").trigger("click");
+
+    })
+</script>
+
+
+</html>
