@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <head>
+        <!-- Remember to include jQuery :) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+        <!-- jQuery Modal -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    </head>
+</head>
+
+<body>
+    <!-- 說明內容 -->
+    <div id="ex1" class="modal">
+        <h1>說明</h1>
+        <!-- <a href="#" rel="modal:close">按我關閉</a> -->
+        <h2>總體</h2>
+        <div>
+            分為總體貿易和農林漁牧四大類。
+            總覽包含貿易值、出入超和年增率。
+            進出口包含國家(地區)及產品占比。
+        </div>
+        <h2>國家(地區)別</h2>
+        <div>
+            包含主要貿易國家(地區)之貿易值、出入超、年增率及主要進出口產品。
+        </div>
+        <h2>農產品別</h2>
+        <div>
+            包含產品別及製品別之進出口量值及平均單價，以及其主要進出口國家(地區)。
+        </div>
+        <h2>主題式專區(未來規劃)</h2>
+        <div>
+            單位統一：
+            千美元/百萬美元、公噸/千公噸、
+            小數點後一位(平均單價兩位)
+            單位統一：
+            千美元/百萬美元、公噸/千公噸、
+            小數點後一位(平均單價兩位)
+        </div>
+    </div>
+
+    <!-- 說明按鈕 -->
+    <span style="
+        display: inline-block;
+        border-radius: 5px;
+        /* border: 1px solid lightgrey; */
+        background-color: chocolate;
+        padding: 5px;
+        ">
+        <a href="#ex1" rel="modal:open" style="text-decoration: none;color:white;">按我說明</a>
+    </span>
+</body>
+
+</html>
