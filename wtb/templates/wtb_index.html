@@ -214,20 +214,20 @@
 			*/
 			
 			//誠品活動
-			var today=new Date();
-			var end_day_elite=new Date(2020,3,28);//4月27
-			var end_day_MH=new Date(2020,3,6);//4月5
+			//var today=new Date();
+			//var end_day_elite=new Date(2020,3,28);//4月27
+			//var end_day_MH=new Date(2020,3,6);//4月5
 			//
-			if(today < end_day_elite){
-
-				logo_loader.load('mystatic/images/activity/elite_activity_0327_0427.jpg', function ( logo_texture ) {
+			//if(today < end_day_elite){
+			if(1<2){
+				logo_loader.load('mystatic/images/goodbooks/142.jpg', function ( logo_texture ) {
 					var logo_material = new THREE.MeshBasicMaterial({ 
 																   map: logo_texture,
 																   side: THREE.DoubleSide,
 																   wireframe: false 
 																});
-					var w=logo_texture.image.width/100;
-					var h=logo_texture.image.height/100;
+					var w=logo_texture.image.width/40;
+					var h=logo_texture.image.height/40;
 					//
 					var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
 					var logo=new THREE.Mesh(logo_geometry, logo_material);
@@ -238,18 +238,18 @@
 						//logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
 						//logo.position.z=33;//-(0%2)*Dz;     
 						logo.position.x=10;//+(0%grid)*Dx;                    
-						logo.position.y=3.5;//-(Math.floor(0/grid))*Dy;
+						logo.position.y=5.5;//-(Math.floor(0/grid))*Dy;
 						logo.position.z=33;//-(0%2)*Dz;						
 					} else {
 						logo.position.x=10;//+(0%grid)*Dx;                    
-						logo.position.y=3.5;//-(Math.floor(0/grid))*Dy;
+						logo.position.y=5.5;//-(Math.floor(0/grid))*Dy;
 						logo.position.z=33;//-(0%2)*Dz;                     
 					}   					
 					//
 					scene.add(logo); 
 					//事件綁定____________________     
 					//點擊
-					var url='https://meet.eslite.com/tw/tc/news/202003260003';
+					var url='https://wtb.nctu.me/book/0010785362';
 					//
 					domEvents.addEventListener(logo, 'click', function(e){
 						window.open(url, '_blank');                          
@@ -259,14 +259,14 @@
 					}, false);                    
 					//mouseover
 					domEvents.addEventListener(logo, 'mouseover', function(e){
-						$("#three_container").css('cursor','pointer').attr("title",'【敦南晒書節】\n\n"囤書時間到！誠品最後一場\n把喜歡的書帶回家吧"\n\n->沒錢 by 站長');                          
+						$("#three_container").css('cursor','pointer').attr("title",'【阿拉斯加之死】\n\n"我已過了快樂的一生，感謝主。\n  再會，願上蒼保佑所有的人。"\n\n->真的超級遊民 by 站長');                          
 					}, false);    
 					//mouseout
 					domEvents.addEventListener(logo, 'mouseout', function(e){
 						$("#three_container").css('cursor','').attr("title","");;                          
 					}, false);     
 				
-				});//logo_loader
+				});//logo_loader 
 
 			}
 			
