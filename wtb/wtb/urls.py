@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from mainsite.views import wtb_index,wtb_book,wtb_search,wtb_autocom,wtb_tpml,wtb_hybook,homepage, homepage_1,homepage_2,showpost,showpost_1
+from mainsite.views import wtb_index,wtb_book,wtb_search,wtb_autocom,wtb_tpml,wtb_hybook,get_client_ip,homepage, homepage_1,homepage_2,showpost,showpost_1
 
 
 test_patterns=[
@@ -30,6 +30,7 @@ urlpatterns = [
     path('autocom/', wtb_autocom),
     path('tpml/', wtb_tpml),
     path('hybook/<int:page>/', wtb_hybook),
+    path('get_client_ip/', get_client_ip),
     #
     path('index/<str:test>/', homepage),
     #path('index_1/', homepage_1,{'AAA':2345}),
