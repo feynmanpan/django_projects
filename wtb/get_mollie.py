@@ -55,6 +55,15 @@ def get_mollie(isbn):
     #1.輸入isbn_________________
     #isbn='9789571345826'
     isbn_selector="#FM > table > tbody > tr:nth-child(4) > td.text > input[type=text]"
+    
+    try:
+        #有時在維護
+        WebDriverWait(driver, 5, 0.5).until(EC.presence_of_element_located((By.CSS_SELECTOR, isbn_selector)))
+    except Exception as err:
+        driver.close()
+        driver.quit()
+        return 'err_'+str(err)        
+    
     isbn_input = driver.find_element_by_css_selector(isbn_selector)
     driver.execute_script("document.querySelector('"+isbn_selector+"').value='"+isbn+"'")
     #driver.execute_script("document.getElementsByTagName('input[name=BarCode]').setAttribute('value','9789864791446')")
