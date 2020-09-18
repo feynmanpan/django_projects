@@ -56,7 +56,6 @@ class BookinfoType(DjangoObjectType):
         # 實際查詢店家的非None(null)平均
         stores = [f.name.value for f in info.field_asts[0].selection_set.selections]
         stores = list(set(stores) - set(['priceSaleMean']))
-        QS['priceSaleMean'] = None
         if stores:
             tmp = [v for k, v in QS.items() if v is not None and k in stores]
             if tmp:
