@@ -56,7 +56,7 @@
             //camera
             camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 1, 20000 );
             //camera.position.set( 30, 30, 100 );
-            camera.position.set(0, 0, 60); 
+            camera.position.set(0, 0, 65); 
             //light
             light = new THREE.DirectionalLight( 0xffffff, 0.8 );
             scene.add( light );
@@ -213,6 +213,102 @@
             {% endfor %}            
 			*/
 			
+			logo_loader.load('mystatic/images/goodbooks/TibetanDog.jpg', function ( logo_texture ) {
+				var logo_material = new THREE.MeshBasicMaterial({ 
+															   map: logo_texture,
+															   side: THREE.DoubleSide,
+															   wireframe: false 
+															});
+				var w=logo_texture.image.width/43;
+				var h=logo_texture.image.height/43;
+				//
+				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
+				var logo=new THREE.Mesh(logo_geometry, logo_material);
+				//
+
+				if (window.matchMedia("(max-width: 992px)").matches) {
+					//logo.position.x=4;//+(0%grid)*Dx;                    
+					//logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
+					//logo.position.z=33;//-(0%2)*Dz;     
+					logo.position.x=22;//+(0%grid)*Dx;                    
+					logo.position.y=5;//-(Math.floor(0/grid))*Dy;
+					logo.position.z=35;//-(0%2)*Dz;						
+				} else {
+					logo.position.x=22;//+(0%grid)*Dx;                    
+					logo.position.y=5;//-(Math.floor(0/grid))*Dy;
+					logo.position.z=35;//-(0%2)*Dz;                     
+				}   					
+				//
+				scene.add(logo); 
+				//事件綁定____________________     
+				//點擊
+				var url='https://wtb.nctu.me/book/0010317666/';
+				//
+				domEvents.addEventListener(logo, 'click', function(e){
+					window.open(url, '_blank');                          
+				}, false);
+				domEvents.addEventListener(logo, 'touchstart', function(e){
+					window.open(url, '_blank');                          
+				}, false);                    
+				//mouseover
+				domEvents.addEventListener(logo, 'mouseover', function(e){
+					$("#three_container").css('cursor','pointer').attr("title",'【藏獒】\n\n禮失求諸野，情失求藏獒。\n\n->養狗當如岡日森格 by 站長');                          
+				}, false);    
+				//mouseout
+				domEvents.addEventListener(logo, 'mouseout', function(e){
+					$("#three_container").css('cursor','').attr("title","");;                          
+				}, false);     
+			
+			});//logo_loader 					
+			
+			logo_loader.load('mystatic/images/goodbooks/dog.jpg', function ( logo_texture ) {
+				var logo_material = new THREE.MeshBasicMaterial({ 
+															   map: logo_texture,
+															   side: THREE.DoubleSide,
+															   wireframe: false 
+															});
+				var w=logo_texture.image.width/43;
+				var h=logo_texture.image.height/43;
+				//
+				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
+				var logo=new THREE.Mesh(logo_geometry, logo_material);
+				//
+
+				if (window.matchMedia("(max-width: 992px)").matches) {
+					//logo.position.x=4;//+(0%grid)*Dx;                    
+					//logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
+					//logo.position.z=33;//-(0%2)*Dz;     
+					logo.position.x=10;//+(0%grid)*Dx;                    
+					logo.position.y=7;//-(Math.floor(0/grid))*Dy;
+					logo.position.z=30;//-(0%2)*Dz;						
+				} else {
+					logo.position.x=10;//+(0%grid)*Dx;                    
+					logo.position.y=7;//-(Math.floor(0/grid))*Dy;
+					logo.position.z=30;//-(0%2)*Dz;                     
+				}   					
+				//
+				scene.add(logo); 
+				//事件綁定____________________     
+				//點擊
+				var url='https://wtb.nctu.me/book/0010472216/';
+				//
+				domEvents.addEventListener(logo, 'click', function(e){
+					window.open(url, '_blank');                          
+				}, false);
+				domEvents.addEventListener(logo, 'touchstart', function(e){
+					window.open(url, '_blank');                          
+				}, false);                    
+				//mouseover
+				domEvents.addEventListener(logo, 'mouseover', function(e){
+					$("#three_container").css('cursor','pointer').attr("title",'【只吠過一聲的狗】\n\n"吉米哈利的大地系列跟兩本貓狗精選，\n 讓人如沐春風。"\n\n->這種書不應該絕版 by 站長');                          
+				}, false);    
+				//mouseout
+				domEvents.addEventListener(logo, 'mouseout', function(e){
+					$("#three_container").css('cursor','').attr("title","");;                          
+				}, false);     
+			
+			});//logo_loader 			
+			
 			//誠品活動
 			//var today=new Date();
 			//var end_day_elite=new Date(2020,3,28);//4月27
@@ -226,8 +322,8 @@
 																   side: THREE.DoubleSide,
 																   wireframe: false 
 																});
-					var w=logo_texture.image.width/40;
-					var h=logo_texture.image.height/40;
+					var w=logo_texture.image.width/45;
+					var h=logo_texture.image.height/45;
 					//
 					var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
 					var logo=new THREE.Mesh(logo_geometry, logo_material);
@@ -237,13 +333,17 @@
 						//logo.position.x=4;//+(0%grid)*Dx;                    
 						//logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
 						//logo.position.z=33;//-(0%2)*Dz;     
-						logo.position.x=10;//+(0%grid)*Dx;                    
-						logo.position.y=5.5;//-(Math.floor(0/grid))*Dy;
-						logo.position.z=33;//-(0%2)*Dz;						
+						logo.position.x=-30;//+(0%grid)*Dx;                    
+						logo.position.y=4.5;//-(Math.floor(0/grid))*Dy;
+						logo.position.z=33;//-(0%2)*Dz;		
+						//
+						//logo.rotation.x=Math.PI;
 					} else {
-						logo.position.x=10;//+(0%grid)*Dx;                    
-						logo.position.y=5.5;//-(Math.floor(0/grid))*Dy;
-						logo.position.z=33;//-(0%2)*Dz;                     
+						logo.position.x=-30;//+(0%grid)*Dx;                    
+						logo.position.y=4.5;//-(Math.floor(0/grid))*Dy;
+						logo.position.z=33;//-(0%2)*Dz;      
+						//
+						//logo.rotation.y=-0.5;
 					}   					
 					//
 					scene.add(logo); 

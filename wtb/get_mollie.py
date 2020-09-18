@@ -46,7 +46,7 @@ def get_mollie(isbn):
     chrome_options.add_argument("user-agent={}".format(ua))  
 
     #0.開chrome_記得查chrome版本，用同版本的driver:google-chrome -version
-    driver = webdriver.Chrome("/home/pan/chromedriver83",options=chrome_options)
+    driver = webdriver.Chrome("/home/pan/chromedriver85",options=chrome_options)
     driver.implicitly_wait(10)
     url = "http://www.mollie.com.tw/Mobile/Books.asp"
     driver.get(url)

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+</head>
+
+<body>
+    <div id='ajax'>
+    </div>
+</body>
+
+<script>
+    /*====================django ajax ======*/
+    jQuery(document).ajaxSend(function (event, xhr, settings) {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        function sameOrigin(url) {
+            // url could be relative or scheme relative or absolute
+            var host = document.location.host; // host + port
+            var protocol = document.location.protocol;
+            var sr_origin = '//' + host;
+            var origin = protocol + sr_origin;
+            // Allow absolute or scheme relative URLs to same origin
+            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+                (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+                // or any other URL that isn't scheme relative or absolute i.e relative.
+                !(/^(\/\/|http:|https:).*/.test(url));
+        }
+        function safeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        }
+    });
+    /*===============================django ajax end===*/
+
+
+    //可以直接貼入GraphiQL的查詢字串
+    var query = `
+		{
+			# 查詢書名含有【一生】，列出所需五個欄位，prices欄位為此書在各家平台的售價
+		  books(title: "一生") {
+			title
+			isbn
+			author
+			priceSale {
+			  shopee
+			  mollie
+			  rtimes
+			  ruten
+			  momo
+			  taaze
+			  elite
+			  ks
+			  tenlong
+			  linking
+			  cwgv
+			  yahoo
+			  iread
+			  cite
+			  sanmin
+			}
+		  }
+			
+
+		  # 查詢isbn為XXX的書，列出在各家平台的售價
+		  prices(isbn:"9789865025977"){
+			isbn
+			priceSale
+			store
+		  }
+		  
+		}
+
+	`;
+    var url = "https://wtb.nctu.me/graphql/";
+
+
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: JSON.stringify({ "query": query }),
+        contentType: 'application/json',
+        success: function (res) {
+            console.log(res);
+            res.data.books.forEach(
+                function (obj) {
+                    console.log(obj);
+                    $("#ajax").append(
+                        `<p>
+							${JSON.stringify(obj)}
+						</p>
+						`
+                    );
+                }
+            )
+
+        },
+        error: function (res) {
+            console.log(res);
+        }
+
+    })
+
+</script>
+
+</html>

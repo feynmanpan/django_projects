@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+</head>
+
+<body>
+	<pre id='ajax'>
+	</pre>
+</body>
+
+<script>
+
+	//可以直接貼入GraphiQL的查詢字串
+	var query = `
+		{
+			books(title: "村上") {
+				title
+				isbn
+				author
+				priceList
+			}
+			booksCount	
+		}
+	`;
+	//
+	var url = "https://wtb.nctu.me/graphql/";
+	$.ajax({
+		url: url,
+		method: 'post',
+		data: JSON.stringify({ query }),
+		contentType: 'application/json',
+		success: function (res) {
+			console.log(res);
+			$("#ajax").html(JSON.stringify(res.data, null, 4))
+		},
+		error: function (res) {
+			console.log(res);
+		}
+
+	})
+
+</script>
+
+</html>
