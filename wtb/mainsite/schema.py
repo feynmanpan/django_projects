@@ -48,19 +48,15 @@ class BookinfoType(DjangoObjectType):
 
     def resolve_priceSale(self, info, **kwargs):
         df = info.variable_values['df_all_priceSales']
-        df = df[df.isbn == self.isbn][['store', 'price_sale']]
-        QS = dict(df.to_dict('split')['data'])
+        df = df[df.isbn == self.isbn]
+        QS = dict(df[['store', 'price_sale']].to_dict('split')['data'])
         #
         QS['books'] = self.price_sale
         QS = {k: float(v) if v != "" else None for k, v in QS.items()}
         # 實際查詢店家的非None(null)平均
         stores = [f.name.value for f in info.field_asts[0].selection_set.selections]
         stores = list(set(stores) - set(['priceSaleMean']))
-        if stores:
-            tmp = [v for k, v in QS.items() if v is not None and k in stores]
-            if tmp:
-                QS['priceSaleMean'] = np.mean(tmp)
-        #
+        QS['priceSaleMean'] = np.mean([v for k, v in QS.items() if v is not None and k in stores])
         return QS
 
 
@@ -104,6 +100,7 @@ class Query(ObjectType):
         try:
             return info.variable_values['booksCount']
         except:
+            # 若此欄位比books先查詢，無法獲得QS.count()
             return 0
 
     def resolve_priceSales(self, info, **kwargs):
