@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>統計室大全</title>
+    <style>
+        /*  */
+        * {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            /* overflow: hidden; */
+            font-family: 微軟正黑體;
+        }
+
+        #app {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+        }
+
+        nav {
+            width: 230px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: aliceblue;
+            box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 1.28);
+            overflow-y: hidden;
+            position: absolute;
+            z-index: 1;
+            margin-left: -180px;
+            transition: all 0.3s ease;
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        nav:hover {
+            margin-left: 0px;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav_pin {
+            position: relative;
+            margin-left: 0px;
+        }
+
+        #container_items {
+            overflow-y: auto;
+            padding-bottom: 120px;
+        }
+
+        #container_items::-webkit-scrollbar {
+            display: none;
+        }
+
+        #pin {
+            position: absolute;
+            right: 4px;
+            bottom: 4px;
+            font-size: 10px;
+            line-height: 10px;
+            cursor: pointer;
+            color: darkgrey;
+        }
+
+        #pin.pin_pin {
+            color: darkgreen;
+        }
+
+        #menu-title {
+            /* background-color: white; */
+            border-bottom: 1px solid lightgrey;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 20px;
+            color: darkgreen;
+            position: relative;
+            height: 85px;
+            line-height: 65px;
+        }
+
+        .menu-item {
+            font-size: 15px;
+            line-height: 30px;
+            height: 30px;
+            padding-left: 0.5em;
+            border-bottom: 1px solid lightgrey;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .api_item {
+            color: blue;
+        }
+
+        .menu-item:hover {
+            background-color: yellowgreen;
+            /* color: white; */
+        }
+
+        #container {
+            /* border: 1px solid red; */
+            /* height: 100%; */
+            /* width: 50%; */
+            flex: 1;
+            padding: 10px;
+            margin-left: 50px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #container.container_pin {
+            margin-left: 0px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        .now {
+            /* color: blue; */
+            /* font-weight: bold; */
+            background-color: gold;
+            text-shadow: 0 0 8px #ffffff;
+        }
+
+        p.api {
+            margin-top: 0;
+            margin-bottom: 5px;
+            background-color: palegoldenrod;
+            padding: 3px;
+            font-size: 15px;
+        }
+
+        .api input {
+            width: 100%;
+            vertical-align: bottom;
+            margin-top: 1px;
+        }
+
+        .api button {
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        #apires {
+            overflow-y: auto;
+            margin-top: 5px;
+        }
+
+        #apires::-webkit-scrollbar {
+            /* display: none; */
+        }
+
+        a:visited {
+            color: blue;
+        }
+
+        #myDataTalbe {
+            font-size: 13px;
+        }
+
+        #myDataTalbe tbody tr:nth-child(even) {
+            background-color: rgba(211, 211, 211, .7);
+        }
+
+        #myDataTalbe tbody tr {
+            transition: all 0.1s ease;
+        }
+
+        #myDataTalbe tbody tr:hover {
+            background-color: lightblue;
+            cursor: pointer;
+            color: red;
+        }
+
+        #myDataTalbe thead th {
+            border-bottom: 1.5px solid #111;
+        }
+
+        #myDataTalbe {
+            border-bottom: 1.5px solid #111;
+        }
+    </style>
+    <!-- https://github.com/niutech/x-frame-bypass -->
+    <script type="module" src="https://unpkg.com/x-frame-bypass"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
+    <!--  -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+
+</head>
+
+<body>
+    <!-- is="x-frame-bypass"  -->
+    <!-- <iframe id="myframe" src="http://amis.afa.gov.tw/veg/VegChartProdTransPriceVolumeTrend.aspx" frameborder="0"></iframe> -->
+    <div id="app">
+        <menu-area></menu-area>
+        <show-area></show-area>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    // 1.item _______________________________________________________
+    var comp_item = Vue.component('item', {
+        data: function () {
+            return {
+            }
+        },
+        props: {
+            name: String,
+            val: Object,
+            idx: Number,
+        },
+        template:
+            `
+                <div @click.stop="toggle"
+                    :name_nowbtn="$root.nowbtn[0]"
+                    :name="name"
+                    :type="val.type"
+                    :link="val.link"
+                    :class="
+                        [
+                            'menu-item',
+                            {'now': name == $root.nowbtn[0]},
+                            {'api_item':name.includes('API')},
+                        ]"
+                    >
+                        {{idx.toString().padStart(2,'0')}}. {{name}}
+                </div>
+            `
+        ,
+        methods: {
+            toggle() {
+                var tmp = [this.name, this.val.type, this.val.link];
+                if (this.val.hasOwnProperty('options')) {
+                    tmp.push(this.val.options);
+                }
+                this.$root.nowbtn = tmp;
+            }
+        }
+        ,
+        mounted: function () {
+            this.$root.count_items += 1;
+            // console.log(this.$root.count_items);
+        }
+    })
+
+    // 2.menu-area _______________________________________________________
+    Vue.component('menu-area', {
+        data: function () {
+            return {
+                title: "統計室大全",
+                urls: this.$root.urls,
+            }
+        },
+        template:
+            `
+                <nav :class="{'nav_pin': this.$root.pin}">
+                    <div id="menu-title">{{title}}({{this.$root.count_items}})
+                        <span
+                            :title="this.$root.pin? '不釘選單':'釘住選單'"
+                            id="pin" ref='pin'
+                            data-pin="{{pin}}"
+                            @click.stop="toggle"
+                            :class="{'pin_pin': this.$root.pin}"
+                        >
+                            {{this.$root.pin? 'unpin':'pin'}}
+                        </span>
+                    </div>
+                    <div id="container_items">
+                        <item v-for="(val, key, idx) in urls" :val="val" :name="key" :key="idx" :idx="idx+1"></item>
+                    </div>
+                </nav>
+            `
+        ,
+        components: {
+            'item': comp_item
+        },
+        methods: {
+            toggle() {
+                this.$root.pin = !this.$root.pin;
+            }
+        }
+    })
+    // 3.show-area _______________________________________________________
+    Vue.component('show-area', {
+        data: function () {
+            return {
+                ajax_me: function (cors, query, api) {
+                    $.ajax({
+                        url: `${cors}${query}`,
+                        method: 'get',
+                        timeout: 25 * 1000,
+                        beforeSend: function () {
+                            $('#apitest').text(query.slice(0, 100) + ".........").attr('href', query);
+                            $('#apires').html("<h1 style='text-align:center'>API抓取中...</h1>");
+                        }
+                    })
+                        .done(function (res) {
+                            // console.log(res);
+                            if (api == 'apis') {
+                                var obj = JSON.parse(res)
+                                var res = obj.DATASET;
+                            } else if (api == 'amis') {
+                                var arr_obj = JSON.parse($(res).text()).DayTransInfo; //用$解析xml
+                                var res = [];
+                                arr_obj.forEach(function (row_obj) {
+                                    var detail_arr = row_obj.Detail;
+                                    delete row_obj.Detail;
+                                    detail_arr.forEach(function (detail_arr_obj) {
+                                        res.push({ ...row_obj, ...detail_arr_obj });
+                                    });
+                                });
+                            }
+                            //
+                            let cols = Object.keys(res[0]);
+                            let headerRow = cols
+                                .map(col => `<th>${col}</th>`)
+                                .join("");
+                            let rows = res
+                                .map(row => {
+                                    let tds = cols.map(col => `<td>${row[col]}</td>`).join("");
+                                    return `<tr>${tds}</tr>`;
+                                })
+                                .join("");
+                            //build the table
+                            const table = `
+                                    <table id='myDataTalbe'>
+                                        <thead>
+                                            <tr>${headerRow}</tr>
+                                        <thead>
+                                        <tbody>
+                                            ${rows}
+                                        <tbody>
+                                    <table>
+                                `
+                                ;
+                            $('#apires').html(table);
+                            $("#myDataTalbe").DataTable({
+                                searching: true, //filter功能
+                                columnDefs: [{
+                                    targets: [0],
+                                    orderable: true,
+                                }]
+                            });
+                        })
+                        .fail(function (err) {
+                            console.log('跨域請求失敗');
+                            console.log(err);
+                            // 
+                            $('#apires').html(JSON.stringify(err, null, 4))
+                        })
+                }
+            }
+        },
+        template:
+            `
+                <div id="container"
+                    :class="{'container_pin':this.$root.pin}"
+                    :data="this.$root.nowbtn"
+                >
+                </div>
+            `
+        ,
+        mounted: function () {
+            $("body").on('keypress', '.api input', function (event) {
+                if (event.keyCode == 13) {
+                    $('.api button').trigger("click");
+                };
+            });
+        },
+        updated: function () {
+            var cors = this.$root.cors;
+            var ajax_me = this.ajax_me;
+            var tmp = this.$root.nowbtn;
+            var name = tmp[0];
+            var type = tmp[1];
+            var link = tmp[2];
+            //
+            if (type == 'web_bypass') {
+                var a = `<span style='margin-bottom:5px;margin-top: -7px;'>【若嵌入頁面的操作有問題，請至原始網址: <a href='${link}' target='_blank'>${link}</a>】</span>`;
+                $('#container').html(`${a}<iframe is="x-frame-bypass" id="myframe" src="${link}" frameborder="0"></iframe>`);
+            } else if (type == 'web') {
+                var a = `<span style='margin-bottom:5px;margin-top: -7px;'>【若嵌入頁面的操作有問題，請至原始網址: <a href='${link}' target='_blank'>${link}</a>】</span>`;
+                $('#container').html(`${a}<iframe id="myframe" src="${link}" frameborder="0"></iframe>`);
+            } else if (type == 'web_blank') {
+                var a = `<a href='${link}' target='_blank'>${name}</a>`;
+                $('#container').html(`<h1>此網站需另開新頁籤:  ${a}</h1>`)
+                // var newW = window.open(link);
+                // newW.blur();
+                // window.focus();
+            } else if (type == 'opendataapi') {
+                var options = tmp[3];
+                var options_str = options
+                    .map(opt =>
+                        `
+                            <option
+                                value="${opt[0].split('_')[0]}.aspx"
+                                data-query="${opt[1]}"
+                            >
+                                ${opt[0]}
+                            </option>
+                        `
+                    )
+                    .join("");
+                // console.log(options_str);
+                var input = `
+                        <p class='api'>${link}
+                            <select id="open_select">
+                                ${options_str}
+                            </select>
+                            <br>
+                            <input value='${options[0][1]}'></input>
+                            <br>
+                            <button>確認</button>
+                            <span style='color:red'>
+                                或條件欄位中按【Enter】產生API url:
+                                <a id='apitest' target='_blank' style='font-size: 10px;'></a>
+                            </span> 
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                $('#open_select').change(function () {
+                    var querystr = $(this).find('option:selected').attr('data-query');
+                    $('.api input').val(querystr);
+                });
+                // 確認
+                $('.api button').click(function () {
+                    var select = $('.api select').val();
+                    var val = $('.api input').val();
+                    var query = `${link}${select}?${val}`;
+                    // console.log(query);
+                    ajax_me(cors, query, '');
+                });
+            } else if (type == 'apis') {
+                var tmp = link.split('?');
+                var link = tmp[0];
+                var query = tmp[1];
+                var input = `
+                        <p class='api'>${link}
+                            <br>
+                            <input value='${query}'></input>
+                            <br>
+                            <button>確認</button>
+                            <span style='color:red'>
+                                或條件欄位中按【Enter】產生API url:
+                                <a id='apitest' target='_blank' style='font-size: 10px;'></a>
+                            </span>
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                // 確認
+                $('.api button').click(function () {
+                    var val = $('.api input').val();
+                    var query = `${link}?${val}`;
+                    // console.log(query);
+                    ajax_me(cors, query, 'apis');
+                });
+            } else if (type == 'amis') {
+                var tmp = link.split('?');
+                var link = tmp[0];
+                var query = tmp[1];
+                var input = `
+                        <p class='api'>${link} <span style='color:red'>(marketType=V,F,L 代表: 蔬菜,水果,花卉)</span>
+                            <br>
+                            <input value='${query}'></input>
+                            <br>
+                            <button>確認</button>
+                            <span style='color:red'>
+                                或條件欄位中按【Enter】產生API url:
+                                <a id='apitest' target='_blank' style='font-size: 10px;'></a>
+                            </span>
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                // 確認
+                $('.api button').click(function () {
+                    var val = $('.api input').val();
+                    var query = `${link}?${val}`;
+                    // console.log(query);
+                    ajax_me(cors, query, 'amis');
+                });
+            } else if (type == 'efish') {
+                var tmp = link.split('?');
+                var link = tmp[0];
+                var query = tmp[1];
+                var input = `
+                        <p class='api'>${link}
+                            (<span style='color:red'>pid/fishId: </span><a target='_blank' style='' href='https://efish.fa.gov.tw/efish/common/atlaslist.htm?keyword='>魚品種代碼表</a>)
+                            <br>
+                            <input value='${query}'></input>
+                            <br>
+                            <button>確認</button>
+                            <span style='color:red'>
+                                或條件欄位中按【Enter】產生API url:
+                                <a id='apitest' target='_blank' style='font-size: 10px;'></a>
+                            </span>
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                // 確認
+                $('.api button').click(function () {
+                    var val = $('.api input').val();
+                    var query = `${link}?${val}`;
+                    // console.log(query);
+                    ajax_me(cors, query, 'efish');
+                });
+            }
+
+        }
+    })
+    // 4.APP _______________________________________________________
+    var app = new Vue({
+        el: '#app',
+        data: {
+            pin: true,
+            count_items: 0,
+            nowbtn: [],
+            cors: 'https://cors-anywhere.herokuapp.com/',
+            urls: {
+                'API_OpenData':
+                {
+                    'type': 'opendataapi',
+                    'link': 'https://data.coa.gov.tw/Service/OpenData/',
+                    'options': [
+                        ['FromM/FarmTransData_蔬果批發行情', 'StartDate=109.09.22&Market=台北'],
+                        ['FromM/AnimalTransData_毛豬(批發)', 'TransDate=1090922&MarketName='],
+                        ['FromM/AquaticTransData_漁批發', 'StartDate=1090923&EndDate=1090923&TypeNo='],
+                        ['FromM/PoultryTransBoiledChickenData_白肉雞、雞蛋(產地)', 'StartDate=2020/08/01&EndDate=2020/09/30'],
+                        ['FromM/PoultryTransLocalRedChickenData_紅羽土雞(產地)', 'StartDate=2020/08/01&EndDate=2020/09/30'],
+                        ['FromM/PoultryTransLocalBlackChickenData_黑羽土雞', 'StartDate=2020/08/01&EndDate=2020/09/30'],
+                        ['FromM/PoultryTransGooseDuckData_鴨(產地)', 'StartDate=2020/08/01&EndDate=2020/09/30'],
+                        ['FromM/PoultryTransGooseDailyPriceData_鵝(產地)', 'StartDate=2020/08/01&EndDate=2020/09/30'],
+                        ['FromM/SheepTransData_羊(批發)', '$filter=transDate+like+2020/01/09+and+shortName+like+彰化縣+and+productName+like+努比亞雜交閹公羊'],
+                        ['BeefPriceService_牛', ''],
+                        ['Ricepriceavg_全國單日平均糧價', 'startDate=2020/09/01&endDate=2020/09/12'],
+                        ['FromM/RicepriceData_全國單日各縣市糧價', 'startDate=2020/09/01&endDate=2020/09/12'],
+                    ]
+                },
+                'API_apis 農糧署_蔬果產地': {
+                    'type': 'apis',
+                    'link': 'https://apis.afa.gov.tw/webservice/opendata.asmx/queryPrice?status=4&startYear=2020&startMonth=9&startDay=20&endYear=2020&endMonth=9&endDay=20&productname='
+                },
+                'API_amis農糧署_批發合計': {
+                    'type': 'amis',
+                    'link': 'http://amis.afa.gov.tw/PlatformService.asmx/GetStatsticsForCOA?marketType=V&marketNo=ALL&transDate=1090901',
+                },
+                'API_efish漁業署_漁產地': {
+                    'type': 'efish',
+                    'link': 'https://efish.fa.gov.tw/efish/statistics/svc/downloadtradepricedata?ds=109.09.01&de=109.09.10&tk=3ec536a2-3db0-4791-88aa-b28ccc4a835f&pid=1174',
+                },
+                // ==============================================================
+                'ArigData.coa資料服務平台': {
+                    'type': 'web_bypass',
+                    'link': 'https://agridata.coa.gov.tw/api.aspx'
+                },
+                'Data.coa資料開放平台':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://data.coa.gov.tw/Query/ServiceDetail.aspx?id=037'
+                },
+                '農產品批發市場交易行情站': {
+                    'type': 'web',
+                    'link': 'http://amis.afa.gov.tw/veg/VegChartProdTransPriceVolumeTrend.aspx'
+                },
+                '畜產品價格查詢系統': {
+                    'type': 'web',
+                    'link': 'http://price.naif.org.tw/Query/Query_now.aspx'
+                },
+                '畜產行情資訊網': {
+                    'type': 'web_blank',
+                    'link': 'http://ppg.naif.org.tw/naif/MarketInformation/Poultry/TranStatistics.aspx'
+                },
+                '中央畜產會': {
+                    'type': 'web',
+                    'link': 'https://www.naif.org.tw/main.aspx'
+                },
+                '養雞協會': {
+                    'type': 'web',
+                    'link': 'http://www.poultry.org.tw/'
+                },
+                '動植物防檢局': {
+                    'type': 'web_bypass',
+                    'link': 'https://www.baphiq.gov.tw/ws.php?id=8245'
+                },
+                '漁產品全球資訊網': {
+                    'type': 'web',
+                    'link': 'https://efish.fa.gov.tw/efish/statistics/trendchart.htm'
+                },
+                '查詢糧價日平均-依縣市':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://foodinformation.afa.gov.tw/Search/S02/S0201/S02010201.aspx?sys_id=S02&sys_pid=S02010201'
+                },
+                '田邊好幫手':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://m.coa.gov.tw/Transaction/RicePrice/Index'
+                },
+                '每日價量平台':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://aprp.atri.org.tw/accounts/login/'
+                },
+                '農業統計視覺化查詢網':
+                {
+                    'type': 'web_bypass',
+                    'link': 'https://statview.coa.gov.tw/aqsys_on/index.html#'
+                },
+                'Tableau_Public_貿易':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://public.tableau.com/profile/coastat#!/'
+                },
+                'Tableau_測試_貿易':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://coatableau.nctu.me/'
+                },
+                '段名代碼查詢系統':
+                {
+                    'type': 'web_blank',
+                    'link': 'http://lisp.land.moi.gov.tw/MMS/MMSpage.aspx#gobox02'
+                },
+                '農委會統計與出版品':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://www.coa.gov.tw/ws.php?id=8'
+                },
+                '漁業署統計與出版品':
+                {
+                    'type': 'web',
+                    'link': 'https://www.fa.gov.tw/cht/Publications/index.aspx'
+                },
+
+
+            }
+        }
+    })
+    // 
+    $('.menu-item').eq(0).trigger('click');
+</script>

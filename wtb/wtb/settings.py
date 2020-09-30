@@ -22,10 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '37irddih2k@s=v*&u_cio$oho)@3z21lt)es)by_&h@!1mlxzb'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production!  
 DEBUG = True
 
-ALLOWED_HOSTS = ["wtb.nctu.me", "35.221.197.37", "35.221.198.157", "35.185.150.98", "104.199.171.170"]
+ALLOWED_HOSTS = ["wtb.wtbwtb.tk", "wtb.nctu.me", "35.221.197.37", "35.221.198.157", "35.185.150.98", "104.199.171.170"]
 # https://docs.djangoproject.com/en/3.0/topics/cache/
 CACHES = {
     'default': {
