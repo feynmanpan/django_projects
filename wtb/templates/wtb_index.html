@@ -3,618 +3,668 @@
 
 {% load static %}
 
-{% block og %} 
-    <meta property="og:title" content="嘩！找書" ></meta>
-    <meta property="og:image" content="https://wtb.wtbwtb.tk{% static 'images/favicon.png' %}"/>
-	<meta property="og:description" content="專業找書比價"></meta>
+{% block og %}
+<meta property="og:title" content="嘩！找書">
+</meta>
+<meta property="og:image" content="https://wtb.wtbwtb.tk{% static 'images/favicon.png' %}" />
+<meta property="og:description" content="專業找書比價">
+</meta>
 {% endblock %}
 
 {% block title %} 嘩！找書 {% endblock %}
 
 
-{% block three %} 
+{% block three %}
 
-    <script type="module">
-        import * as THREE from '{% static "three.js-master/build/three.module.js" %}';//'../build/three.module.js';
-        import Stats from '{% static "three.js-master/examples/jsm/libs/stats.module.js" %}';
-        import { GUI } from '{% static "three.js-master/examples/jsm/libs/dat.gui.module.js" %}';
-        import { OrbitControls } from '{% static "three.js-master/examples/jsm/controls/OrbitControls.js" %}';
-        import { Water } from '{% static "three.js-master/examples/jsm/objects/Water.js" %}';
-        import { Sky } from '{% static "three.js-master/examples/jsm/objects/Sky.js" %}';
-		import { CSS3DRenderer, CSS3DObject } from '{% static "three.js-master/examples/jsm/renderers/CSS3DRenderer.js" %}';
-        //threex.domevents.js 有修改首末行的import/export  
-        import { THREEx } from '{% static "three.js-master/build/threex.domevents.js" %}';
-        import {GLTFLoader} from '{% static "three.js-master/examples/jsm/loaders/GLTFLoader.js" %}';        
-        //__________________________________
-        var container, stats;
-        var camera, scene, renderer, light;
-        var controls, water, sphere, sky, cubeCamera, parameters;
-		var goodbooks={};
+<script type="module">
+    import * as THREE from '{% static "three.js-master/build/three.module.js" %}';//'../build/three.module.js';
+    import Stats from '{% static "three.js-master/examples/jsm/libs/stats.module.js" %}';
+    import { GUI } from '{% static "three.js-master/examples/jsm/libs/dat.gui.module.js" %}';
+    import { OrbitControls } from '{% static "three.js-master/examples/jsm/controls/OrbitControls.js" %}';
+    import { Water } from '{% static "three.js-master/examples/jsm/objects/Water.js" %}';
+    import { Sky } from '{% static "three.js-master/examples/jsm/objects/Sky.js" %}';
+    import { CSS3DRenderer, CSS3DObject } from '{% static "three.js-master/examples/jsm/renderers/CSS3DRenderer.js" %}';
+    //threex.domevents.js 有修改首末行的import/export  
+    import { THREEx } from '{% static "three.js-master/build/threex.domevents.js" %}';
+    import { GLTFLoader } from '{% static "three.js-master/examples/jsm/loaders/GLTFLoader.js" %}';
+    //__________________________________
+    var container, stats;
+    var camera, scene, renderer, light;
+    var controls, water, sphere, sky, cubeCamera, parameters;
+    var goodbooks = {};
+    //
+    const numBirds = 80;
+    const minMax = 700;
+    const birds = [];
+    const birdSpeed = 100;
+    const gltf_loader = new GLTFLoader();
+    const fogNear = 1350;
+    const fogFar = 1500;
+    //
+    $(document).ready(function () {
+        init();
+        animate();
+    });
+    //
+    function init() {
+        container = document.getElementById('three_container');
+        //renderer
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+        //scene
+        scene = new THREE.Scene();
+        //camera
+        camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
+        //camera.position.set( 30, 30, 100 );
+        camera.position.set(0, 0, 70);
+        //light
+        light = new THREE.DirectionalLight(0xffffff, 0.8);
+        scene.add(light);
+
+        // Water
+        var waterGeometry = new THREE.PlaneBufferGeometry(10000, 10000);
+        water = new Water(
+            waterGeometry,
+            {
+                textureWidth: 512,
+                textureHeight: 512,
+                waterNormals: new THREE.TextureLoader().load('{% static "three.js-master/examples/textures/waternormals.jpg" %}', function (texture) {
+
+                    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+                }),
+                alpha: 1.0,
+                sunDirection: light.position.clone().normalize(),
+                sunColor: 0xffffff,
+                waterColor: 0x001e0f,
+                distortionScale: 3.7,
+                fog: scene.fog !== undefined
+            }
+        );
+
+        water.rotation.x = - Math.PI / 2;
+        water.material.uniforms['size'].value = 10;//遠景
+        scene.add(water);
+
+        // Skybox
+        sky = new Sky();
+        var uniforms = sky.material.uniforms;
+
+        uniforms['turbidity'].value = 10;
+        uniforms['rayleigh'].value = 2;
+        uniforms['luminance'].value = 1;
+        uniforms['mieCoefficient'].value = 0.005;
+        uniforms['mieDirectionalG'].value = 0.8;
+
         //
-        const numBirds = 80;
-        const minMax = 700;            
-        const birds = [];
-        const birdSpeed = 100;
-        const gltf_loader = new GLTFLoader();
-        const fogNear = 1350;
-        const fogFar = 1500;        
+        parameters = {
+            distance: 400,
+            inclination: 0.5,//太陽高度，水平
+            azimuth: 0.25//太陽左右
+        };
+
+        cubeCamera = new THREE.CubeCamera(0.1, 1, 512);
+        cubeCamera.renderTarget.texture.generateMipmaps = true;
+        cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipmapLinearFilter;
+
+        scene.background = cubeCamera.renderTarget;
+
+        function updateSun() {
+            var theta = Math.PI * (parameters.inclination - 0.5);
+            var phi = 2 * Math.PI * (parameters.azimuth - 0.5);
+
+            light.position.x = parameters.distance * Math.cos(phi);
+            light.position.y = parameters.distance * Math.sin(phi) * Math.sin(theta);
+            light.position.z = parameters.distance * Math.sin(phi) * Math.cos(theta);
+
+            sky.material.uniforms['sunPosition'].value = light.position.copy(light.position);
+            water.material.uniforms['sunDirection'].value.copy(light.position).normalize();
+
+            cubeCamera.update(renderer, sky);
+        }
+
+        updateSun();
+
         //
-        $(document).ready(function(){
-            init();
-            animate();
+
+        var geometry = new THREE.IcosahedronBufferGeometry(20, 1);
+        var count = geometry.attributes.position.count;
+
+        var colors = [];
+        var color = new THREE.Color();
+
+        for (var i = 0; i < count; i += 3) {
+            color.setHex(Math.random() * 0xffffff);
+            //
+            colors.push(color.r, color.g, color.b);
+            colors.push(color.r, color.g, color.b);
+            colors.push(color.r, color.g, color.b);
+        }
+
+
+        geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+        var material = new THREE.MeshStandardMaterial({
+            vertexColors: true,
+            roughness: 0.0,
+            flatShading: true,
+            envMap: cubeCamera.renderTarget.texture,
+            side: THREE.DoubleSide
         });
-        //
-        function init() {
-            container = document.getElementById('three_container');
-            //renderer
-            renderer = new THREE.WebGLRenderer();
-            renderer.setPixelRatio( window.devicePixelRatio );
-            renderer.setSize( window.innerWidth, window.innerHeight );
-            container.appendChild( renderer.domElement );
-            //scene
-            scene = new THREE.Scene();
-            //camera
-            camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 1, 20000 );
-            //camera.position.set( 30, 30, 100 );
-            camera.position.set(0, 0, 65); 
-            //light
-            light = new THREE.DirectionalLight( 0xffffff, 0.8 );
-            scene.add( light );
 
-            // Water
-            var waterGeometry = new THREE.PlaneBufferGeometry( 10000, 10000 );
-            water = new Water(
-                waterGeometry,
-                {
-                    textureWidth: 512,
-                    textureHeight: 512,
-                    waterNormals: new THREE.TextureLoader().load( '{% static "three.js-master/examples/textures/waternormals.jpg" %}', function ( texture ) {
+        sphere = new THREE.Mesh(geometry, material);
+        //不加球
+        //scene.add( sphere ); 
 
-                        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        //(1)logo處理================================= 
+        var xo = -16;
+        var yo = 23;
+        if (window.matchMedia("(max-width: 992px)").matches) {
+            var zo = 3;
+        } else {
+            var zo = 20;
+        }
+        var Dx = Math.abs(xo / 2);
+        var Dy = 5;
+        var Dz = 3;
+        var grid = 5;
 
-                    } ),                    
-                    alpha: 1.0,
-                    sunDirection: light.position.clone().normalize(),
-                    sunColor: 0xffffff,
-                    waterColor: 0x001e0f,
-                    distortionScale: 3.7,
-                    fog: scene.fog !== undefined
-                }
-            );
-            
-            water.rotation.x = - Math.PI / 2;
-            water.material.uniforms['size'].value=10;//遠景
-            scene.add( water );
-
-            // Skybox
-            sky = new Sky();
-            var uniforms = sky.material.uniforms;
-
-            uniforms[ 'turbidity' ].value = 10;
-            uniforms[ 'rayleigh' ].value = 2;
-            uniforms[ 'luminance' ].value = 1;
-            uniforms[ 'mieCoefficient' ].value = 0.005;
-            uniforms[ 'mieDirectionalG' ].value = 0.8;
-            
-            //
-            parameters = {
-                distance: 400,
-                inclination: 0.5,//太陽高度，水平
-                azimuth: 0.25//太陽左右
-            };
-
-            cubeCamera = new THREE.CubeCamera( 0.1, 1, 512 );
-            cubeCamera.renderTarget.texture.generateMipmaps = true;
-            cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipmapLinearFilter;
-
-            scene.background = cubeCamera.renderTarget;
-
-            function updateSun() {
-                var theta = Math.PI * ( parameters.inclination - 0.5 );
-                var phi = 2 * Math.PI * ( parameters.azimuth - 0.5 );
-
-                light.position.x = parameters.distance * Math.cos( phi );
-                light.position.y = parameters.distance * Math.sin( phi ) * Math.sin( theta );
-                light.position.z = parameters.distance * Math.sin( phi ) * Math.cos( theta );
-
-                sky.material.uniforms[ 'sunPosition' ].value = light.position.copy( light.position );
-                water.material.uniforms[ 'sunDirection' ].value.copy( light.position ).normalize();
-
-                cubeCamera.update( renderer, sky );
-            }
-
-            updateSun();
-
-            //
-
-            var geometry = new THREE.IcosahedronBufferGeometry( 20, 1 );
-            var count = geometry.attributes.position.count;
-
-            var colors = [];
-            var color = new THREE.Color();
-
-            for ( var i = 0; i < count; i += 3 ) {
-                color.setHex( Math.random() * 0xffffff );
+        //var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png");
+        var logo_loader = new THREE.TextureLoader();
+        var domEvents = new THREEx.DomEvents(camera, renderer.domElement);
+        /* logo算了
+        {% for store in stores %}
+            logo_loader.load('{{ store.url_href }}', function ( logo_texture ) {
+                var logo_material = new THREE.MeshBasicMaterial({ 
+                                                               map: logo_texture,
+                                                               side: THREE.DoubleSide,
+                                                               wireframe: false 
+                                                            });
+                var w=logo_texture.image.width/40;
+                var h=logo_texture.image.height/40;
                 //
-                colors.push( color.r, color.g, color.b );
-                colors.push( color.r, color.g, color.b );
-                colors.push( color.r, color.g, color.b );
-            }
+                var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
+                var logo=new THREE.Mesh(logo_geometry, logo_material);
+                //
+                logo.position.x=xo+({{forloop.counter0}}%grid)*Dx;                    
+                logo.position.y=yo-(Math.floor({{forloop.counter0}}/grid))*Dy;
+                logo.position.z=zo-({{forloop.counter0}}%2)*Dz;                    
+                //
+                scene.add(logo); 
+                //事件綁定____________________     
+                //點擊
+                domEvents.addEventListener(logo, 'click', function(e){
+                    window.open('{{ store.url }}', '_blank');                          
+                }, false);
+                domEvents.addEventListener(logo, 'touchstart', function(e){
+                    window.open('{{ store.url }}', '_blank');                          
+                }, false);                    
+                //mouseover
+                domEvents.addEventListener(logo, 'mouseover', function(e){
+                    $("#three_container").css('cursor','pointer').attr("title",'前往{{ store.name }}');                          
+                }, false);    
+                //mouseout
+                domEvents.addEventListener(logo, 'mouseout', function(e){
+                    $("#three_container").css('cursor','').attr("title","");;                          
+                }, false);     
             
+            });//logo_loader
             
-            geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
-            
-            var material = new THREE.MeshStandardMaterial( {
-                vertexColors: true,
-                roughness: 0.0,
-                flatShading: true,
-                envMap: cubeCamera.renderTarget.texture,
-                side: THREE.DoubleSide
-            } );
-            
-            sphere = new THREE.Mesh( geometry, material );
-            //不加球
-            //scene.add( sphere ); 
-            
-            //(1)logo處理================================= 
-            var xo=-16;
-            var yo=23;            
+        {% endfor %}            
+        */
+
+        logo_loader.load('mystatic/images/goodbooks/TibetanDog.jpg', function (logo_texture) {
+            var logo_material = new THREE.MeshBasicMaterial({
+                map: logo_texture,
+                side: THREE.DoubleSide,
+                wireframe: false
+            });
+            var w = logo_texture.image.width / 43;
+            var h = logo_texture.image.height / 43;
+            //
+            var logo_geometry = new THREE.PlaneGeometry(w, h, 1, 1);
+            var logo = new THREE.Mesh(logo_geometry, logo_material);
+            //
+
             if (window.matchMedia("(max-width: 992px)").matches) {
-              var zo=3;
+                //logo.position.x=4;//+(0%grid)*Dx;                    
+                //logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
+                //logo.position.z=33;//-(0%2)*Dz;     
+                logo.position.x = 32;//+(0%grid)*Dx;                    
+                logo.position.y = 5;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 39;//-(0%2)*Dz;						
             } else {
-              var zo=20;
-            }                        
-            var Dx=Math.abs(xo/2);
-            var Dy=5;
-            var Dz=3;
-            var grid=5;
-
-            //var logo_texture = new THREE.TextureLoader().load("/mystatic/images/RT_logo.png");
-            var logo_loader = new THREE.TextureLoader();
-            var domEvents = new THREEx.DomEvents(camera, renderer.domElement); 
-			/* logo算了
-            {% for store in stores %}
-                logo_loader.load('{{ store.url_href }}', function ( logo_texture ) {
-                    var logo_material = new THREE.MeshBasicMaterial({ 
-                                                                   map: logo_texture,
-                                                                   side: THREE.DoubleSide,
-                                                                   wireframe: false 
-                                                                });
-                    var w=logo_texture.image.width/40;
-                    var h=logo_texture.image.height/40;
-                    //
-                    var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
-                    var logo=new THREE.Mesh(logo_geometry, logo_material);
-                    //
-                    logo.position.x=xo+({{forloop.counter0}}%grid)*Dx;                    
-                    logo.position.y=yo-(Math.floor({{forloop.counter0}}/grid))*Dy;
-                    logo.position.z=zo-({{forloop.counter0}}%2)*Dz;                    
-                    //
-                    scene.add(logo); 
-                    //事件綁定____________________     
-                    //點擊
-                    domEvents.addEventListener(logo, 'click', function(e){
-                        window.open('{{ store.url }}', '_blank');                          
-                    }, false);
-                    domEvents.addEventListener(logo, 'touchstart', function(e){
-                        window.open('{{ store.url }}', '_blank');                          
-                    }, false);                    
-                    //mouseover
-                    domEvents.addEventListener(logo, 'mouseover', function(e){
-                        $("#three_container").css('cursor','pointer').attr("title",'前往{{ store.name }}');                          
-                    }, false);    
-                    //mouseout
-                    domEvents.addEventListener(logo, 'mouseout', function(e){
-                        $("#three_container").css('cursor','').attr("title","");;                          
-                    }, false);     
-                
-                });//logo_loader
-                
-            {% endfor %}            
-			*/
-			
-			logo_loader.load('mystatic/images/goodbooks/TibetanDog.jpg', function ( logo_texture ) {
-				var logo_material = new THREE.MeshBasicMaterial({ 
-															   map: logo_texture,
-															   side: THREE.DoubleSide,
-															   wireframe: false 
-															});
-				var w=logo_texture.image.width/43;
-				var h=logo_texture.image.height/43;
-				//
-				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
-				var logo=new THREE.Mesh(logo_geometry, logo_material);
-				//
-
-				if (window.matchMedia("(max-width: 992px)").matches) {
-					//logo.position.x=4;//+(0%grid)*Dx;                    
-					//logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
-					//logo.position.z=33;//-(0%2)*Dz;     
-					logo.position.x=22;//+(0%grid)*Dx;                    
-					logo.position.y=5;//-(Math.floor(0/grid))*Dy;
-					logo.position.z=35;//-(0%2)*Dz;						
-				} else {
-					logo.position.x=22;//+(0%grid)*Dx;                    
-					logo.position.y=5;//-(Math.floor(0/grid))*Dy;
-					logo.position.z=35;//-(0%2)*Dz;                     
-				}   					
-				//
-				scene.add(logo); 
-				//事件綁定____________________     
-				//點擊
-				var url='https://wtb.wtbwtb.tk/book/0010317666/';
-				//
-				domEvents.addEventListener(logo, 'click', function(e){
-					window.open(url, '_blank');                          
-				}, false);
-				domEvents.addEventListener(logo, 'touchstart', function(e){
-					window.open(url, '_blank');                          
-				}, false);                    
-				//mouseover
-				domEvents.addEventListener(logo, 'mouseover', function(e){
-					$("#three_container").css('cursor','pointer').attr("title",'【藏獒】\n\n禮失求諸野，情失求藏獒。\n\n->養狗當如岡日森格 by 站長');                          
-				}, false);    
-				//mouseout
-				domEvents.addEventListener(logo, 'mouseout', function(e){
-					$("#three_container").css('cursor','').attr("title","");;                          
-				}, false);     
-			
-			});//logo_loader 					
-			
-			logo_loader.load('mystatic/images/goodbooks/dog.jpg', function ( logo_texture ) {
-				var logo_material = new THREE.MeshBasicMaterial({ 
-															   map: logo_texture,
-															   side: THREE.DoubleSide,
-															   wireframe: false 
-															});
-				var w=logo_texture.image.width/43;
-				var h=logo_texture.image.height/43;
-				//
-				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
-				var logo=new THREE.Mesh(logo_geometry, logo_material);
-				//
-
-				if (window.matchMedia("(max-width: 992px)").matches) {
-					//logo.position.x=4;//+(0%grid)*Dx;                    
-					//logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
-					//logo.position.z=33;//-(0%2)*Dz;     
-					logo.position.x=10;//+(0%grid)*Dx;                    
-					logo.position.y=7;//-(Math.floor(0/grid))*Dy;
-					logo.position.z=30;//-(0%2)*Dz;						
-				} else {
-					logo.position.x=10;//+(0%grid)*Dx;                    
-					logo.position.y=7;//-(Math.floor(0/grid))*Dy;
-					logo.position.z=30;//-(0%2)*Dz;                     
-				}   					
-				//
-				scene.add(logo); 
-				//事件綁定____________________     
-				//點擊
-				var url='https://wtb.wtbwtb.tk/book/0010472216/';
-				//
-				domEvents.addEventListener(logo, 'click', function(e){
-					window.open(url, '_blank');                          
-				}, false);
-				domEvents.addEventListener(logo, 'touchstart', function(e){
-					window.open(url, '_blank');                          
-				}, false);                    
-				//mouseover
-				domEvents.addEventListener(logo, 'mouseover', function(e){
-					$("#three_container").css('cursor','pointer').attr("title",'【只吠過一聲的狗】\n\n"吉米哈利的大地系列跟兩本貓狗精選，\n 讓人如沐春風。"\n\n->這種書不應該絕版 by 站長');                          
-				}, false);    
-				//mouseout
-				domEvents.addEventListener(logo, 'mouseout', function(e){
-					$("#three_container").css('cursor','').attr("title","");;                          
-				}, false);     
-			
-			});//logo_loader 			
-			
-			//誠品活動
-			//var today=new Date();
-			//var end_day_elite=new Date(2020,3,28);//4月27
-			//var end_day_MH=new Date(2020,3,6);//4月5
-			//
-			//if(today < end_day_elite){
-			if(1<2){
-				logo_loader.load('mystatic/images/goodbooks/142.jpg', function ( logo_texture ) {
-					var logo_material = new THREE.MeshBasicMaterial({ 
-																   map: logo_texture,
-																   side: THREE.DoubleSide,
-																   wireframe: false 
-																});
-					var w=logo_texture.image.width/45;
-					var h=logo_texture.image.height/45;
-					//
-					var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
-					var logo=new THREE.Mesh(logo_geometry, logo_material);
-					//
-
-					if (window.matchMedia("(max-width: 992px)").matches) {
-						//logo.position.x=4;//+(0%grid)*Dx;                    
-						//logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
-						//logo.position.z=33;//-(0%2)*Dz;     
-						logo.position.x=-30;//+(0%grid)*Dx;                    
-						logo.position.y=4.5;//-(Math.floor(0/grid))*Dy;
-						logo.position.z=33;//-(0%2)*Dz;		
-						//
-						//logo.rotation.x=Math.PI;
-					} else {
-						logo.position.x=-30;//+(0%grid)*Dx;                    
-						logo.position.y=4.5;//-(Math.floor(0/grid))*Dy;
-						logo.position.z=33;//-(0%2)*Dz;      
-						//
-						//logo.rotation.y=-0.5;
-					}   					
-					//
-					scene.add(logo); 
-					//事件綁定____________________     
-					//點擊
-					var url='https://wtb.wtbwtb.tk/book/0010785362';
-					//
-					domEvents.addEventListener(logo, 'click', function(e){
-						window.open(url, '_blank');                          
-					}, false);
-					domEvents.addEventListener(logo, 'touchstart', function(e){
-						window.open(url, '_blank');                          
-					}, false);                    
-					//mouseover
-					domEvents.addEventListener(logo, 'mouseover', function(e){
-						$("#three_container").css('cursor','pointer').attr("title",'【阿拉斯加之死】\n\n"我已過了快樂的一生，感謝主。\n  再會，願上蒼保佑所有的人。"\n\n->真的超級遊民 by 站長');                          
-					}, false);    
-					//mouseout
-					domEvents.addEventListener(logo, 'mouseout', function(e){
-						$("#three_container").css('cursor','').attr("title","");;                          
-					}, false);     
-				
-				});//logo_loader 
-
-			}
-			
-			
-			//站長4月推薦
-			logo_loader.load('mystatic/images/goodbooks/2020_04_arrival_raw.jpg', function ( logo_texture ) {
-				var logo_material = new THREE.MeshBasicMaterial({ 
-															   map: logo_texture,
-															   side: THREE.DoubleSide,
-															   wireframe: false 
-															});
-				var w=logo_texture.image.width/40;
-				var h=logo_texture.image.height/40;
-				//
-				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
-				var logo=new THREE.Mesh(logo_geometry, logo_material);
-				//
-
-				if (window.matchMedia("(max-width: 992px)").matches) {
-					//logo.position.x=-4;//+(0%grid)*Dx;                    
-					//logo.position.y=4;//-(Math.floor(0/grid))*Dy;
-					//logo.position.z=40;//-(0%2)*Dz; 
-					logo.position.x=-8;//+(0%grid)*Dx;                    
-					logo.position.y=7;//-(Math.floor(0/grid))*Dy;
-					logo.position.z=30;//-(0%2)*Dz; 						
-				} else {
-					logo.position.x=-8;//+(0%grid)*Dx;                    
-					logo.position.y=7;//-(Math.floor(0/grid))*Dy;
-					logo.position.z=30;//-(0%2)*Dz;                    
-				}
-				goodbooks[4]=logo;	
-				//
-				scene.add(logo); 
-				//事件綁定____________________     
-				//點擊
-				var url='https://wtb.wtbwtb.tk/book/0010742886/';
-				//
-				domEvents.addEventListener(logo, 'click', function(e){
-					window.open(url, '_blank');                          
-				}, false);
-				domEvents.addEventListener(logo, 'touchstart', function(e){
-					window.open(url, '_blank');                          
-				}, false);                    
-				//mouseover
-				domEvents.addEventListener(logo, 'mouseover', function(e){
-					$("#three_container").css('cursor','pointer').attr("title",'【你一生的預言】\n\n"喜歡電影異星入境的朋友\n  原著小說的水準一樣高!"\n\n->等待<呼吸> by 站長');                          
-				}, false);    
-				//mouseout
-				domEvents.addEventListener(logo, 'mouseout', function(e){
-					$("#three_container").css('cursor','').attr("title","");;                          
-				}, false);     
-			
-			});//logo_loader
-
-					
-			
-			//站長3月推薦
-			logo_loader.load('mystatic/images/goodbooks/dontsleep_raw.jpg', function ( logo_texture ) {
-				var logo_material = new THREE.MeshBasicMaterial({ 
-															   map: logo_texture,
-															   side: THREE.DoubleSide,
-															   wireframe: false 
-															});
-				var w=logo_texture.image.width/50;
-				var h=logo_texture.image.height/50;
-				//
-				var logo_geometry = new THREE.PlaneGeometry(w,h,1,1);
-				var logo=new THREE.Mesh(logo_geometry, logo_material);
-				//
-				if (window.matchMedia("(max-width: 992px)").matches) {
-					//logo.position.x=-7;//+(0%grid)*Dx;                       
-					//logo.position.y=6;//-(Math.floor(0/grid))*Dy;
-					//logo.position.z=25;//-(0%2)*Dz; 
-					logo.position.x=-22;//+(0%grid)*Dx;                        
-					logo.position.y=3.7;//-(Math.floor(0/grid))*Dy;
-					logo.position.z=25;//-(0%2)*Dz; 					
-				} else {
-					logo.position.x=-22;//+(0%grid)*Dx;                        
-					logo.position.y=3.7;//-(Math.floor(0/grid))*Dy;
-					logo.position.z=25;//-(0%2)*Dz;                    
-				}
-				//logo.rotation.y=Math.PI/3;				
-				//
-				goodbooks[3]=logo;
-				scene.add(logo); 
-				//事件綁定____________________      
-				//點擊
-				var url='https://wtb.wtbwtb.tk/book/0010844226/';
-				domEvents.addEventListener(logo, 'click', function(e){
-					window.open(url, '_blank');                          
-				}, false);
-				domEvents.addEventListener(logo, 'touchstart', function(e){
-					window.open(url, '_blank');                          
-				}, false);                    
-				//mouseover
-				domEvents.addEventListener(logo, 'mouseover', function(e){
-					$("#three_container").css('cursor','pointer').attr("title",'【別睡，這裡有蛇！】\n\n"即便沒有天堂的慰藉與地獄的恐懼，\n  也能有尊嚴並心滿意足地面對生命，\n   帶著微笑航向生命的混沌深淵。"\n\n->混沌ing by 站長');                          
-				}, false);    
-				//mouseout
-				domEvents.addEventListener(logo, 'mouseout', function(e){
-					$("#three_container").css('cursor','').attr("title","");;                          
-				}, false);     
-			
-			});//logo_loader
-
-
-			
-
-            //(2)飛鳥處理=================================
-            function rand(min, max) {
-                if (min === undefined) {
-                    min = 0;
-                    max = 1;
-                } else if (max === undefined) {
-                    max = min;
-                    min = 0;
-                }
-                return min + Math.random() * (max - min);
+                logo.position.x = 32;//+(0%grid)*Dx;                    
+                logo.position.y = 5;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 39;//-(0%2)*Dz;                     
             }
-             
-            gltf_loader.load('{% static "three.js-master/examples/models/gltf/Flamingo.glb" %}', (gltf) => {
-                const orig = gltf.scene.children[0];
-                orig.castShadow = true;
-                orig.receiveShadow = true;
+            //
+            scene.add(logo);
+            //事件綁定____________________     
+            //點擊
+            var url = 'https://wtb.wtbwtb.tk/book/0010317666/';
+            //
+            domEvents.addEventListener(logo, 'click', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            domEvents.addEventListener(logo, 'touchstart', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            //mouseover
+            domEvents.addEventListener(logo, 'mouseover', function (e) {
+                $("#three_container").css('cursor', 'pointer').attr("title", '【藏獒】\n\n禮失求諸野，情失求藏獒。\n\n->養狗當如岡日森格 by 站長');
+            }, false);
+            //mouseout
+            domEvents.addEventListener(logo, 'mouseout', function (e) {
+                $("#three_container").css('cursor', '').attr("title", "");;
+            }, false);
+
+        });//logo_loader 					
+
+        logo_loader.load('mystatic/images/goodbooks/dog.jpg', function (logo_texture) {
+            var logo_material = new THREE.MeshBasicMaterial({
+                map: logo_texture,
+                side: THREE.DoubleSide,
+                wireframe: false
+            });
+            var w = logo_texture.image.width / 47;
+            var h = logo_texture.image.height / 47;
+            //
+            var logo_geometry = new THREE.PlaneGeometry(w, h, 1, 1);
+            var logo = new THREE.Mesh(logo_geometry, logo_material);
+            //
+
+            if (window.matchMedia("(max-width: 992px)").matches) {
+                //logo.position.x=4;//+(0%grid)*Dx;                    
+                //logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
+                //logo.position.z=33;//-(0%2)*Dz;     
+                logo.position.x = 22;//+(0%grid)*Dx;                    
+                logo.position.y = 7;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 35;//-(0%2)*Dz;						
+            } else {
+                logo.position.x = 22;//+(0%grid)*Dx;                    
+                logo.position.y = 7;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 35;//-(0%2)*Dz;                     
+            }
+            //
+            scene.add(logo);
+            //事件綁定____________________     
+            //點擊
+            var url = 'https://wtb.wtbwtb.tk/book/0010472216/';
+            //
+            domEvents.addEventListener(logo, 'click', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            domEvents.addEventListener(logo, 'touchstart', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            //mouseover
+            domEvents.addEventListener(logo, 'mouseover', function (e) {
+                $("#three_container").css('cursor', 'pointer').attr("title", '【只吠過一聲的狗】\n\n"吉米哈利的大地系列跟兩本貓狗精選，\n 讓人如沐春風。"\n\n->這種書不應該絕版 by 站長');
+            }, false);
+            //mouseout
+            domEvents.addEventListener(logo, 'mouseout', function (e) {
+                $("#three_container").css('cursor', '').attr("title", "");;
+            }, false);
+
+        });//logo_loader 			
+
+        logo_loader.load('mystatic/images/goodbooks/spillover.jpg', function (logo_texture) {
+            var logo_material = new THREE.MeshBasicMaterial({
+                map: logo_texture,
+                side: THREE.DoubleSide,
+                wireframe: false
+            });
+            var w = logo_texture.image.width / 75;
+            var h = logo_texture.image.height / 75;
+            //
+            var logo_geometry = new THREE.PlaneGeometry(w, h, 1, 1);
+            var logo = new THREE.Mesh(logo_geometry, logo_material);
+            //
+
+            if (window.matchMedia("(max-width: 992px)").matches) {
+                //logo.position.x=4;//+(0%grid)*Dx;                    
+                //logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
+                //logo.position.z=33;//-(0%2)*Dz;     
+                logo.position.x = 10;//+(0%grid)*Dx;                    
+                logo.position.y = 7;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 30;//-(0%2)*Dz;						
+            } else {
+                logo.position.x = 10;//+(0%grid)*Dx;                    
+                logo.position.y = 7;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 30;//-(0%2)*Dz;                     
+            }
+            //
+            scene.add(logo);
+            //事件綁定____________________     
+            //點擊
+            var url = 'https://wtb.wtbwtb.tk/book/0010705019';
+            //
+            domEvents.addEventListener(logo, 'click', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            domEvents.addEventListener(logo, 'touchstart', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            //mouseover
+            domEvents.addEventListener(logo, 'mouseover', function (e) {
+                $("#three_container").css('cursor', 'pointer').attr("title", '【下一場人類大瘟疫】\n\n"作者跟著科學家出生入死的病毒田野調查經驗很驚人!"\n\n->全境擴散神預言 by 站長');
+            }, false);
+            //mouseout
+            domEvents.addEventListener(logo, 'mouseout', function (e) {
+                $("#three_container").css('cursor', '').attr("title", "");;
+            }, false);
+
+        });//logo_loader
+
+        //誠品活動
+        //var today=new Date();
+        //var end_day_elite=new Date(2020,3,28);//4月27
+        //var end_day_MH=new Date(2020,3,6);//4月5
+        //
+        //if(today < end_day_elite){
+        if (1 < 2) {
+            logo_loader.load('mystatic/images/goodbooks/142.jpg', function (logo_texture) {
+                var logo_material = new THREE.MeshBasicMaterial({
+                    map: logo_texture,
+                    side: THREE.DoubleSide,
+                    wireframe: false
+                });
+                var w = logo_texture.image.width / 45;
+                var h = logo_texture.image.height / 45;
                 //
-                for (let i = 0; i < numBirds; ++i) {
-                    const u = i / (numBirds - 1);
-                    const mesh = orig.clone();
-                    mesh.position.set(
-                        rand(-8000, minMax*5),
-                        500+rand(-100,100),//(u * 2 - 1) * 200,
-                        -3000+rand(-100,100),//(minMax * 2 * i * 1.7) % (minMax * 2) - minMax / 2,
-                    );
-                    mesh.rotation.x=0;
-                    mesh.rotation.y=Math.PI/2;//鳥頭朝+x
-                    mesh.rotation.z=0;
+                var logo_geometry = new THREE.PlaneGeometry(w, h, 1, 1);
+                var logo = new THREE.Mesh(logo_geometry, logo_material);
+                //
+
+                if (window.matchMedia("(max-width: 992px)").matches) {
+                    //logo.position.x=4;//+(0%grid)*Dx;                    
+                    //logo.position.y=4;//-(Math.floor(0/grid))*Dy; 
+                    //logo.position.z=33;//-(0%2)*Dz;     
+                    logo.position.x = -30;//+(0%grid)*Dx;                    
+                    logo.position.y = 4.5;//-(Math.floor(0/grid))*Dy;
+                    logo.position.z = 33;//-(0%2)*Dz;		
                     //
-                    scene.add(mesh);
-                    mesh.material = mesh.material.clone();
-                    mesh.material.color.setHSL(rand(), 1, 0.8);
+                    //logo.rotation.x=Math.PI;
+                } else {
+                    logo.position.x = -30;//+(0%grid)*Dx;                    
+                    logo.position.y = 4.5;//-(Math.floor(0/grid))*Dy;
+                    logo.position.z = 33;//-(0%2)*Dz;      
                     //
-                    const mixer = new THREE.AnimationMixer(mesh);
-                    mixer.clipAction(gltf.animations[0]).setDuration(1).play();
-                    mixer.update(rand(10));
-                    mixer.timeScale = rand(0.9, 1.1);
-                    //
-                    birds.push({
-                        mixer,
-                        mesh,
-                    });
-                }//for
-            });//loader 
+                    //logo.rotation.y=-0.5;
+                }
+                //
+                scene.add(logo);
+                //事件綁定____________________     
+                //點擊
+                var url = 'https://wtb.wtbwtb.tk/book/0010785362';
+                //
+                domEvents.addEventListener(logo, 'click', function (e) {
+                    window.open(url, '_blank');
+                }, false);
+                domEvents.addEventListener(logo, 'touchstart', function (e) {
+                    window.open(url, '_blank');
+                }, false);
+                //mouseover
+                domEvents.addEventListener(logo, 'mouseover', function (e) {
+                    $("#three_container").css('cursor', 'pointer').attr("title", '【阿拉斯加之死】\n\n"我已過了快樂的一生，感謝主。\n  再會，願上蒼保佑所有的人。"\n\n->真的超級遊民 by 站長');
+                }, false);
+                //mouseout
+                domEvents.addEventListener(logo, 'mouseout', function (e) {
+                    $("#three_container").css('cursor', '').attr("title", "");;
+                }, false);
 
-            
-            controls = new OrbitControls( camera, renderer.domElement );
-            controls.maxPolarAngle = Math.PI*0.5;// * 0.495;
-            controls.target.set( 0, 10, 0 );
-            controls.minDistance = 40.0;
-            controls.maxDistance = 200.0;
-            controls.update();
-            //
-            //stats = new Stats();
-            //container.appendChild( stats.dom );
+            });//logo_loader 
 
-            /* 不要GUI面板
-            var gui = new GUI();
-            //
-            var folder = gui.addFolder( 'Sky' );
-            folder.add( parameters, 'inclination', 0, 0.5, 0.0001 ).onChange( updateSun );
-            folder.add( parameters, 'azimuth', 0, 1, 0.0001 ).onChange( updateSun );
-            folder.open();
-
-            var uniforms = water.material.uniforms;
-
-            var folder = gui.addFolder( 'Water' );
-            folder.add( uniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
-            folder.add( uniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
-            folder.add( uniforms.alpha, 'value', 0.9, 1, .001 ).name( 'alpha' );
-            folder.open();
-            */ 
-            //
-            window.addEventListener( 'resize', onWindowResize, false );
-        }//init
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize( window.innerWidth, window.innerHeight );
         }
 
-        function animate() {
-            requestAnimationFrame( animate );
-            render();
-            //stats.update();
-        }
-        var then = 0;
-        function render() {
-            var time = performance.now() * 0.001;
-            
-            //(1)太陽動態，從水平升起__________________________
-            //var theta0= Math.PI * ( 0.5 - 0.5); 
-            var theta = Math.PI * ( parameters.inclination - 0.5) -time*0.0003; 
-            var phi = 2 * Math.PI * ( parameters.azimuth - 0.5 );//+time*0.01;
-            //
-            light.position.x = parameters.distance * Math.cos( phi );
-            light.position.y = parameters.distance * Math.sin( phi ) * Math.sin( theta );
-            light.position.z = parameters.distance * Math.sin( phi ) * Math.cos( theta );
-            //
-            sky.material.uniforms[ 'sunPosition' ].value = light.position.copy( light.position );
-            water.material.uniforms[ 'sunDirection' ].value.copy( light.position ).normalize();
-            //
-            cubeCamera.update( renderer, sky );
-            
-            //(2)飛鳥________________________________________
-            var now=time;
-            const deltaTime = now - then;
-            then = now;            
-            for (const {mesh, mixer} of birds) {
-                mixer.update(deltaTime);
-                //沿x軸循環飛行
-                mesh.position.x = (mesh.position.x + minMax*10 + mixer.timeScale * birdSpeed * deltaTime) % (minMax * 18) - minMax*10;
-            } 
-			//(3)logo動
-			try {
-				//goodbooks[4].position.y = Math.sin( time/6 ) * 2 + 6;
-			}
-			catch (e) {
-				console.log('fine');
-			}
-            
-			/*
-            sphere.position.y = Math.sin( time ) * 20 + 5;
-            sphere.rotation.x = time * 0.5;
-            sphere.rotation.z = time * 0.51;
-            */
-            water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
-            //
-            renderer.render( scene, camera );
 
-        }        
-    </script>
+        //站長4月推薦
+        logo_loader.load('mystatic/images/goodbooks/2020_04_arrival_raw.jpg', function (logo_texture) {
+            var logo_material = new THREE.MeshBasicMaterial({
+                map: logo_texture,
+                side: THREE.DoubleSide,
+                wireframe: false
+            });
+            var w = logo_texture.image.width / 40;
+            var h = logo_texture.image.height / 40;
+            //
+            var logo_geometry = new THREE.PlaneGeometry(w, h, 1, 1);
+            var logo = new THREE.Mesh(logo_geometry, logo_material);
+            //
+
+            if (window.matchMedia("(max-width: 992px)").matches) {
+                //logo.position.x=-4;//+(0%grid)*Dx;                    
+                //logo.position.y=4;//-(Math.floor(0/grid))*Dy;
+                //logo.position.z=40;//-(0%2)*Dz; 
+                logo.position.x = -8;//+(0%grid)*Dx;                    
+                logo.position.y = 7;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 30;//-(0%2)*Dz; 						
+            } else {
+                logo.position.x = -8;//+(0%grid)*Dx;                    
+                logo.position.y = 7;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 30;//-(0%2)*Dz;                    
+            }
+            goodbooks[4] = logo;
+            //
+            scene.add(logo);
+            //事件綁定____________________     
+            //點擊
+            var url = 'https://wtb.wtbwtb.tk/book/0010742886/';
+            //
+            domEvents.addEventListener(logo, 'click', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            domEvents.addEventListener(logo, 'touchstart', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            //mouseover
+            domEvents.addEventListener(logo, 'mouseover', function (e) {
+                $("#three_container").css('cursor', 'pointer').attr("title", '【你一生的預言】\n\n"喜歡電影異星入境的朋友\n  原著小說的水準一樣高!"\n\n->等待<呼吸> by 站長');
+            }, false);
+            //mouseout
+            domEvents.addEventListener(logo, 'mouseout', function (e) {
+                $("#three_container").css('cursor', '').attr("title", "");;
+            }, false);
+
+        });//logo_loader
+
+
+
+        //站長3月推薦
+        logo_loader.load('mystatic/images/goodbooks/dontsleep_raw.jpg', function (logo_texture) {
+            var logo_material = new THREE.MeshBasicMaterial({
+                map: logo_texture,
+                side: THREE.DoubleSide,
+                wireframe: false
+            });
+            var w = logo_texture.image.width / 50;
+            var h = logo_texture.image.height / 50;
+            //
+            var logo_geometry = new THREE.PlaneGeometry(w, h, 1, 1);
+            var logo = new THREE.Mesh(logo_geometry, logo_material);
+            //
+            if (window.matchMedia("(max-width: 992px)").matches) {
+                //logo.position.x=-7;//+(0%grid)*Dx;                       
+                //logo.position.y=6;//-(Math.floor(0/grid))*Dy;
+                //logo.position.z=25;//-(0%2)*Dz; 
+                logo.position.x = -22;//+(0%grid)*Dx;                        
+                logo.position.y = 3.7;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 25;//-(0%2)*Dz; 					
+            } else {
+                logo.position.x = -22;//+(0%grid)*Dx;                        
+                logo.position.y = 3.7;//-(Math.floor(0/grid))*Dy;
+                logo.position.z = 25;//-(0%2)*Dz;                    
+            }
+            //logo.rotation.y=Math.PI/3;				
+            //
+            goodbooks[3] = logo;
+            scene.add(logo);
+            //事件綁定____________________      
+            //點擊
+            var url = 'https://wtb.wtbwtb.tk/book/0010844226/';
+            domEvents.addEventListener(logo, 'click', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            domEvents.addEventListener(logo, 'touchstart', function (e) {
+                window.open(url, '_blank');
+            }, false);
+            //mouseover
+            domEvents.addEventListener(logo, 'mouseover', function (e) {
+                $("#three_container").css('cursor', 'pointer').attr("title", '【別睡，這裡有蛇！】\n\n"即便沒有天堂的慰藉與地獄的恐懼，\n  也能有尊嚴並心滿意足地面對生命，\n   帶著微笑航向生命的混沌深淵。"\n\n->混沌ing by 站長');
+            }, false);
+            //mouseout
+            domEvents.addEventListener(logo, 'mouseout', function (e) {
+                $("#three_container").css('cursor', '').attr("title", "");;
+            }, false);
+
+        });//logo_loader
+
+
+
+
+        //(2)飛鳥處理=================================
+        function rand(min, max) {
+            if (min === undefined) {
+                min = 0;
+                max = 1;
+            } else if (max === undefined) {
+                max = min;
+                min = 0;
+            }
+            return min + Math.random() * (max - min);
+        }
+
+        gltf_loader.load('{% static "three.js-master/examples/models/gltf/Flamingo.glb" %}', (gltf) => {
+            const orig = gltf.scene.children[0];
+            orig.castShadow = true;
+            orig.receiveShadow = true;
+            //
+            for (let i = 0; i < numBirds; ++i) {
+                const u = i / (numBirds - 1);
+                const mesh = orig.clone();
+                mesh.position.set(
+                    rand(-8000, minMax * 5),
+                    500 + rand(-100, 100),//(u * 2 - 1) * 200,
+                    -3000 + rand(-100, 100),//(minMax * 2 * i * 1.7) % (minMax * 2) - minMax / 2,
+                );
+                mesh.rotation.x = 0;
+                mesh.rotation.y = Math.PI / 2;//鳥頭朝+x
+                mesh.rotation.z = 0;
+                //
+                scene.add(mesh);
+                mesh.material = mesh.material.clone();
+                mesh.material.color.setHSL(rand(), 1, 0.8);
+                //
+                const mixer = new THREE.AnimationMixer(mesh);
+                mixer.clipAction(gltf.animations[0]).setDuration(1).play();
+                mixer.update(rand(10));
+                mixer.timeScale = rand(0.9, 1.1);
+                //
+                birds.push({
+                    mixer,
+                    mesh,
+                });
+            }//for
+        });//loader 
+
+
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.maxPolarAngle = Math.PI * 0.5;// * 0.495;
+        controls.target.set(0, 10, 0);
+        controls.minDistance = 40.0;
+        controls.maxDistance = 200.0;
+        controls.update();
+        //
+        //stats = new Stats();
+        //container.appendChild( stats.dom );
+
+        /* 不要GUI面板
+        var gui = new GUI();
+        //
+        var folder = gui.addFolder( 'Sky' );
+        folder.add( parameters, 'inclination', 0, 0.5, 0.0001 ).onChange( updateSun );
+        folder.add( parameters, 'azimuth', 0, 1, 0.0001 ).onChange( updateSun );
+        folder.open();
+
+        var uniforms = water.material.uniforms;
+
+        var folder = gui.addFolder( 'Water' );
+        folder.add( uniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
+        folder.add( uniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
+        folder.add( uniforms.alpha, 'value', 0.9, 1, .001 ).name( 'alpha' );
+        folder.open();
+        */
+        //
+        window.addEventListener('resize', onWindowResize, false);
+    }//init
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        //stats.update();
+    }
+    var then = 0;
+    function render() {
+        var time = performance.now() * 0.001;
+
+        //(1)太陽動態，從水平升起__________________________
+        //var theta0= Math.PI * ( 0.5 - 0.5); 
+        var theta = Math.PI * (parameters.inclination - 0.5) - time * 0.0003;
+        var phi = 2 * Math.PI * (parameters.azimuth - 0.5);//+time*0.01;
+        //
+        light.position.x = parameters.distance * Math.cos(phi);
+        light.position.y = parameters.distance * Math.sin(phi) * Math.sin(theta);
+        light.position.z = parameters.distance * Math.sin(phi) * Math.cos(theta);
+        //
+        sky.material.uniforms['sunPosition'].value = light.position.copy(light.position);
+        water.material.uniforms['sunDirection'].value.copy(light.position).normalize();
+        //
+        cubeCamera.update(renderer, sky);
+
+        //(2)飛鳥________________________________________
+        var now = time;
+        const deltaTime = now - then;
+        then = now;
+        for (const { mesh, mixer } of birds) {
+            mixer.update(deltaTime);
+            //沿x軸循環飛行
+            mesh.position.x = (mesh.position.x + minMax * 10 + mixer.timeScale * birdSpeed * deltaTime) % (minMax * 18) - minMax * 10;
+        }
+        //(3)logo動
+        try {
+            //goodbooks[4].position.y = Math.sin( time/6 ) * 2 + 6;
+        }
+        catch (e) {
+            console.log('fine');
+        }
+
+        /*
+        sphere.position.y = Math.sin( time ) * 20 + 5;
+        sphere.rotation.x = time * 0.5;
+        sphere.rotation.z = time * 0.51;
+        */
+        water.material.uniforms['time'].value += 1.0 / 60.0;
+        //
+        renderer.render(scene, camera);
+
+    }        
+</script>
 {% endblock %}
 
 
 
-{% block content %} 
-    <div id="three_container" style='position:fixed;top:0px;left:0px;z-index:-10;'></div>
-    <!--
+{% block content %}
+<div id="three_container" style='position:fixed;top:0px;left:0px;z-index:-10;'></div>
+<!--
     <div id='body_store' class='body' align='' style="display:none">
         <div>
             <h1>嘩！找書</h1>
@@ -646,4 +696,3 @@
     </div>    
     -->
 {% endblock %}
-
