@@ -167,6 +167,7 @@
         #apires {
             overflow-y: auto;
             margin-top: 5px;
+            height: 100%;
         }
 
         #apires::-webkit-scrollbar {
@@ -202,14 +203,27 @@
         #myDataTalbe {
             border-bottom: 1.5px solid #111;
         }
+
+        div.dt-buttons {
+            position: relative;
+            float: left;
+            margin-left: 20px;
+        }
     </style>
     <!-- https://github.com/niutech/x-frame-bypass -->
     <script type="module" src="https://unpkg.com/x-frame-bypass"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
     <!--  -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
+    <!--  -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css" />
 
 </head>
 
@@ -337,6 +351,8 @@
                                         res.push({ ...row_obj, ...detail_arr_obj });
                                     });
                                 });
+                            } else if (api == 'agridataapi') {
+                                var res = res.Data;
                             }
                             //
                             let cols = Object.keys(res[0]);
@@ -363,6 +379,25 @@
                                 ;
                             $('#apires').html(table);
                             $("#myDataTalbe").DataTable({
+                                //dom: '<"top"Bf>rt<"bottom"lip><"clear">',
+                                dom: 'lBfrtip',
+                                buttons: [
+                                    'copyHtml5',
+                                    'excelHtml5',
+                                    'csvHtml5',
+                                    //'pdfHtml5',
+                                    {
+                                        text: 'Json',
+                                        action: function (e, dt, button, config) {
+                                            var data = dt.buttons.exportData();
+                                            $.fn.dataTable.fileSave(
+                                                new Blob([JSON.stringify(data)]),
+                                                'Export.json'
+                                            );
+                                        }
+                                    }
+                                ],
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                                 searching: true, //filter功能
                                 columnDefs: [{
                                     targets: [0],
@@ -458,7 +493,55 @@
                     var query = `${link}${select}?${val}`;
                     // console.log(query);
                     ajax_me(cors, query, '');
+                    // ajax_me('', query, '');
                 });
+
+            } else if (type == 'agridataapi') {
+                var options = tmp[3];
+                var options_str = options
+                    .map(opt =>
+                        `
+                            <option
+                                value="${opt[0].split('__')[0]}"
+                                data-query="${opt[1]}"
+                            >
+                                ${opt[0]}
+                            </option>
+                        `
+                    )
+                    .join("");
+                // console.log(options_str);
+                var input = `
+                        <p class='api'>${link}
+                            <select id="open_select">
+                                ${options_str}
+                            </select>
+                            <br>
+                            <input value='${options[0][1]}'></input>
+                            <br>
+                            <button>確認</button>
+                            <span style='color:red'>
+                                或條件欄位中按【Enter】產生API url:
+                                <a id='apitest' target='_blank' style='font-size: 10px;'></a>
+                            </span> 
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                $('#open_select').change(function () {
+                    var querystr = $(this).find('option:selected').attr('data-query');
+                    $('.api input').val(querystr);
+                });
+                // 確認
+                $('.api button').click(function () {
+                    var select = $('.api select').val();
+                    var val = $('.api input').val();
+                    var query = `${link}${select}?${val}`;
+                    // console.log(query);
+                    // ajax_me(cors, query, 'agridataapi');
+                    ajax_me('', query, 'agridataapi');
+                });
+
             } else if (type == 'apis') {
                 var tmp = link.split('?');
                 var link = tmp[0];
@@ -535,6 +618,59 @@
                     // console.log(query);
                     ajax_me(cors, query, 'efish');
                 });
+            } else if (type == 'tableau') {
+                var embed_list = 'https://help.tableau.com/current/pro/desktop/zh-tw/embed_list.htm'
+                var obj_default = "<param name='customViews' value='no'/><param name='alerts' value='no'/><param name='showShareOptions' value='no'/><param name='toolbar' value='yes'/>";
+                var embed_default = "<script type='text/javascript' src='https://bigdata.coa.gov.tw/javascripts/api/viz_v1.js'><\/script><div class='tableauPlaceholder' style='width: 1366px; height: 571px;'><object class='tableauViz' width='1366' height='571' style='display:none;'><param name='host_url' value='https%3A%2F%2Fbigdata.coa.gov.tw%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='&#47;t&#47;stattab' /><param name='name' value='-&#47;sheet0' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='showAppBanner' value='false' /></object></div>";
+                var input = `
+                        <p class='api'>
+                            【物件參數】: <input id='obj' value="${obj_default}" placeholder='物件參數請貼我' style='width:50%;'></input>
+                            (<a target='_blank' href='${embed_list}'>內嵌代碼表</a>)
+                            <br>
+                            　【嵌入碼】: <input id='embed' value="${embed_default}" placeholder='嵌入碼請貼我' style='width:50%;'></input>
+                            <button>確認</button> 或欄位中按【Enter】，轉圈圈及調整高度等待約 7 秒
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                // 確認
+                $('.api button').click(function () {
+                    var val_obj = $('input#obj').val();
+                    var val_embed = $('input#embed').val().replace("</object>", val_obj + "</object>");
+                    //
+                    $('#apires').html(val_embed);
+                    // 
+                    if (val_embed.includes('tableauPlaceholder')) {
+                        // 高度處理
+                        var reH_ID;
+                        window.setTimeout((() => start_reH()), 4000);
+                        function start_reH() {
+                            reH_ID = window.setInterval(reH, 1000);
+                        }
+                        function reH() {
+                            console.log('start_reH');
+                            // 轉圈圈的圖
+                            let circle = $("#tableau-svg-spinner-0");
+                            if (!circle.is(":visible") && circle.length == 0) {
+                                // 等大概4秒畫完圖，壓縮高度
+                                var tableauPlaceholder = $('.tableauPlaceholder');
+                                tableauPlaceholder.find('iframe').css("height", "100%");
+                                tableauPlaceholder.css("height", $('#apires').height());
+                                // 
+                                window.clearInterval(reH_ID);
+                                console.log('畫完');
+                            } else {
+                                console.log('waiting...');
+                            }
+                        }
+                    } else {
+
+                    }
+
+
+                });
+                // 
+                $('.api button').trigger('click');
             }
 
         }
@@ -565,6 +701,27 @@
                         ['BeefPriceService_牛', ''],
                         ['Ricepriceavg_全國單日平均糧價', 'startDate=2020/09/01&endDate=2020/09/12'],
                         ['FromM/RicepriceData_全國單日各縣市糧價', 'startDate=2020/09/01&endDate=2020/09/12'],
+                    ]
+                },
+                'API_AgriData':
+                {
+                    'type': 'agridataapi',
+                    'link': 'https://agridata.coa.gov.tw/api/v1/',
+                    'options': [
+                        ['AgriProductsTransType__農產品交易行情', 'Start_time=109.11.09&End_time=109.11.09&Market=台北'],
+                        ['PorkTransType__毛豬交易行情', 'TransDate=1091109&MarketName='],
+                        ['FisheryProductsTransType__漁產品交易行情', 'Start_time=1090923&End_time=1090923&TypeNo='],
+                        ['PoultryTransType_BoiledChicken_Eggs__家禽交易行情(白肉雞/雞蛋)', 'Start_time=2020/08/01&End_time=2020/09/30'],
+                        ['PoultryTransType_RedFeather__家禽交易行情(紅羽土雞)', 'Start_time=2020/08/01&End_time=2020/09/30'],
+                        ['PoultryTransType_BlackFeather__家禽交易行情(黑羽土雞)', 'Start_time=2020/08/01&End_time=2020/09/30'],
+                        ['PoultryTransType_Chicken__家禽交易行情(土雞)', 'Start_time=2020/08/01&End_time=2020/09/30'],
+                        ['PoultryTransType_Goose_Duck_Duckegg__家禽交易行情(肉鵝/番鴨/鴨蛋)', 'Start_time=2020/08/01&End_time=2020/09/30'],
+                        ['PoultryTransType_Goose_Day__家禽交易行情(養鵝協會當日行情)', 'Start_time=2020/08/01&End_time=2020/09/30'],
+                        ['SheepTransType_Day__市場羊隻日行情資料', 'TransDate=2020/01/09'],
+                        // ['BeefPriceService_牛', ''],
+                        // ['Ricepriceavg_全國單日平均糧價', 'startDate=2020/09/01&endDate=2020/09/12'],
+                        // ['FromM/RicepriceData_全國單日各縣市糧價', 'startDate=2020/09/01&endDate=2020/09/12'],
+                        ['FisheryProductsTransType__漁產品交易行情', 'Start_time=1090801&End_time=1090930&SeafoodProdCode=1174'],
                     ]
                 },
                 'API_apis 農糧署_蔬果產地': {
@@ -601,6 +758,10 @@
                     'type': 'web_blank',
                     'link': 'http://ppg.naif.org.tw/naif/MarketInformation/Poultry/TranStatistics.aspx'
                 },
+                '畜牧農情調查資訊系統': {
+                    'type': 'web_bypass',
+                    'link': 'https://asis.coa.gov.tw/imita_login.php'
+                },
                 '中央畜產會': {
                     'type': 'web',
                     'link': 'https://www.naif.org.tw/main.aspx'
@@ -614,7 +775,7 @@
                     'link': 'https://www.baphiq.gov.tw/ws.php?id=8245'
                 },
                 '漁產品全球資訊網': {
-                    'type': 'web',
+                    'type': 'web_blank',
                     'link': 'https://efish.fa.gov.tw/efish/statistics/trendchart.htm'
                 },
                 '查詢糧價日平均-依縣市':
@@ -627,30 +788,40 @@
                     'type': 'web_blank',
                     'link': 'https://m.coa.gov.tw/Transaction/RicePrice/Index'
                 },
-                '每日價量平台':
-                {
-                    'type': 'web_blank',
-                    'link': 'https://aprp.atri.org.tw/accounts/login/'
-                },
                 '農業統計視覺化查詢網':
                 {
                     'type': 'web_bypass',
                     'link': 'https://statview.coa.gov.tw/aqsys_on/index.html#'
                 },
-                'Tableau_Public_貿易':
+                '█ 勞動力調查平台':
                 {
                     'type': 'web_blank',
-                    'link': 'https://public.tableau.com/profile/coastat#!/'
+                    'link': 'https://alss.atri.org.tw/'
+                },
+                '█ 每日價量平台':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://aprp.atri.org.tw/accounts/login/'
+                },
+                '三節報表_測試':
+                {
+                    'type': 'web_blank',
+                    'link': 'http://132.145.121.250:8000'
                 },
                 'Tableau_測試_貿易':
                 {
                     'type': 'web_blank',
-                    'link': 'https://coatableau.nctu.me/'
+                    'link': 'http://132.145.121.250/'
                 },
-                '段名代碼查詢系統':
+                'Tableau_測試_embed':
+                {
+                    'type': 'tableau',
+                    'link': ''
+                },
+                'Tableau_Public_貿易':
                 {
                     'type': 'web_blank',
-                    'link': 'http://lisp.land.moi.gov.tw/MMS/MMSpage.aspx#gobox02'
+                    'link': 'https://public.tableau.com/profile/coastat#!/'
                 },
                 '農委會統計與出版品':
                 {
@@ -662,7 +833,41 @@
                     'type': 'web',
                     'link': 'https://www.fa.gov.tw/cht/Publications/index.aspx'
                 },
-
+                '中研院輿情分析系統':
+                {
+                    'type': 'web',
+                    'link': 'https://ckip.iis.sinica.edu.tw/service/opinion/'
+                },
+                '環境教育終身學習網':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://elearn.epa.gov.tw/default.aspx'
+                },
+                '教育統計動態視覺化平臺':
+                {
+                    'type': 'web_bypass',
+                    'link': 'https://stats.moe.gov.tw/statedu/'
+                },
+                '內政部_地理資訊系統':
+                {
+                    'type': 'web_bypass',
+                    'link': 'https://moisagis.moi.gov.tw/moiap/gis2010/pro/index.cfm'
+                },
+                '內政部_戶役政資料代碼':
+                {
+                    'type': 'web_bypass',
+                    'link': 'https://www.ris.gov.tw/documents/html/5/1/168.html'
+                },
+                '內政部_段名代碼查詢系統':
+                {
+                    'type': 'web_blank',
+                    'link': 'http://lisp.land.moi.gov.tw/MMS/MMSpage.aspx#gobox02'
+                },
+                '中華電信農民整合資料庫':
+                {
+                    'type': 'web_blank',
+                    'link': 'https://coamdm.coa.gov.tw/member'
+                },
 
             }
         }

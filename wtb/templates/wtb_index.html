@@ -422,14 +422,14 @@
 
 
         //站長4月推薦
-        logo_loader.load('mystatic/images/goodbooks/2020_04_arrival_raw.jpg', function (logo_texture) {
+        logo_loader.load('mystatic/images/goodbooks/progress.jpg', function (logo_texture) {
             var logo_material = new THREE.MeshBasicMaterial({
                 map: logo_texture,
                 side: THREE.DoubleSide,
                 wireframe: false
             });
-            var w = logo_texture.image.width / 40;
-            var h = logo_texture.image.height / 40;
+            var w = logo_texture.image.width / 45;
+            var h = logo_texture.image.height / 45;
             //
             var logo_geometry = new THREE.PlaneGeometry(w, h, 1, 1);
             var logo = new THREE.Mesh(logo_geometry, logo_material);
@@ -440,11 +440,11 @@
                 //logo.position.y=4;//-(Math.floor(0/grid))*Dy;
                 //logo.position.z=40;//-(0%2)*Dz; 
                 logo.position.x = -8;//+(0%grid)*Dx;                    
-                logo.position.y = 7;//-(Math.floor(0/grid))*Dy;
+                logo.position.y = 7.2;//-(Math.floor(0/grid))*Dy;
                 logo.position.z = 30;//-(0%2)*Dz; 						
             } else {
                 logo.position.x = -8;//+(0%grid)*Dx;                    
-                logo.position.y = 7;//-(Math.floor(0/grid))*Dy;
+                logo.position.y = 7.2;//-(Math.floor(0/grid))*Dy;
                 logo.position.z = 30;//-(0%2)*Dz;                    
             }
             goodbooks[4] = logo;
@@ -452,7 +452,7 @@
             scene.add(logo);
             //事件綁定____________________     
             //點擊
-            var url = 'https://wtb.wtbwtb.tk/book/0010742886/';
+            var url = 'https://wtb.wtbwtb.tk/book/0010758625/';
             //
             domEvents.addEventListener(logo, 'click', function (e) {
                 window.open(url, '_blank');
@@ -462,7 +462,7 @@
             }, false);
             //mouseover
             domEvents.addEventListener(logo, 'mouseover', function (e) {
-                $("#three_container").css('cursor', 'pointer').attr("title", '【你一生的預言】\n\n"喜歡電影異星入境的朋友\n  原著小說的水準一樣高!"\n\n->等待<呼吸> by 站長');
+                $("#three_container").css('cursor', 'pointer').attr("title", '【失控的進步】\n\n作者的博學，視野，敘事能力，真是完美結合，\n任何有閱讀能力的人都能享受到智識上的樂趣。\n可惜的是，作者終究悲天憫人，\n放棄不了希望人類進行文明轉型的呼籲。\n\n->已放棄 by 站長');
             }, false);
             //mouseout
             domEvents.addEventListener(logo, 'mouseout', function (e) {
