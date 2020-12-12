@@ -378,7 +378,8 @@ def get_bookprice(bookid:str='',isbn:str='',store:str='',tryDB=True,ippo=None,ro
                 else:
                     price_sale=''
             #
-            url_book=doc.find(".gridList a.BaseGridItem__content___3LORP").eq(0).attr("href") or ''  
+#             url_book=doc.find(".gridList a.BaseGridItem__content___3LORP").eq(0).attr("href") or ''  
+            url_book=doc.find(".gridList li.BaseGridItem__grid___2wuJ7.imprsn a").eq(0).attr("href") or ''  
             if url_book and 'https://tw.bid.yahoo.com' not in url_book:
                 url_book='https://tw.bid.yahoo.com'+url_book
                 
