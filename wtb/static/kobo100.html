@@ -140,8 +140,20 @@
         .style("stroke-width", d => Math.max(0, d.dy))
         .attr("ft", d => d.source.node + "_" + d.target.node)
         // .sort(function (a, b) { return b.dy - a.dy; })
-        // .append("title") // Add hover text
-        // .text(function (d) { return "流量:" + d.value; })        
+        ;
+    link.append("title") // Add hover text
+        .text(function (d) {
+            if (d.source.price != undefined && d.target.price != undefined) {
+                delta = d.target.price - d.source.price;
+                if (delta > 0) {
+                    return `價格增加: ▲${delta}元 (${d.source.price} -> ${d.target.price})`;
+                } else if (delta < 0) {
+                    return `價格減少: ▼${delta * -1}元 (${d.source.price} -> ${d.target.price})`;
+                } else {
+                    return `價格不變: ${d.target.price}元`;
+                }
+            }
+        })
         ;
     link.filter(d => d.source.node < d.target.node - 100) //降名
         .style("stroke", 'red')
