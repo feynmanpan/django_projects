@@ -116,6 +116,9 @@ def wtb_autocom(request):
     return HttpResponse(jsonstr)
 
 
+def kobo(request):
+    return render(request, 'kobo100.html', {})
+
 # ============================================================
 # 北市圖
 def wtb_tpml(request):
