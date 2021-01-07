@@ -209,14 +209,61 @@
             float: left;
             margin-left: 20px;
         }
+
+        .date {
+            display: inline-block;
+            width: 200px;
+            vertical-align: middle;
+        }
+
+        .pigA {
+            background: #B80000;
+            color: white;
+        }
+
+        .pigB {
+            background: #E26B0A;
+            color: white;
+        }
+
+        .pigC {
+            background: #31869B;
+            color: white;
+        }
+
+        .pigDD {
+            background: #974706;
+            color: white;
+        }
+
+        .pigWeb {
+            color: red;
+        }
+
+        .pig75 {
+            background: #C4D79B;
+        }
+
+        .pig95 {
+            background: #92D050;
+        }
+
+        .PR {
+            text-align: right;
+        }
     </style>
     <!-- https://github.com/niutech/x-frame-bypass -->
     <script type="module" src="https://unpkg.com/x-frame-bypass"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
     <!--  -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+    <!--  -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
@@ -326,14 +373,18 @@
     Vue.component('show-area', {
         data: function () {
             return {
-                ajax_me: function (cors, query, api) {
+                ajax_me: function (cors, query, api, ajax_method = 'get', data = {}) {
                     $.ajax({
                         url: `${cors}${query}`,
-                        method: 'get',
-                        timeout: 25 * 1000,
+                        method: ajax_method,
+                        data: data,
+                        dataType: 'json',
+                        timeout: 30 * 1000,
                         beforeSend: function () {
-                            $('#apitest').text(query.slice(0, 100) + ".........").attr('href', query);
-                            $('#apires').html("<h1 style='text-align:center'>API抓取中...</h1>");
+                            if (ajax_method == 'get') {
+                                $('#apitest').text(query.slice(0, 100) + ".........").attr('href', query);
+                            }
+                            $('#apires').html("<h1 style='text-align:center'>API抓取中(超過30秒請重新操作)...</h1>");
                         }
                     })
                         .done(function (res) {
@@ -353,15 +404,46 @@
                                 });
                             } else if (api == 'agridataapi') {
                                 var res = res.Data;
+                            } else if (api == 'fastpig') {
+                                var res = res.resdata;
                             }
                             //
                             let cols = Object.keys(res[0]);
                             let headerRow = cols
-                                .map(col => `<th>${col}</th>`)
+                                .map(col => {
+                                    if (api == 'fastpig') {
+                                        if (['A', 'B', 'C'].includes(col[0])) {
+                                            if (['155A', '155B', '155C', '155D'].includes(col.slice(-4))) {
+                                                return `<th class='pigDD'>${col}</th>`
+                                            } else {
+                                                return `<th class='pig${col[0]}'>${col}</th>`
+                                            }
+                                        } else {
+                                            return `<th>${col}</th>`
+                                        }
+                                    } else {
+                                        return `<th>${col}</th>`
+                                    }
+                                }
+                                )
                                 .join("");
                             let rows = res
                                 .map(row => {
-                                    let tds = cols.map(col => `<td>${row[col]}</td>`).join("");
+                                    let tds = cols.map(col => {
+                                        if (api == 'fastpig') {
+                                            if (['A3', 'B3', 'C3'].includes(col)) {
+                                                return `<td class='pigWeb PR'>${row[col]}</td>`
+                                            } else if (['A375', 'B375', 'C375', 'C375D'].includes(col)) {
+                                                return `<td class='pig75 PR'>${row[col]}</td>`
+                                            } else if (['A395', 'B395', 'C395', 'C395D'].includes(col)) {
+                                                return `<td class='pig95 PR'>${row[col]}</td>`
+                                            } else {
+                                                return `<td class='PR'>${row[col]}</td>`
+                                            };
+                                        } else {
+                                            return `<td>${row[col]}</td>`
+                                        };
+                                    }).join("");
                                     return `<tr>${tds}</tr>`;
                                 })
                                 .join("");
@@ -378,7 +460,9 @@
                                 `
                                 ;
                             $('#apires').html(table);
-                            $("#myDataTalbe").DataTable({
+                            var myDataTalbe = $("#myDataTalbe").DataTable({
+                                fixedHeader: true,
+                                // responsive: true,
                                 //dom: '<"top"Bf>rt<"bottom"lip><"clear">',
                                 dom: 'lBfrtip',
                                 buttons: [
@@ -404,12 +488,18 @@
                                     orderable: true,
                                 }]
                             });
+                            myDataTalbe.fixedHeader.enable();
                         })
                         .fail(function (err) {
                             console.log('跨域請求失敗');
                             console.log(err);
                             // 
-                            $('#apires').html(JSON.stringify(err, null, 4))
+                            if (api == 'fastpig') {
+                                $('#apires').html(JSON.stringify(err.responseJSON.error, null, 4));
+                            } else {
+                                $('#apires').html(JSON.stringify(err, null, 4))
+                            }
+
                         })
                 }
             }
@@ -444,6 +534,8 @@
             } else if (type == 'web') {
                 var a = `<span style='margin-bottom:5px;margin-top: -7px;'>【若嵌入頁面的操作有問題，請至原始網址: <a href='${link}' target='_blank'>${link}</a>】</span>`;
                 $('#container').html(`${a}<iframe id="myframe" src="${link}" frameborder="0"></iframe>`);
+            } else if (type == 'fastdoc') {
+                $('#container').html(`<iframe id="myframe" src="${link}" frameborder="0"></iframe>`);
             } else if (type == 'web_blank') {
                 var a = `<a href='${link}' target='_blank'>${name}</a>`;
                 $('#container').html(`<h1>此網站需另開新頁籤:  ${a}</h1>`)
@@ -671,7 +763,53 @@
                 });
                 // 
                 $('.api button').trigger('click');
-            }
+            } else if (type == 'fastpig') {
+                //toLocaleDateString("fr-CA");
+                var today = new Date()
+                var yesterday = new Date();
+                yesterday.setDate(today.getDate() - 1);
+                today = today.toLocaleDateString("fr-CA");//toISOString().substring(0, 10);
+                yesterday = yesterday.toLocaleDateString("fr-CA");//toISOString().substring(0, 10);
+                console.log(today, yesterday)
+                var input = `
+                        <p class='api'>
+                            <span style='vertical-align:middle'>開始日期: </span><input value='${yesterday}' id='sd' name='sd' value='' class='date' style='width:8em;margin-right:1em;vertical-align:middle'></input>
+                            <span style='vertical-align:middle'>結束日期: </span><input value='${yesterday}' id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>
+                            <button style='vertical-align:middle'>確認</button> 
+                            (使用及欄位說明請見<span id='doc' style='color:red;cursor:pointer;'>FastAPI</span>)
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                var picker = {
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true,
+                }
+                $("#sd").datepicker(picker);
+                $("#ed").datepicker(picker);
+                // 
+                $('#doc').click(function () {
+                    $('div[type=fastdoc').trigger('click');
+                });
+                $('.api button').click(function () {
+                    var sd = $("#sd").val();
+                    var ed = $("#ed").val();
+
+                    if (ed > yesterday) {
+                        alert('結束最晚到昨天!');
+                        return false;
+                    } else if (sd == '' || ed == '') {
+                        alert('兩個日期都要輸入!');
+                        return false;
+                    } else if (sd > ed) {
+                        alert('開始要早於結束!');
+                        return false;
+                    };
+                    postdata = { sd, ed };
+                    ajax_me('', link, type, 'post', postdata);
+                });
+            }//if
 
         }
     })
@@ -736,8 +874,17 @@
                     'type': 'efish',
                     'link': 'https://efish.fa.gov.tw/efish/statistics/svc/downloadtradepricedata?ds=109.09.01&de=109.09.10&tk=3ec536a2-3db0-4791-88aa-b28ccc4a835f&pid=1174',
                 },
-                // ==============================================================
-                'ArigData.coa資料服務平台': {
+                'API_規格豬日行情': {
+                    'type': 'fastpig',
+                    'link': 'https://wtb.wtbwtb.tk/fastapi/pig/',
+                },
+                'API_規格豬日行情_FastAPI': {
+                    'type': 'fastdoc',
+                    'link': 'https://wtb.wtbwtb.tk/fastapi/doc/',
+                    // 'link': 'http://wtb.wtbwtb.tk:5001/docs',  
+                },
+                // ============================================================== 
+                'AgriData.coa資料服務平台': {
                     'type': 'web_bypass',
                     'link': 'https://agridata.coa.gov.tw/api.aspx'
                 },
@@ -765,6 +912,11 @@
                 '中央畜產會': {
                     'type': 'web',
                     'link': 'https://www.naif.org.tw/main.aspx'
+                },
+                '國產豬標章證明地圖': {
+                    'type': 'web',
+                    // 'link': 'https://map.coa.gov.tw/tp/#'
+                    'link': 'https://scene.coa.gov.tw/taiwanpork/#'
                 },
                 '養雞協會': {
                     'type': 'web',

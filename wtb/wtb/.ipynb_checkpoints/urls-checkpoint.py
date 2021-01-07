@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from mainsite.views import wtb_index, wtb_book, wtb_search, wtb_autocom, wtb_tpml, wtb_hybook, get_client_ip, homepage, homepage_1, homepage_2, showpost, showpost_1, kobo
+from mainsite.views import wtb_index, wtb_book, wtb_search, wtb_autocom, wtb_tpml, wtb_hybook, get_client_ip, homepage, homepage_1, homepage_2, showpost, showpost_1, kobo, fasttest, pig, fastdoc, openapijson
 from graphene_django.views import GraphQLView
 from django.views.decorators.csrf import csrf_exempt
 
@@ -41,5 +41,10 @@ urlpatterns = [
     path('post/<slug:slug>/', showpost),
     path('post_1/<slug:slug>/', showpost_1),
     #
+    path('fastapi/openapijson/', openapijson),
+    path('fastapi/doc/', fastdoc),    
+    path('fastapi/test/', fasttest),
+    path('fastapi/pig/', pig),
+    #     
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True)), kwargs={'context': {'a': '@@@'}}),  # API不用csrf
 ]

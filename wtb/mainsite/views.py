@@ -4,11 +4,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.clickjacking import xframe_options_exempt
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
 from datetime import datetime
 from time import sleep, time
 import pytz
+import requests
 #
 from .models import Bookinfo, Bookprice, Store, Post
 from get_proxy import get_proxy
@@ -120,6 +123,52 @@ def kobo(request):
     return render(request, 'kobo100.html', {})
 
 # ============================================================
+# FastApi
+def openapijson(request):
+    url='http://0.0.0.0:5001/openapi.json'
+    r = requests.get(url)
+    r.encoding = 'utf-8'
+    res = r.json()
+    res = json.dumps(res, default=str, ensure_ascii=False)
+    res = res.replace('/pig/','/fastapi/pig/').replace('/test/','/fastapi/test/')
+    return HttpResponse(res)
+@xframe_options_exempt    
+def fastdoc(request):
+    url='http://0.0.0.0:5001/docs'
+    r = requests.get(url)
+    r.encoding = 'utf-8'
+    rtext = r.text.replace('/openapi.json','https://wtb.wtbwtb.tk/fastapi/openapijson/')
+    return HttpResponse(rtext)
+#     return HttpResponse(f'<iframe src={url}></iframe>')
+def fasttest(request):
+    url='http://0.0.0.0:5001/test'
+    r = requests.get(url)
+    r.encoding = 'utf-8'
+    res = json.dumps(r.json(), default=str, ensure_ascii=False)
+    return HttpResponse(res)    
+
+@csrf_exempt
+def pig(request):
+    url='http://0.0.0.0:5001/pig/'
+    postdata = {
+        'sd':request.POST.get('sd','2020-12-02'),
+        'ed':request.POST.get('ed','2020-12-03'),
+    }
+    r = requests.post(url, json=postdata)
+    r.encoding = 'utf-8'
+    res = r.json()
+    r.close()
+    # Access-Control-Allow-Origin
+    response = HttpResponse(json.dumps(res, indent=4))
+#     response = HttpResponse(res)
+    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+    response["Access-Control-Max-Age"] = "1000"
+    response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+    if res.get('error'):
+        response.status_code = 400
+    return response
+
 # 北市圖
 def wtb_tpml(request):
     isbn = request.GET['isbn']

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+<script>
+
+    $.ajax({
+        url: 'https://wtb.wtbwtb.tk/fastapi/pig/',
+        method: 'post',
+        data: {
+            sd: '2020-12-05',
+            ed: '2020-12-06',
+        },
+        timeout: 25 * 1000,
+        dataType: 'json',
+        beforeSend: function () {
+            // 
+        }
+    })
+        .done(function (res) {
+            console.log(res);
+            $('body').text(res['resdata'])
+
+        })
+        .fail(function (err) {
+            console.log(err);
+        })
+</script>
+
+</html>

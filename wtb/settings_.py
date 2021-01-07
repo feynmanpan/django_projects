@@ -25,7 +25,7 @@ SECRET_KEY = '37irddih2k@s=v*&u_cio$oho)@3z21lt)es)by_&h@!1mlxzb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["wtb.nctu.me", "35.221.197.37", "35.221.198.157", "35.185.150.98", "104.199.171.170"]
+ALLOWED_HOSTS = ["wtb.nctu.me","wtb.wtbwtb.tk","34.80.225.53", "35.221.197.37", "35.221.198.157", "35.185.150.98", "104.199.171.170"]
 # https://docs.djangoproject.com/en/3.0/topics/cache/
 CACHES = {
     'default': {
