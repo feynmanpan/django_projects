@@ -150,17 +150,23 @@ def fasttest(request):
 @csrf_exempt
 def pig(request):
     url='http://0.0.0.0:5001/pig/'
+    # (1)無指定時，ajax的request.body是application/x-www-form-urlencoded，FormData
+    # 　　request.body是sd=2021-01-07&ed=2021-01-07
+    # (2)fastapi的doc頁面按執行，post資料是Content-Type: application/json
+    # 　　request.body是{"sd":"2021-01-01","ed":"2021-01-05"}
+    # (3) 前者django用request.POST變成dict，後者要用json.loads(request.body)
+    # post = request.is_ajax() and request.POST or json.loads(request.body)　# request.is_ajax() html在桌機直接執行時，為False，放到web為True
+    post = request.POST or json.loads(request.body)
     postdata = {
-        'sd':request.POST.get('sd','2020-12-02'),
-        'ed':request.POST.get('ed','2020-12-03'),
+        'sd': post.get('sd', '2020-12-01'),
+        'ed': post.get('ed', '2020-12-03'),
     }
-    r = requests.post(url, json=postdata)
+    r = requests.post(url, json=postdata) # fastapi用BaseModel，要送json
     r.encoding = 'utf-8'
     res = r.json()
     r.close()
     # Access-Control-Allow-Origin
     response = HttpResponse(json.dumps(res, indent=4))
-#     response = HttpResponse(res)
     response["Access-Control-Allow-Origin"] = "*"
     response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
     response["Access-Control-Max-Age"] = "1000"

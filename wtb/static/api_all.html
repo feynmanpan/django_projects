@@ -495,7 +495,8 @@
                             console.log(err);
                             // 
                             if (api == 'fastpig') {
-                                $('#apires').html(JSON.stringify(err.responseJSON.error, null, 4));
+                                // $('#apires').html(JSON.stringify(err.responseJSON.error, null, 4));
+                                $('#apires').html(JSON.stringify(err, null, 4));
                             } else {
                                 $('#apires').html(JSON.stringify(err, null, 4))
                             }
@@ -770,7 +771,7 @@
                 yesterday.setDate(today.getDate() - 1);
                 today = today.toLocaleDateString("fr-CA");//toISOString().substring(0, 10);
                 yesterday = yesterday.toLocaleDateString("fr-CA");//toISOString().substring(0, 10);
-                console.log(today, yesterday)
+                // console.log(today, yesterday)
                 var input = `
                         <p class='api'>
                             <span style='vertical-align:middle'>開始日期: </span><input value='${yesterday}' id='sd' name='sd' value='' class='date' style='width:8em;margin-right:1em;vertical-align:middle'></input>
@@ -881,7 +882,7 @@
                 'API_規格豬日行情_FastAPI': {
                     'type': 'fastdoc',
                     'link': 'https://wtb.wtbwtb.tk/fastapi/doc/',
-                    // 'link': 'http://wtb.wtbwtb.tk:5001/docs',  
+                    // 'link': 'http://wtb.wtbwtb.tk:5001/docs',   
                 },
                 // ============================================================== 
                 'AgriData.coa資料服務平台': {

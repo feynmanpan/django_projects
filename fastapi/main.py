@@ -38,7 +38,7 @@ app.add_middleware(CORSMiddleware, allow_origins=['*'])
 
 @app.get("/test/", tags=["測試"])
 async def test():
-    return {"message": "Hello World!! YES! no nonono!!!"}
+    return {"message": "Hello World!!"}
 
 
 # 規格豬
@@ -189,6 +189,8 @@ def get_miss_date(miss_date):
         sleep(random()+0.3)
         #
     return day_data
+
+# 用BaseModel時，request要送json過來
 
 
 @app.post("/pig/", tags=["規格豬"])
