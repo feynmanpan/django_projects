@@ -374,17 +374,18 @@
         data: function () {
             return {
                 ajax_me: function (cors, query, api, ajax_method = 'get', data = {}) {
+                    const T = 30;
                     $.ajax({
                         url: `${cors}${query}`,
                         method: ajax_method,
                         data: data,
                         dataType: 'json',
-                        timeout: 30 * 1000,
+                        timeout: T * 1000,
                         beforeSend: function () {
                             if (ajax_method == 'get') {
                                 $('#apitest').text(query.slice(0, 100) + ".........").attr('href', query);
                             }
-                            $('#apires').html("<h1 style='text-align:center'>API抓取中(超過30秒請重新操作)...</h1>");
+                            $('#apires').html(`<h1 style='text-align:center'>API抓取中(超過${T}秒請重新操作)...</h1>`);
                         }
                     })
                         .done(function (res) {
@@ -493,15 +494,9 @@
                         .fail(function (err) {
                             console.log('跨域請求失敗');
                             console.log(err);
-                            // 
-                            if (api == 'fastpig') {
-                                // $('#apires').html(JSON.stringify(err.responseJSON.error, null, 4));
-                                $('#apires').html(JSON.stringify(err, null, 4));
-                            } else {
-                                $('#apires').html(JSON.stringify(err, null, 4))
-                            }
-
+                            $('#apires').html(`<pre>${JSON.stringify(err, null, 4)}</pre>`);
                         })
+
                 }
             }
         },
@@ -786,6 +781,7 @@
                     dateFormat: 'yy-mm-dd',
                     changeMonth: true,
                     changeYear: true,
+                    // showButtonPanel: true,
                 }
                 $("#sd").datepicker(picker);
                 $("#ed").datepicker(picker);

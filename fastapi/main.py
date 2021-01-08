@@ -75,6 +75,10 @@ def floatint(x):
     return xf > xn and xf or xn
 
 
+def zero(x):
+    return x != 0 and x or 0
+
+
 def get_miss_date(miss_date):
     url = "https://ppg.naif.org.tw/naif/MarketInformation/Pig/FPSCompare.aspx"
 
@@ -184,7 +188,7 @@ def get_miss_date(miss_date):
             'C155C': tr45.eq(8).text(),
             'C155D': tr62.eq(8).text(),
         }
-        print(D)
+        print(f'爬取{D}之資料OK')
         day_data.append(today)
         sleep(random()+0.3)
         #
@@ -206,7 +210,7 @@ async def pig(dr: DateRange):
     - A375,A395: 含75-95之舊算法(淺綠), 不含75-95之舊算法(深綠)。可與A3 (紅字)比對
     - C375D,C395D: C375-C3, C395-C3，亦即兩種算法與規格豬欄位之差
     - A75,...,A155: 數字代表對應之重量範圍
-    - A155A,...,A155D: 最後四個代表155以上的四個縣市來源(宜蘭,新竹,苗栗,花蓮) 
+    - A155A,...,A155D: 最後四個代表155以上的四個縣市來源(宜蘭,新竹,苗栗,花蓮)
 
     """
     # 從post取得時間範圍
@@ -215,34 +219,35 @@ async def pig(dr: DateRange):
     ed = dr['ed']
     # -----------------------------------------------
     iso = '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
-    m1 = re.search(iso, sd)
-    m2 = re.search(iso, ed)
+    m1 = re.match(iso, sd)
+    m2 = re.match(iso, ed)
     if not m1 or not m2:
-        return {'error': '日期格式不符合ISO之標準，如2021-01-02'}
+        return {'error': 'date format not like ISO(2021-01-02)'}
+    # 格式OK則字串轉date物件
+    sd = datetime.strptime(sd, date_format).date()
+    ed = datetime.strptime(ed, date_format).date()
     #
     today = datetime.today().date()
     yesday = today - timedelta(1)
-    yesday = datetime.strftime(yesday, '%Y-%m-%d')
-    # print(ed, yesday)
     if ed > yesday:
         return {'error': f'結束日期最晚到昨天{yesday}'}
     # -----------------------------------------------
     # 篩選日期
     pig_csv = 'pig.csv'
     df = pd.read_csv(pig_csv)
-    df['date'] = pd.to_datetime(df['date'])  # 轉timeseries做篩選
+    df['date'] = pd.to_datetime(df['date']).dt.date  # 轉timeseries做篩選
     where = df['date'] >= sd
     where &= df['date'] <= ed
     df_in = df[where]
-    df_in['date'] = df_in['date'].astype(str)  # 轉回字串
 
     # 找出miss date，有就重爬
-    dr_all = pd.date_range(start=sd, end=ed).strftime(date_format)
+    dr_all = pd.date_range(start=sd, end=ed).date  # 轉numpy array，元素為date物件
     miss_date = list(set(dr_all) - set(df_in['date']))
-    miss_date.sort()
+    miss_date = [d.strftime('%Y-%m-%d') for d in sorted(miss_date)]
     if miss_date:
-        day_data = get_miss_date(miss_date)
+        day_data = get_miss_date(miss_date)  # 缺少的日期去爬蟲
         df_miss = pd.DataFrame(day_data)
+        df_miss['date'] = pd.to_datetime(df_miss['date']).dt.date  # 轉timeseries
         df_miss.iloc[:, 2:] = df_miss.iloc[:, 2:].applymap(floatint)
         #
         df_A75 = df_miss.loc[:, 'A7595':'A135155']
@@ -276,12 +281,10 @@ async def pig(dr: DateRange):
         df_miss['C395'] = ((df_A95 * df_B95 * df_C95).sum(axis=1) + (df_A155 * df_B155 * df_C155).sum(axis=1)) / (df_miss['A395']*df_miss['B395'])
         df_miss['C375D'] = df_miss['C375'] - df_miss['C3']
         df_miss['C395D'] = df_miss['C395'] - df_miss['C3']
-        #
-        df_all = df_in.append(df_miss).sort_values('date').reset_index(drop=True).applymap(lambda x: x != 0 and x or 0).round(2)
-        resdata = df_all.to_dict('records')
-        #
-        df['date'] = df['date'].astype(str)
-        df.append(df_all).drop_duplicates(subset=['date']).sort_values('date').reset_index(drop=True).to_csv(pig_csv, index=False)
+        # 加新資料重存csv
+        df.append(df_miss).sort_values('date').reset_index(drop=True).applymap(zero).round(2).astype({'date': str}).to_csv(pig_csv, index=False)
+        # 組織回傳
+        resdata = df_in.append(df_miss).sort_values('date').reset_index(drop=True).applymap(zero).round(2).astype({'date': str}).to_dict('records')
     else:
         resdata = df_in.to_dict('records')
     #
