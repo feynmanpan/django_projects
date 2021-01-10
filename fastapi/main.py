@@ -8,6 +8,7 @@ from random import random
 from pyquery import PyQuery as pq
 from time import sleep
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 import json
 import math
 import re
@@ -33,16 +34,18 @@ app = FastAPI(
 )
 app.add_middleware(CORSMiddleware, allow_origins=['*'])
 
-#
-
-
-@app.get("/test/", tags=["測試"])
-async def test():
-    return {"message": "Hello World!!"}
-
 
 # 規格豬
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+}
+url_pig = "https://ppg.naif.org.tw/naif/MarketInformation/Pig/FPSCompare.aspx"
+#
+year_format = '%Y'
+month_format = '%Y-%m'
 date_format = '%Y-%m-%d'
+time_format = '%H:%M:%S'
+#
 wd_map = {
     0: '(一)',
     1: '(二)',
@@ -52,10 +55,10 @@ wd_map = {
     5: '(六)',
     6: '(日)',
 }
-
+#
 today = datetime.today().date()
-yesday1 = today - timedelta(1)
-yesday2 = today - timedelta(2)
+yesday1 = today - timedelta(days=1)
+yesday2 = today - timedelta(days=2)
 
 
 class DateRange(BaseModel):
@@ -70,24 +73,33 @@ class DateRange(BaseModel):
             }
         }
 
-    def check(self):
-        # (1) iso格式檢查
-        try:
-            self.sd = datetime.strptime(self.sd, date_format).date()
-            self.ed = datetime.strptime(self.ed, date_format).date()
-        except Exception:
-            return False, {'error': '日期格式非ISO標準，如2021-01-02，或日期範圍不正常'}
-        #
-        print(self.__dict__)
-        # (2) 日期範圍檢查
-        today = datetime.today().date()
-        yesday = today - timedelta(days=1)
-        if self.ed > yesday:
-            return False, {'error': f'結束日期最晚到昨天{yesday}'}
-        elif self.sd > self.ed:
-            return False, {'error': f'開始日期需早於結束'}
-        #
-        return True, None
+
+def isocheck(sd: str, ed: str, ymd_format: str):
+    err = 'error'
+    # (1) iso格式檢查
+    try:
+        datetime.strptime(sd, ymd_format)
+        datetime.strptime(ed, ymd_format)
+    except Exception:
+        return False, {err: '日期格式非ISO標準，如2021-01-02，或日期數字過大過小不正常'}
+    #
+    print(f'sd={sd}, ed={ed}')
+    # (2) 日期範圍檢查
+    today = datetime.today().date()
+    last_d = str(today - relativedelta(days=1))
+    last_m = str(today - relativedelta(months=1))[:7]
+    last_y = str(today - relativedelta(years=1))[:4]
+    if ymd_format == date_format and ed > last_d:
+        return False, {err: f'結束最晚到昨天{last_d}'}
+    elif ymd_format == month_format and ed > last_m:
+        return False, {err: f'結束最晚到上個月{last_m}'}
+    elif ymd_format == year_format and ed > last_y:
+        return False, {err: f'結束最晚到去年{last_y}'}
+    #
+    if sd > ed:
+        return False, {err: f'開始需早於結束'}
+    #
+    return True, None
 
 
 def floatint(x):
@@ -103,14 +115,8 @@ def zero(x):
 
 
 def get_miss_date(miss_date):
-    url = "https://ppg.naif.org.tw/naif/MarketInformation/Pig/FPSCompare.aspx"
-
-    #
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-    }
     # 第一次進入頁面
-    r1 = requests.get(url, headers=headers)
+    r1 = requests.get(url_pig, headers=headers)
     r1.encoding = 'utf-8'
     doc1 = pq(r1.text, parser='html')
     r1.close()
@@ -131,7 +137,7 @@ def get_miss_date(miss_date):
     for D in miss_date:
         postdata['ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$TextBox_Content1_ThisDate'] = D
         postdata["ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$TextBox_Content1_LastDate"] = D
-        r2 = requests.post(url, headers=headers, data=postdata)
+        r2 = requests.post(url_pig, headers=headers, data=postdata)
         r2.encoding = 'utf-8'
         doc2 = pq(r2.text, parser='html')
         r2.close()
@@ -217,7 +223,7 @@ def get_miss_date(miss_date):
         #
     return day_data
 
-# 用BaseModel時，request要送json過來
+# 用BaseModel時，django requests要送json過來
 
 
 @app.post("/pig/", tags=["規格豬"])
@@ -236,27 +242,24 @@ async def pig(dr: DateRange):
     - A155A,...,A155D: 最後四個代表155以上的四個縣市來源(宜蘭,新竹,苗栗,花蓮)
 
     """
-    # (1)從post取得時間範圍
-    isOK, msg = dr.check()
-    if isOK:
-        sd = dr.sd
-        ed = dr.ed
-    else:
-        return msg
+    # (1)從post取得日期字串
+    sd = dr.sd
+    ed = dr.ed
+    OK, errmsg = isocheck(sd, ed, date_format)
+    if not OK:
+        print(errmsg)
+        return errmsg
     # (2)篩選日期
     pig_csv = 'pig.csv'
     df = pd.read_csv(pig_csv)
-    df['date'] = pd.to_datetime(df['date']).dt.date  # 轉timeseries做篩選
-    where = sd <= df['date']
-    where &= df['date'] <= ed
+    # df['date'] = pd.to_datetime(df['date']).dt.date  # 轉timeseries做篩選
+    where = (sd <= df['date']) & (df['date'] <= ed)
     df_in = df[where]
 
     # (3)找出miss date，有就重爬
-    miss_date = pd.date_range(start=sd, end=ed).difference(df_in['date']).astype(str).to_list()
+    miss_date = pd.date_range(start=sd, end=ed).astype(str).difference(df_in['date']).tolist()
     if miss_date:
-        day_data = get_miss_date(miss_date)  # 缺少的日期去爬蟲
-        df_miss = pd.DataFrame(day_data)
-        df_miss['date'] = pd.to_datetime(df_miss['date']).dt.date  # 轉timeseries
+        df_miss = pd.DataFrame(get_miss_date(miss_date))  # 缺少的日期去爬蟲
         df_miss.iloc[:, 2:] = df_miss.iloc[:, 2:].applymap(floatint)
         #
         df_A75 = df_miss.loc[:, 'A7595':'A135155']
@@ -291,19 +294,24 @@ async def pig(dr: DateRange):
         df_miss['C375D'] = df_miss['C375'] - df_miss['C3']
         df_miss['C395D'] = df_miss['C395'] - df_miss['C3']
         # 加新資料重存csv
-        df.append(df_miss).sort_values('date').reset_index(drop=True).applymap(zero).round(2).astype({'date': str}).to_csv(pig_csv, index=False)
+        df.append(df_miss).sort_values('date').reset_index(drop=True).applymap(zero).round(2).to_csv(pig_csv, index=False)
         # 組織回傳
-        resdata = df_in.append(df_miss).sort_values('date').reset_index(drop=True).applymap(zero).round(2).astype({'date': str}).to_dict('records')
+        resdata = df_in.append(df_miss).sort_values('date').reset_index(drop=True).applymap(zero).round(2).to_dict('records')
     else:
         resdata = df_in.to_dict('records')
     #
     # __________________________________________________________
     res = {
         'log': {
-            'now': datetime.now().strftime(f'{date_format}_%H:%M:%S'),
+            'now': datetime.now().strftime(f'{date_format}_{time_format}'),
             'postdata': dr,
             'miss_date': miss_date,
         },
         'resdata': resdata,
     }
     return res  # json.dumps(res, indent=4)
+
+
+@app.get("/test/", tags=["測試"])
+async def test():
+    return {"message": "Hello World!!"}
