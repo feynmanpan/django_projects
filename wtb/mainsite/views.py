@@ -166,7 +166,7 @@ def pig(request):
     res = r.json()
     r.close()
     # Access-Control-Allow-Origin
-    response = HttpResponse(json.dumps(res, indent=4))
+    response = HttpResponse(json.dumps(res, indent=4, ensure_ascii=False))
     response["Access-Control-Allow-Origin"] = "*"
     response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
     response["Access-Control-Max-Age"] = "1000"

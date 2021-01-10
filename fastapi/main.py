@@ -53,18 +53,41 @@ wd_map = {
     6: '(日)',
 }
 
+today = datetime.today().date()
+yesday1 = today - timedelta(1)
+yesday2 = today - timedelta(2)
+
 
 class DateRange(BaseModel):
-    sd: str = Field(title='開始日期', example="2021-01-01")
-    ed: str = Field(title='結束日期', example="2021-01-05")
+    sd: str = Field(str(yesday2), title='開始日期', example=str(yesday2))  # Schemas
+    ed: str = Field(str(yesday1), title='結束日期', example=str(yesday1))
 
     class Config:
         schema_extra = {
             "example": {
-                "sd": "2021-01-01",
-                "ed": "2021-01-05",
+                "sd": str(yesday2),  # "2021-01-01", # try it out
+                "ed": str(yesday1),  # "2021-01-05",
             }
         }
+
+    def check(self):
+        # (1) iso格式檢查
+        try:
+            self.sd = datetime.strptime(self.sd, date_format).date()
+            self.ed = datetime.strptime(self.ed, date_format).date()
+        except Exception:
+            return False, {'error': '日期格式非ISO標準，如2021-01-02，或日期範圍不正常'}
+        #
+        print(self.__dict__)
+        # (2) 日期範圍檢查
+        today = datetime.today().date()
+        yesday = today - timedelta(days=1)
+        if self.ed > yesday:
+            return False, {'error': f'結束日期最晚到昨天{yesday}'}
+        elif self.sd > self.ed:
+            return False, {'error': f'開始日期需早於結束'}
+        #
+        return True, None
 
 
 def floatint(x):
@@ -213,37 +236,23 @@ async def pig(dr: DateRange):
     - A155A,...,A155D: 最後四個代表155以上的四個縣市來源(宜蘭,新竹,苗栗,花蓮)
 
     """
-    # 從post取得時間範圍
-    dr = dr.dict()
-    sd = dr['sd']
-    ed = dr['ed']
-    # -----------------------------------------------
-    iso = '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
-    m1 = re.match(iso, sd)
-    m2 = re.match(iso, ed)
-    if not m1 or not m2:
-        return {'error': 'date format not like ISO(2021-01-02)'}
-    # 格式OK則字串轉date物件
-    sd = datetime.strptime(sd, date_format).date()
-    ed = datetime.strptime(ed, date_format).date()
-    #
-    today = datetime.today().date()
-    yesday = today - timedelta(1)
-    if ed > yesday:
-        return {'error': f'結束日期最晚到昨天{yesday}'}
-    # -----------------------------------------------
-    # 篩選日期
+    # (1)從post取得時間範圍
+    isOK, msg = dr.check()
+    if isOK:
+        sd = dr.sd
+        ed = dr.ed
+    else:
+        return msg
+    # (2)篩選日期
     pig_csv = 'pig.csv'
     df = pd.read_csv(pig_csv)
     df['date'] = pd.to_datetime(df['date']).dt.date  # 轉timeseries做篩選
-    where = df['date'] >= sd
+    where = sd <= df['date']
     where &= df['date'] <= ed
     df_in = df[where]
 
-    # 找出miss date，有就重爬
-    dr_all = pd.date_range(start=sd, end=ed).date  # 轉numpy array，元素為date物件
-    miss_date = list(set(dr_all) - set(df_in['date']))
-    miss_date = [d.strftime('%Y-%m-%d') for d in sorted(miss_date)]
+    # (3)找出miss date，有就重爬
+    miss_date = pd.date_range(start=sd, end=ed).difference(df_in['date']).astype(str).to_list()
     if miss_date:
         day_data = get_miss_date(miss_date)  # 缺少的日期去爬蟲
         df_miss = pd.DataFrame(day_data)
