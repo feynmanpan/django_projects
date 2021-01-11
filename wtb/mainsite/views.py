@@ -130,7 +130,9 @@ def openapijson(request):
     r.encoding = 'utf-8'
     res = r.json()
     res = json.dumps(res, default=str, ensure_ascii=False)
-    res = res.replace('/pig/','/fastapi/pig/').replace('/test/','/fastapi/test/')
+    res = res.replace('/pig/','/fastapi/pig/')
+    res = res.replace('/pig_m/','/fastapi/pig_m/')
+    res = res.replace('/pig_y/','/fastapi/pig_y/')
     return HttpResponse(res)
 @xframe_options_exempt    
 def fastdoc(request):
@@ -173,6 +175,42 @@ def pig(request):
     response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
     if res.get('error'):
         response.status_code = 400
+    return response
+
+def pig_m(request):
+    url='http://0.0.0.0:5001/pig_m/'
+    getdata = {
+        'sd': request.GET.get('sd', '2020-12'),
+        'ed': request.GET.get('ed', '2020-12'),
+    }
+    r = requests.get(url, params=getdata)
+    r.encoding = 'utf-8'
+    res = r.json()
+    r.close()    
+    #     
+    response = HttpResponse(json.dumps(res, indent=4, ensure_ascii=False))
+    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+    response["Access-Control-Max-Age"] = "1000"
+    response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"    
+    return response
+
+def pig_y(request):
+    url='http://0.0.0.0:5001/pig_y/'
+    getdata = {
+        'sd': request.GET.get('sd', '2020'),
+        'ed': request.GET.get('ed', '2020'),
+    }
+    r = requests.get(url, params=getdata)
+    r.encoding = 'utf-8'
+    res = r.json()
+    r.close()    
+    #     
+    response = HttpResponse(json.dumps(res, indent=4, ensure_ascii=False))
+    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+    response["Access-Control-Max-Age"] = "1000"
+    response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"    
     return response
 
 # 北市圖

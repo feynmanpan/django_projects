@@ -389,7 +389,7 @@
                         }
                     })
                         .done(function (res) {
-                            // console.log(res);
+                            console.log(res);
                             if (api == 'apis') {
                                 var obj = JSON.parse(res)
                                 var res = obj.DATASET;
@@ -405,14 +405,14 @@
                                 });
                             } else if (api == 'agridataapi') {
                                 var res = res.Data;
-                            } else if (api == 'fastpig') {
+                            } else if (api.includes('fastpig')) {
                                 var res = res.resdata;
                             }
                             //
                             let cols = Object.keys(res[0]);
                             let headerRow = cols
                                 .map(col => {
-                                    if (api == 'fastpig') {
+                                    if (api.includes('fastpig')) {
                                         if (['A', 'B', 'C'].includes(col[0])) {
                                             if (['155A', '155B', '155C', '155D'].includes(col.slice(-4))) {
                                                 return `<th class='pigDD'>${col}</th>`
@@ -431,7 +431,7 @@
                             let rows = res
                                 .map(row => {
                                     let tds = cols.map(col => {
-                                        if (api == 'fastpig') {
+                                        if (api.includes('fastpig')) {
                                             if (['A3', 'B3', 'C3'].includes(col)) {
                                                 return `<td class='pigWeb PR'>${row[col]}</td>`
                                             } else if (['A375', 'B375', 'C375', 'C375D'].includes(col)) {
@@ -763,14 +763,15 @@
                 //toLocaleDateString("fr-CA");
                 var today = new Date()
                 var yesterday = new Date();
+                var this_y = today.getFullYear();
                 yesterday.setDate(today.getDate() - 1);
                 today = today.toLocaleDateString("fr-CA");//toISOString().substring(0, 10);
                 yesterday = yesterday.toLocaleDateString("fr-CA");//toISOString().substring(0, 10);
                 // console.log(today, yesterday)
                 var input = `
                         <p class='api'>
-                            <span style='vertical-align:middle'>開始日期: </span><input value='${yesterday}' id='sd' name='sd' value='' class='date' style='width:8em;margin-right:1em;vertical-align:middle'></input>
-                            <span style='vertical-align:middle'>結束日期: </span><input value='${yesterday}' id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>
+                            <span style='vertical-align:middle'>開始日: </span><input autocomplete="off" value='${yesterday}' id='sd' name='sd' value='' class='date' style='width:8em;margin-right:1em;vertical-align:middle'></input>
+                            <span style='vertical-align:middle'>結束日: </span><input autocomplete="off" value='${yesterday}' id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>
                             <button style='vertical-align:middle'>確認</button> 
                             (使用及欄位說明請見<span id='doc' style='color:red;cursor:pointer;'>FastAPI</span>)
                         </p>
@@ -781,7 +782,11 @@
                     dateFormat: 'yy-mm-dd',
                     changeMonth: true,
                     changeYear: true,
+                    yearRange: `1996:${this_y}`,
                     // showButtonPanel: true,
+                    beforeShow: function (el, inst) {
+                        inst.dpDiv.removeClass('justYM justY').css('padding-bottom', '');
+                    }
                 }
                 $("#sd").datepicker(picker);
                 $("#ed").datepicker(picker);
@@ -806,7 +811,145 @@
                     postdata = { sd, ed };
                     ajax_me('', link, type, 'post', postdata);
                 });
-            }//if
+            } else if (type == 'fastpig_m') {
+                var today = new Date();
+                var this_y = today.getFullYear();
+                today.setDate(0);// 0 will result in the last day of the previous month
+                var last_m = today.toLocaleDateString("fr-CA").substring(0, 7);
+                // console.log(today, yesterday)
+                var input = `
+                        <p class='api'>
+                            <span style='vertical-align:middle'>開始月: </span><input autocomplete="off" value='${last_m}' id='sd' name='sd' value='' class='date' style='width:8em;margin-right:1em;vertical-align:middle'></input>
+                            <span style='vertical-align:middle'>結束月: </span><input autocomplete="off" value='${last_m}' id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>
+                            <button style='vertical-align:middle'>確認</button> 
+                            (使用及欄位說明請見<span id='doc' style='color:red;cursor:pointer;'>FastAPI</span>)
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                var picker = {
+                    dateFormat: 'yy-mm',
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: `1996:${this_y}`,
+                    // showButtonPanel: true,
+                    onClose: function (dateText, inst) {
+                        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                    },
+                    beforeShow: function (el, inst) {
+                        inst.dpDiv.css('padding-bottom', '3px').addClass('justYM').removeClass('justY');
+                        $('head').append(
+                            `
+                                <style>
+                                    .justYM .ui-datepicker-calendar{
+                                        display: none;
+                                    }
+                                </style>
+                            `
+                        )
+                    }
+                }
+                $("#sd").datepicker(picker);
+                $("#ed").datepicker(picker);
+                // 
+                $('#doc').click(function () {
+                    $('div[type=fastdoc').trigger('click');
+                });
+                $('.api button').click(function () {
+                    var sd = $("#sd").val();
+                    var ed = $("#ed").val();
+
+                    if (ed > last_m) {
+                        alert('結束最晚到上個月!');
+                        return false;
+                    } else if (sd == '' || ed == '') {
+                        alert('兩個日期都要輸入!');
+                        return false;
+                    } else if (sd > ed) {
+                        alert('開始要早於結束!');
+                        return false;
+                    };
+                    getdata = { sd, ed };
+                    ajax_me('', link, type, 'get', getdata);
+                });
+            } else if (type == 'fastpig_y') {
+                var today = new Date()
+                var last_y = today.getFullYear() - 1;
+                var input = `
+                        <p class='api'>
+                            <span style='vertical-align:middle'>開始年: </span><input value='${last_y}' autocomplete="off" id='sd' name='sd' value='' class='date' style='width:8em;margin-right:1em;vertical-align:middle'></input>
+                            <span style='vertical-align:middle'>結束年: </span><input value='${last_y}' autocomplete="off" id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>
+                            <button style='vertical-align:middle'>確認</button> 
+                            (使用及欄位說明請見<span id='doc' style='color:red;cursor:pointer;'>FastAPI</span>)
+                        </p>
+                        <div id='apires'></div>
+                    `;
+                $('#container').html(input);
+                var picker = {
+                    dateFormat: 'yy',
+                    changeMonth: false,
+                    changeYear: true,
+                    yearRange: `1996:${last_y}`,
+                    // showButtonPanel: true,
+                    onClose: function (dateText, inst) {
+                        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                    },
+                    beforeShow: function (el, inst) {
+                        inst.dpDiv.css('padding-bottom', '3px').addClass('justY').removeClass('justYM');
+                        $('head').append(
+                            `
+                                <style>
+                                    .justY {
+                                        width: 150px;
+                                    }
+                                    .justY .ui-datepicker-calendar{
+                                        display: none;
+                                    }
+                                    .justY .ui-datepicker-month {
+                                        display: none;
+                                    }
+                                    .justY .ui-datepicker-prev {
+                                        display: none;
+                                    }
+                                    .justY .ui-datepicker-next {
+                                        display: none;
+                                    }
+                                    .justY .ui-datepicker-title {
+                                        margin:0 1em;
+                                    }
+                                    .justY .ui-datepicker-title .ui-datepicker-year {
+                                        width: 95%;
+                                    }
+                                </style>
+                            `
+                        )
+                    }
+                }
+                $("#sd").datepicker(picker);
+                $("#ed").datepicker(picker);
+                // 
+                $('#doc').click(function () {
+                    $('div[type=fastdoc').trigger('click');
+                });
+                $('.api button').click(function () {
+                    var sd = $("#sd").val();
+                    var ed = $("#ed").val();
+
+                    if (ed > last_y.toString()) {
+                        alert('結束最晚到去年!');
+                        return false;
+                    } else if (sd == '' || ed == '') {
+                        alert('兩個日期都要輸入!');
+                        return false;
+                    } else if (sd > ed) {
+                        alert('開始要早於結束!');
+                        return false;
+                    };
+                    getdata = { sd, ed };
+                    ajax_me('', link, type, 'get', getdata);
+                });
+            }
+            //if
 
         }
     })
@@ -871,11 +1014,19 @@
                     'type': 'efish',
                     'link': 'https://efish.fa.gov.tw/efish/statistics/svc/downloadtradepricedata?ds=109.09.01&de=109.09.10&tk=3ec536a2-3db0-4791-88aa-b28ccc4a835f&pid=1174',
                 },
-                'API_規格豬日行情': {
+                'API_規格豬_日行情': {
                     'type': 'fastpig',
                     'link': 'https://wtb.wtbwtb.tk/fastapi/pig/',
                 },
-                'API_規格豬日行情_FastAPI': {
+                'API_規格豬_月行情': {
+                    'type': 'fastpig_m',
+                    'link': 'https://wtb.wtbwtb.tk/fastapi/pig_m/',
+                },
+                'API_規格豬_年行情': {
+                    'type': 'fastpig_y',
+                    'link': 'https://wtb.wtbwtb.tk/fastapi/pig_y/',
+                },
+                'API_規格豬行情_FastAPI': {
                     'type': 'fastdoc',
                     'link': 'https://wtb.wtbwtb.tk/fastapi/doc/',
                     // 'link': 'http://wtb.wtbwtb.tk:5001/docs',   

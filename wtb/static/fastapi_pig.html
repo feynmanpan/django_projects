@@ -15,12 +15,14 @@
 <script>
 
     $.ajax({
-        url: 'https://wtb.wtbwtb.tk/fastapi/pig/',
-        method: 'post',
+        // url: 'http://34.80.225.53:5001/test/',
+        url: 'https://wtb.wtbwtb.tk/fastapi/pig_m/',
+        method: 'get',
         data: {
             sd: '2020-12-05',
-            ed: '2020-12-06',
+            ed: '2020-12-0999',
         },
+        contentType: 'application/json; charset=utf-8',
         timeout: 25 * 1000,
         dataType: 'json',
         beforeSend: function () {
@@ -29,11 +31,12 @@
     })
         .done(function (res) {
             console.log(res);
-            $('body').text(res['resdata'])
+            $('body').text(res.message)
 
         })
         .fail(function (err) {
-            console.log(err);
+            $('body').text(err)
+            console.log(err)
         })
 </script>
 
