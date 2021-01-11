@@ -548,7 +548,7 @@ async def pig_y(sd: str = last_y, ed: str = last_y):
     if miss_y:
         # 缺少的年去爬蟲
         df_miss = pd.DataFrame(get_miss_ym(miss_y, 'y'))
-        # 月沒有wd欄位，從 1 開始 floatint
+        # 年沒有wd欄位，從 1 開始 floatint
         df_miss.iloc[:, 1:] = df_miss.iloc[:, 1:].applymap(floatint)
         # 進行7595兩種標準之計算
         df_miss = df_miss_7595(df_miss)
