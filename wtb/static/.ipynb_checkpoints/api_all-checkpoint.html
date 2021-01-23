@@ -810,7 +810,7 @@
                             <button style='vertical-align:middle'>確認</button>(其他欄位說明請見<span id='doc' style='color:red;cursor:pointer;'>FastAPI</span>)
                             <br> 
                             =><span style='color:red' class='pigspan'>A3,B3,C3</span>:【日行情比較】台灣地區數據排除澎湖縣數據所計算的規格豬三數據。<br>
-                            =><span style='color:blue' class='pigspan'>A3@,B3@,C3@</span>:【單日多市場價量比較】直接撈的不含澎湖規格豬三數據。
+                            =><span style='color:blue' class='pigspan'>A3@,B3@,C3@</span>:【單日多市場價量比較】直接撈的規格豬三數據。
                         </p>
                         <div id='apires'></div>
                     `;
@@ -1008,7 +1008,7 @@
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                 // 
-                var sd = '2010-01-01';
+                var sd = '2017-01-01';
                 var ed = new Date();
                 ed.setDate(ed.getDate() - 1);
                 ed = ed.toLocaleDateString("fr-CA");

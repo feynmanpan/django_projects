@@ -5,39 +5,159 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/6.3.1/d3.min.js'></script>
+
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-request/1.0.6/d3-request.min.js'></script> -->
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/d3-fetch"></script> -->
     <title>Document</title>
+    <style>
+        div.tooltip {
+            position: absolute;
+            text-align: center;
+            width: 90px;
+            height: 28px;
+            padding: 5px;
+            padding-left: 5px;
+            padding-bottom: 8px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body>
+    <div id='plot'>
 
+    </div>
 </body>
 
 <script>
 
-    $.ajax({
-        // url: 'http://34.80.225.53:5001/test/',
-        url: 'https://wtb.wtbwtb.tk/fastapi/pig_m/',
-        method: 'get',
-        data: {
-            sd: '2020-12-05',
-            ed: '2020-12-0999',
-        },
-        contentType: 'application/json; charset=utf-8',
-        timeout: 25 * 1000,
-        dataType: 'json',
-        beforeSend: function () {
-            // 
-        }
+    // $.ajax({
+    //     // url: 'http://34.80.225.53:5001/test/',
+    //     url: 'https://wtb.wtbwtb.tk/fastapi/pig/',
+    //     method: 'post',
+    //     data: {
+    //         sd: '2020-12-01',
+    //         ed: '2020-12-31',
+    //     },
+    //     // contentType: 'application/json; charset=utf-8',
+    //     timeout: 25 * 1000,
+    //     dataType: 'json',
+    //     beforeSend: function () {
+    //         // 
+    //     }
+    // })
+    //     .done(function (res) {
+    //         console.log(res);
+    //         $('body').html(`<pre>${JSON.stringify(res, null, 4)}</pre>`)
+
+    //     })
+    //     .fail(function (err) {
+    //         $('body').text(err)
+    //         console.log(err)
+    //     })
+
+</script>
+<script>
+    // set the dimensions and margins of the graph
+    var margin = { top: 10, right: 50, bottom: 30, left: 30 },
+        width = $(window).width() - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+    // 
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0)
+        ;
+    // append the svg object to the body of the page
+    var svg = d3.select("#plot")
+        .append("svg")
+        .attr("width", '100%')
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    // 
+    var today = new Date()
+    var yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    yesterday = yesterday.toLocaleDateString("fr-CA");
+    let data = {
+        sd: '2018-01-01',
+        ed: yesterday,
+    }
+    // 
+    d3.json('https://wtb.wtbwtb.tk/fastapi/pig/', {
+        method: "POST",
+        body: JSON.stringify(data),
+        // timeout: 1,
+        // headers: {
+        //     "Content-type": "application/json; charset=UTF-8"
+        // }
     })
-        .done(function (res) {
-            console.log(res);
-            $('body').text(res.message)
+        .then(res => {
+            // const data = res.resdata.map(row => [row.B3, row.C3]);
+            const data = res.resdata.map(row => [row.date, row.C3]);
+            console.log(data);
+            // (1) X____________________________________
+            // var x = d3.scaleLinear()
+            //     .domain([80, 140])
+            //     .range([0, width]);
+            var count = data.length;
+            var minDate = new Date(data[0][0]);
+            var maxDate = new Date(data[count - 1][0]);
+            console.log(minDate, maxDate);
+            var x = d3.scaleTime().domain([minDate, maxDate]).range([0, width]);
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+            // (2) Y______________________________________
+            var y = d3.scaleLinear()
+                .domain([50, 120])
+                .range([height, 0]);
+            svg.append("g")
+                .call(d3.axisLeft(y));
+            // (3) Dots____________________________________
+            svg.append('g')
+                .selectAll("dot")
+                .data(data)
+                .enter()
+                .append("circle")
+                // .attr("cx", d => x(d[0]))
+                .attr("cx", d => x(new Date(d[0])))
+                .attr("cy", d => y(d[1]))
+                .on("mouseover", function (event, d) {
+                    // alert(div);
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div.html(`日期:${d[0]}<br/>價格:${d[1]}`)
+                        .style("left", (event.pageX - 50) + "px")
+                        .style("top", (event.pageY - 48) + "px");
+                })
+                .on("mouseout", function (d) {
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                })
+                .attr("w_p", d => `${d[0]}_${d[1]}`)
+                .attr("r", d => Math.pow(d[1] / 75, 5) + 0.6)
+                .style("fill", d => d[1] >= 80 ? "#ff0000" : "#69b3a2")
+                .style("cursor", "pointer")
+                // .append('title')
+                // .text(d => `${d[0]}_${d[1]}`)
+                ;
 
         })
-        .fail(function (err) {
-            $('body').text(err)
-            console.log(err)
-        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    ;
+
 </script>
 
 </html>
