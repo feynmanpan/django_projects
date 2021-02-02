@@ -461,24 +461,28 @@
                                 .join("");
                             let rows = res
                                 .map(row => {
-                                    let tds = cols.map(col => {
-                                        if (api.includes('fastpig')) {
-                                            if (['A3', 'B3', 'C3'].includes(col)) {
-                                                return `<td class='pigWeb PR'>${row[col]}</td>`
-                                            } else if (col.slice(-1) == '@') {
-                                                return `<td class='pigWeb_T PR'>${row[col]}</td>`
-                                            } else if (['A375', 'B375', 'C375', 'C375D'].includes(col)) {
-                                                return `<td class='pig75 PR'>${row[col]}</td>`
-                                            } else if (['A395', 'B395', 'C395', 'C395D'].includes(col)) {
-                                                return `<td class='pig95 PR'>${row[col]}</td>`
+                                    if (row['A1_tw@'] == 0) {
+                                        return ''
+                                    } else {
+                                        let tds = cols.map(col => {
+                                            if (api.includes('fastpig')) {
+                                                if (col.slice(-3) == 'tw@' || ['A3', 'B3', 'C3'].includes(col)) { //台灣用紅字
+                                                    return `<td class='pigWeb PR'>${row[col]}</td>`
+                                                } else if (col.slice(-1) == '@') { //不含澎湖用藍字
+                                                    return `<td class='pigWeb_T PR'>${row[col]}</td>`
+                                                } else if (['A375', 'B375', 'C375', 'C375D'].includes(col)) {
+                                                    return `<td class='pig75 PR'>${row[col]}</td>`
+                                                } else if (['A395', 'B395', 'C395', 'C395D'].includes(col)) {
+                                                    return `<td class='pig95 PR'>${row[col]}</td>`
+                                                } else {
+                                                    return `<td class='PR'>${row[col]}</td>`
+                                                };
                                             } else {
-                                                return `<td class='PR'>${row[col]}</td>`
+                                                return `<td>${row[col]}</td>`
                                             };
-                                        } else {
-                                            return `<td>${row[col]}</td>`
-                                        };
-                                    }).join("");
-                                    return `<tr>${tds}</tr>`;
+                                        }).join("");
+                                        return `<tr>${tds}</tr>`;
+                                    }
                                 })
                                 .join("");
                             //build the table
@@ -809,8 +813,14 @@
                             <span style='vertical-align:middle'>結束日: </span><input autocomplete="off" value='${yesterday}' id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>
                             <button style='vertical-align:middle'>確認</button>(其他欄位說明請見<span id='doc' style='color:red;cursor:pointer;'>FastAPI</span>)
                             <br> 
-                            =><span style='color:red' class='pigspan'>A3,B3,C3</span>:【日行情比較】台灣地區數據排除澎湖縣數據所計算的規格豬三數據。<br>
-                            =><span style='color:blue' class='pigspan'>A3@,B3@,C3@</span>:【單日多市場價量比較】直接撈的不含澎湖規格豬三數據。
+                            => 欄名含有 @ 者，為【<a href='http://ppg.naif.org.tw/naif/MarketInformation/Pig/TranStatistics.aspx' target='_blank'>單日多市場價量比較</a>】之數值。無 @ 者為【<a href='http://ppg.naif.org.tw/naif/MarketInformation/Pig/FPSCompare.aspx' target='_blank'>日行情比較</a>】之台灣及澎湖之計算結果。
+                            <br>
+                            => A1_tw@:台灣豬成交總數, A2@:台灣豬不含澎湖成交總數, A3_tw@:規格豬成交總數, A3@:規格豬不含澎湖成交總數
+                            <br>
+                            => <span style="color:red">紅字(_tw): 含澎湖</span>。<span style="color:blue">藍字及無_tw: 不含澎湖</span>。
+                            <span style="color:green">綠底: 不含澎湖規格豬之新舊計算標準(從各重量層級欄位算出)</span>
+                            <br>
+                            => A1_tw@ 成交頭數為 0 者，不顯示。A155ABCD,B155ABCD,C155ABCD: 宜蘭,新竹,苗栗,花蓮等四個市場的總頭數/均重/均價。 
                         </p>
                         <div id='apires'></div>
                     `;
@@ -860,6 +870,8 @@
                             <span style='vertical-align:middle'>結束月: </span><input autocomplete="off" value='${last_m}' id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>
                             <button style='vertical-align:middle'>確認</button> 
                             (使用及欄位說明請見<span id='doc' style='color:red;cursor:pointer;'>FastAPI</span>)
+                            <br>
+                            => 欄名意義同日行情，資料均從【<a href='http://ppg.naif.org.tw/naif/MarketInformation/Pig/FPSCompare.aspx' target='_blank'>日行情比較</a>】之台灣及澎湖之計算結果。
                         </p>
                         <div id='apires'></div>
                     `;
@@ -914,56 +926,70 @@
                 var last_y = today.getFullYear() - 1;
                 var input = `
                         <p class='api'>
-                            <span style='vertical-align:middle'>開始年: </span><input value='${last_y}' autocomplete="off" id='sd' name='sd' value='' class='date' style='width:8em;margin-right:1em;vertical-align:middle'></input>
-                            <span style='vertical-align:middle'>結束年: </span><input value='${last_y}' autocomplete="off" id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>
+                            <span style='vertical-align:middle'>開始年: </span>
+                            <select name="sd" id="sd" style='margin-right:1em;vertical-align:middle'></select>
+                            <!--<input value='${last_y}' autocomplete="off" id='sd' name='sd' value='' class='date' style='width:8em;margin-right:1em;vertical-align:middle'></input>-->
+
+                            <span style='vertical-align:middle'>結束年: </span>
+                            <select name="ed" id="ed" style='margin-right:0em;vertical-align:middle'></select>
+                            <!--<input value='${last_y}' autocomplete="off" id='ed' name='ed' value='' calss='date' style='width:8em;vertical-align:middle'></input>-->
+
                             <button style='vertical-align:middle'>確認</button> 
                             (使用及欄位說明請見<span id='doc' style='color:red;cursor:pointer;'>FastAPI</span>)
+                            <br>
+                            => 欄名意義同日行情，資料均從【<a href='http://ppg.naif.org.tw/naif/MarketInformation/Pig/FPSCompare.aspx' target='_blank'>日行情比較</a>】之台灣及澎湖之計算結果。                            
                         </p>
                         <div id='apires'></div>
                     `;
                 $('#container').html(input);
-                var picker = {
-                    dateFormat: 'yy',
-                    changeMonth: false,
-                    changeYear: true,
-                    yearRange: `1996:${last_y}`,
-                    // showButtonPanel: true,
-                    onClose: function (dateText, inst) {
-                        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-                    },
-                    beforeShow: function (el, inst) {
-                        inst.dpDiv.css('padding-bottom', '3px').addClass('justY').removeClass('justYM');
-                        $('head').append(
-                            `
-                                <style>
-                                    .justY {
-                                        width: 150px;
-                                    }
-                                    .justY .ui-datepicker-calendar{
-                                        display: none;
-                                    }
-                                    .justY .ui-datepicker-month {
-                                        display: none;
-                                    }
-                                    .justY .ui-datepicker-prev {
-                                        display: none;
-                                    }
-                                    .justY .ui-datepicker-next {
-                                        display: none;
-                                    }
-                                    .justY .ui-datepicker-title {
-                                        margin:0 1em;
-                                    }
-                                    .justY .ui-datepicker-title .ui-datepicker-year {
-                                        width: 95%;
-                                    }
-                                </style>
-                            `
-                        )
-                    }
+                for (var y = 1996; y <= last_y; y++) {
+                    $('#sd').append(`<option value=${y}>${y}</option>`);
+                    $('#ed').append(`<option value=${y}>${y}</option>`);
                 }
-                $("#sd").datepicker(picker);
-                $("#ed").datepicker(picker);
+                $('#sd').val(last_y);
+                $('#ed').val(last_y);
+                // var picker = {
+                //     dateFormat: 'yy',
+                //     changeMonth: false,
+                //     changeYear: true,
+                //     yearRange: `1996:${last_y}`,
+                //     // showButtonPanel: true,
+                //     onClose: function (dateText, inst) {
+                //         $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                //     },
+                //     beforeShow: function (el, inst) {
+                //         inst.dpDiv.css('padding-bottom', '3px').addClass('justY').removeClass('justYM');
+                //         $('head').append(
+                //             `
+                //                 <style>
+                //                     .justY {
+                //                         width: 150px;
+                //                     }
+                //                     .justY .ui-datepicker-calendar{
+                //                         display: none;
+                //                     }
+                //                     .justY .ui-datepicker-month {
+                //                         display: none;
+                //                     }
+                //                     .justY .ui-datepicker-prev {
+                //                         display: none;
+                //                     }
+                //                     .justY .ui-datepicker-next {
+                //                         display: none;
+                //                     }
+                //                     .justY .ui-datepicker-title {
+                //                         margin:0 1em;
+                //                     }
+                //                     .justY .ui-datepicker-title .ui-datepicker-year {
+                //                         width: 95%;
+                //                     }
+                //                 </style>
+                //             `
+                //         )
+                //     }
+                // }
+                // $("#sd").datepicker(picker);
+                // $("#ed").datepicker(picker);
                 // 
                 $('#doc').click(function () {
                     $('div[type=fastdoc').trigger('click');
@@ -994,7 +1020,7 @@
                 // set the dimensions and margins of the graph
                 var margin = { top: 10, right: 50, bottom: 30, left: 30 },
                     width = cw - margin.left - margin.right,
-                    height = ch - margin.top - margin.bottom - 95;
+                    height = ch - margin.top - margin.bottom - 75;
                 // 
                 var div = d3.select("#container").append("div")
                     .attr("class", "tooltip")
@@ -1024,7 +1050,7 @@
                 })
                     .then(res => {
                         // const data = res.resdata.map(row => [row.B3, row.C3]);
-                        const data = res.resdata.map(row => [row.date, row.C3]);
+                        const data = res.resdata.map(row => [row.date, row['C3@']]);
                         // console.log(data);
                         // (1) X____________________________________
                         // var x = d3.scaleLinear()
@@ -1040,7 +1066,7 @@
                             .call(d3.axisBottom(x));
                         // (2) Y______________________________________
                         var y = d3.scaleLinear()
-                            .domain([55, 105])
+                            .domain([50, 90])
                             .range([height, 0]);
                         svg.append("g")
                             .call(d3.axisLeft(y));

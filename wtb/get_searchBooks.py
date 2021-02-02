@@ -71,36 +71,38 @@ def get_searchBooks(kw:str='村上春樹',which='free',now=False):
                          proxies=proxies,
                          timeout=30)
         r.encoding='utf8'
-        #print(r.text)
-        doc=pq(r.text)
+        doc=pq(r.text, parser='html')
         r.close()
         #
-        searchbooks=doc.find("#searchlist .searchbook")
-        items=searchbooks.find(".item")
-        n=items.size()
-        results=[]    
+        n=int(doc.find('.search-listbox .search_results span').eq(0).text().strip())
+        itemlist_table = doc.find("#itemlist_table")
+        items=itemlist_table.find("tbody")
+        results=[]  
+        #                 
         if n==0:
             return json.dumps(results,default=str,ensure_ascii=False)
-        if n>10:
+        elif n>10:
             n=10
+        print('n=',n)
         #最多取10筆結果________________
-        for i in range(n):
+        for i in range(n):            
             book={}
             item=items.eq(i)
+#             print(i)
             #整理資料====================================
-            #book['bookid']=item.find("div.input_buy input").attr('value')     
-            #有些沒checkbox
-            href=item.find("a[rel=mid_name]").attr('href')                
-            bookid=re.search('/mid/item/(.+?)/page',href).group(1)
-            book['bookid']=bookid        
-            src=item.find("img.itemcov").attr("data-original")
+            bookid = item.attr('id').split('_')[1]              
+            href = 'https://www.books.com.tw/products/'+bookid
+            book['bookid']=bookid   
+            src = item.find("img.b-lazy").eq(0).attr("data-srcset")
+#             src = src.split('?i=')[1][:-3].replace('374','187')
+            src = src.replace('w=374','w=100').replace('h=374','h=120')
+            #18禁先不搜
             if 'restricted18' in src:
-                #18禁先不搜
                 continue
             #    
-            book['src']=src
-
-            book['title']=item.find("a[rel=mid_name]").text()
+            book['src']=src                    
+            book['title']=item.find("a[rel=mid_name]").eq(0).text()
+            
             #
             authors=''
             for a in item.find("a[rel=go_author]"):
@@ -114,20 +116,21 @@ def get_searchBooks(kw:str='村上春樹',which='free',now=False):
                 book['pub_dt']=m.group(1)
             else:
                 book['pub_dt']=''
-            count_off= item.find('span.price').find("b").eq(0).text().ljust(2,'0')
-            price_sale=item.find('span.price').find("b").eq(1).text()
+            #             
+            tmp=item.find('ul.list-nav.clearfix li').eq(0).find('strong')
+            count_off= tmp.eq(0).text().ljust(2,'0')
+            price_sale= tmp.eq(1).text().strip()
             if price_sale:
                 price_list=int(price_sale)*100//int(count_off)
             else:
                 price_list=int(count_off) #沒有折扣
-            #book['sale']=count_off+"_"+price_sale
+            book['sale']=count_off+"_"+price_sale
             book['price_list']=price_list
-            intro=item.find('span.price').next().text()
+            intro=item.find('div.txt_cont p').text()
             intro=re.sub('\.+? *more','',intro)
             book['intro']=intro
             #
             results.append(book)    
-
         #___________________
         results=json.dumps(results,default=str,ensure_ascii=False) 
         return results
