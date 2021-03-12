@@ -4,7 +4,7 @@ from datetime import datetime
 import asyncio
 import nest_asyncio
 #
-from fastapi import Request
+from fastapi import Request, BackgroundTasks
 from fastapi.responses import HTMLResponse, ORJSONResponse
 from fastapi.templating import Jinja2Templates
 from starlette.templating import _TemplateResponse
@@ -80,10 +80,17 @@ tasks = []
 
 
 async def runtasks():
+    print('開始tasks')
+    global tasks
+    tasks = [asyncio.ensure_future(task(t)) for task, t in tasks_list]
+    loop.run_until_complete(asyncio.wait(tasks))
+
+
+async def startBGT(background_tasks: BackgroundTasks):
     global tasks
     if not tasks:
-        tasks = [asyncio.ensure_future(task(t)) for task, t in tasks_list]
-        loop.run_until_complete(asyncio.wait(tasks))
+        background_tasks.add_task(runtasks)
+        return 'Start background_tasks'
     else:
         tmp = f'已有{tasks}執行中'
         print(tmp)

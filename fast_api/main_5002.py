@@ -15,10 +15,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.templating import _TemplateResponse
 #
-from views_5002 import test, runtasks
+from views_5002 import test, startBGT
 
 
 #################### app ################################
+# app = FastAPI()
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -39,4 +40,4 @@ path_get("/test/{p}", test)
 
 
 #################### schedule ################################
-path_get("/runtasks", runtasks)
+path_get("/startBGT", startBGT)
