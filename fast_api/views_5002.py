@@ -1,4 +1,9 @@
 from typing import Optional, Callable
+from time import sleep
+from datetime import datetime
+import asyncio
+import nest_asyncio
+#
 from fastapi import Request
 from fastapi.responses import HTMLResponse, ORJSONResponse
 from fastapi.templating import Jinja2Templates
@@ -32,3 +37,54 @@ def test(request: Request, p: str = 'path', q: str = 'query')->_TemplateResponse
     # return HTMLResponse("<p>2</p>")
     # print(type(templates.TemplateResponse("test.html", context)))
     return templates.TemplateResponse("test.html", context)
+
+#################### schedule ################################
+
+
+loopme_count = 0
+loopme_count2 = 0
+
+
+async def loopme(t):
+    global loopme_count
+    if loopme_count < 1:
+        loopme_count = 1
+        while 1:
+            await asyncio.sleep(t)
+            t += 1
+            print(f'現在時間 = {datetime.now()}')
+    else:
+        tmp = f'已有一個loopme: loopme_count={loopme_count}'
+        return tmp
+
+
+async def loopme2(t):
+    global loopme_count2
+    if loopme_count2 < 1:
+        loopme_count2 = 1
+        while 1:
+            await asyncio.sleep(t)
+            print(f'{datetime.now()}')
+    else:
+        tmp = f'已有一個loopme2: loopme_count2={loopme_count2}'
+        return tmp
+
+
+nest_asyncio.apply()
+loop = asyncio.get_event_loop()
+tasks_list = [
+    (loopme, 1),
+    (loopme2, 1),
+]
+tasks = []
+
+
+async def runtasks():
+    global tasks
+    if not tasks:
+        tasks = [asyncio.ensure_future(task(t)) for task, t in tasks_list]
+        loop.run_until_complete(asyncio.wait(tasks))
+    else:
+        tmp = f'已有{tasks}執行中'
+        print(tmp)
+        return tmp
