@@ -17,7 +17,8 @@ from fastapi.templating import Jinja2Templates
 from starlette.templating import _TemplateResponse
 #
 import config
-from views import maintenance, test
+from views import test
+from middlewares import check_isMT
 
 
 #################### app ################################
@@ -26,29 +27,16 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 #
 def path_get(url: str, func: Callable):
     return app.get(url)(func)
+def path_MW(func: Callable):
+    return app.middleware("http")(func)
 
 
 #################### maintenance ################################
-now_mode = config.now_mode
-print(f'進入【{now_mode}】模式')
+print(f'進入【{config.now_mode}】模式')
 # 維護模式時，所有url都先一律匹配
 # if now_mode == 'maintenance':
 #     path_get("/{allurl:path}", maintenance)
-
-@app.middleware("http")
-async def check_isMT(request: Request, call_next):
-    print(request.url.path)
-    print(request.url)
-    if isMT := (now_mode.name == 'maintenance'):
-        for pattern in config.maintenance_allow_patterns:
-            if re.match(pattern, request.url.path):   # DNS以後到?以前
-                isMT = False
-                break
-    #
-    if isMT:
-        return maintenance()
-    else:
-        return await call_next(request)
+path_MW(check_isMT)
 
 #################### urlpattern ################################
 path_get("/test/{p}", test)
