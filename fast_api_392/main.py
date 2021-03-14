@@ -37,10 +37,11 @@ print(f'進入【{now_mode}】模式')
 
 @app.middleware("http")
 async def check_isMT(request: Request, call_next):
-    print(request.url.path)  # DNS到?以前的
+    print(request.url.path)
+    print(request.url)
     if isMT := (now_mode.name == 'maintenance'):
         for pattern in config.maintenance_allow_patterns:
-            if re.match(pattern, request.url.path):
+            if re.match(pattern, request.url.path):   # DNS以後到?以前
                 isMT = False
                 break
     #

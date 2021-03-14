@@ -6,7 +6,7 @@ class Modes(Enum):
     prod = 3
 
 
-now_mode = Modes(3)  # 　Modes.maintenance, Mode['maintenance']
+now_mode = Modes(1)  # 　Modes.maintenance, Mode['maintenance']
 #
 
 maintenance_allow_patterns = [
