@@ -1,0 +1,27 @@
+nohup: ignoring input
+[I 10:27:20.061 LabApp] [jupyter_nbextensions_configurator] enabled 0.4.1
+[I 10:27:20.066 LabApp] JupyterLab extension loaded from /home/pan/anaconda3/lib/python3.7/site-packages/jupyterlab
+[I 10:27:20.066 LabApp] JupyterLab application directory is /home/pan/anaconda3/share/jupyter/lab
+[W 10:27:20.068 LabApp] Error loading server extension jupyterlab_code_formatter
+    Traceback (most recent call last):
+      File "/home/pan/anaconda3/lib/python3.7/site-packages/notebook/notebookapp.py", line 1572, in init_server_extensions
+        mod = importlib.import_module(modulename)
+      File "/home/pan/anaconda3/lib/python3.7/importlib/__init__.py", line 127, in import_module
+        return _bootstrap._gcd_import(name[level:], package, level)
+      File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+      File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+      File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+    ModuleNotFoundError: No module named 'jupyterlab_code_formatter'
+[W 10:27:20.073 LabApp] JupyterLab server extension not enabled, manually loading...
+[I 10:27:20.075 LabApp] JupyterLab extension loaded from /home/pan/anaconda3/lib/python3.7/site-packages/jupyterlab
+[I 10:27:20.075 LabApp] JupyterLab application directory is /home/pan/anaconda3/share/jupyter/lab
+[I 10:27:20.076 LabApp] Serving notebooks from local directory: /home/pan/django_projects/fast_api_392
+[I 10:27:20.076 LabApp] The Jupyter Notebook is running at:
+[I 10:27:20.076 LabApp] http://(conda-20210309 or 127.0.0.1):4999/?token=0564bdd695454a929ed2bd874337627f194d3fa08363de4e
+[I 10:27:20.076 LabApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 10:27:20.080 LabApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/pan/.local/share/jupyter/runtime/nbserver-32436-open.html
+    Or copy and paste one of these URLs:
+        http://(conda-20210309 or 127.0.0.1):4999/?token=0564bdd695454a929ed2bd874337627f194d3fa08363de4e

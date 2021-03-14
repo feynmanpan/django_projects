@@ -70,11 +70,18 @@ async def loopme2(t):
         return tmp
 
 
+def loopme3(t=1):
+    while 1:
+        sleep(t)
+        print('loop me 3')
+
+
 nest_asyncio.apply()
 loop = asyncio.get_event_loop()
 tasks_list = [
     (loopme, 1),
     (loopme2, 1),
+    # (loopme3, 1), # 會阻塞
 ]
 tasks = []
 
