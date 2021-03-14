@@ -2,7 +2,7 @@ from typing import Optional, Callable
 from time import sleep
 from datetime import datetime
 import asyncio
-import nest_asyncio
+# import nest_asyncio
 #
 from fastapi import Request, BackgroundTasks
 from fastapi.responses import HTMLResponse, ORJSONResponse
