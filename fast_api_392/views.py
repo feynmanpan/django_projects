@@ -20,8 +20,8 @@ def maintenance():
     '''
     return HTMLResponse(html)
 
-def test(request: Request, p: str = 'path', q: str = 'query') -> _TemplateResponse:
-    if (plen:=len(p))>2:
+def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
+    if (plen := len(p)) > 2:
         print(f'path len={plen}')
     print(f"p={p},q={q}")
     print(f'locals()={locals()}')
