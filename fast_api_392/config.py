@@ -1,15 +1,22 @@
 from enum import Enum
 #
-class Modes(Enum):
+
+
+class MODES(Enum):
     maintenance = 1
     debug = 2
     prod = 3
 
 
-now_mode = Modes(1)  # 　Modes.maintenance, Mode['maintenance']
-#
+now_mode = MODES(1)  # MODES.maintenance, MODES['maintenance']
+
 
 maintenance_allow_patterns = [
     '^/test/.+',
     '^/static/.+',
+]
+
+
+allowed_hosts = [
+    "wtb.wtbwtb.tk",
 ]

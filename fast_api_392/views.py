@@ -20,6 +20,7 @@ def maintenance():
     '''
     return HTMLResponse(html)
 
+
 def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     if (plen := len(p)) > 2:
         print(f'path len={plen}')
