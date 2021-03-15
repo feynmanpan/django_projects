@@ -18,8 +18,9 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 # from starlette.templating import _TemplateResponse
 #
 import config
-from views import test
+from views import test, startBGT
 from middlewares import mw_list
+from tasks import tasks_list
 
 
 #################### app ################################
@@ -48,3 +49,7 @@ for mw in mw_list:
 
 #################### urlpattern ################################
 path_get("/test/{p}", test)
+
+
+#################### schedule ################################
+path_get("/startBGT", startBGT)
