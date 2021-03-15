@@ -1,4 +1,4 @@
-from tasks import runtasks
+from tasks import tasks_list
 from starlette.templating import _TemplateResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, ORJSONResponse
@@ -14,7 +14,6 @@ import asyncio
 #####################################################
 
 templates = Jinja2Templates(directory="templates")
-is_runtasks = False
 
 
 def maintenance():
@@ -29,7 +28,7 @@ def maintenance():
 def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     if (plen := len(p)) > 2:
         print(f'path len={plen}')
-    sleep(20)
+#     sleep(20)
     print(f"p={p},q={q}")
     print(f'locals()={locals()}')
     # _______________________________________________
@@ -55,11 +54,14 @@ def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     return templates.TemplateResponse("test.html", context)
 
 
-def startBGT(background_tasks: BackgroundTasks):
-    global is_runtasks
-    if not is_runtasks:
-        is_runtasks = True
-        background_tasks.add_task(runtasks)
+   
+
+async def startBGT():
+    if not globals().get('is_startBGT'):
+        globals()['is_startBGT'] = True
+        tasks = [asyncio.create_task(task(t)) for task, t in tasks_list]
+        print('開始tasks')
         return '開始幕後排程'
     else:
-        return f'已有幕後排程'
+        return f'已有幕後排程' 
+    

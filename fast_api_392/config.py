@@ -20,3 +20,5 @@ maintenance_allow_patterns = [
 allowed_hosts = [
     "wtb.wtbwtb.tk",
 ]
+# True在main啟動時就執行
+startBGT_atonce = False

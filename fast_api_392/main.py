@@ -6,7 +6,7 @@
 from typing import Optional, Callable
 # from typing import get_type_hints
 # from time import sleep
-# import asyncio
+import asyncio
 # import re
 # import nest_asyncio
 #
@@ -39,7 +39,7 @@ def path_MW(func: Callable):
     return app.middleware("http")(func)
 
 
-#################### middlewares ################################
+#################### middlewares ################################ 
 print(f'進入【{config.now_mode}】模式')
 print(f"allowed_hosts={config.allowed_hosts}")
 
@@ -52,4 +52,9 @@ path_get("/test/{p}", test)
 
 
 #################### schedule ################################
-path_get("/startBGT", startBGT)
+if config.startBGT_atonce:
+    loop = asyncio.get_event_loop()
+    loop.create_task(startBGT())
+else:
+    path_get("/startBGT", startBGT)
+    
