@@ -5,17 +5,20 @@ from time import sleep
 
 
 async def loopme(t):
+    cnt = 0
     while 1:
         await asyncio.sleep(t)
         t += 1
-        print(f'現在時間 = {datetime.now()}')
+        cnt +=1
+        print(f'cnt_1 = {cnt}')
 
 
 async def loopme2(t):
+    cnt = 0
     while 1:
         await asyncio.sleep(t)
-#         t += 1
-        print(f'loopme2')
+        cnt += 1
+        print(f'loopme2 = {cnt}')
 
 #################### tasks_list ################################
 
