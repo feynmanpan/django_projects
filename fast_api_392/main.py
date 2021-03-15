@@ -4,18 +4,18 @@
 # 顯示一共連續三個process，都要kill
 #################### import ################################
 from typing import Optional, Callable
-from typing import get_type_hints
-from time import sleep
-import asyncio
-import re
+# from typing import get_type_hints
+# from time import sleep
+# import asyncio
+# import re
 # import nest_asyncio
 #
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, ORJSONResponse
+# from fastapi.responses import HTMLResponse, ORJSONResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+# from fastapi.templating import Jinja2Templates
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from starlette.templating import _TemplateResponse
+# from starlette.templating import _TemplateResponse
 #
 import config
 from views import test
