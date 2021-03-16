@@ -30,7 +30,7 @@ async def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     if (plen := len(p)) > 2:
         print(f'path len={plen}')
     # sleep(10)
-    await asyncio.sleep(10)
+    await asyncio.sleep(0)
     print(f"p={p},q={q}")
     print(f'locals()={locals()}')
     # _______________________________________________
