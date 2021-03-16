@@ -20,7 +20,6 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 import config
 from views import test, startBGT
 from middlewares import mw_list
-from tasks import tasks_list
 
 
 #################### app ################################
@@ -39,7 +38,7 @@ def path_MW(func: Callable):
     return app.middleware("http")(func)
 
 
-#################### middlewares ################################ 
+#################### middlewares ################################
 print(f'進入【{config.now_mode}】模式')
 print(f"allowed_hosts={config.allowed_hosts}")
 
@@ -52,9 +51,8 @@ path_get("/test/{p}", test)
 
 
 #################### schedule ################################
+print(f'在main啟動時執行排程: {config.startBGT_atonce}')
 if config.startBGT_atonce:
-    loop = asyncio.get_event_loop()
-    loop.create_task(startBGT())
+    asyncio.create_task(startBGT())
 else:
     path_get("/startBGT", startBGT)
-    
