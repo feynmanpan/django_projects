@@ -1,28 +1,20 @@
-from tasks import tasks_list
-from starlette.templating import _TemplateResponse
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, ORJSONResponse
-from fastapi import Request, BackgroundTasks
 from typing import Optional, Callable
 from time import sleep
 from datetime import datetime
 import asyncio
-# import nest_asyncio
-# nest_asyncio.apply()
 #
+from starlette.templating import _TemplateResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, ORJSONResponse
+from fastapi import Request, BackgroundTasks
 #
+import config
+from tasks import tasks_list
+
 #####################################################
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=config.templates)
 startBGT_tasks = None
-
-
-def maintenance():
-    print('點擊維護')
-    html = '''
-        <h1 style="color:red">維護中</h1>
-    '''
-    return HTMLResponse(html)
 
 
 # 沒有await就不要async，一般def會加開thread

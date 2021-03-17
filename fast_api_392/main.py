@@ -14,6 +14,8 @@ from fastapi.responses import HTMLResponse, ORJSONResponse
 import config
 from views import test, startBGT
 from middlewares import mw_list
+# from utils import aaa  # MYMSG.printmsg as printmsg
+from utils import MSG
 
 
 #################### app ################################
@@ -27,15 +29,14 @@ def path_get(url: str, func: Callable):
 
 
 def path_MW(func: Callable):
-    if func.__name__ == 'trusted_host' and config.allowed_hosts:
-        return app.add_middleware(TrustedHostMiddleware, allowed_hosts=config.allowed_hosts)
-    return app.middleware("http")(func)
+    if func.__name__ == config.check_isTH_name:
+        if func():
+            return app.add_middleware(TrustedHostMiddleware, allowed_hosts=config.allowed_hosts)
+    else:
+        return app.middleware("http")(func)
 
 
 #################### middlewares ################################
-print(f'進入【{config.now_mode}】模式')
-print(f"allowed_hosts={config.allowed_hosts}")
-
 for mw in mw_list:
     path_MW(mw)
 
@@ -45,8 +46,17 @@ path_get("/test/{p}", test)
 
 
 #################### schedule ################################
-print(f'在main啟動時執行排程: {config.startBGT_atonce}')
 if config.startBGT_atonce:
     asyncio.create_task(startBGT())
 else:
     path_get("/startBGT", startBGT)
+
+
+#################### MSG ################################
+msgs = [
+    f'執行模式:【{config.now_mode}】',
+    f'檢查trusted_host: {config.trusted_host}, allowed_hosts: {config.allowed_hosts}',
+    f'在main啟動時執行排程startBGT: {config.startBGT_atonce}',
+]
+
+MSG.prt_msgs(msgs)

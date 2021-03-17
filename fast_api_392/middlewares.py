@@ -3,10 +3,11 @@ import re
 #
 from fastapi import Request
 from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 #
 import config
-from views import maintenance
 #
+templates = Jinja2Templates(directory=config.templates)
 
 
 async def check_isMT(request: Request, call_next):
@@ -20,7 +21,7 @@ async def check_isMT(request: Request, call_next):
                 break
     #
     if isMT:
-        return maintenance()
+        return templates.TemplateResponse(config.maintenance_html, {'request': request})
     else:
         return await call_next(request)
 
@@ -33,9 +34,8 @@ async def mwtest(request: Request, call_next):
     return HTMLResponse(html)
 
 
-def trusted_host():
-    '''trigger用途而已'''
-    pass
+def check_isTH():
+    return config.trusted_host and config.allowed_hosts
 
 
 #################### app.middleware("http") ################################
@@ -44,5 +44,5 @@ def trusted_host():
 mw_list = [
     check_isMT,
     # mwtest,
-    trusted_host,
+    check_isTH,
 ]
