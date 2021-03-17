@@ -1,9 +1,13 @@
 from enum import Enum
+import os
 from os import path
 from fastapi.templating import Jinja2Templates
 #
-static = 'static'
-templates = 'templates'
+top_folder = 'fast_api_392'
+# 
+static_urlpath = 'static'
+static = path.join(top_folder,static_urlpath)
+templates = path.join(top_folder,'templates') 
 static_html = 'static_html'  # 在templates中的子目錄
 jinja_templates = Jinja2Templates(directory=templates)
 
@@ -14,7 +18,7 @@ class MODES(Enum):
     prod = 3
 
 
-now_mode = MODES(1)  # MODES.maintenance, MODES['maintenance']
+now_mode = MODES(3)  # MODES.maintenance, MODES['maintenance']
 maintenance_allow_patterns = [
     '^/test/.+',
     '^/static/.+',

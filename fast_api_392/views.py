@@ -10,9 +10,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, ORJSONResponse
 from fastapi import Request, BackgroundTasks
 #
-import config
-from utils import static_makeornot
-from tasks import tasks_list
+from . import config
+from .utils import static_makeornot
+from .tasks import tasks_list
 
 #####################################################
 

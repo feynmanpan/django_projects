@@ -4,7 +4,7 @@ import re
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 #
-import config
+from . import config
 #
 
 
