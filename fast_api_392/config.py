@@ -1,6 +1,8 @@
 from enum import Enum
+from os import path
 #
 templates = 'templates'
+static_html = 'static_html'
 
 
 class MODES(Enum):

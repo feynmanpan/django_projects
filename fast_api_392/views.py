@@ -2,6 +2,8 @@ from typing import Optional, Callable
 from time import sleep
 from datetime import datetime
 import asyncio
+import os
+from os import path
 #
 from starlette.templating import _TemplateResponse
 from fastapi.templating import Jinja2Templates
@@ -45,7 +47,21 @@ async def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     # return ORJSONResponse([{"item_id": "Foo"}])
     # return HTMLResponse("<p>2</p>")
     # print(type(templates.TemplateResponse("test.html", context)))
-    return templates.TemplateResponse("test.html", context)
+
+    tmpfn = f'test_{p}_{q}.html'
+    html_path_relative = path.join(config.static_html, tmpfn)
+    html_path_absolute = path.join(config.templates, html_path_relative)
+    #
+    if not path.exists(html_path_absolute):
+        print(f'不存在，重造靜態檔: {html_path_absolute}')
+        response = templates.TemplateResponse("test.html", context)
+        with open(html_path_absolute, 'w') as f:
+            f.write(response.body.decode('utf-8'))
+    else:
+        print(f'存在，直接回應靜態檔: {html_path_absolute}')
+        response = templates.TemplateResponse(html_path_relative, {'request': request})
+    #
+    return response
 
 
 async def startBGT():
