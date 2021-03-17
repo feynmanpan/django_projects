@@ -1,13 +1,9 @@
 import asyncio
-# import nest_asyncio @@@
 import time
 from time import sleep
 
 
 async def say_after(delay, what):
-    # print('sss1', delay, id(asyncio.get_event_loop()))
-    # print('sss2', delay, id(asyncio.get_running_loop()))
-    # print(789, len([task for task in asyncio.all_tasks()]))
     await asyncio.sleep(delay)
     print(what)
 
