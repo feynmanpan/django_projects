@@ -3,25 +3,23 @@ import re
 #
 from fastapi import Request
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 #
 import config
 #
-templates = Jinja2Templates(directory=config.templates)
 
 
 async def check_isMT(request: Request, call_next):
     '''確認執行模式是否維護'''
     print(request.url.path)
     print(request.url)
-    if isMT := (config.now_mode.name == 'maintenance'):
+    if isMT := (config.now_mode.name == config.MODES.maintenance.name):
         for pattern in config.maintenance_allow_patterns:
             if re.match(pattern, request.url.path):   # DNS以後到?以前
                 isMT = False
                 break
     #
     if isMT:
-        return templates.TemplateResponse(config.maintenance_html, {'request': request})
+        return config.jinja_templates.TemplateResponse(config.maintenance_html, {'request': request})
     else:
         return await call_next(request)
 

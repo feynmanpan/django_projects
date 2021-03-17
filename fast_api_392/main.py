@@ -20,7 +20,7 @@ from utils import MSG
 
 #################### app ################################
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount(f"/{config.static}", StaticFiles(directory=config.static), name=config.static)
 #
 
 

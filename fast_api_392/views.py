@@ -11,11 +11,12 @@ from fastapi.responses import HTMLResponse, ORJSONResponse
 from fastapi import Request, BackgroundTasks
 #
 import config
+from utils import static_makeornot
 from tasks import tasks_list
 
 #####################################################
 
-templates = Jinja2Templates(directory=config.templates)
+
 startBGT_tasks = None
 
 
@@ -37,31 +38,17 @@ async def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     for k in tmpd:
         print(f'多的query參數: {k}')
     # _______________________________________________
+
+    fn_static = f'test_{p}_{q}.html'
+    fn_temp = "test.html"
     context = {
         'request': request,  # 一定要有
         'req_str': type(request),
         "p": p,
         "q": q,
     }
-    # return f"q={q},a={a}"
-    # return ORJSONResponse([{"item_id": "Foo"}])
-    # return HTMLResponse("<p>2</p>")
-    # print(type(templates.TemplateResponse("test.html", context)))
-
-    tmpfn = f'test_{p}_{q}.html'
-    html_path_relative = path.join(config.static_html, tmpfn)
-    html_path_absolute = path.join(config.templates, html_path_relative)
     #
-    if not path.exists(html_path_absolute):
-        print(f'不存在，重造靜態檔: {html_path_absolute}')
-        response = templates.TemplateResponse("test.html", context)
-        with open(html_path_absolute, 'w') as f:
-            f.write(response.body.decode('utf-8'))
-    else:
-        print(f'存在，直接回應靜態檔: {html_path_absolute}')
-        response = templates.TemplateResponse(html_path_relative, {'request': request})
-    #
-    return response
+    return static_makeornot(fn_static, fn_temp, context)
 
 
 async def startBGT():
