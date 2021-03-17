@@ -3,4 +3,4 @@ from ... import config
 
 def pp():
     print('YES',ss.x)
-    print(config.static_urlpath)
+    print(config.static_name)

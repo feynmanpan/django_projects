@@ -21,11 +21,11 @@ from .utils import MSG
 # 
 from .apps.book import test as book_test
 book_test.pp()
-print(os.getcwd())
+
 
 #################### app ################################
 app = FastAPI()
-app.mount(f"/{config.static_urlpath}", StaticFiles(directory=config.static), name=config.static_urlpath)
+app.mount(f"/{config.static_name}", StaticFiles(directory=config.static), name=config.static_name)
 #
 
 

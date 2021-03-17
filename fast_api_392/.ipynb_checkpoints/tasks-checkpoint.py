@@ -1,7 +1,7 @@
 from datetime import datetime
 import asyncio
 from time import sleep
-# import nest_asyncio
+
 
 
 async def loopme(t):
@@ -9,7 +9,7 @@ async def loopme(t):
     while 1:
         await asyncio.sleep(t)
         t += 1
-        cnt +=1
+        cnt += 1
         print(f'cnt_1 = {cnt}')
 
 
