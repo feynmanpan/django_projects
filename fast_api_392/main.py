@@ -14,7 +14,6 @@ from fastapi.responses import HTMLResponse, ORJSONResponse
 import config
 from views import test, startBGT
 from middlewares import mw_list
-# from utils import aaa  # MYMSG.printmsg as printmsg
 from utils import MSG
 
 
