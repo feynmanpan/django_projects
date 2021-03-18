@@ -8,7 +8,7 @@ from random import random, uniform
 from pyquery import PyQuery as pq
 from time import sleep, time
 from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta 
+from dateutil.relativedelta import relativedelta
 import json
 import math
 import re
@@ -226,6 +226,7 @@ def get_miss_date(miss_date):
     # 開始查詢送出表單
     day_data = []
     for D in miss_date:
+        stime = time()
         sleep(uniform(0.1, 1))
         #
         postdata['ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$TextBox_Content1_ThisDate'] = D
@@ -368,7 +369,7 @@ def get_miss_date(miss_date):
             'P135155_C': tds78.eq(8).text(),
             'P155_C': tds79.eq(8).text(),
         }
-        print(f'爬取 {D} 之日行情 OK')
+        print(f'爬取 {D} 之日行情 OK,{time()-stime}')
         day_data.append(today)
         #
     return day_data
