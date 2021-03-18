@@ -14,18 +14,17 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import HTMLResponse, ORJSONResponse
 # .為 fast_api_392
-from . import config
-from .views import test, startBGT
-from .middlewares import mw_list
-from .utils import MSG
-# 
-from .apps.book import test as book_test
-# book_test.pp()
+import config
+from views import test, startBGT
+from middlewares import mw_list
+from utils import MSG
+#
+from apps.book import test as book_test
 
 
 #################### app ################################
 app = FastAPI()
-app.mount(f"/{config.static_name}", StaticFiles(directory=config.static), name=config.static_name)
+app.mount(f"/{config.static}", StaticFiles(directory=config.static), name=config.static)
 #
 
 

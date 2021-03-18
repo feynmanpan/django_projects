@@ -1,17 +1,16 @@
 from enum import Enum
 import os
 from os import path
+#
 from fastapi.templating import Jinja2Templates
 #
-top_folder = 'fast_api_392'
-static_name = 'static'
-templates_name = 'templates'
-static_html = 'static_html'  # 在templates中的子目錄
-# 
-static = path.join(top_folder,static_name)
-templates = path.join(top_folder,templates_name) 
-jinja_templates = Jinja2Templates(directory=templates)
 
+
+static = 'static'
+templates = 'templates'
+static_html = 'static_html'  # 在templates中的子目錄
+#
+jinja_templates = Jinja2Templates(directory=templates)
 
 
 class MODES(Enum):

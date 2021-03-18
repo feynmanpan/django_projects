@@ -1,5 +1,5 @@
-from . import config
 from os import path
+import config
 
 
 def static_makeornot(fn_static: str, fn_temp: str, context: dict):

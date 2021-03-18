@@ -1,11 +1,9 @@
-#################### import ################################
 import re
 #
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 #
-from . import config
-#
+import config
 
 
 async def check_isMT(request: Request, call_next):

@@ -1,9 +1,9 @@
 from .. import ss
-from ... import config
-from test2 import b
+import config
+
 
 def pp():
-    print('YES',ss.x)
-    print(config.static_name)
-    
+    print('YES', ss.x)
+    print(config.static)
+
 # b()
