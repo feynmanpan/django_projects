@@ -13,13 +13,26 @@ from .config import (
     cwd,
     date_format, month_format, year_format, wd_map,
     cacert, headers,
-    url_pig, url_pig2
+    url_pig, url_pig2,
+    d_postdata,
 )
 
 
 def write_file(fpath, text):
     with open(fpath, 'w') as f:
         f.write(text)
+
+
+def zero(x):
+    return x != 0 and x or 0
+
+
+def floatint(x):
+    x = str(x).replace(',', '').replace('-', '0').replace(' ', '')
+    x = x or '0'
+    xf = float(x)
+    xn = int(xf)
+    return xf > xn and xf or xn
 
 
 def isocheck(sd: str, ed: str, ymd_format: str):
@@ -50,6 +63,108 @@ def isocheck(sd: str, ed: str, ymd_format: str):
     return True, None
 
 
+def df_miss_7595(df_miss):
+    '''
+        兩種標準之計算
+    '''
+    # 九個欄位: 台灣地區扣掉澎湖
+    # cols = ['1', '2', '3', '75', '7595', '95115', '115135', '135155', '155']
+    small = 0.0000012345
+    ym = len(df_miss['date'][0]) <= 7
+    cols = ['75', '7595', '95115', '115135', '135155', '155']  # 日行情時，75以前的欄位不做計算，由價量比較網頁值直接填入
+    # (1)成交頭數 A 處理==================================================
+    for col in cols:
+        df_miss[f'A{col}'] = df_miss[f'A{col}']-df_miss[f'P{col}_A']
+    if ym:
+        df_miss['A3'] = df_miss['A3_tw']-df_miss['P3_A']
+    # 不含澎湖的規格豬頭數計算
+    df_A75 = df_miss.loc[:, 'A7595':'A135155']
+    df_A155 = df_miss.loc[:, 'A155A':'A155D']
+    # 兩種標準計算
+    df_miss['A375'] = df_A75.sum(axis=1) + df_A155.sum(axis=1)
+    df_miss['A395'] = df_miss['A375'] - df_miss['A7595']
+
+    # (2)平均重量 B 處理==================================================
+    for col in cols:
+        T_weight = (df_miss[f'A{col}'] + df_miss[f'P{col}_A'])*df_miss[f'B{col}']
+        P_weight = df_miss[f'P{col}_A']*df_miss[f'P{col}_B']
+        #
+        df_miss[f'B{col}'] = (T_weight - P_weight)/df_miss[f'A{col}'].replace(0, small)
+    if ym:
+        T_weight = df_miss['A3_tw']*df_miss['B3_tw']
+        P_weight = df_miss['P3_A']*df_miss['P3_B']
+        df_miss['B3'] = (T_weight-P_weight)/df_miss['A3'].replace(0, small)
+    # 不含澎湖的規格豬平均重量計算
+    df_A75 = df_miss.loc[:, 'A7595':'A135155']
+    df_B75 = df_miss.loc[:, 'B7595':'B135155']
+    df_A95 = df_miss.loc[:, 'A95115':'A135155']
+    df_B95 = df_miss.loc[:, 'B95115':'B135155']
+    df_A155 = df_miss.loc[:, 'A155A':'A155D']
+    df_B155 = df_miss.loc[:, 'B155A':'B155D']
+    # 以A區塊的欄名統一，之後相乘
+    df_B75.columns = df_A75.columns
+    df_B95.columns = df_A95.columns
+    df_B155.columns = df_A155.columns
+    # 兩種標準計算
+    tmp75 = (df_A75 * df_B75).sum(axis=1)
+    tmp95 = (df_A95 * df_B95).sum(axis=1)
+    tmp155 = (df_A155 * df_B155).sum(axis=1)
+    df_miss['B375'] = (tmp75 + tmp155) / df_miss['A375'].replace(0, small)
+    df_miss['B395'] = (tmp95 + tmp155) / df_miss['A395'].replace(0, small)
+
+    # (3)成交價格 C 處理==================================================
+    for col in cols:
+        P_weight = df_miss[f'P{col}_A']*df_miss[f'P{col}_B']
+        P_total = P_weight*df_miss[f'P{col}_C']
+        #
+        T_weight = df_miss[f'A{col}']*df_miss[f'B{col}'] + P_weight
+        T_total = T_weight*df_miss[f'C{col}']
+        #
+        df_miss[f'C{col}'] = (T_total - P_total)/(T_weight - P_weight).replace(0, small)
+    if ym:
+        P_weight = df_miss['P3_A']*df_miss['P3_B']  # 澎湖規格豬總重
+        P_total = P_weight*df_miss['P3_C']  # 澎湖規格豬總金額
+        #
+        T_weight = df_miss['A3_tw']*df_miss['B3_tw']
+        T_total = T_weight*df_miss['C3_tw']
+        #
+        df_miss['C3'] = (T_total - P_total)/(T_weight - P_weight).replace(0, small)
+    #
+    # 不含澎湖的規格豬平均價格計算
+    df_A75 = df_miss.loc[:, 'A7595':'A135155']
+    df_B75 = df_miss.loc[:, 'B7595':'B135155']
+    df_C75 = df_miss.loc[:, 'C7595':'C135155']
+    df_A95 = df_miss.loc[:, 'A95115':'A135155']
+    df_B95 = df_miss.loc[:, 'B95115':'B135155']
+    df_C95 = df_miss.loc[:, 'C95115':'C135155']
+    df_A155 = df_miss.loc[:, 'A155A':'A155D']
+    df_B155 = df_miss.loc[:, 'B155A':'B155D']
+    df_C155 = df_miss.loc[:, 'C155A':'C155D']
+    # 以A區塊的欄名統一，之後相乘
+    df_B75.columns = df_A75.columns
+    df_C75.columns = df_A75.columns
+    df_B95.columns = df_A95.columns
+    df_C95.columns = df_A95.columns
+    df_B155.columns = df_A155.columns
+    df_C155.columns = df_A155.columns
+    # 兩種標準計算
+    tmp75 = (df_A75 * df_B75 * df_C75).sum(axis=1)
+    tmp95 = (df_A95 * df_B95 * df_C95).sum(axis=1)
+    tmp155 = (df_A155 * df_B155 * df_C155).sum(axis=1)
+    df_miss['C375'] = (tmp75 + tmp155) / (df_miss['A375']*df_miss['B375']).replace(0, small)
+    df_miss['C395'] = (tmp95 + tmp155) / (df_miss['A395']*df_miss['B395']).replace(0, small)
+    #
+    if ym:
+        df_miss['C375D'] = df_miss['C375'] - df_miss['C3']
+        df_miss['C395D'] = df_miss['C395'] - df_miss['C3']
+    # (4)155以上 total處理==================================================
+    df_miss['A155ABCD'] = df_A155.sum(axis=1)
+    df_miss['B155ABCD'] = (df_A155 * df_B155).sum(axis=1)/df_miss['A155ABCD'].replace(0, small)
+    df_miss['C155ABCD'] = (df_A155 * df_B155 * df_C155).sum(axis=1)/(df_miss['A155ABCD']*df_miss['B155ABCD']).replace(0, small)
+    #
+    return df_miss
+
+
 async def aio_get(session, url: str):
     async with session.get(url, headers=headers) as r:
         return await r.text(encoding='utf8')
@@ -69,20 +184,14 @@ async def get_single_d(D: str):
         r1 = await aio_get(session, url_pig)
         doc1 = pq(r1, parser='html')
         #
-        postdata = {
+        update = {
             '__VIEWSTATE': doc1.find("#__VIEWSTATE").attr('value'),
             '__VIEWSTATEGENERATOR': doc1.find("#__VIEWSTATEGENERATOR").attr('value'),
             '__EVENTVALIDATION': doc1.find("#__EVENTVALIDATION").attr('value'),
-            'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$CheckBoxList_Market$1': 'H268',  # 宜蘭,新竹,苗栗,花蓮,澎湖,台灣地區，一次查
-            'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$CheckBoxList_Market$3': 'H302',
-            'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$CheckBoxList_Market$4': 'H356',
-            'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$CheckBoxList_Market$20': 'H955',
-            'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$CheckBoxList_Market$21': 'H880',  # 澎湖
-            'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$CheckBoxList_Market$22': '%',  # 台灣
-            "ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$Button_query": "查詢",
             'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$TextBox_Content1_ThisDate': D,
             'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$TextBox_Content1_LastDate': D,
         }
+        postdata = {**d_postdata, **update}
         # (2)開始查詢送出表單
         r2 = await aio_post(session, url_pig, postdata)
         doc2 = pq(r2, parser='html')
@@ -223,10 +332,66 @@ async def get_single_d(D: str):
         return today
 
 
+async def get_single_d_T(D: str):
+    '''【交易行情統計】'''
+    stime = time()
+    await asyncio.sleep(uniform(0.1, 1))
+    #
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=cacert)) as session:
+        # (1) 第一次進入頁面【交易行情統計】
+        r1 = await aio_get(session, url_pig2)
+        doc1 = pq(r1, parser='html')
+        #
+        postdata = {
+            # 按下【單日多市場價量比較】
+            '__EVENTTARGET': 'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$LinkButton_query2',
+            '__VIEWSTATE': doc1.find("#__VIEWSTATE").attr('value'),
+            '__VIEWSTATEGENERATOR': doc1.find("#__VIEWSTATEGENERATOR").attr('value'),
+            '__EVENTVALIDATION': doc1.find("#__EVENTVALIDATION").attr('value'),
+        }
+        r2 = await aio_post(session, url_pig2, postdata)
+        doc2 = pq(r2, parser='html')
+        #
+        await asyncio.sleep(uniform(0.1, 1))
+        # 開始查詢
+        postdata = {
+            '__VIEWSTATE': doc2.find("#__VIEWSTATE").attr('value'),
+            '__VIEWSTATEGENERATOR': doc2.find("#__VIEWSTATEGENERATOR").attr('value'),
+            '__EVENTVALIDATION': doc2.find("#__EVENTVALIDATION").attr('value'),
+            'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$Button_Content2_Submit': '查詢',
+            'ctl00$ctl00$ContentPlaceHolder_contant$ContentPlaceHolder_contant$TextBox_Content2_QueryDate': D,
+        }
+        r3 = await aio_post(session, url_pig2, postdata)
+        doc3 = pq(r3, parser='html')
+        # 抓12個儲存格
+        today = {
+            'A1_tw@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label3_0').text(),  # 台灣合計成交頭數
+            'A2@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label3_1').text(),  # 台灣(不含澎湖)合計成交頭數
+            'A3_tw@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label6_0').text(),  # 台灣規格豬成交頭數
+            'A3@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label6_1').text(),  # 不含澎湖之規格豬成交頭數
+            #
+            'B1_tw@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label4_0').text(),  # 台灣均重
+            'B2@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label4_1').text(),  # 不含澎湖均重
+            'B3_tw@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label8_0').text(),  # 台灣規格豬均重
+            'B3@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label8_1').text(),  # 不含澎湖之規格豬均重
+            #
+            'C1_tw@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label5_0').text(),  # 台灣均價
+            'C2@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label5_1').text(),  # 不含澎湖均價
+            'C3_tw@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label10_0').text(),  # 台灣規格豬均價
+            'C3@': doc3.find('#ContentPlaceHolder_contant_ContentPlaceHolder_contant_GridView2_Label10_1').text(),  # 不含澎湖之規格豬均價
+        }
+        print(f'爬取 {D} 之日行情 OK (單日多市場價量比較),{time()-stime}')
+        #
+        return today
+
+
 async def get_miss_ds(miss_date: list):
     '''日行情'''
     # 開始查詢送出表單
     tasks = [asyncio.create_task(get_single_d(D)) for D in miss_date]
+    tasks_T = [asyncio.create_task(get_single_d_T(D)) for D in miss_date]
+    #
     day_data = await asyncio.gather(*tasks)
-    #     
-    return day_data
+    day_data_T = await asyncio.gather(*tasks_T)
+    #
+    return day_data, day_data_T
