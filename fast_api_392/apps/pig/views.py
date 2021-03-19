@@ -69,7 +69,7 @@ async def pig_d(request: Request, sd: str = '2021-03-01', ed: str = '2021-03-17'
             'now': datetime.now().strftime(f'{date_format}_{time_format}'),
             'duration': time() - stime,
             'query': f'sd={sd}&ed={ed}',
-            'query_params': dict(request.query_params),
+            'query_params': request.query_params,
             'miss_date': miss_date,
         },
         'resdata': resdata,
