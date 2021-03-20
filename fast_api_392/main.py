@@ -58,9 +58,10 @@ else:
 
 #################### MSG ################################
 msgs = [
+    f'頂層工作目錄:【{config.top_dir}】',
     f'執行模式:【{config.now_mode}】',
-    f'檢查trusted_host: {config.trusted_host}, allowed_hosts: {config.allowed_hosts}',
-    f'在main啟動時執行排程startBGT: {config.startBGT_atonce}',
+    f'檢查trusted_host: 【{config.trusted_host}】 / allowed_hosts: {config.allowed_hosts}',
+    f'在main啟動時執行排程startBGT: 【{config.startBGT_atonce}】',
 ]
 
 MSG.prt_msgs(msgs)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
@@ -164,17 +164,19 @@ def pig(request):
         'ed': post.get('ed', '2020-12-03'),
     }
     r = requests.post(url, json=postdata) # fastapi用BaseModel，要送json
-    r.encoding = 'utf-8'
+    r.encoding = 'utf-8'    
     res = r.json()
     r.close()
     # Access-Control-Allow-Origin
-    response = HttpResponse(json.dumps(res, indent=4, ensure_ascii=False))
+#     response = HttpResponse(json.dumps(res, indent=4, ensure_ascii=False))
+#     response = HttpResponse(r.text)
+    response = JsonResponse(res)
     response["Access-Control-Allow-Origin"] = "*"
     response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
     response["Access-Control-Max-Age"] = "1000"
     response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
-    if res.get('error'):
-        response.status_code = 400
+#     if res.get('error'):
+#         response.status_code = 400
     return response
 
 def pig_m(request):

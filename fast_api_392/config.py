@@ -1,9 +1,9 @@
 from enum import Enum
+import os
 #
 from fastapi.templating import Jinja2Templates
 #
-
-
+top_dir = os.getcwd()
 static = 'static'
 templates = 'templates'
 static_html = 'static_html'  # 在templates中的子目錄

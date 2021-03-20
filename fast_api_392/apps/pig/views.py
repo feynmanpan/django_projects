@@ -2,7 +2,9 @@ import pandas as pd
 import os
 from time import time, sleep
 from datetime import datetime, timedelta
+import json
 from fastapi import Request
+from fastapi.responses import ORJSONResponse, PlainTextResponse
 #
 from .utils import (
     floatint, zero, isocheck,
@@ -14,6 +16,7 @@ from .config import (
     year_format,
     time_format,
     pig_csv_path,
+    jinja_templates,
 )
 
 pig_d_count = 0
@@ -69,11 +72,18 @@ async def pig_d(request: Request, sd: str = '2021-03-01', ed: str = '2021-03-17'
             'now': datetime.now().strftime(f'{date_format}_{time_format}'),
             'duration': time() - stime,
             'query': f'sd={sd}&ed={ed}',
-            'query_params': request.query_params,
+            'query_params': dict(request.query_params),
             'miss_date': miss_date,
         },
         'resdata': resdata,
     }
     print(res['log'])
     pig_d_count = 0
-    return res
+    context = {
+        'request':request,
+        'res':json.dumps(res, indent=2, ensure_ascii=False),
+    }
+    return jinja_templates.TemplateResponse('pig_d.html', context)
+#     return PlainTextResponse("res")
+#     return res
+#     return ORJSONResponse(res)

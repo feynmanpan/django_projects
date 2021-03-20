@@ -733,7 +733,8 @@ def pig(dr: DateRange):
         },
         'resdata': resdata,
     }
-    return res  # json.dumps(res, indent=4)
+    return res
+#     return "1111123"#json.dumps(res, indent=4)
 
 
 @app.get("/pig_m/", tags=["規格豬"])
