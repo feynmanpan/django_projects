@@ -35,4 +35,3 @@ allowed_hosts = [
 
 # True在main啟動時就執行
 startBGT_atonce = False
-

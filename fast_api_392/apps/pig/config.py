@@ -1,7 +1,7 @@
 from collections import namedtuple
 import os
 import aiohttp
-# 
+#
 from fastapi.templating import Jinja2Templates
 ###########################################################
 
@@ -12,12 +12,12 @@ headers = {
 }
 url_pig = "https://ppg.naif.org.tw/naif/MarketInformation/Pig/FPSCompare.aspx"
 url_pig2 = "http://ppg.naif.org.tw/naif/MarketInformation/Pig/TranStatistics.aspx"  # 單日多市場價量比較
-# 
+#
 cwd = os.path.dirname(os.path.realpath(__file__))
 dmy = ['d', 'm', 'y']
 pig_csv_path = namedtuple('pig_csv', dmy)(*[os.path.join(cwd, f'pig_{tmp}.csv') for tmp in dmy])
 templates = 'templates'
-jinja_templates = Jinja2Templates(directory=os.path.join(cwd,templates))
+jinja_templates = Jinja2Templates(directory=os.path.join(cwd, templates))
 
 #
 year_format = '%Y'
