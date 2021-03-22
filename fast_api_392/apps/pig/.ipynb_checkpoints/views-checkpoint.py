@@ -83,7 +83,7 @@ async def pig_d(request: Request, sd: str = '2021-03-01', ed: str = '2021-03-17'
         'request':request,
         'res':json.dumps(res, indent=2, ensure_ascii=False),
     }
+
     return jinja_templates.TemplateResponse('pig_d.html', context)
-#     return PlainTextResponse("res")
-#     return res
+#     return PlainTextResponse("res@@")
 #     return ORJSONResponse(res)
