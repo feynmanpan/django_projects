@@ -1,13 +1,9 @@
 import asyncio
-# import nest_asyncio @@@
 import time
 from time import sleep
 
 
-async def say_after(delay, what):
-    # print('sss1', delay, id(asyncio.get_event_loop()))
-    # print('sss2', delay, id(asyncio.get_running_loop()))
-    # print(789, len([task for task in asyncio.all_tasks()]))
+async def say_after(delay,   what):
     await asyncio.sleep(delay)
     print(what)
 
@@ -16,6 +12,7 @@ async def main1(a, b):
     print(f"started at {time.strftime('%X')}")
     loop = asyncio.get_event_loop()
     print(12345, loop.is_running())
+        time.sleep
 
     task1 = asyncio.create_task(say_after(2, 'AA'))
     task2 = asyncio.create_task(say_after(1, 'BBB'))

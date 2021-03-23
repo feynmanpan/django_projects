@@ -1,6 +1,7 @@
 from datetime import datetime
 import asyncio
 from time import sleep
+from apps.ips.tasks import get_freeproxy
 
 
 async def loopme(t):
@@ -22,6 +23,7 @@ async def loopme2(t):
 #################### tasks_list ################################
 
 tasks_list = [
-    (loopme, 1),
-    (loopme2, 1),
+    (loopme, 2),
+    (loopme2, 3),
+    (get_freeproxy, 1),
 ]
