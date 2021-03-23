@@ -1,0 +1,132 @@
+nohup: ignoring input
+[I 2021-03-23 22:26:46.276 ServerApp] jupyterlab | extension was successfully linked.
+[I 2021-03-23 22:26:46.277 ServerApp] jupyterlab_code_formatter | extension was successfully linked.
+[I 2021-03-23 22:26:46.494 ServerApp] nbclassic | extension was successfully linked.
+[I 2021-03-23 22:26:46.519 LabApp] JupyterLab extension loaded from /home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyterlab
+[I 2021-03-23 22:26:46.520 LabApp] JupyterLab application directory is /home/pan/anaconda3/envs/fast_env/share/jupyter/lab
+[I 2021-03-23 22:26:46.525 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2021-03-23 22:26:46.525 ServerApp] jupyterlab_code_formatter | extension was successfully loaded.
+[I 2021-03-23 22:26:46.529 ServerApp] nbclassic | extension was successfully loaded.
+[I 2021-03-23 22:26:46.532 ServerApp] Serving notebooks from local directory: /home/pan/django_projects
+[I 2021-03-23 22:26:46.532 ServerApp] Jupyter Server 1.4.1 is running at:
+[I 2021-03-23 22:26:46.532 ServerApp] http://conda-20210309:4999/lab?token=d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21
+[I 2021-03-23 22:26:46.532 ServerApp]  or http://127.0.0.1:4999/lab?token=d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21
+[I 2021-03-23 22:26:46.532 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 2021-03-23 22:26:46.536 ServerApp] 
+    
+    To access the server, open this file in a browser:
+        file:///home/pan/.local/share/jupyter/runtime/jpserver-24773-open.html
+    Or copy and paste one of these URLs:
+        http://conda-20210309:4999/lab?token=d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21
+     or http://127.0.0.1:4999/lab?token=d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21
+[I 2021-03-23 22:26:53.168 LabApp] Build is up to date
+[W 2021-03-23 22:26:53.912 ServerApp] 404 GET /api/contents/apps/ips/tasks.ipynb?content=0&1616509614513 (180.177.89.24): No such file or directory: apps/ips/tasks.ipynb
+[W 2021-03-23 22:26:53.912 ServerApp] No such file or directory: apps/ips/tasks.ipynb
+[W 2021-03-23 22:26:53.912 ServerApp] 404 GET /api/contents/apps/ips/tasks.ipynb?content=0&1616509614513 (180.177.89.24) 1.54ms referer=http://34.80.136.230:4999/lab/tree/apps/ips/tasks.ipynb
+TermSocket.open: 2
+[I 2021-03-23 22:26:53.930 ServerApp] New terminal with specified name: 2
+TermSocket.open: Opened 2
+Websocket closed
+[I 2021-03-23 22:27:15.791 ServerApp] 302 POST /login?next=%2F (180.177.89.24) 1.87ms
+[I 2021-03-23 22:27:15.810 ServerApp] 302 GET / (180.177.89.24) 0.59ms
+[I 2021-03-23 22:27:19.079 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-03-23 22:27:41.847 ServerApp] Kernel started: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[I 2021-03-23 22:28:30.023 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:28:37.744 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:28:46.156 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[W 2021-03-23 22:30:38.715 ServerApp] delete /fast_api_392/apps/ips/ips.csv
+[W 2021-03-23 22:30:38.732 ServerApp] delete /fast_api_392/apps/ips/ips.html
+[I 2021-03-23 22:31:41.379 ServerApp] Saving file at /fast_api_392/views.py
+[I 2021-03-23 22:31:51.189 ServerApp] Saving file at /fast_api_392/views.py
+[I 2021-03-23 22:32:17.763 ServerApp] Saving file at /fast_api_392/views.py
+[I 2021-03-23 22:32:32.675 ServerApp] Saving file at /fast_api_392/views.py
+[I 2021-03-23 22:32:37.587 ServerApp] Saving file at /fast_api_392/views.py
+[I 2021-03-23 22:32:55.047 ServerApp] Saving file at /fast_api_392/views.py
+[I 2021-03-23 22:33:17.951 ServerApp] Kernel restarted: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[I 2021-03-23 22:34:46.279 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:36:46.397 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:38:46.509 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:39:45.745 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:41:28.608 ServerApp] Kernel restarted: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[I 2021-03-23 22:41:35.496 ServerApp] Kernel restarted: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[I 2021-03-23 22:41:45.843 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:41:57.174 ServerApp] Kernel started: eeb8305e-61cc-41a1-9e57-12346989d322
+[I 2021-03-23 22:42:00.282 ServerApp] Kernel restarted: eeb8305e-61cc-41a1-9e57-12346989d322
+[I 2021-03-23 22:42:00.303 ServerApp] Starting buffering for eeb8305e-61cc-41a1-9e57-12346989d322:3045fcf2-a1f7-4457-afce-5a61d6db6ae1
+[I 2021-03-23 22:42:00.329 ServerApp] Restoring connection for eeb8305e-61cc-41a1-9e57-12346989d322:3045fcf2-a1f7-4457-afce-5a61d6db6ae1
+[I 2021-03-23 22:43:45.957 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:43:57.109 ServerApp] Saving file at /fast_api_392/99_test392.ipynb
+[I 2021-03-23 22:45:46.079 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:47:05.027 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:47:09.963 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:47:12.451 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:47:14.563 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:47:17.543 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:48:12.639 ServerApp] Kernel restarted: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[I 2021-03-23 22:48:43.339 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:49:53.475 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:50:29.945 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:50:53.169 ServerApp] Kernel restarted: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[I 2021-03-23 22:51:02.251 ServerApp] Starting buffering for eeb8305e-61cc-41a1-9e57-12346989d322:3045fcf2-a1f7-4457-afce-5a61d6db6ae1
+[W 2021-03-23 22:51:31.291 ServerApp] delete /fast_api_392/apps/ips/ips.csv
+[W 2021-03-23 22:51:31.316 ServerApp] delete /fast_api_392/apps/ips/ips.html
+[I 2021-03-23 22:52:30.057 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:54:30.211 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:55:20.923 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:57:21.041 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:57:25.379 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 22:57:30.205 ServerApp] Kernel restarted: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[W 2021-03-23 22:57:48.616 ServerApp] delete /fast_api_392/apps/ips/ips.html
+[W 2021-03-23 22:57:48.618 ServerApp] delete /fast_api_392/apps/ips/ips.csv
+[I 2021-03-23 22:57:54.595 ServerApp] Kernel restarted: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[I 2021-03-23 22:58:05.627 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:00:02.505 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:00:08.673 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:00:42.099 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:00:43.967 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:00:50.921 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:00:57.609 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:01:01.549 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:01:03.413 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:01:22.803 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:01:31.834 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[W 2021-03-23 23:01:45.336 ServerApp] delete /fast_api_392/apps/ips/ips.csv
+[W 2021-03-23 23:01:45.354 ServerApp] delete /fast_api_392/apps/ips/ips.html
+[I 2021-03-23 23:02:44.210 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:06:44.558 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:07:06.430 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:07:21.428 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:07:38.456 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:07:44.497 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:09:11.048 ServerApp] Kernel started: fb445733-8698-42c4-869f-c1172e4171c7
+[W 2021-03-23 23:09:14.659 ServerApp] Notebook wtb/get_bookinfo.ipynb is not trusted
+[I 2021-03-23 23:09:15.530 ServerApp] Kernel started: 779525e4-9c39-4e73-b078-52a48bbfe4b7
+[W 2021-03-23 23:09:19.815 ServerApp] Notebook wtb/get_bookprice.ipynb is not trusted
+[I 2021-03-23 23:09:21.176 ServerApp] Kernel started: 3adca7cc-8977-4bf3-b0ec-8c5106142067
+[I 2021-03-23 23:09:25.065 ServerApp] Kernel started: 2b864e01-66de-4ab1-bc1d-7a84de878c24
+[I 2021-03-23 23:09:29.819 ServerApp] Kernel started: c32b7ce4-1fbf-4671-8d12-9b4f1ab45744
+[I 2021-03-23 23:09:32.116 ServerApp] Kernel started: 9bb10e18-3e9f-40e5-88a1-473c66019e81
+[W 2021-03-23 23:09:34.850 ServerApp] Notebook wtb/get_mollie.ipynb is not trusted
+[I 2021-03-23 23:09:35.392 ServerApp] Kernel started: b65bdf50-1ac5-492e-9bc9-51318cdc403f
+[W 2021-03-23 23:09:39.566 ServerApp] Notebook wtb/get_shopee.ipynb is not trusted
+[I 2021-03-23 23:09:40.166 ServerApp] Kernel started: e26a86fc-7a30-4196-bba7-3b85cff7a798
+[I 2021-03-23 23:09:45.653 ServerApp] Kernel shutdown: 7321f1dd-c43d-4d86-a981-eab63de50bd6
+[I 2021-03-23 23:09:45.675 ServerApp] Kernel shutdown: eeb8305e-61cc-41a1-9e57-12346989d322
+[I 2021-03-23 23:09:45.676 ServerApp] Kernel shutdown: 2b864e01-66de-4ab1-bc1d-7a84de878c24
+[I 2021-03-23 23:09:45.677 ServerApp] Kernel shutdown: fb445733-8698-42c4-869f-c1172e4171c7
+[I 2021-03-23 23:09:45.684 ServerApp] Kernel shutdown: 3adca7cc-8977-4bf3-b0ec-8c5106142067
+[I 2021-03-23 23:09:45.685 ServerApp] Kernel shutdown: 779525e4-9c39-4e73-b078-52a48bbfe4b7
+[I 2021-03-23 23:09:46.231 ServerApp] Kernel shutdown: c32b7ce4-1fbf-4671-8d12-9b4f1ab45744
+[I 2021-03-23 23:09:46.350 ServerApp] Kernel shutdown: 9bb10e18-3e9f-40e5-88a1-473c66019e81
+[I 2021-03-23 23:09:46.443 ServerApp] Kernel shutdown: b65bdf50-1ac5-492e-9bc9-51318cdc403f
+[I 2021-03-23 23:09:46.445 ServerApp] Kernel shutdown: e26a86fc-7a30-4196-bba7-3b85cff7a798
+[I 2021-03-23 23:10:22.139 ServerApp] Kernel started: 8353995a-8e76-4b2a-84bd-2765176183a9
+[I 2021-03-23 23:10:28.825 ServerApp] Kernel restarted: 8353995a-8e76-4b2a-84bd-2765176183a9
+[I 2021-03-23 23:10:28.845 ServerApp] Starting buffering for 8353995a-8e76-4b2a-84bd-2765176183a9:1e066265-9f9e-4d0f-9059-6a18824ef18e
+[I 2021-03-23 23:10:28.870 ServerApp] Restoring connection for 8353995a-8e76-4b2a-84bd-2765176183a9:1e066265-9f9e-4d0f-9059-6a18824ef18e
+[I 2021-03-23 23:10:34.219 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-23 23:23:35.966 ServerApp] New terminal with automatic name: 1
+TermSocket.open: 1
+TermSocket.open: Opened 1

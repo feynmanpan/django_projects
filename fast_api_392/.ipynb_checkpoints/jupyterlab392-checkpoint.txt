@@ -1,0 +1,28 @@
+nohup: ignoring input
+[I 2021-03-23 22:26:46.276 ServerApp] jupyterlab | extension was successfully linked.
+[I 2021-03-23 22:26:46.277 ServerApp] jupyterlab_code_formatter | extension was successfully linked.
+[I 2021-03-23 22:26:46.494 ServerApp] nbclassic | extension was successfully linked.
+[I 2021-03-23 22:26:46.519 LabApp] JupyterLab extension loaded from /home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyterlab
+[I 2021-03-23 22:26:46.520 LabApp] JupyterLab application directory is /home/pan/anaconda3/envs/fast_env/share/jupyter/lab
+[I 2021-03-23 22:26:46.525 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2021-03-23 22:26:46.525 ServerApp] jupyterlab_code_formatter | extension was successfully loaded.
+[I 2021-03-23 22:26:46.529 ServerApp] nbclassic | extension was successfully loaded.
+[I 2021-03-23 22:26:46.532 ServerApp] Serving notebooks from local directory: /home/pan/django_projects
+[I 2021-03-23 22:26:46.532 ServerApp] Jupyter Server 1.4.1 is running at:
+[I 2021-03-23 22:26:46.532 ServerApp] http://conda-20210309:4999/lab?token=d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21
+[I 2021-03-23 22:26:46.532 ServerApp]  or http://127.0.0.1:4999/lab?token=d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21
+[I 2021-03-23 22:26:46.532 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 2021-03-23 22:26:46.536 ServerApp] 
+    
+    To access the server, open this file in a browser:
+        file:///home/pan/.local/share/jupyter/runtime/jpserver-24773-open.html
+    Or copy and paste one of these URLs:
+        http://conda-20210309:4999/lab?token=d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21
+     or http://127.0.0.1:4999/lab?token=d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21
+[I 2021-03-23 22:26:53.168 LabApp] Build is up to date
+[W 2021-03-23 22:26:53.912 ServerApp] 404 GET /api/contents/apps/ips/tasks.ipynb?content=0&1616509614513 (180.177.89.24): No such file or directory: apps/ips/tasks.ipynb
+[W 2021-03-23 22:26:53.912 ServerApp] No such file or directory: apps/ips/tasks.ipynb
+[W 2021-03-23 22:26:53.912 ServerApp] 404 GET /api/contents/apps/ips/tasks.ipynb?content=0&1616509614513 (180.177.89.24) 1.54ms referer=http://34.80.136.230:4999/lab/tree/apps/ips/tasks.ipynb
+TermSocket.open: 2
+[I 2021-03-23 22:26:53.930 ServerApp] New terminal with specified name: 2
+TermSocket.open: Opened 2
