@@ -6,37 +6,25 @@ import pandas as pd
 import os
 #
 from fastapi import Request
+from fastapi.responses import HTMLResponse
 #
-from .config import url_free, cacert, cwd, headers, ips_csv, ips_html
-from .utils import aio_get, write_file
+from .config import jinja_templates, ips_csv_path, ips_html, ips_csv_tb_html, ips_html_path
+########################################################
 
 
-async def get_freeproxy(t):
-    while 1:
-        await asyncio.sleep(t)
-        print('get_freeproxy')
-        #
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=cacert)) as session:
-            r = await aio_get(session, url_free)
-            if r is not None:
-                elite = []
-                doc = pq(r, parser='html')
-                trs = doc.find('table.table').eq(0).find('tr')
-                for tr in trs:
-                    tr = pq(tr)
-                    level = tr.find('td').eq(4).text().strip()
-                    if level != 'elite proxy':
-                        continue
-                    tmp = {
-                        'ip': tr.find('td').eq(0).text().strip(),
-                        'port': tr.find('td').eq(1).text().strip(),
-                        'level': level,
-                    }
-                    elite.append(tmp)
-                # 寫入檔案
-                write_file(ips_html, r)
-                pd.DataFrame(elite).to_csv(ips_csv, index=False)
-
-# loop = asyncio.get_event_loop()
-# task = loop.create_task(get_freeproxy(1))
-# loop.run_until_complete(task)
+def show_freeproxy(request: Request, f: str = 'csv'):
+    context = {
+        'request': request,
+    }
+    rep = HTMLResponse('請啟動startBGT，撈取csv')
+    if f == 'html':
+        # 每次抓取的原始頁
+        if os.path.isfile(ips_html_path):
+            rep = jinja_templates.TemplateResponse(ips_html, context)
+    else:
+        # 顯示持續擴充更新的csv
+        if os.path.isfile(ips_csv_path):
+            context['ips_csv_tb_html'] = pd.read_csv(ips_csv_path).to_html()
+            rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)
+    #
+    return rep

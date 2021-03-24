@@ -13,7 +13,7 @@ from fastapi import Request, BackgroundTasks
 import config
 from utils import static_makeornot
 from tasks import tasks_list
-
+import apps.ips.config
 #####################################################
 
 
@@ -51,10 +51,17 @@ async def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     return static_makeornot(fn_static, fn_temp, context)
 
 
+async def get_next_ip():
+    if apps.ips.config.ips_cycle:
+        return next(apps.ips.config.ips_cycle)
+    else:
+        return '請啟動startBGT'
+
+
 async def startBGT():
     global startBGT_tasks
     if not startBGT_tasks:
-        startBGT_tasks = [asyncio.create_task(task(t)) for task, t in tasks_list]
+        startBGT_tasks = [asyncio.create_task(task(*args)) for task, args in tasks_list]
         #
         print('開始tasks')
         return '開始_幕後排程'
