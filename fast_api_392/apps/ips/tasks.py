@@ -13,18 +13,16 @@ import itertools
 #
 from fastapi import Request
 # 為了在jupyter中試，從apps開始import
-import apps.ips.config
+import apps.ips.config as ips_cfg
 from apps.ips.config import url_free, cacert, ips_csv_path, ips_html_path, dtype, dt_format, ipcols
 from apps.ips.utils import aio_get, write_file, csv_update
 ###############################################################################
 
 
-
-
 async def get_freeproxy(t, once=True):
     get_freeproxy_cnt = 0
     while 1:
-        T = (apps.ips.config.ips_cycle and os.path.isfile(ips_csv_path))*t  # 沒有 csv 或 ips_cycle 就馬上爬
+        T = (ips_cfg.ips_cycle and os.path.isfile(ips_csv_path))*t  # 沒有 csv 或 ips_cycle 就馬上爬
         await asyncio.sleep(T)
         #
         async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=cacert)) as session:
@@ -61,7 +59,7 @@ async def get_freeproxy(t, once=True):
                     df3 = df3.sample(frac=1)  # 亂排
                     df3.to_csv(ips_csv_path, index=False)
                     # 3 更新ips_cycle產生器
-                    apps.ips.config.ips_cycle = itertools.cycle(df3[ipcols].values.tolist())
+                    ips_cfg.ips_cycle = itertools.cycle(df3[ipcols].values.tolist())
                     #
                     get_freeproxy_cnt += 1
                     print(f'get_freeproxy 第{get_freeproxy_cnt}次更新成功:{now}')

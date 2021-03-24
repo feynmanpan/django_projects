@@ -6,7 +6,7 @@ import json
 from fastapi import Request
 from fastapi.responses import ORJSONResponse, PlainTextResponse
 #
-from .utils import ( 
+from .utils import (
     floatint, zero, isocheck,
     get_miss_ds, df_miss_7595,
 )
@@ -18,11 +18,18 @@ from .config import (
     pig_csv_path,
     jinja_templates,
 )
+import apps.ips.config as ips_cfg
+######################################### 
 
 pig_d_count = 0
 
 
 async def pig_d(request: Request, sd: str = '2021-03-01', ed: str = '2021-03-17'):
+    # 從cycle取一個ip port
+    ips_cycle = ips_cfg.ips_cycle
+    if ips_cycle:
+        print(f'ips_cycle={next(ips_cycle)}')
+    # ____________________________________________________
     global pig_d_count
     if pig_d_count == 1:
         return 'pig_d 執行中'
@@ -80,8 +87,8 @@ async def pig_d(request: Request, sd: str = '2021-03-01', ed: str = '2021-03-17'
     print(res['log'])
     pig_d_count = 0
     context = {
-        'request':request,
-        'res':json.dumps(res, indent=2, ensure_ascii=False),
+        'request': request,
+        'res': json.dumps(res, indent=2, ensure_ascii=False),
     }
 
     return jinja_templates.TemplateResponse('pig_d.html', context)

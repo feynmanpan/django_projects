@@ -14,13 +14,13 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import HTMLResponse, ORJSONResponse
 #
 import config
-from views import test, startBGT, get_next_ip
+from views import test, startBGT
 from middlewares import mw_list
 from utils import MSG
 # apps
 from apps.pig.views import pig_d
-from apps.ips.views import show_freeproxy
-
+from apps.ips.views import show_freeproxy, get_next_ip
+from apps.ips.config import get_freeproxy_delta
 
 #################### app ################################
 app = FastAPI()
@@ -64,7 +64,7 @@ msgs = [
     f'執行模式:【{config.now_mode}】',
     f'檢查trusted_host: 【{config.trusted_host}】 / allowed_hosts: {config.allowed_hosts}',
     f'在main啟動時執行排程startBGT: 【{config.startBGT_atonce}】',
-    f'get_freeproxy 代理ip更新週期(秒): {config.get_freeproxy_delta}',
+    f'get_freeproxy 代理ip更新週期(秒): {get_freeproxy_delta}',
 ]
 
 MSG.prt_msgs(msgs)

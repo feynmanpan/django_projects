@@ -19,7 +19,8 @@ from middlewares import mw_list
 from utils import MSG
 # apps
 from apps.pig.views import pig_d
-
+from apps.ips.views import show_freeproxy, get_next_ip
+from apps.ips.config import get_freeproxy_delta
 
 #################### app ################################
 app = FastAPI()
@@ -45,15 +46,16 @@ for mw in mw_list:
 
 
 #################### urlpattern ################################
-path_get("/test/{p}", test)
+# path_get("/test/{p}", test)
 path_get("/pig_d", pig_d)
+path_get("/proxy", show_freeproxy)
+path_get("/nextip", get_next_ip)
 
 
 #################### schedule ################################
+path_get("/startBGT", startBGT)
 if config.startBGT_atonce:
     asyncio.create_task(startBGT())
-else:
-    path_get("/startBGT", startBGT)
 
 
 #################### MSG ################################
@@ -62,8 +64,7 @@ msgs = [
     f'執行模式:【{config.now_mode}】',
     f'檢查trusted_host: 【{config.trusted_host}】 / allowed_hosts: {config.allowed_hosts}',
     f'在main啟動時執行排程startBGT: 【{config.startBGT_atonce}】',
+    f'get_freeproxy 代理ip更新週期(秒): {get_freeproxy_delta}',
 ]
 
 MSG.prt_msgs(msgs)
-
-
