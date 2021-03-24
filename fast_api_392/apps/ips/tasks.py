@@ -1,5 +1,3 @@
-# %load get_bookprice.py
-# %run get_bookprice.py
 # -*- coding: utf-8 -*-
 import asyncio
 import requests
@@ -17,7 +15,9 @@ import apps.ips.config as ips_cfg
 from apps.ips.config import url_free, cacert, ips_csv_path, ips_html_path, dtype, dt_format, ipcols
 from apps.ips.utils import aio_get, write_file, csv_update
 ###############################################################################
-
+# 2021/03/24
+# To Do: 檢查ip有效性，aiohttp使用proxy
+###############################################################################
 
 async def get_freeproxy(t, once=True):
     get_freeproxy_cnt = 0
@@ -69,7 +69,7 @@ async def get_freeproxy(t, once=True):
             break
 
 #
-if __name__ == '__main__': 
+if __name__ == '__main__':
     try:
         tmp = 'zmqshell' in str(type(get_ipython()))  # 在jupyter
         print(tmp, '在jupyter')

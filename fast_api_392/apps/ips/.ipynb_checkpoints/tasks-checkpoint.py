@@ -1,5 +1,4 @@
-# %load get_bookprice.py
-# %run get_bookprice.py
+# %%writefile get_biggoKW.py
 # -*- coding: utf-8 -*-
 import asyncio
 import requests
@@ -69,7 +68,7 @@ async def get_freeproxy(t, once=True):
             break
 
 #
-if __name__ == '__main__': 
+if __name__ == '__main__':
     try:
         tmp = 'zmqshell' in str(type(get_ipython()))  # 在jupyter
         print(tmp, '在jupyter')
