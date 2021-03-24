@@ -52,8 +52,9 @@ async def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
 
 
 async def get_next_ip():
-    if apps.ips.config.ips_cycle:
-        return next(apps.ips.config.ips_cycle)
+    ips_cycle = apps.ips.config.ips_cycle
+    if ips_cycle:
+        return next(ips_cycle)
     else:
         return '請啟動startBGT'
 

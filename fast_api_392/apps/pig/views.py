@@ -18,11 +18,18 @@ from .config import (
     pig_csv_path,
     jinja_templates,
 )
+import apps.ips.config
+#########################################
 
 pig_d_count = 0
 
 
 async def pig_d(request: Request, sd: str = '2021-03-01', ed: str = '2021-03-17'):
+    # 從cycle取一個ip port
+    ips_cycle = apps.ips.config.ips_cycle
+    if ips_cycle:
+        print(f'ips_cycle={next(ips_cycle)}')
+    # ____________________________________________________
     global pig_d_count
     if pig_d_count == 1:
         return 'pig_d 執行中'
