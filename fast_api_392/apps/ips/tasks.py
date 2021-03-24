@@ -19,7 +19,10 @@ from apps.ips.utils import aio_get, write_file, csv_update
 ###############################################################################
 
 
+
+
 async def get_freeproxy(t, once=True):
+    get_freeproxy_cnt = 0
     while 1:
         T = (apps.ips.config.ips_cycle and os.path.isfile(ips_csv_path))*t  # 沒有 csv 或 ips_cycle 就馬上爬
         await asyncio.sleep(T)
@@ -60,7 +63,8 @@ async def get_freeproxy(t, once=True):
                     # 3 更新ips_cycle產生器
                     apps.ips.config.ips_cycle = itertools.cycle(df3[ipcols].values.tolist())
                     #
-                    print(f'get_freeproxy 更新成功:{now}')
+                    get_freeproxy_cnt += 1
+                    print(f'get_freeproxy 第{get_freeproxy_cnt}次更新成功:{now}')
                 else:
                     pass
         if once:

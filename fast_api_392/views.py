@@ -60,10 +60,10 @@ async def get_next_ip():
 
 async def startBGT():
     global startBGT_tasks
-    if not startBGT_tasks:
+    if startBGT_tasks is None:
         startBGT_tasks = [asyncio.create_task(task(*args)) for task, args in tasks_list]
         #
-        print('開始tasks')
+        print('____________ startBGT Running ____________')
         return '開始_幕後排程'
     else:
         return f'已有_幕後排程: {startBGT_tasks}'

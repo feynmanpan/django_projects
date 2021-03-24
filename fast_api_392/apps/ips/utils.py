@@ -10,7 +10,7 @@ def write_file(fpath, text):
 async def aio_get(session, url: str):
     async with session.get(url, headers=headers) as r:
         status_code = r.status
-        print(f'status_code={status_code}')
+        # print(f'status_code={status_code}')
         if status_code == 200:
             rep = await r.text(encoding='utf8')
         else:
