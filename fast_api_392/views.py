@@ -56,7 +56,7 @@ async def startBGT():
     if startBGT_tasks is None:
         startBGT_tasks = [asyncio.create_task(task(*args)) for task, args in tasks_list]
         #
-        print('____________ startBGT Running ____________')
+        print('>>>>>>>>>>>>>>> startBGT Running <<<<<<<<<<<<<<<')
         return '開始_幕後排程'
     else:
         NL = '\n\n'

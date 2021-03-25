@@ -1,4 +1,3 @@
-# %%writefile get_biggoKW.py
 # -*- coding: utf-8 -*-
 import asyncio
 import requests
@@ -13,8 +12,16 @@ import itertools
 from fastapi import Request
 # 為了在jupyter中試，從apps開始import
 import apps.ips.config as ips_cfg
-from apps.ips.config import url_free, cacert, ips_csv_path, ips_html_path, dtype, dt_format, ipcols
+from apps.ips.config import (
+    url_free, url_free_us, cacert,
+    ips_csv_path, ips_html_path,
+    dtype, dt_format,
+    ipcols, get_freeproxy_delta, level_https
+)
 from apps.ips.utils import aio_get, write_file, csv_update
+###############################################################################
+# 2021/03/24
+# To Do: 檢查ip有效性，aiohttp使用proxy
 ###############################################################################
 
 
@@ -25,7 +32,7 @@ async def get_freeproxy(t, once=True):
         await asyncio.sleep(T)
         #
         async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=cacert)) as session:
-            status_code, rtext = await aio_get(session, url_free)
+            status_code, rtext = await aio_get(session, url_free_us)  # 專抓美國的
             if status_code == 200 and rtext not in ['', None]:
                 doc = pq(rtext, parser='html')
                 trs = doc.find('table.table').eq(0).find('tr')
@@ -36,8 +43,10 @@ async def get_freeproxy(t, once=True):
                         tds = pq(tr).find('td')
                         level = tds.eq(4).text().strip()
                         https = tds.eq(6).text().strip()
-                        if level != 'elite proxy' or https != 'yes':
+                        #_________________________________                         
+                        if (level,https) != level_https: 
                             continue
+                        #_________________________________                         
                         tmp = {
                             'ip': tds.eq(0).text().strip(),
                             'port': tds.eq(1).text().strip(),
@@ -67,7 +76,14 @@ async def get_freeproxy(t, once=True):
         if once:
             break
 
-#
+
+###############################################################################
+tasks_list = [
+    (get_freeproxy, [get_freeproxy_delta, False]),
+]
+###############################################################################
+
+
 if __name__ == '__main__':
     try:
         tmp = 'zmqshell' in str(type(get_ipython()))  # 在jupyter

@@ -26,3 +26,4 @@ dt_format = "%Y-%m-%d_%H:%M:%S"
 ipcols = ['ip', 'port', 'now']
 maxN = 500
 get_freeproxy_delta = 8*60
+level_https = ('elite proxy','yes')

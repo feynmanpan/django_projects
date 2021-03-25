@@ -29,5 +29,7 @@ class MSG:
 
     @classmethod
     def prt_msgs(cls, msgs: list):
+        print("============================================================")
         for msg in msgs:
             cls.printmsg(msg)
+        print("============================================================")
