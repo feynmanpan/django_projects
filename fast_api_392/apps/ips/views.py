@@ -8,16 +8,25 @@ import os
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 #
-from .config import jinja_templates, ips_csv_path, ips_html, ips_csv_tb_html, ips_html_path
-from . import config as ipscfg
-########################################################   
+from .config import (
+    jinja_templates,
+    ips_csv_path,
+    ips_csv_tb_html,
+    ips_html_path,
+    ips_html,
+)
+from . import config as ips_cfg
+########################################################
 
 
 async def get_next_ip():
-    if ipscfg.ips_cycle:
-        return next(ipscfg.ips_cycle)
+    # 從cycle取一個ip port
+    ips_cycle = ips_cfg.ips_cycle
+    if ips_cycle:
+        return next(ips_cycle)
     else:
         return '請啟動startBGT'
+
 
 async def show_freeproxy(request: Request, f: str = 'csv'):
     context = {

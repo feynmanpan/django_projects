@@ -1,9 +1,6 @@
-from datetime import datetime
 import asyncio
-from time import sleep
 #
-from apps.ips.config import get_freeproxy_delta
-from apps.ips.tasks import get_freeproxy
+from apps.ips.tasks import tasks_list as ips_tasks
 ########################################################
 
 
@@ -26,13 +23,8 @@ async def loopme2(t):
         print(f'loopme2 = {cnt}')
 
 
-
-
 #################### tasks_list ################################
-
-#
 tasks_list = [
     # (loopme, [1]),
     # (loopme2, [1]),
-    (get_freeproxy, [get_freeproxy_delta, False]),
-]
+] + ips_tasks

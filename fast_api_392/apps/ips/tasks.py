@@ -12,12 +12,13 @@ import itertools
 from fastapi import Request
 # 為了在jupyter中試，從apps開始import
 import apps.ips.config as ips_cfg
-from apps.ips.config import url_free, cacert, ips_csv_path, ips_html_path, dtype, dt_format, ipcols
+from apps.ips.config import url_free, cacert, ips_csv_path, ips_html_path, dtype, dt_format, ipcols, get_freeproxy_delta
 from apps.ips.utils import aio_get, write_file, csv_update
 ###############################################################################
 # 2021/03/24
 # To Do: 檢查ip有效性，aiohttp使用proxy
 ###############################################################################
+
 
 async def get_freeproxy(t, once=True):
     get_freeproxy_cnt = 0
@@ -68,7 +69,14 @@ async def get_freeproxy(t, once=True):
         if once:
             break
 
-#
+
+###############################################################################
+tasks_list = [
+    (get_freeproxy, [get_freeproxy_delta, False]),
+]
+###############################################################################
+
+
 if __name__ == '__main__':
     try:
         tmp = 'zmqshell' in str(type(get_ipython()))  # 在jupyter

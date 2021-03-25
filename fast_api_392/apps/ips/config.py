@@ -5,7 +5,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
 }
 url_free = 'https://free-proxy-list.net/'
-url_free_us = 'https://www.us-proxy.org/' 
+url_free_us = 'https://www.us-proxy.org/'
 #
 cacert = [True, False][0]
 #

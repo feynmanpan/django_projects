@@ -7,14 +7,14 @@ from os import path
 #
 from starlette.templating import _TemplateResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, ORJSONResponse
+from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 from fastapi import Request, BackgroundTasks
 #
 import config
 from utils import static_makeornot
 from tasks import tasks_list
 import apps.ips.config as ips_cfg
-#####################################################
+###############################################################################
 
 
 startBGT_tasks = None
@@ -51,9 +51,6 @@ async def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     return static_makeornot(fn_static, fn_temp, context)
 
 
-
-
-
 async def startBGT():
     global startBGT_tasks
     if startBGT_tasks is None:
@@ -62,4 +59,6 @@ async def startBGT():
         print('____________ startBGT Running ____________')
         return '開始_幕後排程'
     else:
-        return f'已有_幕後排程: {startBGT_tasks}'
+        NL = '\n\n'
+        rep = f'幕後排程 running:{NL}{NL.join([str(t) for t in list(startBGT_tasks)])}'
+        return PlainTextResponse(rep)
