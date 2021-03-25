@@ -12,7 +12,7 @@ async def main1(a, b):
     print(f"started at {time.strftime('%X')}")
     loop = asyncio.get_event_loop()
     print(12345, loop.is_running())
-        time.sleep
+    # time.sleep
 
     task1 = asyncio.create_task(say_after(2, 'AA'))
     task2 = asyncio.create_task(say_after(1, 'BBB'))
