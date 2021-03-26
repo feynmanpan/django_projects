@@ -15,15 +15,13 @@ from fastapi import Request
 # 為了在jupyter中試，從apps開始import
 import apps.ips.config as ips_cfg
 from apps.ips.config import (
-    url_frees, level_https, cacert,
+    url_free_cycle, level_https, cacert,
     ips_csv_path, ips_html_path,
     dtype, dt_format,
     ipcols, get_freeproxy_delta,
 )
 from apps.ips.utils import aio_get, write_file, csv_update, CHECK_PROXY
 ###############################################################################
-# 2021/03/24
-# To Do: 檢查ip有效性，aiohttp使用proxy
 ###############################################################################
 
 
@@ -35,7 +33,7 @@ async def get_freeproxy(t, once=True):
         stime = time()
         #
         async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=cacert)) as session:
-            status_code, rtext = await aio_get(session, url_frees)
+            status_code, rtext = await aio_get(session, next(url_free_cycle))
             if status_code == 200 and rtext not in ['', None]:
                 doc = pq(rtext, parser='html')
                 trs = doc.find('table.table').eq(0).find('tr')
@@ -71,7 +69,7 @@ async def get_freeproxy(t, once=True):
                     print(f'結束檢查proxy: {time()-stime}')
                     random.shuffle(good_proxys)
                     # 4 存 csv
-                    df3 = pd.DataFrame(good_proxys).astype(dtype)  # .sample(frac=1)  # 亂排
+                    df3 = pd.DataFrame(good_proxys).astype(dtype)  # df.sample(frac=1)  # 亂排
                     df3.to_csv(ips_csv_path, index=False)
                     # 5 更新ips_cycle產生器
                     ips_cfg.ips_cycle = itertools.cycle(good_proxys)

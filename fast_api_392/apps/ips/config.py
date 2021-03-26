@@ -1,4 +1,6 @@
 import os
+import itertools
+#
 from fastapi.templating import Jinja2Templates
 ########################################################
 headers = {
@@ -6,7 +8,7 @@ headers = {
 }
 url_free = 'https://free-proxy-list.net/'
 url_free_us = 'https://www.us-proxy.org/'
-url_frees = [url_free, url_free_us][0]
+url_free_cycle = itertools.cycle([url_free, url_free_us])
 level_https = ('elite proxy', 'yes')
 #
 timeout = 10
@@ -37,4 +39,4 @@ dtype = {'port': str}
 dt_format = "%Y-%m-%d_%H:%M:%S"
 ipcols = ['ip', 'port', 'now']
 maxN = 500
-get_freeproxy_delta = 8*60
+get_freeproxy_delta = 4*60
