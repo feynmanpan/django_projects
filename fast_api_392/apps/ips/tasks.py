@@ -45,7 +45,7 @@ async def get_freeproxy(t, once=True):
                         level = tds.eq(4).text().strip()
                         https = tds.eq(6).text().strip()
                         # _________________________________
-                        if (level, https) != level_https:
+                        if (level, https) not in level_https:
                             continue
                         # _________________________________
                         tmp = {
@@ -65,7 +65,7 @@ async def get_freeproxy(t, once=True):
                         df3 = pd.DataFrame(elite).astype(dtype)
                     # 3 檢查代理 #################################
                     ippts = df3.values.tolist()
-                    print(f'開始檢查proxy: {len(ippts)} 個')
+                    print(f'\n開始檢查proxy: {len(ippts)} 個')
                     good_proxys = await CHECK_PROXY.get_good_proxys(ippts)
                     print(f'結束檢查proxy: {time()-stime}')
                     random.shuffle(good_proxys)
@@ -77,7 +77,7 @@ async def get_freeproxy(t, once=True):
                     #
                     get_freeproxy_cnt += 1
                     print(f'get_freeproxy 第{get_freeproxy_cnt}次更新成功:{now}')
-                    print(f'good_proxys 數量: {len(good_proxys)}')
+                    print(f'good_proxys 數量: {len(good_proxys)}\n')
                 else:
                     pass
         if once:

@@ -8,20 +8,20 @@ import os
 import sys
 from datetime import datetime
 import itertools
+import random
+from time import time
 #
 from fastapi import Request
 # 為了在jupyter中試，從apps開始import
 import apps.ips.config as ips_cfg
 from apps.ips.config import (
-    url_frees, level_https, cacert,
+    url_free_cycle, level_https, cacert,
     ips_csv_path, ips_html_path,
     dtype, dt_format,
-    ipcols, get_freeproxy_delta, 
+    ipcols, get_freeproxy_delta,
 )
-from apps.ips.utils import aio_get, write_file, csv_update
+from apps.ips.utils import aio_get, write_file, csv_update, CHECK_PROXY
 ###############################################################################
-# 2021/03/24
-# To Do: 檢查ip有效性，aiohttp使用proxy 
 ###############################################################################
 
 
@@ -30,9 +30,10 @@ async def get_freeproxy(t, once=True):
     while 1:
         T = (ips_cfg.ips_cycle and os.path.isfile(ips_csv_path))*t  # 沒有 csv 或 ips_cycle 就馬上爬
         await asyncio.sleep(T)
+        stime = time()
         #
         async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=cacert)) as session:
-            status_code, rtext = await aio_get(session, url_frees)
+            status_code, rtext = await aio_get(session, next(url_free_cycle))
             if status_code == 200 and rtext not in ['', None]:
                 doc = pq(rtext, parser='html')
                 trs = doc.find('table.table').eq(0).find('tr')
@@ -43,16 +44,13 @@ async def get_freeproxy(t, once=True):
                         tds = pq(tr).find('td')
                         level = tds.eq(4).text().strip()
                         https = tds.eq(6).text().strip()
-                        #_________________________________                         
-                        if (level,https) != level_https: 
+                        # _________________________________
+                        if (level, https) not in level_https:
                             continue
-                        #_________________________________                         
+                        # _________________________________
                         tmp = {
                             'ip': tds.eq(0).text().strip(),
                             'port': tds.eq(1).text().strip(),
-                            'country': tds.eq(3).text().strip(),
-                            'level': level,
-                            'https': https,
                             'now': now,
                         }
                         elite.append(tmp)
@@ -65,13 +63,21 @@ async def get_freeproxy(t, once=True):
                         df3 = csv_update(df1, df2)
                     else:
                         df3 = pd.DataFrame(elite).astype(dtype)
-                    df3 = df3.sample(frac=1)  # 亂排
+                    # 3 檢查代理 #################################
+                    ippts = df3.values.tolist()
+                    print(f'\n開始檢查proxy: {len(ippts)} 個')
+                    good_proxys = await CHECK_PROXY.get_good_proxys(ippts)
+                    print(f'結束檢查proxy: {time()-stime}')
+                    random.shuffle(good_proxys)
+                    # 4 存 csv
+                    df3 = pd.DataFrame(good_proxys).astype(dtype)  # df.sample(frac=1)  # 亂排
                     df3.to_csv(ips_csv_path, index=False)
-                    # 3 更新ips_cycle產生器
-                    ips_cfg.ips_cycle = itertools.cycle(df3[ipcols].values.tolist())
+                    # 5 更新ips_cycle產生器
+                    ips_cfg.ips_cycle = itertools.cycle(good_proxys)
                     #
                     get_freeproxy_cnt += 1
                     print(f'get_freeproxy 第{get_freeproxy_cnt}次更新成功:{now}')
+                    print(f'good_proxys 數量: {len(good_proxys)}\n')
                 else:
                     pass
         if once:

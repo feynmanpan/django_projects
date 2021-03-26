@@ -9,9 +9,9 @@ headers = {
 url_free = 'https://free-proxy-list.net/'
 url_free_us = 'https://www.us-proxy.org/'
 url_free_cycle = itertools.cycle([url_free, url_free_us])
-level_https = ('elite proxy', 'yes')
+level_https = [('anonymous', 'yes'),('elite proxy', 'yes')]
 #
-timeout = 10
+timeout = 15
 proxy_checkurls = [
     "http://210.240.175.62/NTIIS/IP_test.asp",
     "https://httpbin.org/ip",

@@ -42,15 +42,15 @@ class CHECK_PROXY:
     async def check(self, proxy_checkurl):
         connector = aiohttp.TCPConnector(ssl=cacert)
         TO = aiohttp.ClientTimeout(total=timeout)
-        isGood = None
+        isGood = False
         try:
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
                 async with session.get(proxy_checkurl, headers=headers, proxy=self.proxy) as r:
                     status_code = r.status
                     rtext = await r.text()
-                    # rtext = await r.text(encoding='utf8')
+                    # rtext = await r.text(encoding='utf8') 
         except Exception as err:
-            # print(err)
+            # print('err=',err)
             isGood = False
         else:
             isGood = (status_code == 200) and re.search(self.ip, rtext) is not None
