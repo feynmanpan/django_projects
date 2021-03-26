@@ -179,7 +179,7 @@ async def get_single_d(D: str):
     stime = time()
     await asyncio.sleep(uniform(0.1, 1))
     # 每個session重造connector
-    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=cacert)) as session:
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=cacert)) as session:
         # (1)第一次進入頁面
         r1 = await aio_get(session, url_pig)
         doc1 = pq(r1, parser='html')
@@ -337,7 +337,7 @@ async def get_single_d_T(D: str):
     stime = time()
     await asyncio.sleep(uniform(0.1, 1))
     #
-    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=cacert)) as session:
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=cacert)) as session:
         # (1) 第一次進入頁面【交易行情統計】
         r1 = await aio_get(session, url_pig2)
         doc1 = pq(r1, parser='html')

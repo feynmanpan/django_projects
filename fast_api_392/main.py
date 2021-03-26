@@ -19,7 +19,7 @@ from middlewares import mw_list
 from utils import MSG
 # apps
 from apps.pig.views import pig_d
-from apps.ips.views import show_freeproxy, get_next_ip
+from apps.ips.views import show_freeproxy, get_next_ip, check_proxy
 from apps.ips.config import get_freeproxy_delta
 
 #################### app ################################
@@ -50,6 +50,7 @@ for mw in mw_list:
 path_get("/pig_d", pig_d)
 path_get("/proxy", show_freeproxy)
 path_get("/nextip", get_next_ip)
+path_get("/check_proxy", check_proxy)
 
 
 #################### schedule ################################

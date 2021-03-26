@@ -13,15 +13,15 @@ from fastapi import Request
 # 為了在jupyter中試，從apps開始import
 import apps.ips.config as ips_cfg
 from apps.ips.config import (
-    url_free, url_free_us, cacert,
+    url_frees, level_https, cacert,
     ips_csv_path, ips_html_path,
     dtype, dt_format,
-    ipcols, get_freeproxy_delta, level_https
+    ipcols, get_freeproxy_delta, 
 )
 from apps.ips.utils import aio_get, write_file, csv_update
 ###############################################################################
 # 2021/03/24
-# To Do: 檢查ip有效性，aiohttp使用proxy
+# To Do: 檢查ip有效性，aiohttp使用proxy 
 ###############################################################################
 
 
@@ -31,8 +31,8 @@ async def get_freeproxy(t, once=True):
         T = (ips_cfg.ips_cycle and os.path.isfile(ips_csv_path))*t  # 沒有 csv 或 ips_cycle 就馬上爬
         await asyncio.sleep(T)
         #
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=cacert)) as session:
-            status_code, rtext = await aio_get(session, url_free_us)  # 專抓美國的
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=cacert)) as session:
+            status_code, rtext = await aio_get(session, url_frees)
             if status_code == 200 and rtext not in ['', None]:
                 doc = pq(rtext, parser='html')
                 trs = doc.find('table.table').eq(0).find('tr')
@@ -50,6 +50,7 @@ async def get_freeproxy(t, once=True):
                         tmp = {
                             'ip': tds.eq(0).text().strip(),
                             'port': tds.eq(1).text().strip(),
+                            'country': tds.eq(3).text().strip(),
                             'level': level,
                             'https': https,
                             'now': now,

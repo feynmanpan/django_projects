@@ -16,6 +16,7 @@ from .config import (
     ips_html,
 )
 from . import config as ips_cfg
+from .utils import CHECK_PROXY
 ########################################################
 
 
@@ -26,6 +27,13 @@ async def get_next_ip():
         return next(ips_cycle)
     else:
         return '請啟動startBGT'
+
+
+async def check_proxy():
+    proxy_ip = '161.202.226.194'
+    proxy_port = '80'
+    #
+    return await CHECK_PROXY(proxy_ip, proxy_port, '11').get_isGood()
 
 
 async def show_freeproxy(request: Request, f: str = 'csv'):

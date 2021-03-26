@@ -6,8 +6,20 @@ headers = {
 }
 url_free = 'https://free-proxy-list.net/'
 url_free_us = 'https://www.us-proxy.org/'
+url_frees = [url_free, url_free_us][0]
+level_https = ('elite proxy', 'yes')
 #
-cacert = [True, False][0]
+timeout = 10
+proxy_checkurl1 = "http://210.240.175.62/NTIIS/IP_test.asp"
+proxy_checkurl2 = "https://www.whatismyip.com.tw/tw/"
+proxy_checkurl3 = 'http://httpbin.org/get'
+proxy_checkurls = [
+    proxy_checkurl1,
+    proxy_checkurl2,
+    proxy_checkurl3
+]
+#
+cacert = [False, True][1]
 #
 cwd = os.path.dirname(os.path.realpath(__file__))
 templates = 'templates'
@@ -26,4 +38,3 @@ dt_format = "%Y-%m-%d_%H:%M:%S"
 ipcols = ['ip', 'port', 'now']
 maxN = 500
 get_freeproxy_delta = 8*60
-level_https = ('elite proxy','yes')

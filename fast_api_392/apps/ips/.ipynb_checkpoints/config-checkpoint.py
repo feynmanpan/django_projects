@@ -6,6 +6,8 @@ headers = {
 }
 url_free = 'https://free-proxy-list.net/'
 url_free_us = 'https://www.us-proxy.org/'
+url_frees = [url_free,url_free_us][0]
+level_https = ('elite proxy','yes') 
 #
 cacert = [True, False][0]
 #
@@ -26,4 +28,4 @@ dt_format = "%Y-%m-%d_%H:%M:%S"
 ipcols = ['ip', 'port', 'now']
 maxN = 500
 get_freeproxy_delta = 8*60
-level_https = ('elite proxy','yes')
+
