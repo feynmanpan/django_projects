@@ -5,7 +5,7 @@ import re
 from .config import (
     cacert,
     headers, ipcols, maxN,
-    proxy_checkurls, timeout,
+    proxy_checkurls, timeout, check_atleast
 )
 
 
@@ -61,7 +61,7 @@ class CHECK_PROXY:
         tasks = [asyncio.create_task(self.check(url)) for url in proxy_checkurls]
         await asyncio.wait(tasks)
         result = None
-        if sum(self.isGood) >= 2:
+        if sum(self.isGood) >= check_atleast:
             result = {
                 'ip': self.ip,
                 'port': self.port,

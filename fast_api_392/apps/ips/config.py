@@ -12,14 +12,15 @@ url_free_cycle = itertools.cycle([url_free, url_free_us])
 level_https = ('elite proxy', 'yes')
 #
 timeout = 10
-proxy_checkurl1 = "http://210.240.175.62/NTIIS/IP_test.asp"
-proxy_checkurl2 = "https://www.whatismyip.com.tw/tw/"
-proxy_checkurl3 = 'http://httpbin.org/get'
 proxy_checkurls = [
-    proxy_checkurl1,
-    proxy_checkurl2,
-    proxy_checkurl3
+    "http://210.240.175.62/NTIIS/IP_test.asp",
+    "https://httpbin.org/ip",
+    "https://www.whatismyip.com.tw/tw/",
+    "https://www.whatismyip.com/",
+    "https://www.rus.net.tw/myip.php",
+    "https://www.expressvpn.com/what-is-my-ip",
 ]
+check_atleast = 3
 #
 cacert = [False, True][1]
 #
