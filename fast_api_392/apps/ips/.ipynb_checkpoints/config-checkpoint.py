@@ -9,18 +9,25 @@ headers = {
 url_free = 'https://free-proxy-list.net/'
 url_free_us = 'https://www.us-proxy.org/'
 url_free_cycle = itertools.cycle([url_free, url_free_us])
-level_https = [('anonymous', 'yes'),('elite proxy', 'yes')]
-#
+level_https = [
+    ('anonymous', 'yes'),
+    ('elite proxy', 'yes'),
+#     ('anonymous', 'no'),
+#     ('elite proxy', 'no'),    
+]
+get_freeproxy_delta = 4*60
 timeout = 15
 proxy_checkurls = [
     "http://210.240.175.62/NTIIS/IP_test.asp",
+    "https://whatismyipaddress.com/zh-cn/index",
     "https://httpbin.org/ip",
     "https://www.whatismyip.com.tw/tw/",
     "https://www.whatismyip.com/",
     "https://www.rus.net.tw/myip.php",
     "https://www.expressvpn.com/what-is-my-ip",
 ]
-check_atleast = 3
+sampleN = 5
+check_atleast = 2
 #
 cacert = [False, True][1]
 #
@@ -32,12 +39,12 @@ ips_csv = 'ips.csv'
 ips_html = 'ips.html'
 ips_csv_tb_html = 'ips_csv_tb.html'
 #
-ips_csv_path = os.path.join(cwd, 'ips.csv')
-ips_html_path = os.path.join(cwd, templates, 'ips.html')
+ips_csv_path = os.path.join(cwd, ips_csv)
+ips_html_path = os.path.join(cwd, templates, ips_html)
 #
 ips_cycle = False
 dtype = {'port': str}
 dt_format = "%Y-%m-%d_%H:%M:%S"
 ipcols = ['ip', 'port', 'now']
 maxN = 500
-get_freeproxy_delta = 4*60
+

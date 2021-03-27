@@ -1,11 +1,12 @@
 import asyncio
 import aiohttp
 import re
+import random
 #
 from .config import (
     cacert,
     headers, ipcols, maxN,
-    proxy_checkurls, timeout, check_atleast
+    proxy_checkurls, timeout, check_atleast, sampleN
 )
 
 
@@ -58,7 +59,7 @@ class CHECK_PROXY:
             self.isGood.append(isGood)
 
     async def get_isGood(self):
-        tasks = [asyncio.create_task(self.check(url)) for url in proxy_checkurls]
+        tasks = [asyncio.create_task(self.check(url)) for url in random.sample(proxy_checkurls, sampleN)]
         await asyncio.wait(tasks)
         result = None
         if sum(self.isGood) >= check_atleast:
