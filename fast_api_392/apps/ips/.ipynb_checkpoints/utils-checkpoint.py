@@ -45,6 +45,7 @@ class CHECK_PROXY:
         TO = aiohttp.ClientTimeout(total=timeout)
         isGood = False
         try:
+            await asyncio.sleep(random.randint(0, sampleN))
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
                 async with session.get(proxy_checkurl, headers=headers, proxy=self.proxy) as r:
                     status_code = r.status
