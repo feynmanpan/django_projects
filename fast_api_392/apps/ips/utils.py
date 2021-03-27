@@ -27,8 +27,8 @@ async def aio_get(session, url: str):
 
 
 def csv_update(df1, df2):
-    # 保留最新的500筆
-    return df1.append(df2).sort_values(by=ipcols, ascending=False).drop_duplicates(subset=ipcols[:2]).reset_index(drop=True)[:maxN]
+    # 保留500筆
+    return df1.append(df2).sort_values(by=ipcols, ascending=True).drop_duplicates(subset=ipcols[:2]).reset_index(drop=True)[:maxN]
 
 
 class CHECK_PROXY:
@@ -73,5 +73,6 @@ class CHECK_PROXY:
     @classmethod
     async def get_good_proxys(cls, ippts: list):
         tasks = [asyncio.create_task(cls(ip, port, now).get_isGood()) for ip, port, now in ippts]
-        good_proxys = [p for p in await asyncio.gather(*tasks) if p]
+        good_proxys = [p for p in await asyncio.gather(*tasks) if p]        
+        #
         return good_proxys
