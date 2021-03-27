@@ -6,9 +6,13 @@ from fastapi.templating import Jinja2Templates
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
 }
-url_free = 'https://free-proxy-list.net/'
-url_free_us = 'https://www.us-proxy.org/'
-url_free_cycle = itertools.cycle([url_free, url_free_us])
+# 
+url_free = [
+    "https://www.sslproxies.org/",
+    'https://free-proxy-list.net/',
+    'https://www.us-proxy.org/',    
+]
+url_free_cycle = itertools.cycle(url_free)
 level_https = [
     ('anonymous', 'yes'),
     ('elite proxy', 'yes'),
