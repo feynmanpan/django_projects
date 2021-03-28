@@ -38,42 +38,41 @@ class CHECK_PROXY:
         self.port = port
         self.now = now
         self.proxy = f"http://{ip}:{port}"  # aiohttp只支援http的proxy
-        self.isGood = []
+        self._isGood = []
 
     async def check(self, proxy_checkurl):
         connector = aiohttp.TCPConnector(ssl=cacert)
         TO = aiohttp.ClientTimeout(total=timeout)
-        isGood = False
+        ans = False
         try:
             await asyncio.sleep(random.randint(0, sampleN))
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
                 async with session.get(proxy_checkurl, headers=headers, proxy=self.proxy) as r:
-                    status_code = r.status
-                    rtext = await r.text()
-                    # rtext = await r.text(encoding='utf8') 
+                    status = r.status
+                    rtext = await r.text() # r.text(encoding='utf8') 
         except Exception as err:
             # print('err=',err)
-            isGood = False
+            pass
         else:
-            isGood = (status_code == 200) and re.search(self.ip, rtext) is not None
+            ans = (status == 200) and re.search(self.ip, rtext) is not None
         finally:
-            self.isGood.append(isGood)
+            self._isGood.append(ans)
 
-    async def get_isGood(self):
+    @property
+    async def isGood(self):
         tasks = [asyncio.create_task(self.check(url)) for url in random.sample(proxy_checkurls, sampleN)]
         await asyncio.wait(tasks)
-        result = None
-        if sum(self.isGood) >= check_atleast:
-            result = {
+        p = None
+        if sum(self._isGood) >= check_atleast:
+            p = {
                 'ip': self.ip,
                 'port': self.port,
                 'now': self.now,
             }
-        return result
+        return p
 
     @classmethod
     async def get_good_proxys(cls, ippts: list):
-        tasks = [asyncio.create_task(cls(ip, port, now).get_isGood()) for ip, port, now in ippts]
-        good_proxys = [p for p in await asyncio.gather(*tasks) if p]        
+        tasks = [asyncio.create_task(cls(*ippt).isGood) for ippt in ippts]
         #
-        return good_proxys
+        return [p for p in await asyncio.gather(*tasks) if p]        
