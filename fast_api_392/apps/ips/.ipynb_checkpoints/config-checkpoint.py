@@ -20,7 +20,7 @@ level_https = [
 #     ('elite proxy', 'no'),    
 ]
 get_freeproxy_delta = 4*60
-timeout = 10
+timeout = 15
 proxy_checkurls = [
     "http://210.240.175.62/NTIIS/IP_test.asp",
     "https://whatismyipaddress.com/zh-cn/index",
