@@ -31,7 +31,7 @@ proxy_checkurls = [
     "https://www.expressvpn.com/what-is-my-ip",
 ]
 sampleN = len(proxy_checkurls)
-check_atleast = 1
+check_atleast = 2
 #
 cacert = [False, True][1]
 #
