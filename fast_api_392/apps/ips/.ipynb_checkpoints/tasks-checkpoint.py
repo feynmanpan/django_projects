@@ -52,11 +52,12 @@ async def get_freeproxy(t, once=True):
                             'ip': tds.eq(0).text().strip(),
                             'port': tds.eq(1).text().strip(),
                             'now': now,
+                            'goodcnt': 0,
                         }
                         elite.append(tmp)
-                    # 1 儲存每次撈取的原始頁面
+                    # 1 儲存每次撈取的原始頁面 #################################
                     write_file(ips_html_path, rtext)
-                    # 2 重存csv: 讀取csv檔案，與最新爬的比較
+                    # 2 重存csv: 讀取csv檔案，與最新爬的比較 #################################
                     if os.path.isfile(ips_csv_path):
                         df1 = pd.read_csv(ips_csv_path, dtype=dtype)
                         df2 = pd.DataFrame(elite).astype(dtype)
@@ -64,15 +65,15 @@ async def get_freeproxy(t, once=True):
                     else:
                         df3 = pd.DataFrame(elite).astype(dtype)
                     # 3 檢查代理 #################################
-                    ippts = df3.values.tolist()
-                    print(f'\n開始檢查proxy: {len(ippts)} 個')
+                    ippts = df3[ipcols].values.tolist()  # goodcnt不傳進CHECK_PROXY
+                    print(f'\n開始檢查proxy:共 {len(ippts)} 個')
                     good_proxys = await CHECK_PROXY.get_good_proxys(ippts)
                     print(f'結束檢查proxy: {time()-stime}')
                     random.shuffle(good_proxys)
-                    # 4 存 csv
+                    # 4 存 csv #################################
                     df3 = pd.DataFrame(good_proxys).astype(dtype)  # df.sample(frac=1)  # 亂排
                     df3.to_csv(ips_csv_path, index=False)
-                    # 5 更新ips_cycle產生器
+                    # 5 更新ips_cycle產生器 #################################
                     ips_cfg.ips_cycle = itertools.cycle(good_proxys)
                     #
                     get_freeproxy_cnt += 1

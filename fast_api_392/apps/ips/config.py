@@ -42,12 +42,15 @@ jinja_templates = Jinja2Templates(directory=os.path.join(cwd, templates))
 ips_csv = 'ips.csv'
 ips_html = 'ips.html'
 ips_csv_tb_html = 'ips_csv_tb.html'
+ips_err_csv = 'ips_err.csv'
 #
 ips_csv_path = os.path.join(cwd, ips_csv)
+ips_err_csv_path = os.path.join(cwd, ips_err_csv)
 ips_html_path = os.path.join(cwd, templates, ips_html)
 #
 ips_cycle = False
 dtype = {'port': str}
 dt_format = "%Y-%m-%d_%H:%M:%S"
 ipcols = ['ip', 'port', 'now']
+ipcols_err = ['ip', 'port', 'err']
 maxN = 500

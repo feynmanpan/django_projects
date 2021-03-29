@@ -66,7 +66,7 @@ async def get_freeproxy(t, once=True):
                         df3 = pd.DataFrame(elite).astype(dtype)
                     # 3 檢查代理 #################################
                     ippts = df3[ipcols].values.tolist()  # goodcnt不傳進CHECK_PROXY
-                    print(f'\n開始檢查proxy: {len(ippts)} 個')
+                    print(f'\n開始檢查proxy:共 {len(ippts)} 個')
                     good_proxys = await CHECK_PROXY.get_good_proxys(ippts)
                     print(f'結束檢查proxy: {time()-stime}')
                     random.shuffle(good_proxys)

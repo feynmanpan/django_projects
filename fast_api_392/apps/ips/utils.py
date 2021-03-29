@@ -2,11 +2,12 @@ import asyncio
 import aiohttp
 import re
 import random
+import pandas as pd
 #
 from .config import (
-    cacert,
-    headers, ipcols, maxN,
-    proxy_checkurls, timeout, check_atleast, sampleN
+    cacert, headers, ipcols, ipcols_err, maxN,
+    proxy_checkurls, timeout, check_atleast, sampleN,
+    ips_err_csv_path, 
 )
 
 
@@ -32,6 +33,7 @@ def csv_update(df1, df2):
 
 
 class CHECK_PROXY:
+    ips_err = []
 
     def __init__(self, ip, port, now=''):
         self.ip = ip
@@ -45,17 +47,38 @@ class CHECK_PROXY:
         TO = aiohttp.ClientTimeout(total=timeout)
         TF = False
         try:
-            await asyncio.sleep(random.randint(0, sampleN))
+            await asyncio.sleep(random.randint(0, sampleN-1))
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
                 async with session.get(proxy_checkurl, headers=headers, proxy=self.proxy) as r:
                     status = r.status
                     rtext = await r.text()
                     # rtext = await r.text(encoding='utf8')
-        except Exception as err:
-            # TF = False
-            pass
+        except asyncio.exceptions.TimeoutError as e:
+            p = {
+                'ip': self.ip,
+                'port': self.port,
+                'err': 'asyncio.exceptions.TimeoutError',
+                'checkurl': proxy_checkurl,
+            }
+            type(self).ips_err.append(p)
+        except Exception as e:
+            p = {
+                'ip': self.ip,
+                'port': self.port,
+                'err': str(e),
+                'checkurl': proxy_checkurl,
+            }
+            type(self).ips_err.append(p)
         else:
             TF = (status == 200) and re.search(self.ip, rtext) is not None
+            if not TF:
+                p = {
+                    'ip': self.ip,
+                    'port': self.port,
+                    'err': f'status={status}, or ip not show in checkurl',
+                    'checkurl': proxy_checkurl,
+                }                
+                type(self).ips_err.append(p)
         finally:
             self._isGood.append(TF)
 
@@ -74,6 +97,15 @@ class CHECK_PROXY:
 
     @classmethod
     async def get_good_proxys(cls, ippts: list):
+        # 檢查每個proxy，挑出至少成功一次者
         tasks = [asyncio.create_task(cls(*ippt).isGood()) for ippt in ippts]
-        #
-        return [p for p in await asyncio.gather(*tasks) if p]
+        good_proxys = [p for p in await asyncio.gather(*tasks) if p]
+        # 儲存完全失敗者
+        gip = [p['ip'] for p in good_proxys]
+        df = pd.DataFrame(cls.ips_err)
+        df = df[~df.ip.isin(gip)].sort_values(by=ipcols_err) # 至少成功一次者的失敗紀錄略過
+        df['g_idx'] = df.groupby(by=['ip']).ngroup()
+        df.to_csv(ips_err_csv_path, index=False)
+        cls.ips_err = []
+        #         
+        return good_proxys
