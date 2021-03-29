@@ -54,31 +54,13 @@ class CHECK_PROXY:
                     rtext = await r.text()
                     # rtext = await r.text(encoding='utf8')
         except asyncio.exceptions.TimeoutError as e:
-            p = {
-                'ip': self.ip,
-                'port': self.port,
-                'err': 'asyncio.exceptions.TimeoutError',
-                'checkurl': proxy_checkurl,
-            }
-            type(self).ips_err.append(p)
+            self.ips_err_append('asyncio.exceptions.TimeoutError', proxy_checkurl)
         except Exception as e:
-            p = {
-                'ip': self.ip,
-                'port': self.port,
-                'err': str(e),
-                'checkurl': proxy_checkurl,
-            }
-            type(self).ips_err.append(p)
+            self.ips_err_append(str(e), proxy_checkurl)
         else:
             TF = (status == 200) and re.search(self.ip, rtext) is not None
             if not TF:
-                p = {
-                    'ip': self.ip,
-                    'port': self.port,
-                    'err': f'status={status}, or ip not show in checkurl',
-                    'checkurl': proxy_checkurl,
-                }                
-                type(self).ips_err.append(p)
+                self.ips_err_append(f'status={status}, or ip not show in checkurl', proxy_checkurl)
         finally:
             self._isGood.append(TF)
 
@@ -94,6 +76,16 @@ class CHECK_PROXY:
                 'goodcnt': goodcnt,
             }
         return p
+
+    def ips_err_append(self, err, checkurl):
+        p = {
+            'ip': self.ip,
+            'port': self.port,
+            'err': err,
+            'checkurl': checkurl,
+        }                
+        type(self).ips_err.append(p)        
+        
 
     @classmethod
     async def get_good_proxys(cls, ippts: list):
