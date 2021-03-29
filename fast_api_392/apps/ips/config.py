@@ -28,7 +28,7 @@ proxy_checkurls = [
     "https://www.whatismyip.com.tw/tw/",
     "https://www.whatismyip.com/",
     "https://www.rus.net.tw/myip.php",
-    "https://www.expressvpn.com/what-is-my-ip",
+    "https://www.myip.com/",
 ]
 sampleN = len(proxy_checkurls)
 check_atleast = 1
