@@ -33,7 +33,7 @@ def csv_update(df1, df2):
 
 class CHECK_PROXY:
 
-    def __init__(self, ip, port, now):
+    def __init__(self, ip, port, now=''):
         self.ip = ip
         self.port = port
         self.now = now
@@ -43,36 +43,37 @@ class CHECK_PROXY:
     async def check(self, proxy_checkurl):
         connector = aiohttp.TCPConnector(ssl=cacert)
         TO = aiohttp.ClientTimeout(total=timeout)
-        ans = False
+        TF = False
         try:
             await asyncio.sleep(random.randint(0, sampleN))
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
                 async with session.get(proxy_checkurl, headers=headers, proxy=self.proxy) as r:
                     status = r.status
-                    rtext = await r.text() # r.text(encoding='utf8') 
+                    rtext = await r.text()
+                    # rtext = await r.text(encoding='utf8')
         except Exception as err:
-            # print('err=',err)
+            # TF = False
             pass
         else:
-            ans = (status == 200) and re.search(self.ip, rtext) is not None
+            TF = (status == 200) and re.search(self.ip, rtext) is not None
         finally:
-            self._isGood.append(ans)
+            self._isGood.append(TF)
 
-    @property
     async def isGood(self):
         tasks = [asyncio.create_task(self.check(url)) for url in random.sample(proxy_checkurls, sampleN)]
         await asyncio.wait(tasks)
         p = None
-        if sum(self._isGood) >= check_atleast:
+        if (goodcnt := sum(self._isGood)) >= check_atleast:
             p = {
                 'ip': self.ip,
                 'port': self.port,
                 'now': self.now,
+                'goodcnt': goodcnt,
             }
         return p
 
     @classmethod
     async def get_good_proxys(cls, ippts: list):
-        tasks = [asyncio.create_task(cls(*ippt).isGood) for ippt in ippts]
+        tasks = [asyncio.create_task(cls(*ippt[:3]).isGood()) for ippt in ippts]
         #
-        return [p for p in await asyncio.gather(*tasks) if p]        
+        return [p for p in await asyncio.gather(*tasks) if p]

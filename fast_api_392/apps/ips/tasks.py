@@ -52,6 +52,7 @@ async def get_freeproxy(t, once=True):
                             'ip': tds.eq(0).text().strip(),
                             'port': tds.eq(1).text().strip(),
                             'now': now,
+                            'goodcnt': 0,
                         }
                         elite.append(tmp)
                     # 1 儲存每次撈取的原始頁面 #################################
@@ -64,7 +65,7 @@ async def get_freeproxy(t, once=True):
                     else:
                         df3 = pd.DataFrame(elite).astype(dtype)
                     # 3 檢查代理 #################################
-                    ippts = df3.values.tolist()
+                    ippts = df3[ipcols].values.tolist()  # goodcnt不傳進CHECK_PROXY
                     print(f'\n開始檢查proxy: {len(ippts)} 個')
                     good_proxys = await CHECK_PROXY.get_good_proxys(ippts)
                     print(f'結束檢查proxy: {time()-stime}')

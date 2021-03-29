@@ -63,11 +63,12 @@ class CHECK_PROXY:
         tasks = [asyncio.create_task(self.check(url)) for url in random.sample(proxy_checkurls, sampleN)]
         await asyncio.wait(tasks)
         p = None
-        if sum(self._isGood) >= check_atleast:
+        if (goodcnt := sum(self._isGood)) >= check_atleast:
             p = {
                 'ip': self.ip,
                 'port': self.port,
                 'now': self.now,
+                'goodcnt': goodcnt,
             }
         return p
 
