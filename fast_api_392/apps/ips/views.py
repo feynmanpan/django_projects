@@ -33,7 +33,7 @@ async def check_proxy():
     proxy_ip = '161.202.226.194'
     proxy_port = '80'
     #
-    return await CHECK_PROXY(proxy_ip, proxy_port, '11').get_isGood()
+    return await CHECK_PROXY(proxy_ip, proxy_port, '11').isGood()
 
 
 async def show_freeproxy(request: Request, f: str = 'csv'):
