@@ -12,14 +12,22 @@ class BOOK_BASE(ABC):
         'price_list', 'price_sale'
         'price_list_ebook', 'price_sale_ebook',
         'spec', 'intro',
-        'url_vdo', 'url_cover',
-        'create_dt'
+        'url_book', 'url_vdo', 'url_cover',
+        'create_dt',
     ]
 
     def __init__(self, **kwargs):
         for col in self.cols:
-            val = kwargs.get(col, None)
+            # 先找參數，再找class變數預設值
+            if col == 'store':
+                val = type(self).__name__
+            else:
+                val = kwargs.get(col, None) or type(self).__dict__.get(col, None)
             setattr(self, col, val)
+
+    @abstractmethod
+    def proxy(self):
+        pass
 
     @abstractmethod
     def get_info(self):
