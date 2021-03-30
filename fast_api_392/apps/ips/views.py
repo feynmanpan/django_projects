@@ -46,15 +46,16 @@ async def show_freeproxy(request: Request, f: str = 'csv'):
         # 每次抓取的原始頁
         if os.path.isfile(ips_html_path):
             rep = jinja_templates.TemplateResponse(ips_html, context)
-    elif f == 'csv':
-        # 顯示持續擴充更新的csv
-        if os.path.isfile(ips_csv_path):
-            context['ips_csv_tb_html'] = pd.read_csv(ips_csv_path).to_html()
-            rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)
     elif f == 'err':
         # 顯示 ips_err
         if os.path.isfile(ips_err_csv_path):
             context['ips_csv_tb_html'] = pd.read_csv(ips_err_csv_path).to_html()
-            rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)        
+            rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)
+    else:
+        # 顯示持續擴充更新的csv
+        if os.path.isfile(ips_csv_path):
+            context['ips_csv_tb_html'] = pd.read_csv(ips_csv_path).to_html()
+            rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)
+
     #
     return rep
