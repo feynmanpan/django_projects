@@ -7,7 +7,7 @@ import pandas as pd
 from .config import (
     cacert, headers, ipcols, ipcols_err, maxN,
     proxy_checkurls, timeout, check_atleast, sampleN,
-    ips_err_csv_path, 
+    ips_err_csv_path,
 )
 
 
@@ -83,9 +83,8 @@ class CHECK_PROXY:
             'port': self.port,
             'err': err,
             'checkurl': checkurl,
-        }                
-        type(self).ips_err.append(p)        
-        
+        }
+        type(self).ips_err.append(p)
 
     @classmethod
     async def get_good_proxys(cls, ippts: list):
@@ -95,9 +94,9 @@ class CHECK_PROXY:
         # 儲存完全失敗者
         gip = [p['ip'] for p in good_proxys]
         df = pd.DataFrame(cls.ips_err)
-        df = df[~df.ip.isin(gip)].sort_values(by=ipcols_err) # 至少成功一次者的失敗紀錄略過
+        df = df[~df.ip.isin(gip)].sort_values(by=ipcols_err)  # 至少成功一次者的失敗紀錄略過
         df['g_idx'] = df.groupby(by=['ip']).ngroup()
         df.to_csv(ips_err_csv_path, index=False)
         cls.ips_err = []
-        #         
+        #
         return good_proxys
