@@ -3262,3 +3262,235 @@ TermSocket.open: 1
 TermSocket.open: Opened 1
 TermSocket.open: 1
 TermSocket.open: Opened 1
+[W 2021-03-30 12:15:04.342 ServerApp] WebSocket ping timeout after 119978 ms.
+[W 2021-03-30 12:15:08.953 ServerApp] WebSocket ping timeout after 119966 ms.
+Websocket closed
+Websocket closed
+[W 2021-03-30 12:15:15.365 ServerApp] WebSocket ping timeout after 119953 ms.
+Websocket closed
+TermSocket.open: 1
+TermSocket.open: Opened 1
+TermSocket.open: 1
+TermSocket.open: Opened 1
+Websocket closed
+Websocket closed
+[I 2021-03-30 12:27:56.596 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+Websocket closed
+[I 2021-03-30 13:41:09.177 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[E 2021-03-30 15:19:58.288 ServerApp] Uncaught exception POST /api/contents/wtb/mainsite/models.py/checkpoints?1617088797701 (220.138.234.194)
+    HTTPServerRequest(protocol='http', host='34.80.136.230:4999', method='POST', uri='/api/contents/wtb/mainsite/models.py/checkpoints?1617088797701', version='HTTP/1.1', remote_ip='220.138.234.194')
+    Traceback (most recent call last):
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/web.py", line 1704, in _execute
+        result = await result
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/handlers.py", line 248, in post
+        checkpoint = await ensure_async(cm.create_checkpoint(path))
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/manager.py", line 520, in create_checkpoint
+        return self.checkpoints.create_checkpoint(self, path)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/filecheckpoints.py", line 59, in create_checkpoint
+        self._copy(src_path, dest_path)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/fileio.py", line 245, in _copy
+        copy2_safe(src, dest, log=self.log)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/fileio.py", line 47, in copy2_safe
+        shutil.copyfile(src, dst)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/shutil.py", line 264, in copyfile
+        with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+    PermissionError: [Errno 13] Permission denied: '/home/pan/django_projects/wtb/mainsite/.ipynb_checkpoints/models-checkpoint.py'
+[W 2021-03-30 15:19:58.308 ServerApp] Unhandled error
+[E 2021-03-30 15:19:58.309 ServerApp] {
+      "Host": "34.80.136.230:4999",
+      "Connection": "keep-alive",
+      "Content-Length": "0",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36",
+      "X-Xsrftoken": "2|8572b6e1|2de0ea103f35566af2ff2125215eef67|1616656666",
+      "Authorization": "token d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21",
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Origin": "http://34.80.136.230:4999",
+      "Referer": "http://34.80.136.230:4999/lab/tree/wtb/mainsite/models.py",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6,zh-CN;q=0.5,fr;q=0.4,nl;q=0.3",
+      "Cookie": "_xsrf=2|8572b6e1|2de0ea103f35566af2ff2125215eef67|1616656666; username-34-80-136-230-4999=\"2|1:0|10:1617088798|27:username-34-80-136-230-4999|44:ODdmMTQ2ODljZWU4NGNjYmI3NTdkMjdhZGI3ZDI3NTQ=|5fe093181c91f2e2cbac1c909f291fde6d13735fec793570d525f1daa3e42744\""
+    }
+[E 2021-03-30 15:19:58.309 ServerApp] 500 POST /api/contents/wtb/mainsite/models.py/checkpoints?1617088797701 (220.138.234.194) 21.80ms referer=http://34.80.136.230:4999/lab/tree/wtb/mainsite/models.py
+[E 2021-03-30 15:20:01.737 ServerApp] Uncaught exception POST /api/contents/wtb/mainsite/models.py/checkpoints?1617088801150 (220.138.234.194)
+    HTTPServerRequest(protocol='http', host='34.80.136.230:4999', method='POST', uri='/api/contents/wtb/mainsite/models.py/checkpoints?1617088801150', version='HTTP/1.1', remote_ip='220.138.234.194')
+    Traceback (most recent call last):
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/web.py", line 1704, in _execute
+        result = await result
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/handlers.py", line 248, in post
+        checkpoint = await ensure_async(cm.create_checkpoint(path))
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/manager.py", line 520, in create_checkpoint
+        return self.checkpoints.create_checkpoint(self, path)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/filecheckpoints.py", line 59, in create_checkpoint
+        self._copy(src_path, dest_path)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/fileio.py", line 245, in _copy
+        copy2_safe(src, dest, log=self.log)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/fileio.py", line 47, in copy2_safe
+        shutil.copyfile(src, dst)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/shutil.py", line 264, in copyfile
+        with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+    PermissionError: [Errno 13] Permission denied: '/home/pan/django_projects/wtb/mainsite/.ipynb_checkpoints/models-checkpoint.py'
+[W 2021-03-30 15:20:01.738 ServerApp] Unhandled error
+[E 2021-03-30 15:20:01.739 ServerApp] {
+      "Host": "34.80.136.230:4999",
+      "Connection": "keep-alive",
+      "Content-Length": "0",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36",
+      "X-Xsrftoken": "2|8572b6e1|2de0ea103f35566af2ff2125215eef67|1616656666",
+      "Authorization": "token d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21",
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Origin": "http://34.80.136.230:4999",
+      "Referer": "http://34.80.136.230:4999/lab/tree/wtb/mainsite/models.py",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6,zh-CN;q=0.5,fr;q=0.4,nl;q=0.3",
+      "Cookie": "_xsrf=2|8572b6e1|2de0ea103f35566af2ff2125215eef67|1616656666; username-34-80-136-230-4999=\"2|1:0|10:1617088801|27:username-34-80-136-230-4999|44:YTA0ODZlZmU4NTMxNGQxOGFiMDhmMjFkZGQyY2QxMGY=|5c1240dcf8bc00bee082810ed453eae09f5cefec63c8234a38347c9fab38e3e4\""
+    }
+[E 2021-03-30 15:20:01.739 ServerApp] 500 POST /api/contents/wtb/mainsite/models.py/checkpoints?1617088801150 (220.138.234.194) 2.44ms referer=http://34.80.136.230:4999/lab/tree/wtb/mainsite/models.py
+[E 2021-03-30 15:20:04.137 ServerApp] Uncaught exception POST /api/contents/wtb/mainsite/apps.py/checkpoints?1617088803550 (220.138.234.194)
+    HTTPServerRequest(protocol='http', host='34.80.136.230:4999', method='POST', uri='/api/contents/wtb/mainsite/apps.py/checkpoints?1617088803550', version='HTTP/1.1', remote_ip='220.138.234.194')
+    Traceback (most recent call last):
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/web.py", line 1704, in _execute
+        result = await result
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/handlers.py", line 248, in post
+        checkpoint = await ensure_async(cm.create_checkpoint(path))
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/manager.py", line 520, in create_checkpoint
+        return self.checkpoints.create_checkpoint(self, path)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/filecheckpoints.py", line 59, in create_checkpoint
+        self._copy(src_path, dest_path)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/fileio.py", line 245, in _copy
+        copy2_safe(src, dest, log=self.log)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/services/contents/fileio.py", line 47, in copy2_safe
+        shutil.copyfile(src, dst)
+      File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/shutil.py", line 264, in copyfile
+        with open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
+    PermissionError: [Errno 13] Permission denied: '/home/pan/django_projects/wtb/mainsite/.ipynb_checkpoints/apps-checkpoint.py'
+[W 2021-03-30 15:20:04.137 ServerApp] Unhandled error
+[E 2021-03-30 15:20:04.138 ServerApp] {
+      "Host": "34.80.136.230:4999",
+      "Connection": "keep-alive",
+      "Content-Length": "0",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36",
+      "X-Xsrftoken": "2|8572b6e1|2de0ea103f35566af2ff2125215eef67|1616656666",
+      "Authorization": "token d7e10571e69c90136c055b89be9ebcd4b6219fb778fbda21",
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Origin": "http://34.80.136.230:4999",
+      "Referer": "http://34.80.136.230:4999/lab/tree/wtb/mainsite/apps.py",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6,zh-CN;q=0.5,fr;q=0.4,nl;q=0.3",
+      "Cookie": "_xsrf=2|8572b6e1|2de0ea103f35566af2ff2125215eef67|1616656666; username-34-80-136-230-4999=\"2|1:0|10:1617088804|27:username-34-80-136-230-4999|44:YTEzYmRmNzU5NjAwNDA2NTlmMTFhNjVlYzM4YWExMDE=|0feec4df4905a9e55e7be8f94f898f8d7c35219559e45fa07372c5805cf52aed\""
+    }
+[E 2021-03-30 15:20:04.138 ServerApp] 500 POST /api/contents/wtb/mainsite/apps.py/checkpoints?1617088803550 (220.138.234.194) 2.05ms referer=http://34.80.136.230:4999/lab/tree/wtb/mainsite/apps.py
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[W 2021-03-30 15:37:53.593 ServerApp] delete /fast_api_392/apps/book/classes/book_base.py
+[W 2021-03-30 15:42:32.209 ServerApp] 400 GET /api/contents/fast_api_392/apps/book/classes/book.ipynb?type=notebook&content=1&1617090151600 (220.138.234.194): Unreadable Notebook: /home/pan/django_projects/fast_api_392/apps/book/classes/book.ipynb NotJSONError("Notebook does not appear to be JSON: ''...")
+[W 2021-03-30 15:42:32.209 ServerApp] Unreadable Notebook: /home/pan/django_projects/fast_api_392/apps/book/classes/book.ipynb NotJSONError("Notebook does not appear to be JSON: ''...")
+[W 2021-03-30 15:42:32.210 ServerApp] 400 GET /api/contents/fast_api_392/apps/book/classes/book.ipynb?type=notebook&content=1&1617090151600 (220.138.234.194) 3.13ms referer=http://34.80.136.230:4999/lab/tree/fast_api_392/apps/book/classes
+[W 2021-03-30 15:42:44.692 ServerApp] 400 GET /api/contents/fast_api_392/apps/book/classes/book.ipynb?type=notebook&content=1&1617090163980 (220.138.234.194): Unreadable Notebook: /home/pan/django_projects/fast_api_392/apps/book/classes/book.ipynb NotJSONError("Notebook does not appear to be JSON: ''...")
+[W 2021-03-30 15:42:44.692 ServerApp] Unreadable Notebook: /home/pan/django_projects/fast_api_392/apps/book/classes/book.ipynb NotJSONError("Notebook does not appear to be JSON: ''...")
+[W 2021-03-30 15:42:44.693 ServerApp] 400 GET /api/contents/fast_api_392/apps/book/classes/book.ipynb?type=notebook&content=1&1617090163980 (220.138.234.194) 1.92ms referer=http://34.80.136.230:4999/lab/tree/fast_api_392/apps/book/classes
+[W 2021-03-30 15:43:01.886 ServerApp] Notebook fast_api_392/apps/book/classes/book.ipynb is not trusted
+[I 2021-03-30 15:43:02.161 ServerApp] Kernel started: c1bb43cf-a903-4786-b9bc-a0a70432702e
+[I 2021-03-30 15:43:37.465 ServerApp] Kernel started: 532702b6-62d3-45ef-bbf8-508b54b2b0e0
+[I 2021-03-30 15:44:43.910 ServerApp] Saving file at /fast_api_392/apps/book/classes/book.ipynb
+[I 2021-03-30 15:45:37.252 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[W 2021-03-30 16:04:43.149 ServerApp] Replacing stale connection: c1bb43cf-a903-4786-b9bc-a0a70432702e:2927f9eb-b3fd-4ebd-83e1-269ab20e5f6c
+[W 2021-03-30 16:04:48.214 ServerApp] Replacing stale connection: 532702b6-62d3-45ef-bbf8-508b54b2b0e0:eaab9162-1cc5-4cb0-a162-3c192b6219cf
+[I 2021-03-30 16:04:53.217 ServerApp] Starting buffering for 532702b6-62d3-45ef-bbf8-508b54b2b0e0:eaab9162-1cc5-4cb0-a162-3c192b6219cf
+[I 2021-03-30 16:04:53.218 ServerApp] Restoring connection for 532702b6-62d3-45ef-bbf8-508b54b2b0e0:eaab9162-1cc5-4cb0-a162-3c192b6219cf
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[W 2021-03-30 16:04:53.414 ServerApp] Replacing stale connection: c1bb43cf-a903-4786-b9bc-a0a70432702e:280b6f30-b14d-4295-8222-06867a5ea8bf
+[I 2021-03-30 16:05:00.947 ServerApp] Starting buffering for 532702b6-62d3-45ef-bbf8-508b54b2b0e0:eaab9162-1cc5-4cb0-a162-3c192b6219cf
+Websocket closed
+Websocket closed
+[I 2021-03-30 16:05:00.949 ServerApp] Starting buffering for c1bb43cf-a903-4786-b9bc-a0a70432702e:280b6f30-b14d-4295-8222-06867a5ea8bf
+[I 2021-03-30 16:05:05.859 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[W 2021-03-30 16:05:39.371 ServerApp] WebSocket ping timeout after 119966 ms.
+[W 2021-03-30 16:05:39.686 ServerApp] WebSocket ping timeout after 119965 ms.
+Websocket closed
+Websocket closed
+[I 2021-03-30 16:12:34.147 ServerApp] Starting buffering for c1bb43cf-a903-4786-b9bc-a0a70432702e:da09dbc6-d1c1-4ec1-a6dd-bdd95567d1bc
+[I 2021-03-30 16:12:43.812 ServerApp] Kernel shutdown: c1bb43cf-a903-4786-b9bc-a0a70432702e
+[W 2021-03-30 16:12:44.188 ServerApp] delete /fast_api_392/apps/book/classes/book.ipynb
+[W 2021-03-30 16:12:44.846 ServerApp] Notebook fast_api_392/apps/book/classes/00_book.ipynb is not trusted
+[I 2021-03-30 16:12:45.387 ServerApp] Kernel started: 21ba7cfc-2109-4e84-bae4-11408aba4b99
+[I 2021-03-30 16:14:45.366 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 16:15:58.162 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 16:22:10.596 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[W 2021-03-30 16:23:15.868 ServerApp] WebSocket ping timeout after 119964 ms.
+[W 2021-03-30 16:23:39.795 ServerApp] WebSocket ping timeout after 119967 ms.
+[W 2021-03-30 16:23:39.845 ServerApp] WebSocket ping timeout after 119962 ms.
+[W 2021-03-30 16:23:42.127 ServerApp] WebSocket ping timeout after 119963 ms.
+Websocket closed
+Websocket closed
+[I 2021-03-30 16:26:53.320 ServerApp] Kernel restarted: 21ba7cfc-2109-4e84-bae4-11408aba4b99
+[I 2021-03-30 16:26:53.338 ServerApp] Starting buffering for 21ba7cfc-2109-4e84-bae4-11408aba4b99:650c6bab-c55f-49b9-ae2a-c1df660d9f2a
+[I 2021-03-30 16:26:53.371 ServerApp] Restoring connection for 21ba7cfc-2109-4e84-bae4-11408aba4b99:650c6bab-c55f-49b9-ae2a-c1df660d9f2a
+[I 2021-03-30 16:27:41.952 ServerApp] Kernel restarted: 21ba7cfc-2109-4e84-bae4-11408aba4b99
+[I 2021-03-30 16:27:41.973 ServerApp] Starting buffering for 21ba7cfc-2109-4e84-bae4-11408aba4b99:650c6bab-c55f-49b9-ae2a-c1df660d9f2a
+[I 2021-03-30 16:27:42.006 ServerApp] Restoring connection for 21ba7cfc-2109-4e84-bae4-11408aba4b99:650c6bab-c55f-49b9-ae2a-c1df660d9f2a
+[I 2021-03-30 16:28:16.204 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 16:30:17.200 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 16:36:01.400 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 16:37:06.844 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 16:37:21.755 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:09:47.449 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-30 17:09:49.416 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-30 17:11:49.813 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-30 17:13:50.414 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[W 2021-03-30 17:23:39.164 ServerApp] Notebook wtb/get_bookprice.ipynb is not trusted
+[I 2021-03-30 17:23:40.474 ServerApp] Kernel started: 7f2badf5-5143-4368-8dbd-a49e8c34a7a3
+[I 2021-03-30 17:34:08.168 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-30 17:35:16.232 ServerApp] Starting buffering for 7f2badf5-5143-4368-8dbd-a49e8c34a7a3:6a588920-e62a-423c-8377-ecaad7b1945a
+[I 2021-03-30 17:35:18.522 ServerApp] Starting buffering for 21ba7cfc-2109-4e84-bae4-11408aba4b99:650c6bab-c55f-49b9-ae2a-c1df660d9f2a
+[W 2021-03-30 17:35:29.473 ServerApp] Notebook fast_api_392/apps/book/classes/00_book.ipynb is not trusted
+[I 2021-03-30 17:36:26.335 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[W 2021-03-30 17:36:26.335 ServerApp] Notebook fast_api_392/apps/book/classes/00_book.ipynb is not trusted
+[I 2021-03-30 17:36:36.092 ServerApp] Kernel restarted: 21ba7cfc-2109-4e84-bae4-11408aba4b99
+[I 2021-03-30 17:36:36.110 ServerApp] Starting buffering for 21ba7cfc-2109-4e84-bae4-11408aba4b99:b464a86b-95d6-445a-80a4-1dfdff62d31d
+[I 2021-03-30 17:36:36.143 ServerApp] Restoring connection for 21ba7cfc-2109-4e84-bae4-11408aba4b99:b464a86b-95d6-445a-80a4-1dfdff62d31d
+[I 2021-03-30 17:36:44.799 ServerApp] Kernel restarted: 21ba7cfc-2109-4e84-bae4-11408aba4b99
+[I 2021-03-30 17:36:44.921 ServerApp] Starting buffering for 21ba7cfc-2109-4e84-bae4-11408aba4b99:b464a86b-95d6-445a-80a4-1dfdff62d31d
+[I 2021-03-30 17:36:44.953 ServerApp] Restoring connection for 21ba7cfc-2109-4e84-bae4-11408aba4b99:b464a86b-95d6-445a-80a4-1dfdff62d31d
+[I 2021-03-30 17:38:26.554 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:40:09.245 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-30 17:40:26.880 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:42:09.498 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-30 17:42:27.139 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:44:27.303 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:44:29.237 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:44:33.218 ServerApp] Kernel restarted: 21ba7cfc-2109-4e84-bae4-11408aba4b99
+[I 2021-03-30 17:44:33.237 ServerApp] Starting buffering for 21ba7cfc-2109-4e84-bae4-11408aba4b99:b464a86b-95d6-445a-80a4-1dfdff62d31d
+[I 2021-03-30 17:44:33.270 ServerApp] Restoring connection for 21ba7cfc-2109-4e84-bae4-11408aba4b99:b464a86b-95d6-445a-80a4-1dfdff62d31d
+[I 2021-03-30 17:46:29.447 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:48:09.792 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-30 17:48:29.606 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:50:10.142 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[I 2021-03-30 17:50:30.411 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:51:30.328 ServerApp] Kernel restarted: 21ba7cfc-2109-4e84-bae4-11408aba4b99
+[I 2021-03-30 17:51:30.348 ServerApp] Starting buffering for 21ba7cfc-2109-4e84-bae4-11408aba4b99:b464a86b-95d6-445a-80a4-1dfdff62d31d
+[I 2021-03-30 17:51:30.395 ServerApp] Restoring connection for 21ba7cfc-2109-4e84-bae4-11408aba4b99:b464a86b-95d6-445a-80a4-1dfdff62d31d
+[I 2021-03-30 17:51:59.439 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-03-30 17:52:02.754 ServerApp] Saving file at /fast_api_392/apps/ips/tasks.ipynb
+[W 2021-03-30 17:54:27.478 ServerApp] Notebook wtb/get_bookinfo.ipynb is not trusted
+[I 2021-03-30 17:54:28.273 ServerApp] Kernel started: 5c567e0f-e1c1-4e80-99ea-0900d2b079ed
+[I 2021-03-30 17:54:46.185 ServerApp] Starting buffering for 5c567e0f-e1c1-4e80-99ea-0900d2b079ed:494deca7-b84b-4b1c-9880-3cc9809a0724
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[I 2021-03-30 17:55:36.266 ServerApp] Kernel shutdown: 5c567e0f-e1c1-4e80-99ea-0900d2b079ed
+[I 2021-03-30 17:55:37.042 ServerApp] Kernel shutdown: 7f2badf5-5143-4368-8dbd-a49e8c34a7a3
