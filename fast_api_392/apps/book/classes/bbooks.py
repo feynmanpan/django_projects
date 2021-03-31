@@ -101,7 +101,7 @@ class BOOKS(BOOKBASE):
                 print(f"update_errcnt = {self.update_errcnt}")
             else:
                 self.update_errcnt += 1
-                print(f"err_proxy={proxy}, update_errcnt={self.update_errcnt}, err={update['err']}")
+                print(f"err_proxy={proxy}, update_errcnt={self.update_errcnt}/{update_errcnt_max}, err={update['err']}")
                 await self.update_info()
 
     def author_handle(self, el):
