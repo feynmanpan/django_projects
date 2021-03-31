@@ -31,9 +31,10 @@ async def get_freeproxy(t, once=True):
         T = (ips_cfg.ips_cycle and os.path.isfile(ips_csv_path))*t  # 沒有 csv 或 ips_cycle 就馬上爬
         await asyncio.sleep(T)
         stime = time()
+        url_free = next(url_free_cycle)
         #
         async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=cacert)) as session:
-            status_code, rtext = await aio_get(session, next(url_free_cycle))
+            status_code, rtext = await aio_get(session, url_free)
             if status_code == 200 and rtext not in ['', None]:
                 doc = pq(rtext, parser='html')
                 trs = doc.find('table.table').eq(0).find('tr')
@@ -55,6 +56,8 @@ async def get_freeproxy(t, once=True):
                             'goodcnt': 0,
                         }
                         elite.append(tmp)
+                    if not elite:
+                        continue
                     # 1 儲存每次撈取的原始頁面 #################################
                     write_file(ips_html_path, rtext)
                     # 2 重存csv: 讀取csv檔案，與最新爬的比較 #################################
@@ -63,10 +66,11 @@ async def get_freeproxy(t, once=True):
                         df2 = pd.DataFrame(elite).astype(dtype)
                         df3 = csv_update(df1, df2)
                     else:
+
                         df3 = pd.DataFrame(elite).astype(dtype)
                     # 3 檢查代理 #################################
                     ippts = df3[ipcols].values.tolist()  # goodcnt不傳進CHECK_PROXY
-                    print(f'\n開始檢查proxy:共 {len(ippts)} 個')
+                    print(f'\n開始檢查proxy:共 {len(ippts)} 個 ({url_free})')
                     good_proxys = await CHECK_PROXY.get_good_proxys(ippts)
                     print(f'結束檢查proxy: {time()-stime}')
                     random.shuffle(good_proxys)
