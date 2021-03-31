@@ -24,11 +24,14 @@ class BOOKS(BOOKBASE):
     }
     # 博客來單書頁
     url_target_prefix = "https://www.books.com.tw/products/"
+    url_target_comment = 'https://www.books.com.tw/product_show/getCommentAjax/{}:1:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
+
     update_errcnt = 0
 
     def __init__(self, **init):
         super().__init__(**init)
         self.url_target = f"{self.url_target_prefix}{self.info['bookid']}"
+        self.url_target_comment = self.url_target_comment.format(self.info['bookid'])
 
     async def update_info(self):
         stime = time()
@@ -41,15 +44,21 @@ class BOOKS(BOOKBASE):
         #
         try:
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
+                # 抓單書頁資訊
                 async with session.get(self.url_target, headers=headers, proxy=proxy) as r:
                     status = r.status
                     rtext = await r.text(encoding='utf8')
+                # 抓ajax評論
+                headers2 = headers | {'Referer': self.url_target}
+                async with session.get(self.url_target_comment, headers=headers2, proxy=proxy) as r2:
+                    status2 = r2.status
+                    rtext2 = await r2.text(encoding='utf8')
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
             update['err'] = str(e)
         else:
-            if (status == 200) and re.search(self.info['bookid'], rtext) is not None:
+            if (status == 200 and status2 == 200) and re.search(self.info['bookid'], rtext) is not None:
                 doc = pq(rtext, parser='html')
                 # _________________________________________________________________________
                 isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
@@ -70,6 +79,7 @@ class BOOKS(BOOKBASE):
                 price_list, price_sale = self.price_handle(el)
                 spec = doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").eq(0).text().replace(" ", "").replace("規格：", "").strip()
                 intro = doc.find(".bd .content").eq(0).html()
+                comment = rtext2
                 # _________________________________________________________________________
                 url_book = self.url_target
                 url_vdo = doc.find('.cont iframe').eq(0).attr('src')  # 沒影片時為None
@@ -86,7 +96,7 @@ class BOOKS(BOOKBASE):
                 update['create_dt'] = datetime.today().strftime(dt_format)
                 self.info = self.info | update
                 #
-                print(self.info)
+                # print(self.info)
                 print(f"update_duration = {time()-stime}")
                 print(f"update_errcnt = {self.update_errcnt}")
             else:

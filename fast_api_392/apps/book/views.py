@@ -21,6 +21,7 @@ async def show_books(request: Request, bookid: str = '0010770978'):
     context = {
         'request': request,
         'res': json.dumps(book.info, indent=2, ensure_ascii=False),
+        'info': book.info,
     }
     return jinja_templates.TemplateResponse('show_books.html', context)
     # return ORJSONResponse(book.info)
