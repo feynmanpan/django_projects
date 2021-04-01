@@ -16,8 +16,8 @@ url_free_cycle = itertools.cycle(url_free)
 level_https = [
     ('anonymous', 'yes'),
     ('elite proxy', 'yes'),
-    ('anonymous', 'no'),
-    ('elite proxy', 'no'),
+    # ('anonymous', 'no'),
+    # ('elite proxy', 'no'),
 ]
 get_freeproxy_delta = 4*60
 timeout = 15
