@@ -24,14 +24,14 @@ class BOOKS(BOOKBASE):
     }
     # 博客來單書頁
     url_target_prefix = "https://www.books.com.tw/products/"
-    url_target_comment = 'https://www.books.com.tw/product_show/getCommentAjax/{}:1:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
-
+    # 評論
+    url_target_comment = 'https://www.books.com.tw/product_show/getCommentAjax/{}:{}:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
+    #
     update_errcnt = 0
 
     def __init__(self, **init):
         super().__init__(**init)
         self.url_target = f"{self.url_target_prefix}{self.info['bookid']}"
-        self.url_target_comment = self.url_target_comment.format(self.info['bookid'])
 
     async def update_info(self):
         stime = time()
@@ -49,16 +49,16 @@ class BOOKS(BOOKBASE):
                     status = r.status
                     rtext = await r.text(encoding='utf8')
                 # 抓ajax評論
-                headers2 = headers | {'Referer': self.url_target}
-                async with session.get(self.url_target_comment, headers=headers2, proxy=proxy) as r2:
-                    status2 = r2.status
-                    rtext2 = await r2.text(encoding='utf8')
+                if (status == 200) and re.search(self.info['bookid'], rtext) is not None:
+                    headers2 = headers | {'Referer': self.url_target}
+                    comment = await self.comment_handle(session, headers2, proxy)
+
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
             update['err'] = str(e)
         else:
-            if (status == 200 and status2 == 200) and re.search(self.info['bookid'], rtext) is not None:
+            if (status == 200) and re.search(self.info['bookid'], rtext) is not None:
                 doc = pq(rtext, parser='html')
                 # _________________________________________________________________________
                 isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
@@ -79,7 +79,6 @@ class BOOKS(BOOKBASE):
                 price_list, price_sale = self.price_handle(el)
                 spec = doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").eq(0).text().replace(" ", "").replace("規格：", "").strip()
                 intro = doc.find(".bd .content").eq(0).html()
-                comment = rtext2
                 # _________________________________________________________________________
                 url_book = self.url_target
                 url_vdo = doc.find('.cont iframe').eq(0).attr('src')  # 沒影片時為None
@@ -151,6 +150,27 @@ class BOOKS(BOOKBASE):
                     price_sale = tmp
 
         return price_list, price_sale
+
+    async def comment_handle(self, session, headers, proxy):
+        bid = self.info['bookid']
+        url_target_comment = self.url_target_comment.format(bid, 1)
+        # 先看第一頁評論結果
+        async with session.get(url_target_comment, headers=headers, proxy=proxy) as r2:
+            status2 = r2.status
+            rtext2 = await r2.text(encoding='utf8')
+            # 看一共幾頁
+            if (status2 == 200) and rtext2:
+                doc2 = pq(rtext2, parser='html')
+                pn = doc2.find(".cnt_page > .page > span").eq(0).text().strip()
+                pn = pn and int(pn) or 0
+                if pn:
+                    for p in range(2, pn+1):
+                        url_target_comment = self.url_target_comment.format(bid, p)
+                        async with session.get(url_target_comment, headers=headers, proxy=proxy) as r:
+                            rtext = await r.text(encoding='utf8')
+                            rtext2 += rtext
+            # 去除js
+            return re.sub(self.comment_js_pattern, '', rtext2)
 
     def save_info(self):
         pass

@@ -47,6 +47,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     }
     int_pattern = '^[0-9]+$'
     float_pattern = r'^[0-9]*\.*[0-9]*$'
+    comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
 
     def __init__(self, **init):
         # 檢查初始化引數
