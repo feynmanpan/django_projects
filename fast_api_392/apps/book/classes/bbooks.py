@@ -28,19 +28,20 @@ class BOOKS(BOOKBASE):
     url_target_comment = 'https://www.books.com.tw/product_show/getCommentAjax/{}:{}:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
     #
     update_errcnt = 0
+    #
+    page_err = ['頁面連結錯誤', 'The Event ID', ]
 
     def __init__(self, **init):
         super().__init__(**init)
         self.url_target = f"{self.url_target_prefix}{self.info['bookid']}"
 
-    async def update_info(self):
+    async def update_info(self, proxy=None):
         stime = time()
         #
         connector = aiohttp.TCPConnector(ssl=cacert)
         TO = aiohttp.ClientTimeout(total=timeout)
-        proxy = self.proxy
-        update = {}
-        update['err'] = None
+        proxy = proxy or self.proxy
+        update = {} | {'err': None}
         #
         try:
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
@@ -88,15 +89,19 @@ class BOOKS(BOOKBASE):
                     if (val := locals().get(col)) not in ['', None]:
                         update[col] = val
             else:
-                update['err'] = f'status={status},rtext={rtext[:100]}'
+                for pe in self.page_err:
+                    if pe in rtext:
+                        update['err'] = pe
+                        break
+                else:
+                    update['err'] = f'status={status},rtext={rtext[:100]}'
         finally:
-            # 抓成功，或到達最多次數，就不再抓
-            if not update['err'] or self.update_errcnt == update_errcnt_max:
+            # 抓成功，或頁面連接錯誤，或到達最多次數，就不再抓
+            if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
                 update['create_dt'] = datetime.today().strftime(dt_format)
                 self.info = self.info | update
                 #
-                # print(self.info)
-                print(f"update_duration = {time()-stime}")
+                print(f"update_duration = {time()-stime},final_proxy={proxy}")
                 print(f"update_errcnt = {self.update_errcnt}")
             else:
                 self.update_errcnt += 1
