@@ -50,18 +50,24 @@ class BOOKBASE(object, metaclass=VALIDATE):
     comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
 
     def __init__(self, **init):
-        # 檢查初始化引數
-        set0 = set(self.info_cols)
-        set1 = set(init.keys())
-        if (rest := set1-set0) != self.empty:
-            raise KeyError(f'初始化欄位{rest}不在BOOKBASE的info_cols裡面')
         # 更新初始化
         self.info = self.info_default | init
-        # 檢查bookid格式
-        bid = self.info['bookid']
-        bid_pn = self.bookid_pattern[self.info['store']]
-        if not re.match(bid_pn, bid):
-            raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
+
+    def __setattr__(self, name, val):
+        # 每次info做assign時
+        if name == 'info':
+            # (1)檢查欄位
+            set0 = set(self.info_cols)
+            set1 = set(val.keys())
+            if (rest := set1-set0) != self.empty:
+                raise KeyError(f'assign給info的欄位{rest}不在BOOKBASE的info_cols裡面')
+            # (2)檢查bookid格式
+            bid = val.get('bookid', None)
+            bid_pn = self.bookid_pattern.get(self.info_default['store'], None)
+            if bid and bid_pn and not re.match(bid_pn, bid):
+                raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
+        #
+        object.__setattr__(self, name, val)
 
     @property
     def proxy(self):

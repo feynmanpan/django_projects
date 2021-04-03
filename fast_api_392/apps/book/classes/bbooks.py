@@ -61,7 +61,7 @@ class BOOKS(BOOKBASE):
         else:
             if (status == 200) and re.search(self.info['bookid'], rtext) is not None:
                 doc = pq(rtext, parser='html')
-                # _________________________________________________________________________
+                # =========================================================================
                 isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
                 if (len_isbn := len(isbn)) >= 10:
                     isbn10 = (len_isbn == 10 and isbn) or None
