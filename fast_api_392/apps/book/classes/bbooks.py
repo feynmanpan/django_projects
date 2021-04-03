@@ -22,6 +22,7 @@ class BOOKS(BOOKBASE):
     info_default = {
         "bookid": "0010770978"  # 刺殺騎士團長
     }
+    bookid_pattern = '^[a-zA-Z0-9]{10}$'  # 博客來書號格式
     # 博客來單書頁
     url_target_prefix = "https://www.books.com.tw/products/"
     # 評論
@@ -29,7 +30,10 @@ class BOOKS(BOOKBASE):
     #
     update_errcnt = 0
     #
-    page_err = ['頁面連結錯誤', 'The Event ID', ]
+    page_err = [
+        '頁面連結錯誤',
+        # 'The Event ID',
+    ]
 
     def __init__(self, **init):
         super().__init__(**init)

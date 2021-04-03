@@ -40,17 +40,15 @@ class BOOKBASE(object, metaclass=VALIDATE):
     ]
     #
     info_default = {}
-    empty = set()
-    #
-    bookid_pattern = {
-        'BOOKS': '^[a-zA-Z0-9]{10}$',  # 博客來書號格式
-    }
+    bookid_pattern = ''
     int_pattern = '^[0-9]+$'
     float_pattern = r'^[0-9]*\.*[0-9]*$'
     comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
+    #
+    empty = set()
 
     def __init__(self, **init):
-        # 更新初始化
+        # 初始化就檢查info欄位
         self.info = self.info_default | init
 
     def __setattr__(self, name, val):
@@ -63,11 +61,12 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 raise KeyError(f'assign給info的欄位{rest}不在BOOKBASE的info_cols裡面')
             # (2)檢查bookid格式
             bid = val.get('bookid', None)
-            bid_pn = self.bookid_pattern.get(self.info_default['store'], None)
+            bid_pn = self.bookid_pattern
             if bid and bid_pn and not re.match(bid_pn, bid):
                 raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
         #
-        object.__setattr__(self, name, val)
+        self.__dict__[name] = val
+        # object.__setattr__(self, name, val)
 
     @property
     def proxy(self):
