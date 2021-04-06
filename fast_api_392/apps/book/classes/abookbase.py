@@ -39,7 +39,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         'err',
         'create_dt',
     ]
-    INFO_COLS = namedtuple('INFO_COLS', info_cols)(*[c for c in info_cols])
+    INFO_COLS = namedtuple('INFO_COLS', info_cols)(*info_cols)
     #
     info_default = {}
     bookid_pattern = ''
