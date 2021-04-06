@@ -146,18 +146,10 @@ class BOOKS(BOOKBASE):
     def price_handle(self, el):
         price_list = el.find("em").eq(0).text().strip()
         price_sale = el.find("strong.price01").eq(-1).find("b").eq(0).text().strip()  # 有優惠價跟特價，要找最後一個
+        # 定價售價統一base處理
+        price_list = super().price_list_handle(price_list)
+        price_sale = super().price_sale_handle(price_sale)
         #
-        if price_list:
-            price_list = not re.match(self.int_pattern, price_list) and 123456 or int(price_list)
-        #
-        if price_sale:
-            if not re.match(self.float_pattern, price_sale):
-                price_sale = 123.456
-            else:
-                price_sale = float(price_sale)
-                if price_sale == (tmp := int(price_sale)):
-                    price_sale = tmp
-
         return price_list, price_sale
 
     async def comment_handle(self, session, headers, proxy):

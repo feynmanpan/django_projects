@@ -81,3 +81,19 @@ class BOOKBASE(object, metaclass=VALIDATE):
     @abstractmethod
     def save_info(self):
         pass
+
+    # 定價售價統一base處理_________________________________________________________
+    def price_list_handle(self, price_list):
+        if price_list:
+            price_list = not re.match(self.int_pattern, price_list) and 123456 or int(price_list)
+        return price_list
+
+    def price_sale_handle(self, price_sale):
+        if price_sale:
+            if not re.match(self.float_pattern, price_sale):
+                price_sale = 456.789
+            else:
+                price_sale = float(price_sale)
+                if price_sale == (tmp := int(price_sale)):
+                    price_sale = tmp
+        return price_sale
