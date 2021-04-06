@@ -4,19 +4,6 @@ from collections import namedtuple
 #
 import apps.ips.config as ipscfg
 ##########################################################
-INFO_COLS = [
-    'store',
-    'bookid', 'isbn10', 'isbn13',
-    'title', 'title2',
-    'author',
-    'publisher', 'pub_dt', 'lang',
-    'price_list', 'price_sale',
-    'spec', 'intro', 'comment',
-    'url_book', 'url_vdo', 'url_cover',
-    'err',
-    'create_dt',
-]
-INFOCOLS = namedtuple('INFO_COLS', INFO_COLS)(*[c for c in INFO_COLS])
 
 
 class VALIDATE(ABCMeta):
@@ -32,15 +19,27 @@ class VALIDATE(ABCMeta):
             if (rest := set1-set0) != base.empty:
                 raise KeyError(f'info_default中，欄位{rest}不在BOOKBASE的info_cols裡面')
             # 造子類的預設info並assign，以子類類名為store名稱
-            info_default = dict(zip(info_cols, [None]*len(info_cols))) | class_dict.get('info_default', {})
-            info_default[INFOCOLS.store] = name
+            info_default = dict(zip(info_cols, [None]*len(info_cols))) | info_default
+            info_default[base.INFO_COLS.store] = name
             class_dict['info_default'] = info_default
         #
         return super().__new__(cls, name, bases, class_dict)
 
 
 class BOOKBASE(object, metaclass=VALIDATE):
-    info_cols = INFO_COLS
+    info_cols = [
+        'store',
+        'bookid', 'isbn10', 'isbn13',
+        'title', 'title2',
+        'author',
+        'publisher', 'pub_dt', 'lang',
+        'price_list', 'price_sale',
+        'spec', 'intro', 'comment',
+        'url_book', 'url_vdo', 'url_cover',
+        'err',
+        'create_dt',
+    ]
+    INFO_COLS = namedtuple('INFO_COLS', info_cols)(*[c for c in info_cols])
     #
     info_default = {}
     bookid_pattern = ''
@@ -67,7 +66,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if (rest := set1-set0) != self.empty:
                 raise KeyError(f'assign給info的欄位{rest}不在BOOKBASE的info_cols裡面')
             # (2)檢查bookid格式
-            bid = val.get(INFOCOLS.bookid, None)
+            bid = val.get(self.INFO_COLS.bookid, None)
             bid_pn = self.bookid_pattern
             if bid and bid_pn and not re.match(bid_pn, bid):
                 raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
