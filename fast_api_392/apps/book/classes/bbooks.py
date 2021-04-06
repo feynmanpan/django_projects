@@ -5,6 +5,7 @@ import re
 from pyquery import PyQuery as pq
 from datetime import datetime
 from time import time
+from typing import Dict, Any
 #
 from apps.book.classes.abookbase import BOOKBASE
 import apps.ips.config as ipscfg
@@ -45,7 +46,7 @@ class BOOKS(BOOKBASE):
         connector = aiohttp.TCPConnector(ssl=cacert)
         TO = aiohttp.ClientTimeout(total=timeout)
         proxy = proxy or self.proxy
-        update = {} | {'err': None}
+        update: Dict[str, Any] = {'err': None}  # 不加型別提示，後面更新err時會有紅波浪
         #
         try:
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
@@ -57,7 +58,6 @@ class BOOKS(BOOKBASE):
                 if (status == 200) and re.search(self.info[self.INFO_COLS.bookid], rtext) is not None:
                     headers2 = headers | {'Referer': self.url_target}
                     comment = await self.comment_handle(session, headers2, proxy)
-
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:

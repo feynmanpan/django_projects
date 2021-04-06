@@ -15,10 +15,10 @@ async def show_books(request: Request, bookid: str = '0010770978'):
     }
     try:
         book = BOOKS(**init)
-        await book.update_info()
     except Exception as e:
         return HTMLResponse(str(e))
     #
+    await book.update_info()
     context = {
         'request': request,
         'res': json.dumps(book.info, indent=2, ensure_ascii=False),

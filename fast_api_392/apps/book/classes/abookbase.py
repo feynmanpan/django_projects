@@ -1,6 +1,10 @@
 from abc import ABC, ABCMeta, abstractmethod
 import re
 from collections import namedtuple
+import os
+import itertools
+#
+import pandas as pd
 #
 import apps.ips.config as ipscfg
 ##########################################################
@@ -82,9 +86,15 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     @property
     def proxy(self):
+        ippt = None
         if ips_cycle := ipscfg.ips_cycle:
-            tmp = next(ips_cycle)
-            return f"http://{tmp['ip']}:{tmp['port']}"
+            ippt = next(ips_cycle)
+        elif os.path.isfile(ipscfg.ips_csv_path):
+            df = pd.read_csv(ipscfg.ips_csv_path, usecols=['ip', 'port'])
+            ipscfg.ips_cycle = itertools.cycle(df.to_dict('records'))
+            ippt = next(ipscfg.ips_cycle)
+        #
+        return ippt and f"http://{ippt['ip']}:{ippt['port']}" or None
 
     @abstractmethod
     def update_info(self):
