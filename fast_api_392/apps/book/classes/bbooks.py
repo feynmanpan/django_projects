@@ -89,6 +89,7 @@ class BOOKS(BOOKBASE):
                 url_vdo = doc.find('.cont iframe').eq(0).attr('src')  # 沒影片時為None
                 url_cover = doc.find(".cover_img > img.cover").attr("src")
                 # =========================================================================
+                # 由base統一update處理
                 update = self.update_handle(update, locals())
             else:
                 for pe in self.page_err:

@@ -98,6 +98,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                     price_sale = tmp
         return price_sale
 
+    # 爬成功的update統一base處理_________________________________________________________
     def update_handle(self, update, locals_var):
         for col in self.info_cols:
             if (val := locals_var.get(col)) not in ['', None]:
