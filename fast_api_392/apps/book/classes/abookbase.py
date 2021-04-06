@@ -3,6 +3,7 @@ import re
 from collections import namedtuple
 import os
 import itertools
+from typing import Dict, Any
 #
 import pandas as pd
 #
@@ -51,13 +52,12 @@ class BOOKBASE(object, metaclass=VALIDATE):
     float_pattern = r'^[0-9]*\.*[0-9]*$'
     int_err = 1234567
     float_err = 4567.89
-    comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
     #
     empty = set()
 
     def __init__(self, **init):
         # 初始化就檢查info欄位
-        self.info = self.info_default | init
+        self.info: Dict[str, Any] = self.info_default | init
 
     def __setattr__(self, name, val):
         # 每次info做assign時

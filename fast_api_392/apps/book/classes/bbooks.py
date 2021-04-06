@@ -24,6 +24,7 @@ class BOOKS(BOOKBASE):
         "bookid": "0010770978"  # 刺殺騎士團長
     }
     bookid_pattern = '^[a-zA-Z0-9]{10}$'  # 博客來書號格式
+    comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
     # 博客來單書頁
     url_target_prefix = "https://www.books.com.tw/products/"
     # 評論
