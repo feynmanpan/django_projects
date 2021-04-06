@@ -66,7 +66,6 @@ async def get_freeproxy(t, once=True):
                         df2 = pd.DataFrame(elite).astype(dtype)
                         df3 = csv_update(df1, df2)
                     else:
-
                         df3 = pd.DataFrame(elite).astype(dtype)
                     # 3 檢查代理 #################################
                     ippts = df3[ipcols].values.tolist()  # goodcnt不傳進CHECK_PROXY

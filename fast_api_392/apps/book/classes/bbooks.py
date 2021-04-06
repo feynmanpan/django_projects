@@ -6,7 +6,7 @@ from pyquery import PyQuery as pq
 from datetime import datetime
 from time import time
 #
-from apps.book.classes.abookbase import BOOKBASE
+from apps.book.classes.abookbase import BOOKBASE, INFOCOLS
 import apps.ips.config as ipscfg
 from apps.ips.config import ips_csv_path, dtype, cacert, headers
 from apps.book.config import (
@@ -37,7 +37,7 @@ class BOOKS(BOOKBASE):
 
     def __init__(self, **init):
         super().__init__(**init)
-        self.url_target = f"{self.url_target_prefix}{self.info['bookid']}"
+        self.url_target = f"{self.url_target_prefix}{self.info[INFOCOLS.bookid]}"
 
     async def update_info(self, proxy=None):
         stime = time()
@@ -54,7 +54,7 @@ class BOOKS(BOOKBASE):
                     status = r.status
                     rtext = await r.text(encoding='utf8')
                 # 抓ajax評論
-                if (status == 200) and re.search(self.info['bookid'], rtext) is not None:
+                if (status == 200) and re.search(self.info[INFOCOLS.bookid], rtext) is not None:
                     headers2 = headers | {'Referer': self.url_target}
                     comment = await self.comment_handle(session, headers2, proxy)
 
@@ -63,7 +63,7 @@ class BOOKS(BOOKBASE):
         except Exception as e:
             update['err'] = str(e)
         else:
-            if (status == 200) and re.search(self.info['bookid'], rtext) is not None:
+            if (status == 200) and re.search(self.info[INFOCOLS.bookid], rtext) is not None:
                 doc = pq(rtext, parser='html')
                 # =========================================================================
                 isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
@@ -101,7 +101,7 @@ class BOOKS(BOOKBASE):
         finally:
             # 抓成功，或頁面連接錯誤，或到達最多次數，就不再抓
             if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
-                update['create_dt'] = datetime.today().strftime(dt_format)
+                update[INFOCOLS.create_dt] = datetime.today().strftime(dt_format)
                 self.info = self.info | update
                 #
                 print(f"update_duration = {time()-stime},final_proxy={proxy}")
