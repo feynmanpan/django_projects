@@ -44,7 +44,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     ]
     INFO_COLS = namedtuple('INFO_COLS', info_cols)(*info_cols)
     #
-    info_default = dict.fromkeys(info_cols)  # dict(zip(info_cols, [None]*len(info_cols)))
+    info_default = dict.fromkeys(info_cols, None)  # dict(zip(info_cols, [None]*len(info_cols)))
     #
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'
