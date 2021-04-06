@@ -58,6 +58,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     def __setattr__(self, name, val):
         # 每次info做assign時
         if name == 'info':
+            # (0)檢查assign為dict
             if not isinstance(val, dict):
                 raise TypeError('assign給info的值不是dict')
             # (1)檢查欄位
@@ -66,10 +67,15 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if (rest := set1-set0) != self.empty:
                 raise KeyError(f'assign給info的欄位{rest}不在BOOKBASE的info_cols裡面')
             # (2)檢查bookid格式
-            bid = val.get(self.INFO_COLS.bookid, None)
+            bid = val.get(self.INFO_COLS.bookid)
             bid_pn = self.bookid_pattern
-            if bid and bid_pn and not re.match(bid_pn, bid):
+            if (bid and bid_pn) and not re.match(bid_pn, bid):
                 raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
+            # (3)檢查定價售價
+            if (PL := val.get(self.INFO_COLS.price_list)) and not isinstance(PL, int):
+                raise ValueError(f'price_list="{PL}" 不為int')
+            if (PS := val.get(self.INFO_COLS.price_sale)) and not (isinstance(PS, float) or isinstance(PS, int)):
+                raise ValueError(f'price_sale="{PS}" 不為float/int')
         #
         self.__dict__[name] = val
         # object.__setattr__(self, name, val)
