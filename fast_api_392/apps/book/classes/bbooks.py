@@ -89,9 +89,7 @@ class BOOKS(BOOKBASE):
                 url_vdo = doc.find('.cont iframe').eq(0).attr('src')  # 沒影片時為None
                 url_cover = doc.find(".cover_img > img.cover").attr("src")
                 # =========================================================================
-                for col in self.info_cols:
-                    if (val := locals().get(col)) not in ['', None]:
-                        update[col] = val
+                update = self.update_handle(update, locals())
             else:
                 for pe in self.page_err:
                     if pe in rtext:
@@ -147,8 +145,8 @@ class BOOKS(BOOKBASE):
         price_list = el.find("em").eq(0).text().strip()
         price_sale = el.find("strong.price01").eq(-1).find("b").eq(0).text().strip()  # 有優惠價跟特價，要找最後一個
         # 定價售價統一base處理
-        price_list = super().price_list_handle(price_list)
-        price_sale = super().price_sale_handle(price_sale)
+        price_list = self.price_list_handle(price_list)
+        price_sale = self.price_sale_handle(price_sale)
         #
         return price_list, price_sale
 

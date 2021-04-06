@@ -97,3 +97,9 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 if price_sale == (tmp := int(price_sale)):
                     price_sale = tmp
         return price_sale
+
+    def update_handle(self, update, locals_var):
+        for col in self.info_cols:
+            if (val := locals_var.get(col)) not in ['', None]:
+                update[col] = val
+        return update
