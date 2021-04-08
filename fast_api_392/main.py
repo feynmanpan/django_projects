@@ -22,6 +22,8 @@ from apps.pig.views import pig_d
 from apps.ips.views import show_freeproxy, get_next_ip, check_proxy
 from apps.ips.config import get_freeproxy_delta
 from apps.book.views import show_books
+import apps.sql.config as sqlcfg
+from apps.sql.views import dbwtb_isconnected
 #################### app ################################
 app = FastAPI()
 app.mount(f"/{config.static}", StaticFiles(directory=config.static), name=config.static)
@@ -40,6 +42,17 @@ def path_MW(func: Callable):
         return app.middleware("http")(func)
 
 
+#################### PG_DBWTB ################################
+@app.on_event("startup")
+async def startup():
+    await sqlcfg.dbwtb.connect()
+    print(f">>>>>>>>>>>>>>> sqlcfg.dbwtb 連線= {sqlcfg.dbwtb.is_connected} <<<<<<<<<<<<<<<")
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await sqlcfg.dbwtb.connect()
+
 #################### middlewares ################################
 for mw in mw_list:
     path_MW(mw)
@@ -52,6 +65,7 @@ path_get("/proxy", show_freeproxy)
 path_get("/nextip", get_next_ip)
 path_get("/check_proxy", check_proxy)
 path_get("/books/{bookid}", show_books)
+path_get("/dbwtb", dbwtb_isconnected)
 
 
 #################### schedule ################################
