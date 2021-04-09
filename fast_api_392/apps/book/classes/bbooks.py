@@ -5,7 +5,7 @@ import re
 from pyquery import PyQuery as pq
 from datetime import datetime
 from time import time
-from typing import Dict, Any
+from typing import Dict, Any, Callable, Awaitable, Coroutine, Optional
 #
 from apps.book.classes.abookbase import BOOKBASE
 import apps.ips.config as ipscfg
@@ -41,7 +41,7 @@ class BOOKS(BOOKBASE):
         super().__init__(**init)
         self.url_target = f"{self.url_target_prefix}{self.info[self.INFO_COLS.bookid]}"
 
-    async def update_info(self, proxy=None):
+    async def update_info(self, proxy: Optional[str] = None):
         stime = time()
         #
         connector = aiohttp.TCPConnector(ssl=cacert)

@@ -18,7 +18,7 @@ from .config import (
     ips_html,
 )
 from . import config as ips_cfg
-from .model import tb_ips
+from .model import IPS  # ,tb_ips
 from .utils import CHECK_PROXY
 from apps.sql.config import dbwtb
 ########################################################
@@ -56,12 +56,12 @@ async def show_freeproxy(request: Request, f: str = 'csv'):
             rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)
     elif f == 'db':
         cs = [
-            tb_ips.c.id,
-            tb_ips.c.ip,
-            tb_ips.c.port,
-            tb_ips.c.goodcnt,
+            IPS.id,  # tb_ips.c.id,
+            IPS.ip,  # tb_ips.c.ip,
+            IPS.port,  # tb_ips.c.port,
+            IPS.goodcnt,  # tb_ips.c.goodcnt,
         ]
-        query = sa.select(cs).order_by('id', 'ip')  # .where(tb_ips.columns.id > 100)
+        query = sa.select(cs).order_by('id', 'ip')  # .where(IPS.id > 100) .where(tb_ips.columns.id > 100)
         records = await dbwtb.fetch_all(query)
         #
         context['ips_csv_tb_html'] = pd.DataFrame([dict(r) for r in records]).to_html()

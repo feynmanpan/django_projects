@@ -19,7 +19,7 @@ class IPS(Base):
     goodcnt = Column(Integer, nullable=False)
 
 
-# 從Alembic的upgrade複製過來修改
+# 從Alembic的upgrade複製過來修改，但sa的ORM可以直接用上面的IPS
 tb_ips = TB('ips',
             metadata,  # 加這個
             sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),

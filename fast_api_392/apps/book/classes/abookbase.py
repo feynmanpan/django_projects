@@ -1,15 +1,17 @@
 from abc import ABC, ABCMeta, abstractmethod
+import asyncio
 import re
 from collections import namedtuple
 import os
 import itertools
-from typing import Dict, Any
+from typing import Dict, Any, Awaitable, Union
 #
 import sqlalchemy as sa
 import pandas as pd
+from async_property import async_property
 #
 import apps.ips.config as ipscfg
-from apps.ips.model import tb_ips
+from apps.ips.model import IPS  # ,tb_ips
 from apps.sql.config import dbwtb
 ##########################################################
 
@@ -87,8 +89,9 @@ class BOOKBASE(object, metaclass=VALIDATE):
         self.__dict__[name] = val
         # object.__setattr__(self, name, val)
 
-    @property
-    async def proxy(self):
+    # @property
+    @async_property
+    async def proxy(self) -> Union[str, None]:
         ippt = None
         # 依序從global/csv/db抓cycle
         if ips_cycle := ipscfg.ips_cycle:
@@ -100,10 +103,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 ippt = next(ipscfg.ips_cycle)
         else:
             cs = [
-                # tb_ips.c.id,
-                tb_ips.c.ip,
-                tb_ips.c.port,
-                # tb_ips.c.goodcnt,
+                IPS.ip,
+                IPS.port,
             ]
             query = sa.select(cs).order_by('id')  # .where(tb_ips.columns.id > 100)
             records = await dbwtb.fetch_all(query)
@@ -111,7 +112,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 ipscfg.ips_cycle = itertools.cycle([dict(r) for r in records])
                 ippt = next(ipscfg.ips_cycle)
         #
-        return ippt and f"http://{ippt['ip']}:{ippt['port']}" or None
+        if ippt:
+            return f"http://{ippt['ip']}:{ippt['port']}"
 
     @abstractmethod
     def update_info(self):
