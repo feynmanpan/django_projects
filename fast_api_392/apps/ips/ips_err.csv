@@ -1,106 +1,414 @@
 ip,port,err,checkurl,g_idx
-159.65.69.186,9300,Server disconnected,https://www.whatismyip.com.tw/tw/,0
-159.65.69.186,9300,"status=200, or ip not show in checkurl",https://httpbin.org/ip,0
-159.65.69.186,9300,"status=200, or ip not show in checkurl",https://www.rus.net.tw/myip.php,0
-159.65.69.186,9300,"status=403, or ip not show in checkurl",https://www.myip.com/,0
-159.65.69.186,9300,"status=403, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,0
-159.65.69.186,9300,"status=403, or ip not show in checkurl",https://www.whatismyip.com/,0
-159.65.69.186,9300,"status=503, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,0
-159.89.221.73,3128,Server disconnected,https://www.whatismyip.com.tw/tw/,1
-159.89.221.73,3128,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,1
-159.89.221.73,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,1
-159.89.221.73,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,1
-159.89.221.73,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,1
-159.89.221.73,3128,"status=200, or ip not show in checkurl",https://www.rus.net.tw/myip.php,1
-159.89.221.73,3128,"status=200, or ip not show in checkurl",https://www.myip.com/,1
-161.97.112.246,8867,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,2
-161.97.112.246,8867,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,2
-161.97.112.246,8867,asyncio.exceptions.TimeoutError,https://www.myip.com/,2
-161.97.112.246,8867,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,2
-161.97.112.246,8867,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,2
-161.97.112.246,8867,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,2
-161.97.112.246,8867,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,2
-167.172.123.221,9300,Server disconnected,https://www.whatismyip.com.tw/tw/,3
-167.172.123.221,9300,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,3
-167.172.123.221,9300,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,3
-167.172.123.221,9300,"status=200, or ip not show in checkurl",https://httpbin.org/ip,3
-167.172.123.221,9300,"status=403, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,3
-167.172.123.221,9300,"status=403, or ip not show in checkurl",https://www.myip.com/,3
-167.172.123.221,9300,"status=403, or ip not show in checkurl",https://www.whatismyip.com/,3
-173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,4
-173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,4
-173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,4
-173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,4
-173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,4
-173.249.5.7,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,4
-173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,4
-185.34.22.225,37879,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,5
-185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://www.myip.com/,5
-185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,5
-185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,5
-185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,5
-185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,5
-185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,5
-191.242.178.209,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,6
-191.242.178.209,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,6
-191.242.178.209,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,6
-191.242.178.209,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,6
-191.242.178.209,3128,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,6
-191.242.178.209,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,6
-191.242.178.209,3128,asyncio.exceptions.TimeoutError,https://www.myip.com/,6
-198.24.170.58,13772,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,7
-198.24.170.58,13772,asyncio.exceptions.TimeoutError,https://www.myip.com/,7
-198.24.170.58,13772,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,7
-198.24.170.58,13772,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,7
-198.24.170.58,13772,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,7
-198.24.170.58,13772,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,7
-198.24.170.58,13772,"status=200, or ip not show in checkurl",https://www.rus.net.tw/myip.php,7
-208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,8
-208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,8
-208.80.28.208,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,8
-208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,8
-208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,8
-208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,8
-208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,8
-209.203.130.59,23500,asyncio.exceptions.TimeoutError,https://www.myip.com/,9
-209.203.130.59,23500,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,9
-209.203.130.59,23500,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,9
-209.203.130.59,23500,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,9
-209.203.130.59,23500,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,9
-209.203.130.59,23500,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,9
-209.203.130.59,23500,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,9
-211.185.26.5,8080,"Cannot connect to host 211.185.26.5:8080 ssl:default [Connect call failed ('211.185.26.5', 8080)]",https://www.rus.net.tw/myip.php,10
-211.185.26.5,8080,"Cannot connect to host 211.185.26.5:8080 ssl:default [Connect call failed ('211.185.26.5', 8080)]",https://www.whatismyip.com/,10
-211.185.26.5,8080,"Cannot connect to host 211.185.26.5:8080 ssl:default [Connect call failed ('211.185.26.5', 8080)]",http://210.240.175.62/NTIIS/IP_test.asp,10
-211.185.26.5,8080,"Cannot connect to host 211.185.26.5:8080 ssl:default [Connect call failed ('211.185.26.5', 8080)]",https://whatismyipaddress.com/zh-cn/index,10
-211.185.26.5,8080,"Cannot connect to host 211.185.26.5:8080 ssl:default [Connect call failed ('211.185.26.5', 8080)]",https://www.myip.com/,10
-211.185.26.5,8080,"Cannot connect to host 211.185.26.5:8080 ssl:default [Connect call failed ('211.185.26.5', 8080)]",https://www.whatismyip.com.tw/tw/,10
-211.185.26.5,8080,"Cannot connect to host 211.185.26.5:8080 ssl:default [Connect call failed ('211.185.26.5', 8080)]",https://httpbin.org/ip,10
-23.21.179.114,8080,Server disconnected,http://210.240.175.62/NTIIS/IP_test.asp,11
-23.21.179.114,8080,Server disconnected,https://www.whatismyip.com.tw/tw/,11
-23.21.179.114,8080,Server disconnected,https://whatismyipaddress.com/zh-cn/index,11
-23.21.179.114,8080,Server disconnected,https://www.whatismyip.com/,11
-23.21.179.114,8080,Server disconnected,https://www.rus.net.tw/myip.php,11
-23.21.179.114,8080,Server disconnected,https://httpbin.org/ip,11
-23.21.179.114,8080,Server disconnected,https://www.myip.com/,11
-35.243.183.101,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,12
-35.243.183.101,80,asyncio.exceptions.TimeoutError,https://www.myip.com/,12
-35.243.183.101,80,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,12
-35.243.183.101,80,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,12
-35.243.183.101,80,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,12
-35.243.183.101,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,12
-35.243.183.101,80,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,12
-51.81.82.175,80,Cannot connect to host www.myip.com:443 ssl:default [[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1123)],https://www.myip.com/,13
-51.81.82.175,80,Cannot connect to host www.rus.net.tw:443 ssl:default [[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1123)],https://www.rus.net.tw/myip.php,13
-51.81.82.175,80,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,13
-51.81.82.175,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,13
-51.81.82.175,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,13
-51.81.82.175,80,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,13
-51.81.82.175,80,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,13
-83.209.186.156,8080,"Cannot connect to host 83.209.186.156:8080 ssl:default [Connect call failed ('83.209.186.156', 8080)]",https://www.rus.net.tw/myip.php,14
-83.209.186.156,8080,"Cannot connect to host 83.209.186.156:8080 ssl:default [Connect call failed ('83.209.186.156', 8080)]",https://www.whatismyip.com.tw/tw/,14
-83.209.186.156,8080,"Cannot connect to host 83.209.186.156:8080 ssl:default [Connect call failed ('83.209.186.156', 8080)]",https://whatismyipaddress.com/zh-cn/index,14
-83.209.186.156,8080,"Cannot connect to host 83.209.186.156:8080 ssl:default [Connect call failed ('83.209.186.156', 8080)]",https://www.myip.com/,14
-83.209.186.156,8080,"Cannot connect to host 83.209.186.156:8080 ssl:default [Connect call failed ('83.209.186.156', 8080)]",https://www.whatismyip.com/,14
-83.209.186.156,8080,[Errno 104] Connection reset by peer,https://httpbin.org/ip,14
-83.209.186.156,8080,[Errno 104] Connection reset by peer,http://210.240.175.62/NTIIS/IP_test.asp,14
+101.132.143.186,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,0
+101.132.143.186,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,0
+101.132.143.186,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,0
+101.132.143.186,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,0
+101.132.143.186,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,0
+101.132.143.186,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,0
+101.132.143.186,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,0
+103.152.5.70,8080,Server disconnected,https://www.whatismyip.com.tw/tw/,1
+103.152.5.70,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,1
+103.152.5.70,8080,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,1
+103.152.5.70,8080,"status=200, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,1
+103.152.5.70,8080,"status=200, or ip not show in checkurl",https://httpbin.org/ip,1
+103.152.5.70,8080,"status=200, or ip not show in checkurl",https://www.myip.com/,1
+103.152.5.70,8080,"status=200, or ip not show in checkurl",https://www.whatismyip.com/,1
+103.212.92.253,48434,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,2
+103.212.92.253,48434,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,2
+103.212.92.253,48434,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,2
+103.212.92.253,48434,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,2
+103.212.92.253,48434,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,2
+103.212.92.253,48434,asyncio.exceptions.TimeoutError,https://www.myip.com/,2
+103.212.92.253,48434,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,2
+103.227.254.118,2021,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,3
+103.227.254.118,2021,asyncio.exceptions.TimeoutError,https://www.myip.com/,3
+103.227.254.118,2021,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,3
+103.227.254.118,2021,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,3
+103.227.254.118,2021,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,3
+103.227.254.118,2021,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,3
+103.227.254.118,2021,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,3
+103.90.228.25,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,4
+103.90.228.25,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,4
+103.90.228.25,3128,"status=200, or ip not show in checkurl",https://www.myip.com/,4
+103.90.228.25,3128,"status=200, or ip not show in checkurl",https://httpbin.org/ip,4
+103.90.228.25,3128,"status=200, or ip not show in checkurl",https://www.rus.net.tw/myip.php,4
+103.90.228.25,3128,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,4
+103.90.228.25,3128,"status=503, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,4
+103.90.229.165,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,5
+103.90.229.165,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,5
+103.90.229.165,3128,asyncio.exceptions.TimeoutError,https://www.myip.com/,5
+103.90.229.165,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,5
+103.90.229.165,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,5
+103.90.229.165,3128,"status=200, or ip not show in checkurl",https://httpbin.org/ip,5
+103.90.229.165,3128,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,5
+103.90.229.166,3128,Server disconnected,https://www.whatismyip.com.tw/tw/,6
+103.90.229.166,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,6
+103.90.229.166,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,6
+103.90.229.166,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,6
+103.90.229.166,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,6
+103.90.229.166,3128,"status=200, or ip not show in checkurl",https://httpbin.org/ip,6
+103.90.229.166,3128,"status=200, or ip not show in checkurl",https://www.myip.com/,6
+103.94.18.13,8088,"Cannot connect to host 103.94.18.13:8088 ssl:default [Connect call failed ('103.94.18.13', 8088)]",https://www.rus.net.tw/myip.php,7
+103.94.18.13,8088,"Cannot connect to host 103.94.18.13:8088 ssl:default [Connect call failed ('103.94.18.13', 8088)]",https://www.whatismyip.com/,7
+103.94.18.13,8088,"Cannot connect to host 103.94.18.13:8088 ssl:default [Connect call failed ('103.94.18.13', 8088)]",https://whatismyipaddress.com/zh-cn/index,7
+103.94.18.13,8088,"Cannot connect to host 103.94.18.13:8088 ssl:default [Connect call failed ('103.94.18.13', 8088)]",https://www.whatismyip.com.tw/tw/,7
+103.94.18.13,8088,"Cannot connect to host 103.94.18.13:8088 ssl:default [Connect call failed ('103.94.18.13', 8088)]",http://210.240.175.62/NTIIS/IP_test.asp,7
+103.94.18.13,8088,"Cannot connect to host 103.94.18.13:8088 ssl:default [Connect call failed ('103.94.18.13', 8088)]",https://httpbin.org/ip,7
+103.94.18.13,8088,"Cannot connect to host 103.94.18.13:8088 ssl:default [Connect call failed ('103.94.18.13', 8088)]",https://www.myip.com/,7
+106.14.126.13,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,8
+106.14.126.13,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,8
+106.14.126.13,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,8
+106.14.126.13,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,8
+106.14.126.13,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,8
+106.14.126.13,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,8
+106.14.126.13,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,8
+106.15.225.174,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,9
+106.15.225.174,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,9
+106.15.225.174,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,9
+106.15.225.174,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,9
+106.15.225.174,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,9
+106.15.225.174,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,9
+106.15.225.174,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,9
+109.226.58.134,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,10
+109.226.58.134,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,10
+109.226.58.134,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,10
+109.226.58.134,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,10
+109.226.58.134,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,10
+109.226.58.134,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,10
+109.226.58.134,8080,"status=403, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,10
+119.81.189.194,80,"403, message='Forbidden', url=URL('http://119.81.189.194:80')",https://www.rus.net.tw/myip.php,11
+119.81.189.194,80,"Cannot connect to host 119.81.189.194:80 ssl:default [Connect call failed ('119.81.189.194', 80)]",https://www.whatismyip.com.tw/tw/,11
+119.81.189.194,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,11
+119.81.189.194,80,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,11
+119.81.189.194,80,asyncio.exceptions.TimeoutError,https://www.myip.com/,11
+119.81.189.194,80,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,11
+119.81.189.194,80,"status=403, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,11
+121.129.61.96,8080,"502, message='Bad Gateway', url=URL('http://121.129.61.96:8080')",https://www.myip.com/,12
+121.129.61.96,8080,"502, message='Bad Gateway', url=URL('http://121.129.61.96:8080')",https://www.whatismyip.com/,12
+121.129.61.96,8080,"502, message='Bad Gateway', url=URL('http://121.129.61.96:8080')",https://httpbin.org/ip,12
+121.129.61.96,8080,"502, message='Bad Gateway', url=URL('http://121.129.61.96:8080')",https://www.whatismyip.com.tw/tw/,12
+121.129.61.96,8080,[Errno 104] Connection reset by peer,https://www.rus.net.tw/myip.php,12
+121.129.61.96,8080,[Errno 104] Connection reset by peer,https://whatismyipaddress.com/zh-cn/index,12
+121.129.61.96,8080,"status=500, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,12
+13.127.181.181,80,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,13
+13.127.181.181,80,asyncio.exceptions.TimeoutError,https://www.myip.com/,13
+13.127.181.181,80,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,13
+13.127.181.181,80,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,13
+13.127.181.181,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,13
+13.127.181.181,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,13
+13.127.181.181,80,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,13
+150.129.148.88,35101,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,14
+150.129.148.88,35101,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,14
+150.129.148.88,35101,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,14
+150.129.148.88,35101,asyncio.exceptions.TimeoutError,https://www.myip.com/,14
+150.129.148.88,35101,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,14
+150.129.148.88,35101,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,14
+150.129.148.88,35101,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,14
+150.242.182.98,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,15
+150.242.182.98,80,asyncio.exceptions.TimeoutError,https://www.myip.com/,15
+150.242.182.98,80,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,15
+150.242.182.98,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,15
+150.242.182.98,80,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,15
+150.242.182.98,80,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,15
+150.242.182.98,80,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,15
+152.67.48.62,3128,asyncio.exceptions.TimeoutError,https://www.myip.com/,16
+152.67.48.62,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,16
+152.67.48.62,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,16
+152.67.48.62,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,16
+152.67.48.62,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,16
+152.67.48.62,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,16
+152.67.48.62,3128,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,16
+154.73.137.157,52820,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,17
+154.73.137.157,52820,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,17
+154.73.137.157,52820,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,17
+154.73.137.157,52820,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,17
+154.73.137.157,52820,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,17
+154.73.137.157,52820,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,17
+154.73.137.157,52820,"status=403, or ip not show in checkurl",https://www.myip.com/,17
+158.51.109.34,31289,"Cannot connect to host 158.51.109.34:31289 ssl:default [Connect call failed ('158.51.109.34', 31289)]",https://www.whatismyip.com.tw/tw/,18
+158.51.109.34,31289,"Cannot connect to host 158.51.109.34:31289 ssl:default [Connect call failed ('158.51.109.34', 31289)]",https://www.rus.net.tw/myip.php,18
+158.51.109.34,31289,"Cannot connect to host 158.51.109.34:31289 ssl:default [Connect call failed ('158.51.109.34', 31289)]",https://www.whatismyip.com/,18
+158.51.109.34,31289,"Cannot connect to host 158.51.109.34:31289 ssl:default [Connect call failed ('158.51.109.34', 31289)]",https://whatismyipaddress.com/zh-cn/index,18
+158.51.109.34,31289,"Cannot connect to host 158.51.109.34:31289 ssl:default [Connect call failed ('158.51.109.34', 31289)]",https://httpbin.org/ip,18
+158.51.109.34,31289,"Cannot connect to host 158.51.109.34:31289 ssl:default [Connect call failed ('158.51.109.34', 31289)]",http://210.240.175.62/NTIIS/IP_test.asp,18
+158.51.109.34,31289,"Cannot connect to host 158.51.109.34:31289 ssl:default [Connect call failed ('158.51.109.34', 31289)]",https://www.myip.com/,18
+159.65.69.186,9300,"503, message='Too many open connections', url=URL('http://159.65.69.186:9300')",https://www.rus.net.tw/myip.php,19
+159.65.69.186,9300,"503, message='Too many open connections', url=URL('http://159.65.69.186:9300')",https://www.whatismyip.com.tw/tw/,19
+159.65.69.186,9300,"503, message='Too many open connections', url=URL('http://159.65.69.186:9300')",https://www.whatismyip.com/,19
+159.65.69.186,9300,"503, message='Too many open connections', url=URL('http://159.65.69.186:9300')",https://whatismyipaddress.com/zh-cn/index,19
+159.65.69.186,9300,"status=200, or ip not show in checkurl",https://httpbin.org/ip,19
+159.65.69.186,9300,"status=403, or ip not show in checkurl",https://www.myip.com/,19
+159.65.69.186,9300,"status=503, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,19
+159.89.221.73,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,20
+159.89.221.73,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,20
+159.89.221.73,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,20
+159.89.221.73,3128,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,20
+159.89.221.73,3128,"status=200, or ip not show in checkurl",https://www.myip.com/,20
+159.89.221.73,3128,"status=200, or ip not show in checkurl",https://httpbin.org/ip,20
+159.89.221.73,3128,"status=403, or ip not show in checkurl",https://www.whatismyip.com/,20
+160.19.232.85,3128,Server disconnected,https://www.whatismyip.com.tw/tw/,21
+160.19.232.85,3128,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,21
+160.19.232.85,3128,"status=200, or ip not show in checkurl",https://www.myip.com/,21
+160.19.232.85,3128,"status=200, or ip not show in checkurl",https://www.rus.net.tw/myip.php,21
+160.19.232.85,3128,"status=200, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,21
+160.19.232.85,3128,"status=200, or ip not show in checkurl",https://www.whatismyip.com/,21
+160.19.232.85,3128,"status=200, or ip not show in checkurl",https://httpbin.org/ip,21
+161.97.112.246,8867,"Cannot connect to host 161.97.112.246:8867 ssl:default [Connect call failed ('161.97.112.246', 8867)]",https://whatismyipaddress.com/zh-cn/index,22
+161.97.112.246,8867,"Cannot connect to host 161.97.112.246:8867 ssl:default [Connect call failed ('161.97.112.246', 8867)]",https://www.whatismyip.com/,22
+161.97.112.246,8867,"Cannot connect to host 161.97.112.246:8867 ssl:default [Connect call failed ('161.97.112.246', 8867)]",http://210.240.175.62/NTIIS/IP_test.asp,22
+161.97.112.246,8867,"Cannot connect to host 161.97.112.246:8867 ssl:default [Connect call failed ('161.97.112.246', 8867)]",https://www.whatismyip.com.tw/tw/,22
+161.97.112.246,8867,"Cannot connect to host 161.97.112.246:8867 ssl:default [Connect call failed ('161.97.112.246', 8867)]",https://www.rus.net.tw/myip.php,22
+161.97.112.246,8867,"Cannot connect to host 161.97.112.246:8867 ssl:default [Connect call failed ('161.97.112.246', 8867)]",https://www.myip.com/,22
+161.97.112.246,8867,"Cannot connect to host 161.97.112.246:8867 ssl:default [Connect call failed ('161.97.112.246', 8867)]",https://httpbin.org/ip,22
+165.227.173.87,44641,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,23
+165.227.173.87,44641,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,23
+165.227.173.87,44641,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,23
+165.227.173.87,44641,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,23
+165.227.173.87,44641,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,23
+165.227.173.87,44641,asyncio.exceptions.TimeoutError,https://www.myip.com/,23
+165.227.173.87,44641,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,23
+167.172.109.12,36457,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,24
+167.172.109.12,36457,asyncio.exceptions.TimeoutError,https://www.myip.com/,24
+167.172.109.12,36457,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,24
+167.172.109.12,36457,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,24
+167.172.109.12,36457,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,24
+167.172.109.12,36457,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,24
+167.172.109.12,36457,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,24
+167.172.123.221,9300,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,25
+167.172.123.221,9300,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,25
+167.172.123.221,9300,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,25
+167.172.123.221,9300,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,25
+167.172.123.221,9300,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,25
+167.172.123.221,9300,"status=403, or ip not show in checkurl",https://www.myip.com/,25
+167.172.123.221,9300,"status=403, or ip not show in checkurl",https://www.whatismyip.com/,25
+167.172.180.46,35301,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,26
+167.172.180.46,35301,asyncio.exceptions.TimeoutError,https://www.myip.com/,26
+167.172.180.46,35301,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,26
+167.172.180.46,35301,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,26
+167.172.180.46,35301,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,26
+167.172.180.46,35301,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,26
+167.172.180.46,35301,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,26
+167.71.188.44,80,"Cannot connect to host 167.71.188.44:80 ssl:default [Connect call failed ('167.71.188.44', 80)]",https://www.rus.net.tw/myip.php,27
+167.71.188.44,80,"Cannot connect to host 167.71.188.44:80 ssl:default [Connect call failed ('167.71.188.44', 80)]",https://httpbin.org/ip,27
+167.71.188.44,80,"Cannot connect to host 167.71.188.44:80 ssl:default [Connect call failed ('167.71.188.44', 80)]",http://210.240.175.62/NTIIS/IP_test.asp,27
+167.71.188.44,80,"Cannot connect to host 167.71.188.44:80 ssl:default [Connect call failed ('167.71.188.44', 80)]",https://www.myip.com/,27
+167.71.188.44,80,"Cannot connect to host 167.71.188.44:80 ssl:default [Connect call failed ('167.71.188.44', 80)]",https://whatismyipaddress.com/zh-cn/index,27
+167.71.188.44,80,"Cannot connect to host 167.71.188.44:80 ssl:default [Connect call failed ('167.71.188.44', 80)]",https://www.whatismyip.com/,27
+167.71.188.44,80,"Cannot connect to host 167.71.188.44:80 ssl:default [Connect call failed ('167.71.188.44', 80)]",https://www.whatismyip.com.tw/tw/,27
+167.71.41.173,44425,"503, message='Service Unavailable', url=URL('http://167.71.41.173:44425')",https://www.rus.net.tw/myip.php,28
+167.71.41.173,44425,"503, message='Service Unavailable', url=URL('http://167.71.41.173:44425')",https://www.myip.com/,28
+167.71.41.173,44425,"503, message='Service Unavailable', url=URL('http://167.71.41.173:44425')",https://httpbin.org/ip,28
+167.71.41.173,44425,"504, message=""Couldn't connect: Connection refused"", url=URL('http://167.71.41.173:44425')",https://www.whatismyip.com/,28
+167.71.41.173,44425,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,28
+167.71.41.173,44425,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,28
+167.71.41.173,44425,"status=503, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,28
+168.232.126.119,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,29
+168.232.126.119,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,29
+168.232.126.119,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,29
+168.232.126.119,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,29
+168.232.126.119,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,29
+168.232.126.119,8080,"status=200, or ip not show in checkurl",https://www.whatismyip.com/,29
+168.232.126.119,8080,"status=200, or ip not show in checkurl",https://httpbin.org/ip,29
+169.57.1.85,80,"403, message='Forbidden', url=URL('http://169.57.1.85:80')",https://www.rus.net.tw/myip.php,30
+169.57.1.85,80,Server disconnected,https://www.whatismyip.com.tw/tw/,30
+169.57.1.85,80,"status=200, or ip not show in checkurl",https://www.myip.com/,30
+169.57.1.85,80,"status=200, or ip not show in checkurl",https://httpbin.org/ip,30
+169.57.1.85,80,"status=200, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,30
+169.57.1.85,80,"status=200, or ip not show in checkurl",https://www.whatismyip.com/,30
+169.57.1.85,80,"status=403, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,30
+173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,31
+173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,31
+173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,31
+173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,31
+173.249.5.7,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,31
+173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,31
+173.249.5.7,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,31
+173.249.54.175,80,'utf-8' codec can't decode byte 0xb4 in position 214: invalid start byte,http://210.240.175.62/NTIIS/IP_test.asp,32
+173.249.54.175,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,32
+173.249.54.175,80,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,32
+173.249.54.175,80,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,32
+173.249.54.175,80,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,32
+173.249.54.175,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,32
+173.249.54.175,80,asyncio.exceptions.TimeoutError,https://www.myip.com/,32
+177.244.36.134,8080,[Errno 104] Connection reset by peer,https://www.whatismyip.com.tw/tw/,33
+177.244.36.134,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,33
+177.244.36.134,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,33
+177.244.36.134,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,33
+177.244.36.134,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,33
+177.244.36.134,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,33
+177.244.36.134,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,33
+181.209.82.154,23500,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,34
+181.209.82.154,23500,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,34
+181.209.82.154,23500,asyncio.exceptions.TimeoutError,https://www.myip.com/,34
+181.209.82.154,23500,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,34
+181.209.82.154,23500,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,34
+181.209.82.154,23500,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,34
+181.209.82.154,23500,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,34
+182.253.112.13,8080,"Cannot connect to host 182.253.112.13:8080 ssl:default [Connect call failed ('182.253.112.13', 8080)]",https://www.rus.net.tw/myip.php,35
+182.253.112.13,8080,"Cannot connect to host 182.253.112.13:8080 ssl:default [Connect call failed ('182.253.112.13', 8080)]",https://www.whatismyip.com/,35
+182.253.112.13,8080,"Cannot connect to host 182.253.112.13:8080 ssl:default [Connect call failed ('182.253.112.13', 8080)]",http://210.240.175.62/NTIIS/IP_test.asp,35
+182.253.112.13,8080,"Cannot connect to host 182.253.112.13:8080 ssl:default [Connect call failed ('182.253.112.13', 8080)]",https://www.myip.com/,35
+182.253.112.13,8080,"Cannot connect to host 182.253.112.13:8080 ssl:default [Connect call failed ('182.253.112.13', 8080)]",https://www.whatismyip.com.tw/tw/,35
+182.253.112.13,8080,"Cannot connect to host 182.253.112.13:8080 ssl:default [Connect call failed ('182.253.112.13', 8080)]",https://whatismyipaddress.com/zh-cn/index,35
+182.253.112.13,8080,"Cannot connect to host 182.253.112.13:8080 ssl:default [Connect call failed ('182.253.112.13', 8080)]",https://httpbin.org/ip,35
+185.234.244.30,8080,Server disconnected,https://www.whatismyip.com.tw/tw/,36
+185.234.244.30,8080,"status=200, or ip not show in checkurl",https://www.myip.com/,36
+185.234.244.30,8080,"status=200, or ip not show in checkurl",https://www.whatismyip.com/,36
+185.234.244.30,8080,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,36
+185.234.244.30,8080,"status=200, or ip not show in checkurl",https://httpbin.org/ip,36
+185.234.244.30,8080,"status=200, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,36
+185.234.244.30,8080,"status=200, or ip not show in checkurl",https://www.rus.net.tw/myip.php,36
+185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://www.myip.com/,37
+185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,37
+185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,37
+185.34.22.225,37879,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,37
+185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,37
+185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,37
+185.34.22.225,37879,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,37
+189.52.154.213,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,38
+189.52.154.213,3128,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,38
+189.52.154.213,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,38
+189.52.154.213,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,38
+189.52.154.213,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,38
+189.52.154.213,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,38
+189.52.154.213,3128,"status=200, or ip not show in checkurl",https://www.myip.com/,38
+192.166.144.250,80,asyncio.exceptions.TimeoutError,https://www.myip.com/,39
+192.166.144.250,80,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,39
+192.166.144.250,80,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,39
+192.166.144.250,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,39
+192.166.144.250,80,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,39
+192.166.144.250,80,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,39
+192.166.144.250,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,39
+20.151.27.156,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,40
+20.151.27.156,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,40
+20.151.27.156,3128,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,40
+20.151.27.156,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,40
+20.151.27.156,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,40
+20.151.27.156,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,40
+20.151.27.156,3128,asyncio.exceptions.TimeoutError,https://www.myip.com/,40
+202.151.202.68,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,41
+202.151.202.68,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,41
+202.151.202.68,3128,asyncio.exceptions.TimeoutError,https://www.myip.com/,41
+202.151.202.68,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,41
+202.151.202.68,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,41
+202.151.202.68,3128,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,41
+202.151.202.68,3128,"status=200, or ip not show in checkurl",https://httpbin.org/ip,41
+202.40.188.94,40486,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,42
+202.40.188.94,40486,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,42
+202.40.188.94,40486,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,42
+202.40.188.94,40486,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,42
+202.40.188.94,40486,asyncio.exceptions.TimeoutError,https://www.myip.com/,42
+202.40.188.94,40486,"status=200, or ip not show in checkurl",https://httpbin.org/ip,42
+202.40.188.94,40486,"status=403, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,42
+208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,43
+208.80.28.208,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,43
+208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,43
+208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,43
+208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,43
+208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,43
+208.80.28.208,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,43
+212.12.157.14,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,44
+212.12.157.14,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,44
+212.12.157.14,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,44
+212.12.157.14,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,44
+212.12.157.14,8080,"status=200, or ip not show in checkurl",https://httpbin.org/ip,44
+212.12.157.14,8080,"status=200, or ip not show in checkurl",https://whatismyipaddress.com/zh-cn/index,44
+212.12.157.14,8080,"status=200, or ip not show in checkurl",https://www.myip.com/,44
+217.15.180.146,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,45
+217.15.180.146,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,45
+217.15.180.146,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,45
+217.15.180.146,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,45
+217.15.180.146,3128,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,45
+217.15.180.146,3128,asyncio.exceptions.TimeoutError,https://www.myip.com/,45
+217.15.180.146,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,45
+23.21.179.114,8080,Server disconnected,https://www.rus.net.tw/myip.php,46
+23.21.179.114,8080,Server disconnected,https://whatismyipaddress.com/zh-cn/index,46
+23.21.179.114,8080,Server disconnected,http://210.240.175.62/NTIIS/IP_test.asp,46
+23.21.179.114,8080,Server disconnected,https://httpbin.org/ip,46
+23.21.179.114,8080,Server disconnected,https://www.whatismyip.com/,46
+23.21.179.114,8080,Server disconnected,https://www.myip.com/,46
+23.21.179.114,8080,Server disconnected,https://www.whatismyip.com.tw/tw/,46
+23.251.138.105,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,47
+23.251.138.105,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,47
+23.251.138.105,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,47
+23.251.138.105,8080,"status=200, or ip not show in checkurl",http://210.240.175.62/NTIIS/IP_test.asp,47
+23.251.138.105,8080,"status=200, or ip not show in checkurl",https://www.myip.com/,47
+23.251.138.105,8080,"status=200, or ip not show in checkurl",https://www.whatismyip.com/,47
+23.251.138.105,8080,"status=200, or ip not show in checkurl",https://www.rus.net.tw/myip.php,47
+31.131.67.14,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,48
+31.131.67.14,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,48
+31.131.67.14,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,48
+31.131.67.14,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,48
+31.131.67.14,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,48
+31.131.67.14,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,48
+31.131.67.14,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,48
+34.254.86.132,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,49
+34.254.86.132,3128,asyncio.exceptions.TimeoutError,https://www.myip.com/,49
+34.254.86.132,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,49
+34.254.86.132,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,49
+34.254.86.132,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,49
+34.254.86.132,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,49
+34.254.86.132,3128,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,49
+41.164.68.194,8080,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,50
+41.164.68.194,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,50
+41.164.68.194,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,50
+41.164.68.194,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,50
+41.164.68.194,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,50
+41.164.68.194,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,50
+41.164.68.194,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,50
+41.33.20.5,3128,"Cannot connect to host 41.33.20.5:3128 ssl:default [Connect call failed ('41.33.20.5', 3128)]",http://210.240.175.62/NTIIS/IP_test.asp,51
+41.33.20.5,3128,"Cannot connect to host 41.33.20.5:3128 ssl:default [Connect call failed ('41.33.20.5', 3128)]",https://www.whatismyip.com.tw/tw/,51
+41.33.20.5,3128,"Cannot connect to host 41.33.20.5:3128 ssl:default [Connect call failed ('41.33.20.5', 3128)]",https://www.myip.com/,51
+41.33.20.5,3128,"Cannot connect to host 41.33.20.5:3128 ssl:default [Connect call failed ('41.33.20.5', 3128)]",https://httpbin.org/ip,51
+41.33.20.5,3128,"Cannot connect to host 41.33.20.5:3128 ssl:default [Connect call failed ('41.33.20.5', 3128)]",https://www.rus.net.tw/myip.php,51
+41.33.20.5,3128,"Cannot connect to host 41.33.20.5:3128 ssl:default [Connect call failed ('41.33.20.5', 3128)]",https://www.whatismyip.com/,51
+41.33.20.5,3128,"Cannot connect to host 41.33.20.5:3128 ssl:default [Connect call failed ('41.33.20.5', 3128)]",https://whatismyipaddress.com/zh-cn/index,51
+43.224.8.14,6666,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,52
+43.224.8.14,6666,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,52
+43.224.8.14,6666,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,52
+43.224.8.14,6666,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,52
+43.224.8.14,6666,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,52
+43.224.8.14,6666,asyncio.exceptions.TimeoutError,https://www.myip.com/,52
+43.224.8.14,6666,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,52
+47.98.170.216,8080,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,53
+47.98.170.216,8080,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,53
+47.98.170.216,8080,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,53
+47.98.170.216,8080,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,53
+47.98.170.216,8080,asyncio.exceptions.TimeoutError,https://www.myip.com/,53
+47.98.170.216,8080,"status=200, or ip not show in checkurl",https://www.whatismyip.com/,53
+47.98.170.216,8080,"status=200, or ip not show in checkurl",https://httpbin.org/ip,53
+51.81.82.175,80,Cannot connect to host www.rus.net.tw:443 ssl:default [[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1123)],https://www.rus.net.tw/myip.php,54
+51.81.82.175,80,Cannot connect to host www.whatismyip.com:443 ssl:default [[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1123)],https://www.whatismyip.com/,54
+51.81.82.175,80,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,54
+51.81.82.175,80,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,54
+51.81.82.175,80,asyncio.exceptions.TimeoutError,https://www.myip.com/,54
+51.81.82.175,80,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,54
+51.81.82.175,80,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,54
+62.210.69.176,5566,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,55
+62.210.69.176,5566,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,55
+62.210.69.176,5566,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,55
+62.210.69.176,5566,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,55
+62.210.69.176,5566,asyncio.exceptions.TimeoutError,https://www.myip.com/,55
+62.210.69.176,5566,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,55
+62.210.69.176,5566,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,55
+68.183.221.156,34001,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,56
+68.183.221.156,34001,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,56
+68.183.221.156,34001,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,56
+68.183.221.156,34001,asyncio.exceptions.TimeoutError,https://www.myip.com/,56
+68.183.221.156,34001,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,56
+68.183.221.156,34001,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,56
+68.183.221.156,34001,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,56
+85.133.210.42,3128,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,57
+85.133.210.42,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,57
+85.133.210.42,3128,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,57
+85.133.210.42,3128,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,57
+85.133.210.42,3128,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,57
+85.133.210.42,3128,asyncio.exceptions.TimeoutError,https://www.myip.com/,57
+85.133.210.42,3128,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,57
+87.97.60.103,55443,asyncio.exceptions.TimeoutError,https://www.rus.net.tw/myip.php,58
+87.97.60.103,55443,asyncio.exceptions.TimeoutError,https://www.whatismyip.com.tw/tw/,58
+87.97.60.103,55443,asyncio.exceptions.TimeoutError,http://210.240.175.62/NTIIS/IP_test.asp,58
+87.97.60.103,55443,asyncio.exceptions.TimeoutError,https://www.myip.com/,58
+87.97.60.103,55443,asyncio.exceptions.TimeoutError,https://www.whatismyip.com/,58
+87.97.60.103,55443,asyncio.exceptions.TimeoutError,https://httpbin.org/ip,58
+87.97.60.103,55443,asyncio.exceptions.TimeoutError,https://whatismyipaddress.com/zh-cn/index,58
