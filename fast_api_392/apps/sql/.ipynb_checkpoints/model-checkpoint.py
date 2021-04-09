@@ -1,16 +1,23 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-#
-from .database import Base
+from sqlalchemy.ext.declarative import declarative_base
 ##############################################################
 
+Base = declarative_base()
 
-class TBBOOKS(Base):
-    __tablename__ = "tbbooks"
 
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)
+class IPS(Base):
+    __tablename__ = "ips"
+    #
+    ip = Column(String, primary_key=True)
+    port = Column(String, nullable=False)
+    now = Column(String, nullable=False)
+    goodcnt = Column(Integer, nullable=False)
 
-    # items = relationship("Item", back_populates="owner")
+
+#
+class TEST(Base):
+    __tablename__ = "test"
+    #
+    ipa = Column(String, primary_key=True)
+    porta = Column(String, nullable=False)

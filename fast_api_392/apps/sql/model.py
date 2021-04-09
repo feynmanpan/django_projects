@@ -19,5 +19,5 @@ class IPS(Base):
 class TEST(Base):
     __tablename__ = "test"
     #
-    ip = Column(String, primary_key=True)
-    port = Column(String, nullable=False)
+    ipa = Column(String, primary_key=True)
+    porta = Column(String, nullable=False)

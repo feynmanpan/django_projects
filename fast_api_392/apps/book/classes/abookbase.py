@@ -5,9 +5,12 @@ import os
 import itertools
 from typing import Dict, Any
 #
+import sqlalchemy as sa
 import pandas as pd
 #
 import apps.ips.config as ipscfg
+from apps.ips.model import tb_ips
+from apps.sql.config import dbwtb
 ##########################################################
 
 
@@ -85,14 +88,28 @@ class BOOKBASE(object, metaclass=VALIDATE):
         # object.__setattr__(self, name, val)
 
     @property
-    def proxy(self):
+    async def proxy(self):
         ippt = None
+        # 依序從global/csv/db抓cycle
         if ips_cycle := ipscfg.ips_cycle:
             ippt = next(ips_cycle)
         elif os.path.isfile(ipscfg.ips_csv_path):
-            df = pd.read_csv(ipscfg.ips_csv_path, usecols=['ip', 'port'])
-            ipscfg.ips_cycle = itertools.cycle(df.to_dict('records'))
-            ippt = next(ipscfg.ips_cycle)
+            rows = pd.read_csv(ipscfg.ips_csv_path, usecols=['ip', 'port']).to_dict('records')
+            if rows:
+                ipscfg.ips_cycle = itertools.cycle(rows)
+                ippt = next(ipscfg.ips_cycle)
+        else:
+            cs = [
+                # tb_ips.c.id,
+                tb_ips.c.ip,
+                tb_ips.c.port,
+                # tb_ips.c.goodcnt,
+            ]
+            query = sa.select(cs).order_by('id')  # .where(tb_ips.columns.id > 100)
+            records = await dbwtb.fetch_all(query)
+            if records:
+                ipscfg.ips_cycle = itertools.cycle([dict(r) for r in records])
+                ippt = next(ipscfg.ips_cycle)
         #
         return ippt and f"http://{ippt['ip']}:{ippt['port']}" or None
 

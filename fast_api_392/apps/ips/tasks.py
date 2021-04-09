@@ -21,7 +21,10 @@ from apps.ips.config import (
     ipcols, get_freeproxy_delta,
 )
 from apps.ips.utils import aio_get, write_file, csv_update, CHECK_PROXY
-###############################################################################
+from .crud import bulk_insert
+#
+from .model import tb_ips
+from apps.sql.config import dbwtb
 ###############################################################################
 
 
@@ -76,6 +79,9 @@ async def get_freeproxy(t, once=True):
                     # 4 存 csv #################################
                     df3 = pd.DataFrame(good_proxys).astype(dtype)  # df.sample(frac=1)  # 亂排
                     df3.to_csv(ips_csv_path, index=False)
+                    #
+                    await bulk_insert(dbwtb, tb_ips, good_proxys)
+                    print(f'bulk_insert ips to db')
                     # 5 更新ips_cycle產生器 #################################
                     ips_cfg.ips_cycle = itertools.cycle(good_proxys)
                     #

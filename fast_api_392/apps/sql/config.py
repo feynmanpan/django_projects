@@ -1,18 +1,12 @@
-import sqlalchemy
-from sqlalchemy import (
-    Table as TB,
-    Column as COL,
-    Integer as INT,
-    String as STR,
-)
+import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
 import databases
-import pandas as pd
 ####################################################
 
+
+# 由main的startup啟動連線 # await dbwtb.connect()
 DB_URL = "postgresql://pan:pgcode@localhost/wtb"
+# 三個提供給外部使用
 dbwtb = databases.Database(DB_URL, ssl=False)
-metadata = sqlalchemy.MetaData()
-
-
-# 由main的startup啟動連線
-# await pgwtb.connect()
+metadata = sa.MetaData()
+Base = declarative_base()

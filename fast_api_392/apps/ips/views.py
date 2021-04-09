@@ -5,6 +5,7 @@ from pyquery import PyQuery as pq
 import pandas as pd
 import os
 #
+import sqlalchemy as sa
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 #
@@ -17,7 +18,9 @@ from .config import (
     ips_html,
 )
 from . import config as ips_cfg
+from .model import tb_ips
 from .utils import CHECK_PROXY
+from apps.sql.config import dbwtb
 ########################################################
 
 
@@ -51,6 +54,18 @@ async def show_freeproxy(request: Request, f: str = 'csv'):
         if os.path.isfile(ips_err_csv_path):
             context['ips_csv_tb_html'] = pd.read_csv(ips_err_csv_path).to_html()
             rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)
+    elif f == 'db':
+        cs = [
+            tb_ips.c.id,
+            tb_ips.c.ip,
+            tb_ips.c.port,
+            tb_ips.c.goodcnt,
+        ]
+        query = sa.select(cs).order_by('id', 'ip')  # .where(tb_ips.columns.id > 100)
+        records = await dbwtb.fetch_all(query)
+        #
+        context['ips_csv_tb_html'] = pd.DataFrame([dict(r) for r in records]).to_html()
+        rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)
     else:
         # 顯示持續擴充更新的csv
         if os.path.isfile(ips_csv_path):
