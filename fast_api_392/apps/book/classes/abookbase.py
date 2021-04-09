@@ -89,8 +89,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
         self.__dict__[name] = val
         # object.__setattr__(self, name, val)
 
-    # @property
-    @async_property
+    # @async_property
+    @property
     async def proxy(self) -> Union[str, None]:
         ippt = None
         # 依序從global/csv/db抓cycle

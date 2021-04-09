@@ -77,12 +77,11 @@ async def get_freeproxy(t, once=True):
                     print(f'結束檢查proxy: {time()-stime}')
                     random.shuffle(good_proxys)
                     # 4 存 csv #################################
-                    df3 = pd.DataFrame(good_proxys).astype(dtype)  # df.sample(frac=1)  # 亂排
-                    df3.to_csv(ips_csv_path, index=False)
-                    #
+                    pd.DataFrame(good_proxys).astype(dtype).to_csv(ips_csv_path, index=False)  # df.sample(frac=1)  # 亂排
+                    # 5 存 db #################################
                     await bulk_insert(dbwtb, IPS, good_proxys)
                     print(f'bulk_insert ips to db')
-                    # 5 更新ips_cycle產生器 #################################
+                    # 6 更新ips_cycle產生器 #################################
                     ips_cfg.ips_cycle = itertools.cycle(good_proxys)
                     #
                     get_freeproxy_cnt += 1
