@@ -106,7 +106,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 IPS.ip,
                 IPS.port,
             ]
-            query = sa.select(cs).order_by('id')  # .where(tb_ips.columns.id > 100)
+            query = sa.select(cs).order_by('idx')  # .where(tb_ips.columns.id > 100)
             records = await dbwtb.fetch_all(query)
             if records:
                 ipscfg.ips_cycle = itertools.cycle([dict(r) for r in records])

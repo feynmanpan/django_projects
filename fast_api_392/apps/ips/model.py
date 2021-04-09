@@ -11,7 +11,7 @@ from apps.sql.config import Base, metadata
 class IPS(Base):
     __tablename__ = "ips"
     #
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    idx = Column(Integer, primary_key=True, autoincrement=True)
     #
     ip = Column(String, unique=True, nullable=False)
     port = Column(String, nullable=False)
