@@ -8,7 +8,7 @@ from typing import Dict, Any, Awaitable, Union
 #
 import sqlalchemy as sa
 import pandas as pd
-from async_property import async_property
+# from async_property import async_property
 #
 import apps.ips.config as ipscfg
 from apps.ips.model import IPS  # ,tb_ips
@@ -51,6 +51,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     INFO_COLS = namedtuple('INFO_COLS', info_cols)(*info_cols)
     #
     info_default = dict.fromkeys(info_cols, None)  # dict(zip(info_cols, [None]*len(info_cols)))
+    update_default = {INFO_COLS.err: None}
     #
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'

@@ -8,7 +8,7 @@ from typing import Dict, Any, Awaitable, Union
 #
 import sqlalchemy as sa
 import pandas as pd
-from async_property import async_property
+# from async_property import async_property
 #
 import apps.ips.config as ipscfg
 from apps.ips.model import IPS  # ,tb_ips
@@ -51,6 +51,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
     INFO_COLS = namedtuple('INFO_COLS', info_cols)(*info_cols)
     #
     info_default = dict.fromkeys(info_cols, None)  # dict(zip(info_cols, [None]*len(info_cols)))
+    update_default = {INFO_COLS.err: None}
+    print(f"update_default@@@@@@@@@@@@@@@@@@@@@@@@@@@@_{INFO_COLS.store}",update_default)
     #
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'
@@ -82,15 +84,12 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
             # (3)檢查定價售價
             if PL := val.get(self.INFO_COLS.price_list):
-                if not isinstance(PL, int):
-                    raise ValueError(f'price_list="{PL}" 需為int')
-                elif PL<0:
-                    raise ValueError(f'price_list="{PL}" 需>0')
+                if not isinstance(PL, int) or PL < 0:
+                    raise ValueError(f'price_list="{PL}" 需為int，且>0')
             if PS := val.get(self.INFO_COLS.price_sale):
-                if not (isinstance(PS, float) or isinstance(PS, int)):
-                    raise ValueError(f'price_sale="{PS}" 需為float/int')
-                elif PS<0:
-                    raise ValueError(f'price_sale="{PS}" 需>0')
+                if not (isinstance(PS, float) or isinstance(PS, int)) or PS < 0:
+                    raise ValueError(f'price_sale="{PS}" 需為float/int，且>0')
+
         #
         self.__dict__[name] = val
         # object.__setattr__(self, name, val)

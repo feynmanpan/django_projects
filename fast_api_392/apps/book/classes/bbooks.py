@@ -47,7 +47,7 @@ class BOOKS(BOOKBASE):
         connector = aiohttp.TCPConnector(ssl=cacert)
         TO = aiohttp.ClientTimeout(total=timeout)
         proxy = proxy or await self.proxy
-        update: Dict[str, Any] = {'err': None}  # 不加型別提示，後面更新err時會有紅波浪
+        update: Dict[str, Any] = self.update_default | {}  # 不加型別提示，後面更新err時會有紅波浪
         #
         try:
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
