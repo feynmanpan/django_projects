@@ -7,21 +7,25 @@
 from typing import Optional, Callable
 import asyncio
 import os
-#
+# _____________________________________________________________________
 from fastapi import FastAPI, Request, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import HTMLResponse, ORJSONResponse
-#
+# _____________________________________________________________________
 import config
 from views import test, startBGT
 from middlewares import mw_list
 from utils import MSG
 # apps
 from apps.pig.views import pig_d
-from apps.ips.views import show_freeproxy, get_next_ip, check_proxy
+#
 from apps.ips.config import get_freeproxy_delta
-from apps.book.views import show_books
+from apps.ips.views import show_freeproxy, get_next_ip, check_proxy
+#
+from apps.book.classes import zimportall  # 載入所有subclass，使其註冊入BOOKBASE
+from apps.book.views import show_books, show_register_subclasses
+#
 import apps.sql.config as sqlcfg
 from apps.sql.views import dbwtb_isconnected
 #################### app ################################
@@ -46,7 +50,7 @@ def path_MW(func: Callable):
 @app.on_event("startup")
 async def startup():
     await sqlcfg.dbwtb.connect()
-    print(f">>>>>>>>>>>>>>> sqlcfg.dbwtb 連線= {sqlcfg.dbwtb.is_connected} <<<<<<<<<<<<<<<")
+    print(f">>>>>>>>>>>>>>> sqlcfg.dbwtb 連線 = {sqlcfg.dbwtb.is_connected} <<<<<<<<<<<<<<<")
 
 
 @app.on_event("shutdown")
@@ -61,10 +65,14 @@ for mw in mw_list:
 #################### urlpattern ################################
 # path_get("/test/{p}", test)
 path_get("/pig_d", pig_d)
+#
 path_get("/proxy", show_freeproxy)
 path_get("/nextip", get_next_ip)
 path_get("/check_proxy", check_proxy)
+#
 path_get("/books/{bookid}", show_books)
+path_get("/srs", show_register_subclasses)
+#
 path_get("/dbwtb", dbwtb_isconnected)
 
 

@@ -1,12 +1,26 @@
+
 import json
 from typing import Optional
 #
 from fastapi import Request
 from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 #
-from .classes.bbooks import BOOKS
 from .config import jinja_templates
+# from .classes.abookbase import BOOKBASE
+# from .classes.bbooks import BOOKS
+# 載入所有subclass，使其註冊入BOOKBASE，main.py也有import
+from .classes.zimportall import (
+    BOOKBASE,
+    BOOKS,
+    TAAZE,
+    ELITE,
+)
 ###############################################
+
+
+async def show_register_subclasses():
+    ans = list(BOOKBASE.register_subclasses.keys())
+    return ORJSONResponse(ans)
 
 
 async def show_books(request: Request, bookid: str = '0010770978'):

@@ -13,6 +13,7 @@ import pandas as pd
 import apps.ips.config as ipscfg
 from apps.ips.model import IPS  # ,tb_ips
 from apps.sql.config import dbwtb
+#
 ##########################################################
 
 
@@ -23,19 +24,28 @@ class VALIDATE(ABCMeta):
             # 檢查子類info_default的key
             info_cols = base.info_cols
             info_default = class_dict.get('info_default', {})
+            if not isinstance(info_default, dict):
+                raise TypeError(f'【{name}】的info_default不是dict')
             set0 = set(info_cols)
             set1 = set(info_default.keys())
-            if (rest := set1-set0) != base.empty:
+            if (rest := set1 - set0) != base.empty:
                 raise KeyError(f'info_default中，欄位{rest}不在BOOKBASE的info_cols裡面')
             # 造子類的預設info並assign，以子類類名為store名稱
             info_default = base.info_default | info_default
             info_default[base.INFO_COLS.store] = name
             class_dict['info_default'] = info_default
+            # 將子類註冊入BOOKBASE
+            newcls = super().__new__(cls, name, bases, class_dict)
+            base.register_subclasses[name] = newcls
+        else:
+            newcls = super().__new__(cls, name, bases, class_dict)
         #
-        return super().__new__(cls, name, bases, class_dict)
+        return newcls
 
 
 class BOOKBASE(object, metaclass=VALIDATE):
+    register_subclasses = {}  # 註冊所有子類
+    #
     info_cols = [
         'store',
         'bookid', 'isbn10', 'isbn13',
@@ -74,7 +84,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
             # (1)檢查欄位
             set0 = set(self.info_cols)
             set1 = set(val.keys())
-            if (rest := set1-set0) != self.empty:
+            if (rest := set1 - set0) != self.empty:
                 raise KeyError(f'assign給info的欄位{rest}不在BOOKBASE的info_cols裡面')
             # (2)檢查bookid格式
             bid = val.get(self.INFO_COLS.bookid)
