@@ -27,8 +27,9 @@ class BOOKS(BOOKBASE):
     comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
     # 博客來單書頁
     url_target_prefix = "https://www.books.com.tw/products/"
-    # 評論
+    # 評論及庫存都要ajax
     url_target_comment = 'https://www.books.com.tw/product_show/getCommentAjax/{}:{}:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
+    url_target_cart = 'https://www.books.com.tw/product_show/getProdCartInfoAjax/{}/M201105_032_view'
     #
     update_errcnt = 0
     #
@@ -55,9 +56,10 @@ class BOOKS(BOOKBASE):
                 async with session.get(self.url_target, headers=headers, proxy=proxy) as r:
                     status = r.status
                     rtext = await r.text(encoding='utf8')
-                # 抓ajax評論
+                # 抓ajax 庫存及評論
                 if (status == 200) and re.search(self.info[self.INFO_COLS.bookid], rtext) is not None:
                     headers2 = headers | {'Referer': self.url_target}
+                    stock = await self.stock_handle(session, headers2, proxy)
                     comment = await self.comment_handle(session, headers2, proxy)
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
@@ -152,7 +154,19 @@ class BOOKS(BOOKBASE):
         #
         return price_list, price_sale
 
+    async def stock_handle(self, session, headers, proxy):
+        '''抓ajax庫存'''
+        bid = self.info['bookid']
+        url_target_cart = self.url_target_cart.format(bid)
+        #
+        async with session.get(url_target_cart, headers=headers, proxy=proxy) as r2:
+            status2 = r2.status
+            rtext2 = await r2.text(encoding='utf8')
+            if (status2 == 200) and rtext2:
+                return pq(rtext2, parser='html').find("div.mc002.type02_p008 ul.list li.no").eq(0).text().strip()
+
     async def comment_handle(self, session, headers, proxy):
+        '''抓ajax評論'''
         bid = self.info['bookid']
         url_target_comment = self.url_target_comment.format(bid, 1)
         # 先看第一頁評論結果
@@ -165,7 +179,7 @@ class BOOKS(BOOKBASE):
                 pn = doc2.find(".cnt_page > .page > span").eq(0).text().strip()
                 pn = pn and int(pn) or 0
                 if pn:
-                    for p in range(2, pn+1):
+                    for p in range(2, pn + 1):
                         url_target_comment = self.url_target_comment.format(bid, p)
                         async with session.get(url_target_comment, headers=headers, proxy=proxy) as r:
                             rtext = await r.text(encoding='utf8')

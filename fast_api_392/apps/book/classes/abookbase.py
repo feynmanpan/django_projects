@@ -53,6 +53,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         'author',
         'publisher', 'pub_dt', 'lang',
         'price_list', 'price_sale',
+        'stock',
         'spec', 'intro', 'comment',
         'url_book', 'url_vdo', 'url_cover',
         'err',
