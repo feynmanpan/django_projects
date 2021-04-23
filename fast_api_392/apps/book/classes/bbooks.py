@@ -46,31 +46,29 @@ class BOOKS(BOOKBASE):
     def __init__(self, **init):
         super().__init__(**init)
         self.url_target = f"{self.url_target_prefix}{self.info[self.INFO_COLS.bookid]}"
+        self.headers_Referer = headers | {'Referer': self.url_target}
 
     async def update_info(self, proxy: Optional[str] = None):
         stime = time()
         #
         connector = aiohttp.TCPConnector(ssl=cacert)
         TO = aiohttp.ClientTimeout(total=timeout)
-        proxy = proxy or await self.proxy
-        update: Dict[str, Any] = self.update_default | {}  # 不加型別提示，後面更新err時會有紅波浪
+        self.ss = aiohttp.ClientSession(connector=connector, timeout=TO)
+        self.now_proxy = proxy or await self.proxy
         #
         enter_bookpage = False
+        enter_18 = False
+        update: Dict[str, Any] = self.update_default | {}  # 不加型別提示，後面更新err時會有紅波浪
         #
         try:
-            async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
-                # 抓單書頁資訊
-                async with session.get(self.url_target, headers=headers, proxy=proxy) as r:
-                    status = r.status
-                    rtext = await r.text(encoding='utf8')
-                # 抓ajax 庫存及評論
-                enter_bookpage = (status == 200) and self.info[self.INFO_COLS.bookid] in rtext and '商品介紹' in rtext
-                if enter_bookpage:
-                    await asyncio.sleep(0.15)
-                    headers2 = headers | {'Referer': self.url_target}
-                    stock = await self.stock_handle(session, headers2, proxy)
-                    await asyncio.sleep(0.15)
-                    comment = await self.comment_handle(session, headers2, proxy)
+            # 抓單書頁資訊
+            async with self.ss.get(self.url_target, headers=headers, proxy=self.now_proxy) as r:
+                status = r.status
+                rtext = await r.text(encoding='utf8')
+            #
+            if (status == 200) and self.info[self.INFO_COLS.bookid] in rtext:
+                enter_bookpage = '商品介紹' in rtext
+                enter_18 = '限制級商品' in rtext
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
@@ -78,9 +76,12 @@ class BOOKS(BOOKBASE):
         else:
             if enter_bookpage:
                 # 確定進入單書頁
-                # print(rtext)
+                # (1) ajax 抓庫存及評論 =========================================================================
+                stock = await self.stock_handle()
+                comment = await self.comment_handle()
+                # (2) 單書頁 =========================================================================
                 doc = pq(rtext, parser='html')
-                # =========================================================================
+                #
                 isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
                 if (len_isbn := len(isbn)) >= 10:
                     isbn10 = (len_isbn == 10 and isbn) or None
@@ -103,8 +104,8 @@ class BOOKS(BOOKBASE):
                 url_book = self.url_target
                 url_vdo = doc.find('.cont iframe').eq(0).attr('src')  # 沒影片時為None
                 url_cover = doc.find(".cover_img > img.cover").attr("src")
-                # =========================================================================
-                # 由base統一update處理
+                #
+                # (3) 由base統一update處理 =========================================================================
                 update = self.update_handle(update, locals())
             else:
                 for pe in self.page_err:
@@ -114,18 +115,19 @@ class BOOKS(BOOKBASE):
                 else:
                     update['err'] = f'status={status},rtext={rtext[:100]}'
         finally:
+            await self.ss.close()
+            self.ss = None
             # 抓成功，或頁面連接錯誤，或到達最多次數，就不再抓
             if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
                 update[self.INFO_COLS.create_dt] = datetime.today().strftime(dt_format)
-                self.info = self.info | update
                 #
+                self.info = self.info | update
                 self.update_errcnt = 0
                 #
-                print(f"update_duration = {time()-stime},final_proxy={proxy}")
-                print(f"update_errcnt = {self.update_errcnt}")
+                print(f"final_proxy={self.now_proxy}, update_duration = {time()-stime}")
             else:
                 self.update_errcnt += 1
-                print(f"err_proxy={proxy}, update_errcnt={self.update_errcnt}/{update_errcnt_max}, err={update['err']}")
+                print(f"err_proxy={self.now_proxy}, update_errcnt={self.update_errcnt}/{update_errcnt_max}, err={update['err']}")
                 await self.update_info()
 
     def author_handle(self, el):
@@ -168,23 +170,24 @@ class BOOKS(BOOKBASE):
         #
         return price_list, price_sale
 
-    async def stock_handle(self, session, headers, proxy):
+    async def stock_handle(self):
         '''抓ajax庫存'''
-        bid = self.info['bookid']
-        url_target_cart = self.url_target_cart.format(bid)
+        await asyncio.sleep(0.15)
+        url_target_cart = self.url_target_cart.format(self.info['bookid'])
         #
-        async with session.get(url_target_cart, headers=headers, proxy=proxy) as r2:
+        async with self.ss.get(url_target_cart, headers=self.headers_Referer, proxy=self.now_proxy) as r2:
             status2 = r2.status
             rtext2 = await r2.text(encoding='utf8')
             if (status2 == 200) and rtext2:
                 return pq(rtext2, parser='html').find("div.mc002.type02_p008 ul.list li.no").eq(0).text().strip()
 
-    async def comment_handle(self, session, headers, proxy):
+    async def comment_handle(self):
         '''抓ajax評論'''
+        await asyncio.sleep(0.15)
         bid = self.info['bookid']
         url_target_comment = self.url_target_comment.format(bid, 1)
         # 先看第一頁評論結果
-        async with session.get(url_target_comment, headers=headers, proxy=proxy) as r2:
+        async with self.ss.get(url_target_comment, headers=self.headers_Referer, proxy=self.now_proxy) as r2:
             status2 = r2.status
             rtext2 = await r2.text(encoding='utf8')
             # 看一共幾頁
@@ -196,7 +199,7 @@ class BOOKS(BOOKBASE):
                     for p in range(2, pn + 1):
                         await asyncio.sleep(0.15)
                         url_target_comment = self.url_target_comment.format(bid, p)
-                        async with session.get(url_target_comment, headers=headers, proxy=proxy) as r:
+                        async with self.ss.get(url_target_comment, headers=self.headers_Referer, proxy=self.now_proxy) as r:
                             rtext = await r.text(encoding='utf8')
                             rtext2 += rtext
             # 去除js

@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 
 #
 login = {
+    'email': 'mybigdata.001@gmail.com',
     'BOOKS': ['wtb0806', 'wtbcode0806'],
 }
 
