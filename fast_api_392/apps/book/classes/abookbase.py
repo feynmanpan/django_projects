@@ -70,6 +70,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
     int_err = 1234567
     float_err = 4567.89
     #
+    update_errcnt = 0
+    #
     empty = set()
 
     def __init__(self, **init):

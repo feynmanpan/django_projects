@@ -4,6 +4,10 @@ from fastapi.templating import Jinja2Templates
 #
 ##########################################################
 
+#
+login = {
+    'BOOKS': ['wtb0806', 'wtbcode0806'],
+}
 
 dt_format = "%Y-%m-%d_%H:%M:%S"
 pub_dt_format = "%Y-%m-%d"
@@ -14,3 +18,4 @@ jinja_templates = Jinja2Templates(directory=os.path.join(cwd, templates))
 #
 timeout = 7
 update_errcnt_max = 5
+#

@@ -15,6 +15,7 @@ from apps.book.config import (
     pub_dt_format,
     timeout,
     update_errcnt_max,
+    login,
 )
 ###################################################
 
@@ -30,13 +31,17 @@ class BOOKS(BOOKBASE):
     # 評論及庫存都要ajax
     url_target_comment = 'https://www.books.com.tw/product_show/getCommentAjax/{}:{}:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
     url_target_cart = 'https://www.books.com.tw/product_show/getProdCartInfoAjax/{}/M201105_032_view'
-    #
-    update_errcnt = 0
+    # 登入頁
+    url_target_login = 'https://cart.books.com.tw/member/login'
     #
     page_err = [
         '頁面連結錯誤',
         # 'The Event ID',
+        '限制級商品'
     ]
+    #
+    account = login['BOOKS'][0]
+    passwd = login['BOOKS'][1]
 
     def __init__(self, **init):
         super().__init__(**init)
@@ -58,15 +63,19 @@ class BOOKS(BOOKBASE):
                     rtext = await r.text(encoding='utf8')
                 # 抓ajax 庫存及評論
                 if (status == 200) and re.search(self.info[self.INFO_COLS.bookid], rtext) is not None:
+                    await asyncio.sleep(0.15)
                     headers2 = headers | {'Referer': self.url_target}
                     stock = await self.stock_handle(session, headers2, proxy)
+                    await asyncio.sleep(0.15)
                     comment = await self.comment_handle(session, headers2, proxy)
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
             update['err'] = str(e)
         else:
-            if (status == 200) and re.search(self.info[self.INFO_COLS.bookid], rtext) is not None:
+            if (status == 200) and self.info[self.INFO_COLS.bookid] in rtext and '商品介紹' in rtext:
+                # 確定進入單書頁
+                # print(rtext)
                 doc = pq(rtext, parser='html')
                 # =========================================================================
                 isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
@@ -106,6 +115,8 @@ class BOOKS(BOOKBASE):
             if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
                 update[self.INFO_COLS.create_dt] = datetime.today().strftime(dt_format)
                 self.info = self.info | update
+                #
+                self.update_errcnt = 0
                 #
                 print(f"update_duration = {time()-stime},final_proxy={proxy}")
                 print(f"update_errcnt = {self.update_errcnt}")
@@ -180,6 +191,7 @@ class BOOKS(BOOKBASE):
                 pn = pn and int(pn) or 0
                 if pn:
                     for p in range(2, pn + 1):
+                        await asyncio.sleep(0.15)
                         url_target_comment = self.url_target_comment.format(bid, p)
                         async with session.get(url_target_comment, headers=headers, proxy=proxy) as r:
                             rtext = await r.text(encoding='utf8')
@@ -189,3 +201,17 @@ class BOOKS(BOOKBASE):
 
     def save_info(self):
         pass
+
+    def convert_img(self, img):
+        '''登入的驗證碼圖片轉成黑白'''
+        pixels = img.load()
+        R, G, B = [87, 98, 201]
+        for x in range(img.width):
+            for y in range(img.height):
+                r, g, b = pixels[x, y]
+                delta = abs(R - r) + abs(G - g) + abs(B - b)
+                if delta < 30:
+                    pixels[x, y] = (0, 0, 0)
+                else:
+                    pixels[x, y] = (255, 255, 255)
+        return img
