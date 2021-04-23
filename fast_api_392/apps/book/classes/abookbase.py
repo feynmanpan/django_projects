@@ -106,9 +106,15 @@ class BOOKBASE(object, metaclass=VALIDATE):
         self.__dict__[name] = val
         # object.__setattr__(self, name, val)
 
+    @property
+    def bid(self):
+        '''=bookid'''
+        return self.info['bookid']
+
     # @async_property
     @property
     async def proxy(self) -> Union[str, None]:
+        '''依序從global/csv/db抓cycle代理'''
         ippt = None
         # 依序從global/csv/db抓cycle
         if ips_cycle := ipscfg.ips_cycle:
@@ -134,6 +140,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     @abstractmethod
     def update_info(self):
+        '''重新爬蟲，更新self.info'''
         pass
 
     @abstractmethod

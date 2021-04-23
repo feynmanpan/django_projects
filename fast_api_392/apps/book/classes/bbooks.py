@@ -45,7 +45,7 @@ class BOOKS(BOOKBASE):
 
     def __init__(self, **init):
         super().__init__(**init)
-        self.url_target = f"{self.url_target_prefix}{self.info[self.INFO_COLS.bookid]}"
+        self.url_target = f"{self.url_target_prefix}{self.bid}"
         self.headers_Referer = headers | {'Referer': self.url_target}
 
     async def update_info(self, proxy: Optional[str] = None):
@@ -66,7 +66,7 @@ class BOOKS(BOOKBASE):
                 status = r.status
                 rtext = await r.text(encoding='utf8')
             #
-            if (status == 200) and self.info[self.INFO_COLS.bookid] in rtext:
+            if (status == 200) and (self.bid in rtext):
                 enter_bookpage = '商品介紹' in rtext
                 enter_18 = '限制級商品' in rtext
         except asyncio.exceptions.TimeoutError as e:
@@ -176,7 +176,7 @@ class BOOKS(BOOKBASE):
     async def stock_handle(self):
         '''抓ajax庫存'''
         await asyncio.sleep(0.15)
-        url_target_cart = self.url_target_cart.format(self.info['bookid'])
+        url_target_cart = self.url_target_cart.format(self.bid)
         #
         async with self.ss.get(url_target_cart, headers=self.headers_Referer, proxy=self.now_proxy) as r2:
             status2 = r2.status
@@ -187,26 +187,24 @@ class BOOKS(BOOKBASE):
     async def comment_handle(self):
         '''抓ajax評論'''
         await asyncio.sleep(0.15)
-        bid = self.info['bookid']
-        url_target_comment = self.url_target_comment.format(bid, 1)
+        url_target_comment = self.url_target_comment.format(self.bid, 1)
         # 先看第一頁評論結果
         async with self.ss.get(url_target_comment, headers=self.headers_Referer, proxy=self.now_proxy) as r2:
             status2 = r2.status
             rtext2 = await r2.text(encoding='utf8')
             # 看一共幾頁
             if (status2 == 200) and rtext2:
-                doc2 = pq(rtext2, parser='html')
-                pn = doc2.find(".cnt_page > .page > span").eq(0).text().strip()
+                pn = pq(rtext2, parser='html').find(".cnt_page > .page > span").eq(0).text().strip()
                 pn = pn and int(pn) or 0
                 if pn:
                     for p in range(2, pn + 1):
                         await asyncio.sleep(0.15)
-                        url_target_comment = self.url_target_comment.format(bid, p)
+                        url_target_comment = self.url_target_comment.format(self.bid, p)
                         async with self.ss.get(url_target_comment, headers=self.headers_Referer, proxy=self.now_proxy) as r:
                             rtext = await r.text(encoding='utf8')
                             rtext2 += rtext
-            # 去除js
-            return re.sub(self.comment_js_pattern, '', rtext2)
+                # 去除js
+                return re.sub(self.comment_js_pattern, '', rtext2)
 
     def save_info(self):
         pass
