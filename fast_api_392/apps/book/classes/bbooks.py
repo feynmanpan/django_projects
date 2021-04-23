@@ -55,6 +55,8 @@ class BOOKS(BOOKBASE):
         proxy = proxy or await self.proxy
         update: Dict[str, Any] = self.update_default | {}  # 不加型別提示，後面更新err時會有紅波浪
         #
+        enter_bookpage = False
+        #
         try:
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
                 # 抓單書頁資訊
@@ -62,7 +64,8 @@ class BOOKS(BOOKBASE):
                     status = r.status
                     rtext = await r.text(encoding='utf8')
                 # 抓ajax 庫存及評論
-                if (status == 200) and re.search(self.info[self.INFO_COLS.bookid], rtext) is not None:
+                enter_bookpage = (status == 200) and self.info[self.INFO_COLS.bookid] in rtext and '商品介紹' in rtext
+                if enter_bookpage:
                     await asyncio.sleep(0.15)
                     headers2 = headers | {'Referer': self.url_target}
                     stock = await self.stock_handle(session, headers2, proxy)
@@ -73,7 +76,7 @@ class BOOKS(BOOKBASE):
         except Exception as e:
             update['err'] = str(e)
         else:
-            if (status == 200) and self.info[self.INFO_COLS.bookid] in rtext and '商品介紹' in rtext:
+            if enter_bookpage:
                 # 確定進入單書頁
                 # print(rtext)
                 doc = pq(rtext, parser='html')
