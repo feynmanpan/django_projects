@@ -76,37 +76,7 @@ class BOOKS(BOOKBASE):
         else:
             if enter_bookpage:
                 # 確定進入單書頁
-                # (1) ajax 抓庫存及評論 =========================================================================
-                stock = await self.stock_handle()
-                comment = await self.comment_handle()
-                # (2) 單書頁 =========================================================================
-                doc = pq(rtext, parser='html')
-                #
-                isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
-                if (len_isbn := len(isbn)) >= 10:
-                    isbn10 = (len_isbn == 10 and isbn) or None
-                    isbn13 = (len_isbn == 13 and isbn) or None
-                # _________________________________________________________________________
-                title = doc.find('.mod.type02_p002.clearfix > h1').eq(0).text().strip()
-                title2 = doc.find(".mod.type02_p002.clearfix > h2").eq(0).text().strip()
-                # _________________________________________________________________________
-                el = doc.find(".type02_p003.clearfix ul").eq(0)
-                author = self.author_handle(el)
-                publisher = self.publisher_handle(el)
-                pub_dt = self.pub_dt_handle(el)
-                lang = el.find("li:Contains('語言')").eq(0).text().replace('語言：', '').strip()
-                # _________________________________________________________________________
-                el = doc.find(".prod_cont_a ul.price").eq(0)
-                price_list, price_sale = self.price_handle(el)
-                spec = doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").eq(0).text().replace(" ", "").replace("規格：", "").strip()
-                intro = doc.find(".bd .content").eq(0).html()
-                # _________________________________________________________________________
-                url_book = self.url_target
-                url_vdo = doc.find('.cont iframe').eq(0).attr('src')  # 沒影片時為None
-                url_cover = doc.find(".cover_img > img.cover").attr("src")
-                #
-                # (3) 由base統一update處理 =========================================================================
-                update = self.update_handle(update, locals())
+                update = self.update_handle(update, await self.bookpage_handle(rtext))
             else:
                 for pe in self.page_err:
                     if pe in rtext:
@@ -129,6 +99,39 @@ class BOOKS(BOOKBASE):
                 self.update_errcnt += 1
                 print(f"err_proxy={self.now_proxy}, update_errcnt={self.update_errcnt}/{update_errcnt_max}, err={update['err']}")
                 await self.update_info()
+
+    async def bookpage_handle(self, rtext):
+        '''單書頁處理'''
+        # (1) ajax 抓庫存及評論 =========================================================================
+        stock = await self.stock_handle()
+        comment = await self.comment_handle()
+        # (2) 單書頁 =========================================================================
+        doc = pq(rtext, parser='html')
+        #
+        isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
+        if (len_isbn := len(isbn)) >= 10:
+            isbn10 = (len_isbn == 10 and isbn) or None
+            isbn13 = (len_isbn == 13 and isbn) or None
+        # _________________________________________________________________________
+        title = doc.find('.mod.type02_p002.clearfix > h1').eq(0).text().strip()
+        title2 = doc.find(".mod.type02_p002.clearfix > h2").eq(0).text().strip()
+        # _________________________________________________________________________
+        el = doc.find(".type02_p003.clearfix ul").eq(0)
+        author = self.author_handle(el)
+        publisher = self.publisher_handle(el)
+        pub_dt = self.pub_dt_handle(el)
+        lang = el.find("li:Contains('語言')").eq(0).text().replace('語言：', '').strip()
+        # _________________________________________________________________________
+        el = doc.find(".prod_cont_a ul.price").eq(0)
+        price_list, price_sale = self.price_handle(el)
+        spec = doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").eq(0).text().replace(" ", "").replace("規格：", "").strip()
+        intro = doc.find(".bd .content").eq(0).html()
+        # _________________________________________________________________________
+        url_book = self.url_target
+        url_vdo = doc.find('.cont iframe').eq(0).attr('src')  # 沒影片時為None
+        url_cover = doc.find(".cover_img > img.cover").attr("src")
+        #
+        return locals()
 
     def author_handle(self, el):
         authors = el.find("li").find("a[href*='adv_author']")
