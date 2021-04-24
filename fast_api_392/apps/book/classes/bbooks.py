@@ -46,8 +46,8 @@ class BOOKS(BOOKBASE):
     #
     page_err = [
         '頁面連結錯誤',
-        # 'The Event ID',
-        '限制級商品'
+        'The Event ID',
+        # '限制級商品'
     ]
     #
     account = login['BOOKS'][0]

@@ -79,7 +79,6 @@ class BOOKBASE(object, metaclass=VALIDATE):
     #
     update_errcnt = 0
     _ss = None
-    _ss_loginOK = None
     lock18 = False
     #
     empty = set()
