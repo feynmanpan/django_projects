@@ -1,4 +1,5 @@
 from abc import ABC, ABCMeta, abstractmethod
+import aiohttp
 import asyncio
 import re
 from collections import namedtuple
@@ -11,8 +12,12 @@ import pandas as pd
 # from async_property import async_property
 #
 import apps.ips.config as ipscfg
+from apps.ips.config import cacert
 from apps.ips.model import IPS  # ,tb_ips
 from apps.sql.config import dbwtb
+from apps.book.config import (
+    timeout,
+)
 #
 ##########################################################
 
@@ -71,6 +76,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     float_err = 4567.89
     #
     update_errcnt = 0
+    _ss = None
     #
     empty = set()
 
@@ -101,8 +107,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if PS := val.get(self.INFO_COLS.price_sale):
                 if not (isinstance(PS, float) or isinstance(PS, int)) or PS < 0:
                     raise ValueError(f'price_sale="{PS}" 需為float/int，且>0')
+            #
 
-        #
         self.__dict__[name] = val
         # object.__setattr__(self, name, val)
 
@@ -111,10 +117,9 @@ class BOOKBASE(object, metaclass=VALIDATE):
         '''=bookid'''
         return self.info['bookid']
 
-    # @async_property
     @property
     async def proxy(self) -> Union[str, None]:
-        '''依序從global/csv/db抓cycle代理'''
+        '''依序從global/csv/db抓cycle代理，每次get就next'''
         ippt = None
         # 依序從global/csv/db抓cycle
         if ips_cycle := ipscfg.ips_cycle:
@@ -137,6 +142,16 @@ class BOOKBASE(object, metaclass=VALIDATE):
         #
         if ippt:
             return f"http://{ippt['ip']}:{ippt['port']}"
+
+    @property
+    def ss(self):
+        '''session重造或沿用'''
+        if self._ss is None:
+            connector = aiohttp.TCPConnector(ssl=cacert)
+            TO = aiohttp.ClientTimeout(total=timeout)
+            self._ss = aiohttp.ClientSession(connector=connector, timeout=TO)
+        #
+        return self._ss
 
     @abstractmethod
     def update_info(self):
@@ -169,3 +184,9 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if (val := locals_var.get(col)) not in ['', None]:
                 update[col] = val
         return update
+
+    async def close_ss(self):
+        '''關閉session'''
+        if self._ss is not None:
+            await self._ss.close()
+            self._ss = None

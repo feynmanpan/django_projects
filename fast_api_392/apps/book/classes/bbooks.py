@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 import aiohttp
+import aiofiles
 import asyncio
 import re
+import json
+import os
 from pyquery import PyQuery as pq
 from datetime import datetime
 from time import time
 from typing import Dict, Any, Callable, Awaitable, Coroutine, Optional
+from PIL import Image
+import pytesseract
 #
 from apps.book.classes.abookbase import BOOKBASE
 import apps.ips.config as ipscfg
@@ -26,13 +31,17 @@ class BOOKS(BOOKBASE):
     }
     bookid_pattern = '^[a-zA-Z0-9]{10}$'  # 博客來書號格式
     comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
+    #
+    url_home = 'https://www.books.com.tw'
     # 博客來單書頁
-    url_target_prefix = "https://www.books.com.tw/products/"
+    url_prod_prefix = f"{url_home}/products/"
     # 評論及庫存都要ajax
-    url_target_comment = 'https://www.books.com.tw/product_show/getCommentAjax/{}:{}:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
-    url_target_cart = 'https://www.books.com.tw/product_show/getProdCartInfoAjax/{}/M201105_032_view'
+    url_comment_ajax = 'https://www.books.com.tw/product_show/getCommentAjax/{}:{}:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
+    url_cart_ajax = 'https://www.books.com.tw/product_show/getProdCartInfoAjax/{}/M201105_032_view'
     # 登入頁
-    url_target_login = 'https://cart.books.com.tw/member/login'
+    url_cart_dns = 'https://cart.books.com.tw'
+    url_login = f'{url_cart_dns}/member/login'
+    url_loginpost = f'{url_cart_dns}/member/login_do/'
     #
     page_err = [
         '頁面連結錯誤',
@@ -42,33 +51,35 @@ class BOOKS(BOOKBASE):
     #
     account = login['BOOKS'][0]
     passwd = login['BOOKS'][1]
+    #
+    cwd = os.path.dirname(os.path.realpath(__file__))
 
     def __init__(self, **init):
         super().__init__(**init)
-        self.url_target = f"{self.url_target_prefix}{self.bid}"
-        self.headers_Referer = headers | {'Referer': self.url_target}
+        self.url_prod = f"{self.url_prod_prefix}{self.bid}"
+        self.headers_Referer = headers | {'Referer': self.url_prod}
+        self.headers_Referer_login = headers | {'Referer': f'{self.url_cart_dns}/member/login?url={self.url_prod}'}
 
     async def update_info(self, proxy: Optional[str] = None):
         stime = time()
         #
-        connector = aiohttp.TCPConnector(ssl=cacert)
-        TO = aiohttp.ClientTimeout(total=timeout)
-        self.ss = aiohttp.ClientSession(connector=connector, timeout=TO)
         self.now_proxy = proxy or await self.proxy
-        #
         enter_bookpage = False
         enter_18 = False
+        login_success = False
         update: Dict[str, Any] = self.update_default | {}  # 不加型別提示，後面更新err時會有紅波浪
         #
         try:
             # 抓單書頁資訊
-            async with self.ss.get(self.url_target, headers=headers, proxy=self.now_proxy) as r:
+            async with self.ss.get(self.url_prod, headers=headers, proxy=self.now_proxy) as r:
                 status = r.status
                 rtext = await r.text(encoding='utf8')
             #
             if (status == 200) and (self.bid in rtext):
                 enter_bookpage = '商品介紹' in rtext
-                enter_18 = '限制級商品' in rtext
+                if not enter_bookpage:
+                    enter_18 = '限制級商品' in rtext
+                print(f'進入單書頁={enter_bookpage}, 進入18禁={enter_18}')
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
@@ -76,7 +87,27 @@ class BOOKS(BOOKBASE):
         else:
             if enter_bookpage:
                 # 確定進入單書頁
-                update = self.update_handle(update, await self.bookpage_handle(rtext))
+                try:
+                    result = await self.bookpage_handle(rtext)
+                    update = self.update_handle(update, result)
+                except asyncio.exceptions.TimeoutError as e:
+                    update['err'] = 'asyncio.exceptions.TimeoutError'
+                except Exception as e:
+                    update['err'] = str(e)
+            elif enter_18:
+                # 18禁，直到登入成功
+                try:
+                    while not login_success:
+                        print('login_success=', login_success)
+                        capcha = await self.get_capcha()
+                        if capcha:
+                            login_success = await self.loginpost(capcha)
+                            if login_success:
+                                print('登入capcha=', capcha)
+                except asyncio.exceptions.TimeoutError as e:
+                    update['err'] = 'asyncio.exceptions.TimeoutError'
+                except Exception as e:
+                    update['err'] = str(e)
             else:
                 for pe in self.page_err:
                     if pe in rtext:
@@ -85,20 +116,24 @@ class BOOKS(BOOKBASE):
                 else:
                     update['err'] = f'status={status},rtext={rtext[:100]}'
         finally:
-            await self.ss.close()
-            self.ss = None
-            # 抓成功，或頁面連接錯誤，或到達最多次數，就不再抓
-            if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
-                update[self.INFO_COLS.create_dt] = datetime.today().strftime(dt_format)
-                #
-                self.info = self.info | update
+            if enter_18 and login_success:
                 self.update_errcnt = 0
-                #
-                print(f"final_proxy={self.now_proxy}, update_duration = {time()-stime}")
+                print('登入成功，重抓18禁單書頁')
+                await self.update_info(proxy=self.now_proxy)
             else:
-                self.update_errcnt += 1
-                print(f"err_proxy={self.now_proxy}, update_errcnt={self.update_errcnt}/{update_errcnt_max}, err={update['err']}")
-                await self.update_info()
+                await self.close_ss()
+                # 抓成功，或頁面連接錯誤，或到達最多次數，就不再抓
+                if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
+                    update[self.INFO_COLS.create_dt] = datetime.today().strftime(dt_format)
+                    #
+                    self.info |= update
+                    self.update_errcnt = 0
+                    #
+                    print(f"final_proxy={self.now_proxy}, update_duration = {time()-stime}")
+                else:
+                    self.update_errcnt += 1
+                    print(f"err_proxy={self.now_proxy}, update_errcnt={self.update_errcnt}/{update_errcnt_max}, err={update['err']}")
+                    await self.update_info()
 
     async def bookpage_handle(self, rtext):
         '''單書頁處理'''
@@ -127,7 +162,7 @@ class BOOKS(BOOKBASE):
         spec = doc.find(".mod_b.type02_m058.clearfix .bd li:Contains('規格')").eq(0).text().replace(" ", "").replace("規格：", "").strip()
         intro = doc.find(".bd .content").eq(0).html()
         # _________________________________________________________________________
-        url_book = self.url_target
+        url_book = self.url_prod
         url_vdo = doc.find('.cont iframe').eq(0).attr('src')  # 沒影片時為None
         url_cover = doc.find(".cover_img > img.cover").attr("src")
         #
@@ -175,10 +210,10 @@ class BOOKS(BOOKBASE):
 
     async def stock_handle(self):
         '''抓ajax庫存'''
-        await asyncio.sleep(0.15)
-        url_target_cart = self.url_target_cart.format(self.bid)
+        await asyncio.sleep(0.05)
+        url_cart_ajax = self.url_cart_ajax.format(self.bid)
         #
-        async with self.ss.get(url_target_cart, headers=self.headers_Referer, proxy=self.now_proxy) as r2:
+        async with self.ss.get(url_cart_ajax, headers=self.headers_Referer, proxy=self.now_proxy) as r2:
             status2 = r2.status
             rtext2 = await r2.text(encoding='utf8')
             if (status2 == 200) and rtext2:
@@ -187,9 +222,9 @@ class BOOKS(BOOKBASE):
     async def comment_handle(self):
         '''抓ajax評論'''
         await asyncio.sleep(0.15)
-        url_target_comment = self.url_target_comment.format(self.bid, 1)
+        url_comment_ajax = self.url_comment_ajax.format(self.bid, 1)
         # 先看第一頁評論結果
-        async with self.ss.get(url_target_comment, headers=self.headers_Referer, proxy=self.now_proxy) as r2:
+        async with self.ss.get(url_comment_ajax, headers=self.headers_Referer, proxy=self.now_proxy) as r2:
             status2 = r2.status
             rtext2 = await r2.text(encoding='utf8')
             # 看一共幾頁
@@ -199,8 +234,8 @@ class BOOKS(BOOKBASE):
                 if pn:
                     for p in range(2, pn + 1):
                         await asyncio.sleep(0.15)
-                        url_target_comment = self.url_target_comment.format(self.bid, p)
-                        async with self.ss.get(url_target_comment, headers=self.headers_Referer, proxy=self.now_proxy) as r:
+                        url_comment_ajax = self.url_comment_ajax.format(self.bid, p)
+                        async with self.ss.get(url_comment_ajax, headers=self.headers_Referer, proxy=self.now_proxy) as r:
                             rtext = await r.text(encoding='utf8')
                             rtext2 += rtext
                 # 去除js
@@ -208,6 +243,43 @@ class BOOKS(BOOKBASE):
 
     def save_info(self):
         pass
+
+    async def loginpost(self, capcha):
+        '''遞交登入'''
+        formdata = {
+            'captcha': capcha,
+            'login_id': self.account,
+            'login_pswd': self.passwd,
+        }
+        #
+        async with self.ss.post(self.url_loginpost, headers=self.headers_Referer_login, proxy=self.now_proxy, data=formdata) as r:
+            if r.status == 200:
+                rtext = await r.text(encoding='utf8')
+                return json.loads(rtext)['success']
+
+    async def get_capcha(self):
+        '''從登入頁面抓capcha圖檔'''
+        async with self.ss.get(self.url_login, headers=headers, proxy=self.now_proxy) as r:
+            if r.status == 200:
+                rtext = await r.text(encoding='utf8')
+                doc = pq(rtext, parser='html')
+                url_capcha = self.url_cart_dns + doc.find("#captcha_img img").attr('src')
+                # OCR
+                async with self.ss.get(url_capcha, headers=headers, proxy=self.now_proxy) as r:
+                    if r.status == 200:
+                        jpg = os.path.join(self.cwd, url_capcha.split('?')[-1] + '.jpg')
+                        print(f'儲存capcha: {jpg}')
+                        f = await aiofiles.open(jpg, mode='wb')
+                        await f.write(await r.read())
+                        await f.close()
+                        #
+                        img = Image.open(jpg)
+                        img = self.convert_img(img)
+                        capcha = pytesseract.image_to_string(img).strip()
+                        #
+                        os.rename(jpg, os.path.join(self.cwd, 'last_capcha.jpg'))
+                        #
+                        return capcha
 
     def convert_img(self, img):
         '''登入的驗證碼圖片轉成黑白'''
