@@ -6,6 +6,7 @@ from collections import namedtuple
 import os
 import itertools
 from typing import Dict, Any, Awaitable, Union
+import copy
 #
 import sqlalchemy as sa
 import pandas as pd
@@ -61,6 +62,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         'stock',
         'spec', 'intro', 'comment',
         'url_book', 'url_vdo', 'url_cover',
+        'lock18',
         'err',
         'create_dt',
     ]
@@ -77,8 +79,11 @@ class BOOKBASE(object, metaclass=VALIDATE):
     #
     update_errcnt = 0
     _ss = None
+    _ss_loginOK = None
+    lock18 = False
     #
     empty = set()
+    cwd = os.path.dirname(os.path.realpath(__file__))
 
     def __init__(self, **init):
         # 初始化就檢查info欄位
@@ -190,3 +195,4 @@ class BOOKBASE(object, metaclass=VALIDATE):
         if self._ss is not None:
             await self._ss.close()
             self._ss = None
+            print('關閉session')

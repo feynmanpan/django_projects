@@ -11,6 +11,7 @@ from time import time
 from typing import Dict, Any, Callable, Awaitable, Coroutine, Optional
 from PIL import Image
 import pytesseract
+import copy
 #
 from apps.book.classes.abookbase import BOOKBASE
 import apps.ips.config as ipscfg
@@ -52,7 +53,6 @@ class BOOKS(BOOKBASE):
     account = login['BOOKS'][0]
     passwd = login['BOOKS'][1]
     #
-    cwd = os.path.dirname(os.path.realpath(__file__))
 
     def __init__(self, **init):
         super().__init__(**init)
@@ -65,12 +65,12 @@ class BOOKS(BOOKBASE):
         #
         self.now_proxy = proxy or await self.proxy
         enter_bookpage = False
-        enter_18 = False
         login_success = False
         update: Dict[str, Any] = self.update_default | {}  # 不加型別提示，後面更新err時會有紅波浪
         #
         try:
             # 抓單書頁資訊
+            print('get 單書頁---------------------')
             async with self.ss.get(self.url_prod, headers=headers, proxy=self.now_proxy) as r:
                 status = r.status
                 rtext = await r.text(encoding='utf8')
@@ -78,8 +78,8 @@ class BOOKS(BOOKBASE):
             if (status == 200) and (self.bid in rtext):
                 enter_bookpage = '商品介紹' in rtext
                 if not enter_bookpage:
-                    enter_18 = '限制級商品' in rtext
-                print(f'進入單書頁={enter_bookpage}, 進入18禁={enter_18}')
+                    self.lock18 = '限制級商品' in rtext
+                print(f'進入單書頁={enter_bookpage}, 限制級商品={self.lock18}')
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
@@ -87,25 +87,28 @@ class BOOKS(BOOKBASE):
         else:
             if enter_bookpage:
                 # 確定進入單書頁
+                print('bookpage_handle ---------------------')
                 try:
                     result = await self.bookpage_handle(rtext)
                     update = self.update_handle(update, result)
                 except asyncio.exceptions.TimeoutError as e:
-                    update['err'] = 'asyncio.exceptions.TimeoutError'
+                    update['err'] = 'enter_bookpage_asyncio.exceptions.TimeoutError'
                 except Exception as e:
                     update['err'] = str(e)
-            elif enter_18:
+            elif self.lock18:
                 # 18禁，直到登入成功
+                print('嘗試登入---------------------')
                 try:
                     while not login_success:
-                        print('login_success=', login_success)
                         capcha = await self.get_capcha()
                         if capcha:
                             login_success = await self.loginpost(capcha)
                             if login_success:
-                                print('登入capcha=', capcha)
+                                print('成功capcha=', capcha)
+                            else:
+                                print('登入失敗')
                 except asyncio.exceptions.TimeoutError as e:
-                    update['err'] = 'asyncio.exceptions.TimeoutError'
+                    update['err'] = 'lock18_asyncio.exceptions.TimeoutError'
                 except Exception as e:
                     update['err'] = str(e)
             else:
@@ -116,18 +119,18 @@ class BOOKS(BOOKBASE):
                 else:
                     update['err'] = f'status={status},rtext={rtext[:100]}'
         finally:
-            if enter_18 and login_success:
+            if self.lock18 and login_success:
                 self.update_errcnt = 0
-                print('登入成功，重抓18禁單書頁')
+                print('登入成功，重get 18禁單書頁')
                 await self.update_info(proxy=self.now_proxy)
             else:
-                await self.close_ss()
                 # 抓成功，或頁面連接錯誤，或到達最多次數，就不再抓
                 if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
                     update[self.INFO_COLS.create_dt] = datetime.today().strftime(dt_format)
                     #
                     self.info |= update
                     self.update_errcnt = 0
+                    await self.close_ss()
                     #
                     print(f"final_proxy={self.now_proxy}, update_duration = {time()-stime}")
                 else:
@@ -137,6 +140,7 @@ class BOOKS(BOOKBASE):
 
     async def bookpage_handle(self, rtext):
         '''單書頁處理'''
+        lock18 = self.lock18
         # (1) ajax 抓庫存及評論 =========================================================================
         stock = await self.stock_handle()
         comment = await self.comment_handle()
