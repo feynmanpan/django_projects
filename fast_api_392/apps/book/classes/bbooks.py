@@ -37,8 +37,10 @@ class BOOKS(BOOKBASE):
     # 博客來單書頁
     url_prod_prefix = f"{url_home}/products/"
     # 評論及庫存都要ajax
-    url_comment_ajax = 'https://www.books.com.tw/product_show/getCommentAjax/{}:{}:A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
-    url_cart_ajax = 'https://www.books.com.tw/product_show/getProdCartInfoAjax/{}/M201105_032_view'
+    url_prodshow = f'{url_home}/product_show/'
+    tail = ':A:M201101_0_getCommentData_P00a400020068:getCommentAjax:M201101_078_view/M201101_078_view'
+    url_comment_ajax = url_prodshow + 'getCommentAjax/{}:{}' + tail
+    url_cart_ajax = url_prodshow + 'getProdCartInfoAjax/{}/M201105_032_view'
     # 登入頁
     url_cart_dns = 'https://cart.books.com.tw'
     url_login = f'{url_cart_dns}/member/login'
@@ -58,7 +60,7 @@ class BOOKS(BOOKBASE):
         super().__init__(**init)
         self.url_prod = f"{self.url_prod_prefix}{self.bid}"
         self.headers_Referer = headers | {'Referer': self.url_prod}
-        self.headers_Referer_login = headers | {'Referer': f'{self.url_cart_dns}/member/login?url={self.url_prod}'}
+        self.headers_Referer_login = headers | {'Referer': f'{self.url_login}?url={self.url_prod}'}
 
     async def update_info(self, proxy: Optional[str] = None):
         stime = time()
