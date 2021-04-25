@@ -27,14 +27,15 @@ from apps.book.config import (
 
 
 class BOOKS(BOOKBASE):
+    '''博客來'''
     info_default = {
         "bookid": "0010770978"  # 刺殺騎士團長
     }
     bookid_pattern = '^[a-zA-Z0-9]{10}$'  # 博客來書號格式
     comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
-    #
+    # 首頁
     url_home = 'https://www.books.com.tw'
-    # 博客來單書頁
+    # 單書頁
     url_prod_prefix = f"{url_home}/products/"
     # 評論及庫存都要ajax
     url_prodshow = f'{url_home}/product_show/'
@@ -51,16 +52,17 @@ class BOOKS(BOOKBASE):
         'The Event ID',
         # '限制級商品'
     ]
-    #
+    # 登入18禁用的帳密
     account = login['BOOKS'][0]
     passwd = login['BOOKS'][1]
-    #
+    # __________________________________________________________
 
     def __init__(self, **init):
         super().__init__(**init)
         self.url_prod = f"{self.url_prod_prefix}{self.bid}"
         self.headers_Referer = headers | {'Referer': self.url_prod}
         self.headers_Referer_login = headers | {'Referer': f'{self.url_login}?url={self.url_prod}'}
+    # __________________________________________________________
 
     async def update_info(self, proxy: Optional[str] = None):
         stime = time()
@@ -250,9 +252,6 @@ class BOOKS(BOOKBASE):
                 # 去除js
                 return re.sub(self.comment_js_pattern, '', rtext2)
 
-    def save_info(self):
-        pass
-
     async def loginpost(self, capcha):
         '''遞交登入'''
         formdata = {
@@ -267,7 +266,7 @@ class BOOKS(BOOKBASE):
                 return json.loads(rtext)['success']
 
     async def get_capcha(self):
-        '''從登入頁面抓capcha圖檔'''
+        '''從登入頁面抓capcha圖檔及OCR'''
         async with self.ss.get(self.url_login, headers=headers, proxy=self.now_proxy) as r:
             if r.status == 200:
                 rtext = await r.text(encoding='utf8')
@@ -303,3 +302,6 @@ class BOOKS(BOOKBASE):
                 else:
                     pixels[x, y] = (255, 255, 255)
         return img
+
+    def save_info(self):
+        pass
