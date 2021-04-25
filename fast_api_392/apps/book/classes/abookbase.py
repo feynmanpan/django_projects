@@ -6,7 +6,7 @@ from collections import namedtuple
 import os
 import itertools
 from typing import Dict, Any, Awaitable, Union
-import copy
+import random
 #
 import sqlalchemy as sa
 import pandas as pd
@@ -83,6 +83,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
     #
     empty = set()
     cwd = os.path.dirname(os.path.realpath(__file__))
+    #
+    top_proxy = set()
 
     def __init__(self, **init):
         # 初始化就檢查info欄位
@@ -124,6 +126,10 @@ class BOOKBASE(object, metaclass=VALIDATE):
     @property
     async def proxy(self) -> Union[str, None]:
         '''依序從global/csv/db抓cycle代理，每次get就next'''
+        proxy = None
+        if top_proxy := list(self.top_proxy):
+            proxy = random.choice(top_proxy)
+        #
         ippt = None
         # 依序從global/csv/db抓cycle
         if ips_cycle := ipscfg.ips_cycle:
@@ -143,9 +149,15 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if records:
                 ipscfg.ips_cycle = itertools.cycle([dict(r) for r in records])
                 ippt = next(ipscfg.ips_cycle)
-        #
+        # 最後比較
         if ippt:
-            return f"http://{ippt['ip']}:{ippt['port']}"
+            tmp = f"http://{ippt['ip']}:{ippt['port']}"
+            if proxy:
+                proxy = random.choice([proxy] + [tmp] * 5)
+            else:
+                proxy = tmp
+        #
+        return proxy
 
     @property
     def ss(self):

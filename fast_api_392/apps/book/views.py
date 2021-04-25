@@ -18,8 +18,11 @@ from .classes.zimportall import (
 ###############################################
 
 
-async def show_register_subclasses():
-    ans = list(BOOKBASE.register_subclasses.keys())
+async def show_base(f='r'):
+    if f == 'r':
+        ans = list(BOOKBASE.register_subclasses.keys())
+    else:
+        ans = list(BOOKBASE.top_proxy)
     return ORJSONResponse(ans)
 
 
