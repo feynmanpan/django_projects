@@ -80,11 +80,11 @@ class BOOKS(BOOKBASE):
                 rtext = await r.text(encoding='utf8')
             #
             if (status == 200) and (self.bid in rtext):
-                self.top_proxy.add(self.now_proxy)  # 成功的代理存到bookbase
-                # 判斷商品
+                # 成功的代理存到bookbase
+                self.top_proxy.add(self.now_proxy)
+                # 判斷商品，登入過18禁的session下次就不會再登入
                 enter_bookpage = '商品介紹' in rtext
-                if not enter_bookpage:
-                    self.lock18 = '限制級商品' in rtext
+                self.lock18 = '限制級商品' in rtext
                 #
                 print(f'進入單書頁={enter_bookpage}, 限制級商品={self.lock18}')
         except asyncio.exceptions.TimeoutError as e:
@@ -137,7 +137,7 @@ class BOOKS(BOOKBASE):
                     #
                     self.info |= update
                     self.update_errcnt = 0
-                    await self.close_ss()
+                    # await self.close_ss()
                     #
                     print(f"final_proxy={self.now_proxy}, update_duration = {time()-stime}")
                 else:

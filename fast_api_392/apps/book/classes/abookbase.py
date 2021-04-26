@@ -81,7 +81,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     float_err = 4567.89
     #
     update_errcnt = 0
-    _ss = None
+    _ss = {}
     lock18 = False  # 預設都是非限制級
     #
     empty = set()
@@ -175,13 +175,14 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     @property
     def ss(self):
-        '''session重造或沿用'''
-        if self._ss is None:
-            connector = aiohttp.TCPConnector(ssl=cacert)
+        '''各家用自己家的一個session，存在base'''
+        store = self.info['store']
+        if not self._ss.get(store, None):
+            connector = aiohttp.TCPConnector(ssl=cacert, limit=100)
             TO = aiohttp.ClientTimeout(total=timeout)
-            self._ss = aiohttp.ClientSession(connector=connector, timeout=TO)
+            self._ss[store] = aiohttp.ClientSession(connector=connector, timeout=TO)
         #
-        return self._ss
+        return self._ss[store]
 
     @abstractmethod
     def update_info(self):
@@ -216,12 +217,13 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 update[col] = val
         return update
 
-    async def close_ss(self):
-        '''關閉session'''
-        if self._ss is not None:
-            await self._ss.close()
-            self._ss = None
-            print('關閉session')
+    @classmethod
+    async def close_ss(cls):
+        '''關閉base的session'''
+        for ss in cls._ss.values():
+            await ss.close()
+        cls._ss = {}
+        print('關閉base的session')
 
     @classmethod
     def top_proxy_tocsv(cls):
