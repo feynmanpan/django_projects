@@ -90,6 +90,7 @@ msgs = [
     f'檢查trusted_host: 【{config.trusted_host}】 / allowed_hosts: {config.allowed_hosts}',
     f'在main啟動時執行排程startBGT: 【{config.startBGT_atonce}】',
     f'get_freeproxy 代理ip更新週期(秒): {get_freeproxy_delta}',
+    f'BOOKBASE.top_proxy: {len(zimportall.BOOKBASE.top_proxy)} 個',
 ]
 
 MSG.prt_msgs(msgs)
