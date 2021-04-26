@@ -226,8 +226,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
         '''app shutdown時儲存top_proxy'''
         if cls.top_proxy and (len_top_proxy := len(cls.top_proxy)) > cls.len_top_proxy:
             print(f'top_proxy增加為{len_top_proxy}，上限{top_proxy_max}個，儲存csv')
-            tmp = list(cls.top_proxy)[:top_proxy_max]
+            tmp = list(cls.top_proxy)
             random.shuffle(tmp)
-            pd.DataFrame({'proxy': tmp}).to_csv(cls.path_top_proxy, index=False)
+            pd.DataFrame({'proxy': tmp[:top_proxy_max]}).to_csv(cls.path_top_proxy, index=False)
         else:
             print(f'top_proxy數量不變={cls.len_top_proxy}')
