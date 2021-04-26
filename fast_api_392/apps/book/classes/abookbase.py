@@ -175,7 +175,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     @property
     def ss(self):
-        '''各家用自己家的一個session，存在base'''
+        '''各家用自己家的一個session，存在base，登入過可reuse'''
         store = self.info['store']
         if not self._ss.get(store, None):
             connector = aiohttp.TCPConnector(ssl=cacert, limit=100)

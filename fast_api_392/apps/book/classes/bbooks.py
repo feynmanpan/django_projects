@@ -84,7 +84,7 @@ class BOOKS(BOOKBASE):
                 self.top_proxy.add(self.now_proxy)
                 # 判斷商品，登入過18禁的session下次就不會再登入
                 enter_bookpage = '商品介紹' in rtext
-                self.lock18 = '限制級商品' in rtext
+                self.lock18 = '限制級商品' in rtext  # 未登入/單書頁都有限制級商品字串
                 #
                 print(f'進入單書頁={enter_bookpage}, 限制級商品={self.lock18}')
         except asyncio.exceptions.TimeoutError as e:
