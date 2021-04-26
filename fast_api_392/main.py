@@ -55,6 +55,7 @@ async def startup():
 
 @app.on_event("shutdown")
 async def shutdown():
+    zimportall.BOOKBASE.top_proxy_tocsv()
     await sqlcfg.dbwtb.connect()
 
 #################### middlewares ################################

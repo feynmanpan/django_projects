@@ -20,3 +20,4 @@ jinja_templates = Jinja2Templates(directory=os.path.join(cwd, templates))
 timeout = 7
 update_errcnt_max = 5
 #
+top_proxy_max = 100

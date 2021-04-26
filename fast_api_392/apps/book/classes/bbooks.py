@@ -80,8 +80,8 @@ class BOOKS(BOOKBASE):
                 rtext = await r.text(encoding='utf8')
             #
             if (status == 200) and (self.bid in rtext):
-                self.top_proxy.add(self.now_proxy)
-                #
+                self.top_proxy.add(self.now_proxy)  # 成功的代理存到bookbase
+                # 判斷商品
                 enter_bookpage = '商品介紹' in rtext
                 if not enter_bookpage:
                     self.lock18 = '限制級商品' in rtext

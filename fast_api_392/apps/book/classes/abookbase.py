@@ -18,6 +18,7 @@ from apps.ips.model import IPS  # ,tb_ips
 from apps.sql.config import dbwtb
 from apps.book.config import (
     timeout,
+    top_proxy_max,
 )
 #
 ##########################################################
@@ -81,10 +82,16 @@ class BOOKBASE(object, metaclass=VALIDATE):
     update_errcnt = 0
     _ss = None
     lock18 = False  # 預設都是非限制級
-    top_proxy = set()
     #
     empty = set()
     cwd = os.path.dirname(os.path.realpath(__file__))
+    #
+    top_proxy = set()
+    path_top_proxy = os.path.join(cwd, 'top_proxy.csv')
+    if os.path.isfile(path_top_proxy):
+        top_proxy = set(pd.read_csv(path_top_proxy).proxy.tolist())
+    len_top_proxy = len(top_proxy)
+
     # __________________________________________________________
 
     def __init__(self, **init):
@@ -213,3 +220,14 @@ class BOOKBASE(object, metaclass=VALIDATE):
             await self._ss.close()
             self._ss = None
             print('關閉session')
+
+    @classmethod
+    def top_proxy_tocsv(cls):
+        '''app shutdown時儲存top_proxy'''
+        if cls.top_proxy and (len_top_proxy := len(cls.top_proxy)) > cls.len_top_proxy:
+            print(f'top_proxy增加為{len_top_proxy}，上限{top_proxy_max}個，儲存csv')
+            tmp = list(cls.top_proxy)[:top_proxy_max]
+            random.shuffle(tmp)
+            pd.DataFrame({'proxy': tmp}).to_csv(cls.path_top_proxy, index=False)
+        else:
+            print(f'top_proxy數量不變={cls.len_top_proxy}')
