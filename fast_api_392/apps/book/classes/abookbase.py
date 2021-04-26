@@ -19,6 +19,7 @@ from apps.sql.config import dbwtb
 from apps.book.config import (
     timeout,
     top_proxy_max,
+    update_errcnt_max,
 )
 #
 ##########################################################
@@ -165,7 +166,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
         if ippt:
             tmp = f"http://{ippt['ip']}:{ippt['port']}"
             if proxy:
-                proxy = random.choice([proxy] + [tmp] * 5)
+                # 失敗越多次，提供top_proxy的選取機率
+                proxy = random.choice([proxy] + [tmp] * (update_errcnt_max + 3 - self.update_errcnt))
             else:
                 proxy = tmp
         #
