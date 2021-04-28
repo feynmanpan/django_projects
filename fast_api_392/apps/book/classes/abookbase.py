@@ -31,13 +31,17 @@ class VALIDATE(ABCMeta):
         if (base := bases[0]) != object:
             # 檢查子類info_default的key
             info_cols = base.info_cols
-            info_default = class_dict.get('info_default', {})
+            info_default = class_dict.get('info_default', None)
+            if info_default is None:
+                raise AttributeError(f'【{name}】沒有設info_default屬性')
             if not isinstance(info_default, dict):
                 raise TypeError(f'【{name}】的info_default不是dict')
             set0 = set(info_cols)
             set1 = set(info_default.keys())
             if (rest := set1 - set0) != base.empty:
                 raise KeyError(f'info_default中，欄位{rest}不在BOOKBASE的info_cols裡面')
+            if 'bookid' not in set1:
+                raise KeyError(f'info_default中，缺少bookid欄位')
             # 造子類的預設info並assign，以子類類名為store名稱
             info_default = base.info_default | info_default
             info_default[base.INFO_COLS.store] = name

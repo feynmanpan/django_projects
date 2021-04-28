@@ -5,4 +5,7 @@ from apps.book.classes.abookbase import BOOKBASE
 
 
 class TAAZE(BOOKBASE):
-    info_default = {}
+    '''讀冊'''
+    info_default = {
+        "bookid": "",
+    }
