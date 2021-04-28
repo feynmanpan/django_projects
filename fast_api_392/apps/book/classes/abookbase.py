@@ -81,6 +81,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     update_default = {INFO_COLS.err: None}
     bookid_default = '__1234567890'
     info_default = {**dict.fromkeys(info_cols, None), **{'bookid': bookid_default}}
+    bid = None
     #
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'
@@ -106,16 +107,22 @@ class BOOKBASE(object, metaclass=VALIDATE):
     def __new__(cls, **init):
         '''讓各家store的每個bookid只會有一個instance'''
         bid = init.get('bookid') or cls.info_default['bookid']
-        if obj := cls.objs.get(bid):
-            return obj
-        else:
+        # 沿用或new
+        if not (obj := cls.objs.get(bid)):
             obj = object.__new__(cls)
-            cls.objs[bid] = obj
-            return obj
+            obj.bid = bid
+        #
+        return obj
 
     def __init__(self, **init):
-        '''由base處理info初始化'''
-        self.info = self.info_default | init
+        '''由base處理info初始化，以及update_info執行個數'''
+        # 未註冊至class.objs 則初始化
+        if not type(self).objs.get(self.bid):
+            self.info = self.info_default | init
+            self.info_init = self.info | {}
+            self.uids = []
+            #
+            type(self).objs[self.bid] = self
     # __________________________________________________________
 
     @property
@@ -148,11 +155,6 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 raise ValueError(f'price_sale="{PS}" 需為float/int，且>0')
         #
         self._info = val
-
-    @property
-    def bid(self):
-        '''=bookid'''
-        return self.info['bookid']
 
     @property
     async def proxy(self) -> Union[str, None]:
@@ -203,9 +205,17 @@ class BOOKBASE(object, metaclass=VALIDATE):
         return self._ss[store]
 
     @abstractmethod
-    def update_info(self):
-        '''重新爬蟲，更新self.info'''
-        pass
+    async def update_info(self, uid=None):
+        '''爬蟲更新self.info，並只留 uid=1 進行爬蟲 '''
+        if not uid:
+            if not self.uids:
+                uid = 1
+                self.uids.append(uid)
+            else:
+                # 若有 uid=1 在跑了，等到前一個跑完才離開，確保得到一樣的info
+                while self.uids:
+                    await asyncio.sleep(0.5)
+        return uid
 
     @abstractmethod
     def save_info(self):
@@ -237,11 +247,11 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     @classmethod
     async def close_ss(cls):
-        '''關閉base的session'''
+        '''關閉base._ss的所有session'''
         for ss in cls._ss.values():
             await ss.close()
         cls._ss = {}
-        print('關閉base的session')
+        print('關閉base._ss的所有session')
 
     @classmethod
     def top_proxy_tocsv(cls):

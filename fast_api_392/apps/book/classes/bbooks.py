@@ -65,9 +65,12 @@ class BOOKS(BOOKBASE):
         self.headers_Referer_login = headers | {'Referer': f'{self.url_login}?url={self.url_prod}'}
     # __________________________________________________________
 
-    async def update_info(self, proxy: Optional[str] = None):
+    async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None):
         stime = time()
-        #
+        # ================ 只留 uid=1 進行爬蟲 ===================================
+        if not (uid := await super().update_info(uid)):
+            return None
+        # ===================================================
         self.now_proxy = proxy or await self.proxy
         enter_bookpage = False
         login_success = False
@@ -130,21 +133,21 @@ class BOOKS(BOOKBASE):
             if self.lock18 and login_success:
                 self.update_errcnt = 0
                 print('登入成功，重get 18禁單書頁')
-                await self.update_info(proxy=self.now_proxy)
+                await self.update_info(proxy=self.now_proxy, uid=uid)
             else:
                 # 抓成功，或頁面連接錯誤，或到達最多次數，就不再抓
                 if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
-                    update[self.INFO_COLS.create_dt] = datetime.today().strftime(dt_format)
+                    update['create_dt'] = datetime.today().strftime(dt_format)
                     #
-                    self.info |= update
+                    self.info = self.info_init | update
                     self.update_errcnt = 0
-                    # await self.close_ss()
+                    self.uids = []
                     #
                     print(f"final_proxy={self.now_proxy}, update_duration = {time()-stime}")
                 else:
                     self.update_errcnt += 1
-                    print(f"err_proxy={self.now_proxy}, update_errcnt={self.update_errcnt}/{update_errcnt_max}, err={update['err']}")
-                    await self.update_info()
+                    print(f"err_proxy={self.now_proxy}, update_errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={update['err']}")
+                    await self.update_info(uid=uid)
 
     async def bookpage_handle(self, rtext):
         '''單書頁處理'''
