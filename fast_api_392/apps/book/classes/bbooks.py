@@ -49,6 +49,7 @@ class BOOKS(BOOKBASE):
     #
     page_err = [
         '頁面連結錯誤',
+        'disallowed characters',
         'The Event ID',
         # '限制級商品'
     ]
