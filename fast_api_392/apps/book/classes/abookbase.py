@@ -31,17 +31,20 @@ class VALIDATE(ABCMeta):
         if (base := bases[0]) != object:
             # 檢查子類info_default的key
             info_cols = base.info_cols
-            info_default = class_dict.get('info_default', None)
-            if info_default is None:
-                raise AttributeError(f'【{name}】沒有設info_default屬性')
+            info_default = class_dict.get('info_default', base.info_default)
             if not isinstance(info_default, dict):
                 raise TypeError(f'【{name}】的info_default不是dict')
+            if 'bookid' not in info_default:
+                raise KeyError(f'【{name}】的info_default中，需有bookid欄位')
+            if not isinstance(info_default['bookid'], str):
+                raise TypeError(f'【{name}】的info_default的bookid不是str')
+            if not info_default['bookid']:
+                info_default['bookid'] = base.bookid_default
+            #
             set0 = set(info_cols)
             set1 = set(info_default.keys())
             if (rest := set1 - set0) != base.empty:
                 raise KeyError(f'info_default中，欄位{rest}不在BOOKBASE的info_cols裡面')
-            if 'bookid' not in set1:
-                raise KeyError(f'info_default中，缺少bookid欄位')
             # 造子類的預設info並assign，以子類類名為store名稱
             info_default = base.info_default | info_default
             info_default[base.INFO_COLS.store] = name
@@ -75,8 +78,9 @@ class BOOKBASE(object, metaclass=VALIDATE):
     ]
     INFO_COLS = namedtuple('INFO_COLS', info_cols)(*info_cols)
     #
-    info_default = dict.fromkeys(info_cols, None)  # dict(zip(info_cols, [None]*len(info_cols)))
     update_default = {INFO_COLS.err: None}
+    bookid_default = '__1234567890'
+    info_default = {**dict.fromkeys(info_cols, None), **{'bookid': bookid_default}}
     #
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'
@@ -85,6 +89,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     float_err = 4567.89
     #
     update_errcnt = 0
+    objs = {}
     _ss = {}
     lock18 = False  # 預設都是非限制級
     #
@@ -98,6 +103,15 @@ class BOOKBASE(object, metaclass=VALIDATE):
     len_top_proxy = len(top_proxy)
 
     # __________________________________________________________
+    def __new__(cls, **init):
+        '''讓各家store的每個bookid只會有一個instance'''
+        bid = init.get('bookid') or cls.info_default['bookid']
+        if obj := cls.objs.get(bid):
+            return obj
+        else:
+            obj = object.__new__(cls)
+            cls.objs[bid] = obj
+            return obj
 
     def __init__(self, **init):
         '''由base處理info初始化'''

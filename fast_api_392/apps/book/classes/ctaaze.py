@@ -9,3 +9,9 @@ class TAAZE(BOOKBASE):
     info_default = {
         "bookid": "",
     }
+
+    def update_info(self):
+        pass
+
+    def save_info(self):
+        pass
