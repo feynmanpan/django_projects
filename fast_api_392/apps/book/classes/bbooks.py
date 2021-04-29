@@ -143,10 +143,10 @@ class BOOKS(BOOKBASE):
                     self.update_errcnt = 0
                     self.uids = 0
                     #
-                    print(f"final_proxy={self.now_proxy}, update_duration = {time()-stime}\n")
+                    print(f"{self.now_proxy:<30}, duration = {time()-stime}\n")
                 else:
                     self.update_errcnt += 1
-                    print(f"err_proxy={self.now_proxy:<30}, update_errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={update['err']}\n")
+                    print(f"{self.now_proxy:<30}, errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={update['err']}\n")
                     await self.update_info(uid=uid)
 
     async def bookpage_handle(self, rtext):
