@@ -38,7 +38,7 @@ class VALIDATE(ABCMeta):
                 raise KeyError(f'【{name}】的info_default中，需有bookid欄位')
             if not isinstance(info_default['bookid'], str):
                 raise TypeError(f'【{name}】的info_default的bookid不是str')
-            if not info_default['bookid']:
+            if info_default['bookid'] == "":
                 info_default['bookid'] = base.bookid_default
             #
             set0 = set(info_cols)
@@ -49,6 +49,8 @@ class VALIDATE(ABCMeta):
             info_default = base.info_default | info_default
             info_default[base.INFO_COLS.store] = name
             class_dict['info_default'] = info_default
+            # 子類管理自己的instance
+            class_dict['objs'] = {}
             # 將子類註冊入BOOKBASE
             newcls = super().__new__(cls, name, bases, class_dict)
             base.register_subclasses[name] = newcls
