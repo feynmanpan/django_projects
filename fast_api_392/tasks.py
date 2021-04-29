@@ -1,6 +1,7 @@
 import asyncio
 #
 from apps.ips.tasks import tasks_list as ips_tasks
+from apps.book.tasks import tasks_list as book_tasks
 ########################################################
 
 
@@ -27,4 +28,4 @@ async def loopme2(t):
 tasks_list = [
     # (loopme, [1]),
     # (loopme2, [1]),
-] + ips_tasks
+] + ips_tasks + book_tasks
