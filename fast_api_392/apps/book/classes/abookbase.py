@@ -220,6 +220,25 @@ class BOOKBASE(object, metaclass=VALIDATE):
     def save_info(self):
         pass
 
+    @classmethod
+    async def close_ss(cls):
+        '''關閉base._ss的所有session'''
+        for ss in cls._ss.values():
+            await ss.close()
+        cls._ss = {}
+        print('關閉base._ss的所有session')
+
+    @classmethod
+    def top_proxy_tocsv(cls):
+        '''app shutdown時儲存top_proxy'''
+        if cls.top_proxy and (len_top_proxy := len(cls.top_proxy)) > cls.len_top_proxy:
+            print(f'top_proxy增加為{len_top_proxy}，上限{top_proxy_max}個，儲存csv')
+            tmp = list(cls.top_proxy)
+            random.shuffle(tmp)
+            pd.DataFrame({'proxy': tmp[:top_proxy_max + 1]}).to_csv(cls.path_top_proxy, index=False)
+        else:
+            print(f'top_proxy數量不變={cls.len_top_proxy}')
+
     def price_list_handle(self, price_list):
         '''定價售價統一base處理'''
         if price_list:
@@ -243,22 +262,3 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if (val := locals_var.get(col)) not in ['', None]:
                 update[col] = val
         return update
-
-    @classmethod
-    async def close_ss(cls):
-        '''關閉base._ss的所有session'''
-        for ss in cls._ss.values():
-            await ss.close()
-        cls._ss = {}
-        print('關閉base._ss的所有session')
-
-    @classmethod
-    def top_proxy_tocsv(cls):
-        '''app shutdown時儲存top_proxy'''
-        if cls.top_proxy and (len_top_proxy := len(cls.top_proxy)) > cls.len_top_proxy:
-            print(f'top_proxy增加為{len_top_proxy}，上限{top_proxy_max}個，儲存csv')
-            tmp = list(cls.top_proxy)
-            random.shuffle(tmp)
-            pd.DataFrame({'proxy': tmp[:top_proxy_max + 1]}).to_csv(cls.path_top_proxy, index=False)
-        else:
-            print(f'top_proxy數量不變={cls.len_top_proxy}')
