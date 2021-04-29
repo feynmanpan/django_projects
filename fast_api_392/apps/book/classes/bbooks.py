@@ -68,7 +68,7 @@ class BOOKS(BOOKBASE):
     async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None):
         stime = time()
         # ================ 只留 uid=1 進行爬蟲 ===================================
-        if not (uid := await super().update_info(uid)):
+        if (uid := await super().update_info(uid)) is None:
             return None
         # ===================================================
         self.now_proxy = proxy or await self.proxy
@@ -141,7 +141,7 @@ class BOOKS(BOOKBASE):
                     #
                     self.info = self.info_init | update
                     self.update_errcnt = 0
-                    self.uids = []
+                    self.uids = 0
                     #
                     print(f"final_proxy={self.now_proxy}, update_duration = {time()-stime}")
                 else:

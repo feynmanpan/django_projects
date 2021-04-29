@@ -120,7 +120,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         if not type(self).objs.get(self.bid):
             self.info = self.info_default | init
             self.info_init = self.info | {}
-            self.uids = []
+            self.uids = 0
             #
             type(self).objs[self.bid] = self
     # __________________________________________________________
@@ -205,15 +205,14 @@ class BOOKBASE(object, metaclass=VALIDATE):
         return self._ss[store]
 
     @abstractmethod
-    async def update_info(self, uid=None):
+    async def update_info(self, uid=None) -> Union[int, None]:
         '''爬蟲更新self.info，並只留 uid=1 進行爬蟲 '''
-        if not uid:
-            if not self.uids:
-                uid = 1
-                self.uids.append(uid)
+        if uid is None:
+            if self.uids == 0:
+                uid = self.uids = 1
             else:
                 # 若有 uid=1 在跑了，等到前一個跑完才離開，確保得到一樣的info
-                while self.uids:
+                while self.uids == 1:
                     await asyncio.sleep(0.5)
         return uid
 
