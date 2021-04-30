@@ -83,7 +83,6 @@ class BOOKBASE(object, metaclass=VALIDATE):
     update_default = {INFO_COLS.err: None}
     bookid_default = '__1234567890'
     info_default = {**dict.fromkeys(info_cols, None), **{'bookid': bookid_default}}
-    bid = None
     #
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'
@@ -91,12 +90,13 @@ class BOOKBASE(object, metaclass=VALIDATE):
     int_err = 1234567
     float_err = 4567.89
     #
+    bid = ''
     update_errcnt = 0
+    uids = 0
     objs = {}
     _ss = {}
     lock18 = False  # 預設都是非限制級
     #
-    empty = set()
     cwd = os.path.dirname(os.path.realpath(__file__))
     #
     top_proxy = set()
@@ -104,6 +104,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
     if os.path.isfile(path_top_proxy):
         top_proxy = set(pd.read_csv(path_top_proxy).proxy.tolist())
     len_top_proxy = len(top_proxy)
+    #
+    empty = set()
 
     # __________________________________________________________
     def __new__(cls, **init):
@@ -118,13 +120,12 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     def __init__(self, **init):
         '''由base處理info初始化，以及update_info執行個數'''
-        # 未註冊至class.objs 則初始化
-        if not type(self).objs.get(self.bid):
+        # 未註冊至class.objs，則初始化
+        if not self.objs.get(self.bid):
             self.info = self.info_default | init
             self.info_init = self.info | {}
-            self.uids = 0
-            #
-            type(self).objs[self.bid] = self
+            # 加入class.objs
+            self.objs[self.bid] = self
     # __________________________________________________________
 
     @property

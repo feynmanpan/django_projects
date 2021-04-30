@@ -67,7 +67,7 @@ class BOOKS(BOOKBASE):
 
     async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None):
         stime = time()
-        # ================ 只留 uid=1 進行爬蟲 ===================================
+        # ================ 只留 uid=1 進行爬蟲 ===============
         if (uid := await super().update_info(uid)) is None:
             return None
         # ===================================================
