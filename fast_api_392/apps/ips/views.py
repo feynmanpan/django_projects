@@ -1,5 +1,4 @@
 import asyncio
-import requests
 import aiohttp
 from pyquery import PyQuery as pq
 import pandas as pd
@@ -56,12 +55,12 @@ async def show_freeproxy(request: Request, f: str = 'csv'):
             rep = jinja_templates.TemplateResponse(ips_csv_tb_html, context)
     elif f == 'db':
         cs = [
-            IPS.idx,  # tb_ips.c.id,
+            # IPS.idx,  # tb_ips.c.id,
             IPS.ip,  # tb_ips.c.ip,
             IPS.port,  # tb_ips.c.port,
             IPS.goodcnt,  # tb_ips.c.goodcnt,
         ]
-        query = sa.select(cs).order_by('idx', 'ip')  # .where(IPS.id > 100) .where(tb_ips.columns.id > 100)
+        query = sa.select(cs)  # .order_by('idx', 'ip')  # .where(IPS.id > 100) .where(tb_ips.columns.id > 100)
         records = await dbwtb.fetch_all(query)
         #
         context['ips_csv_tb_html'] = pd.DataFrame([dict(r) for r in records]).to_html()
