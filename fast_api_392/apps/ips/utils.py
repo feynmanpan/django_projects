@@ -49,7 +49,7 @@ class CHECK_PROXY:
         TO = aiohttp.ClientTimeout(total=timeout)
         TF = False
         try:
-            await asyncio.sleep(random.randint(0, sampleN-1))
+            await asyncio.sleep(random.randint(0, sampleN - 1))
             async with aiohttp.ClientSession(connector=connector, timeout=TO) as session:
                 async with session.get(proxy_checkurl, headers=headers, proxy=self.proxy) as r:
                     status = r.status
@@ -86,7 +86,7 @@ class CHECK_PROXY:
             'err': err,
             'checkurl': checkurl,
         }
-        type(self).ips_err.append(p)
+        self.ips_err.append(p)  # 存到cls.ips_err
 
     @classmethod
     async def get_good_proxys(cls, ippts: list):
