@@ -17,9 +17,9 @@ from apps.book.classes.abookbase import BOOKBASE
 import apps.ips.config as ipscfg
 from apps.ips.config import ips_csv_path, dtype, cacert, headers
 from apps.book.config import (
-    dt_format,
-    pub_dt_format,
-    timeout,
+    # dt_format,
+    # pub_dt_format,
+    # timeout,
     update_errcnt_max,
     login,
 )
@@ -50,7 +50,7 @@ class BOOKS(BOOKBASE):
     page_err = [
         '頁面連結錯誤',
         'disallowed characters',
-        'The Event ID',
+        # 'The Event ID',
         # '限制級商品'
     ]
     # 登入18禁用的帳密
@@ -135,15 +135,11 @@ class BOOKS(BOOKBASE):
                 print('登入成功，重get 18禁單書頁')
                 await self.update_info(proxy=self.now_proxy, uid=uid)
             else:
-                # 抓成功，或頁面連接錯誤，或到達最多次數，就不再抓
-                if not update['err'] or update['err'] in self.page_err or self.update_errcnt == update_errcnt_max:
-                    update['create_dt'] = datetime.today().strftime(dt_format)
-                    #
-                    self.info = self.info_init | update
-                    self.update_errcnt = 0
-                    self.uids = 0
-                    #
-                    print(f"{self.now_proxy:<30}, duration = {time()-stime}\n")
+                # 抓成功，或頁面連接錯誤，可以存db
+                success = not update['err'] or update['err'] in self.page_err
+                limit = self.update_errcnt == update_errcnt_max
+                if success or limit:
+                    await self.update_stop(update, stime, save=success)
                 else:
                     self.update_errcnt += 1
                     print(f"{self.now_proxy:<30}, errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={update['err']}\n")
@@ -306,6 +302,3 @@ class BOOKS(BOOKBASE):
                 else:
                     pixels[x, y] = (255, 255, 255)
         return img
-
-    def save_info(self):
-        pass

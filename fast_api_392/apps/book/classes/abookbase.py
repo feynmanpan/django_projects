@@ -7,16 +7,20 @@ import os
 import itertools
 from typing import Dict, Any, Awaitable, Union
 import random
+from time import time
+from datetime import datetime
 #
 import sqlalchemy as sa
 import pandas as pd
 # from async_property import async_property
 #
+from apps.sql.config import dbwtb
 import apps.ips.config as ipscfg
 from apps.ips.config import cacert
-from apps.ips.model import IPS  # ,tb_ips
-from apps.sql.config import dbwtb
+from apps.ips.model import IPS
+from apps.book.model import INFO
 from apps.book.config import (
+    dt_format,
     timeout,
     top_proxy_max,
     update_errcnt_max,
@@ -96,6 +100,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     objs = {}
     _ss = {}
     lock18 = False  # 預設都是非限制級
+    now_proxy = ''
     #
     cwd = os.path.dirname(os.path.realpath(__file__))
     #
@@ -215,13 +220,54 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 uid = self.uids = 1
             else:
                 # 若有 uid=1 在跑了，等到前一個跑完才離開，確保得到一樣的info
+                print('等待uids=1...')
                 while self.uids == 1:
                     await asyncio.sleep(0.5)
+                print('等待uids=1...over')
         return uid
 
-    @abstractmethod
-    def save_info(self):
-        pass
+    async def update_stop(self, update, stime, save=True):
+        '''更新爬蟲停止，依狀況存或不存db'''
+        if save:
+            update['create_dt'] = datetime.today().strftime(dt_format)
+            self.info = self.info_init | update
+            await self.save_info()
+        #
+        self.update_errcnt = 0
+        self.uids = 0
+        #
+        print(f"{self.now_proxy:<30}, duration = {time()-stime}{save*', 【儲存DB】'}\n")
+
+    async def db_info(self, db=dbwtb) -> Dict[str, Any]:
+        '''從DB抓info'''
+        cs = INFO.__table__.columns
+        w1 = INFO.store == self.info['store']
+        w2 = INFO.bookid == self.bid
+        #
+        query = sa.select(cs).where(w1).where(w2)
+        rows = await db.fetch_all(query)
+        #
+        info = rows and dict(rows[0]) or {}
+        info.pop('idx', None)
+        #
+        return info
+
+    async def save_info(self, db=dbwtb):
+        '''儲存info至DB'''
+        cs = [
+            INFO.idx,
+        ]
+        w1 = INFO.store == self.info['store']
+        w2 = INFO.bookid == self.bid
+        query = sa.select(cs).where(w1).where(w2)
+        rows = await db.fetch_all(query)
+        if rows:
+            idx = rows[0]['idx']
+            U_query = sa.update(INFO).values(**self.info).where(INFO.idx == idx)
+            await db.execute(U_query)
+        else:
+            I_query = sa.insert(INFO).values(**self.info)
+            await db.execute(I_query)
 
     @classmethod
     async def close_ss(cls):
