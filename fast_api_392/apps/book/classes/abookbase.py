@@ -124,7 +124,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         return obj
 
     def __init__(self, **init):
-        '''由base處理info初始化，以及update_info執行個數'''
+        '''由base處理self.info初始化，並加入class.objs'''
         # 未註冊至class.objs，則初始化
         if not self.objs.get(self.bid):
             self.info = self.info_default | init
@@ -137,7 +137,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         if name in self.info_cols:
             return self.info[name]
         else:
-            raise AttributeError(f'無此屬性:【{name}】')
+            raise AttributeError(f'無此屬性:"{name}"')
 
     # __________________________________________________________
 
