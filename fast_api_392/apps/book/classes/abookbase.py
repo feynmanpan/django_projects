@@ -239,28 +239,30 @@ class BOOKBASE(object, metaclass=VALIDATE):
         # 回傳 1 或 None
         return uid
 
-    async def update_stop(self, update, stime, save=True):
+    async def update_stop(self, update, stime, save=True, db=dbwtb):
         '''更新爬蟲停止，依狀況存或不存db'''
         if save:
             update['create_dt'] = datetime.today().strftime(dt_format)
             self.info = self.info_init | update
-            await self.save_info()
+            await self.save_info(db=db)
         #
         self.update_errcnt = 0
         self.uids = 0
         #
         print(f"{self.now_proxy:<30}, duration = {time()-stime}{save*', 【儲存DB】'}\n")
 
-    async def read_or_update(self, db=dbwtb):
+    async def read_or_update(self, db=dbwtb, fd: int = 0):
         '''讀取cls.objs > db > 重新爬蟲'''
-        if not self.create_dt:
-            if await self.read_info(db=db):
-                print('從db抓')
-            else:
-                print('重新爬蟲')
-                await self.update_info()
-        else:
+        if fd:
+            print('強制重新爬蟲')
+            await self.update_info()
+        elif self.create_dt:
             print('沿用cls.objs裡面')
+        elif await self.read_info(db=db):
+            print('從db抓')
+        else:
+            print('重新爬蟲')
+            await self.update_info()
 
     async def read_info(self, db=dbwtb):
         '''select * from dbwtb.info'''

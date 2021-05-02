@@ -26,20 +26,23 @@ async def show_base(f='r'):
     return ORJSONResponse(ans)
 
 
-async def show_books(request: Request, bookid: str = '0010770978'):
-    init = {
-        'bookid': bookid,
-    }
+async def show_books(request: Request, bookid: str = '0010770978', fd: int = 0):
+    result = None
     try:
+        init = {
+            'bookid': bookid,
+        }
         book = BOOKS(**init)
-        await book.read_or_update()
+        await book.read_or_update(fd=fd)
     except Exception as e:
-        return HTMLResponse(str(e))
-    #
-    context = {
-        'request': request,
-        'res': json.dumps(book.info, indent=2, ensure_ascii=False),
-        'info': book.info,
-    }
-    return jinja_templates.TemplateResponse('show_books.html', context)
-    # return ORJSONResponse(book.info)
+        result = HTMLResponse(str(e))
+    else:
+        context = {
+            'request': request,
+            'res': json.dumps(book.info, indent=2, ensure_ascii=False),
+            'info': book.info,
+        }
+        result = jinja_templates.TemplateResponse('show_books.html', context)
+        # return ORJSONResponse(book.info)
+    finally:
+        return result
