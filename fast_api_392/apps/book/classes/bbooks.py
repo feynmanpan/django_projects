@@ -8,7 +8,7 @@ import os
 from pyquery import PyQuery as pq
 from datetime import datetime
 from time import time
-from typing import Dict, Any, Callable, Awaitable, Coroutine, Optional
+from typing import Dict, Any, Callable, Awaitable, Coroutine, Optional, Union
 from PIL import Image
 import pytesseract
 import copy
@@ -145,8 +145,8 @@ class BOOKS(BOOKBASE):
                     print(f"{self.now_proxy:<30}, errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={update['err']}\n")
                     await self.update_info(uid=uid)
 
-    async def bookpage_handle(self, rtext):
-        '''單書頁處理'''
+    async def bookpage_handle(self, rtext) -> Dict[str, Any]:
+        '''單書頁處理，回傳locals()'''
         lock18 = self.lock18
         # (1) ajax 抓庫存及評論 =========================================================================
         stock = await self.stock_handle()
@@ -210,7 +210,7 @@ class BOOKS(BOOKBASE):
         # pub_dt = datetime.strptime(pub_dt, pub_dt_format).date()
         return pub_dt
 
-    def price_handle(self, el):
+    def price_handle(self, el) -> tuple:
         price_list = el.find("em").eq(0).text().strip()
         price_sale = el.find("strong.price01").eq(-1).find("b").eq(0).text().strip()  # 有優惠價跟特價，要找最後一個
         # 定價售價統一base處理
@@ -219,7 +219,7 @@ class BOOKS(BOOKBASE):
         #
         return price_list, price_sale
 
-    async def stock_handle(self):
+    async def stock_handle(self) -> Union[str, None]:
         '''抓ajax庫存'''
         await asyncio.sleep(0.05)
         url_cart_ajax = self.url_cart_ajax.format(self.bid)
@@ -230,7 +230,7 @@ class BOOKS(BOOKBASE):
             if (status2 == 200) and rtext2:
                 return pq(rtext2, parser='html').find("div.mc002.type02_p008 ul.list li.no").eq(0).text().strip()
 
-    async def comment_handle(self):
+    async def comment_handle(self) -> Union[str, None]:
         '''抓ajax評論'''
         await asyncio.sleep(0.15)
         url_comment_ajax = self.url_comment_ajax.format(self.bid, 1)
@@ -252,7 +252,7 @@ class BOOKS(BOOKBASE):
                 # 去除js
                 return re.sub(self.comment_js_pattern, '', rtext2)
 
-    async def loginpost(self, capcha):
+    async def loginpost(self, capcha) -> Union[bool, None]:
         '''遞交登入'''
         formdata = {
             'captcha': capcha,
@@ -265,7 +265,7 @@ class BOOKS(BOOKBASE):
                 rtext = await r.text(encoding='utf8')
                 return json.loads(rtext)['success']
 
-    async def get_capcha(self):
+    async def get_capcha(self) -> Union[str, None]:
         '''從登入頁面抓capcha圖檔及OCR'''
         async with self.ss.get(self.url_login, headers=headers, proxy=self.now_proxy) as r:
             if r.status == 200:

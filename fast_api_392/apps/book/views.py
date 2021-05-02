@@ -33,8 +33,8 @@ async def show_books(request: Request, bookid: str = '0010770978'):
     try:
         book = BOOKS(**init)
         #
-        if not book.info['create_dt']:
-            if info := await book.db_info():
+        if not book.create_dt:
+            if info := await book.read_info():
                 print('從db抓')
                 book.info = info
             else:

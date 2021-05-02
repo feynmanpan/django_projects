@@ -131,6 +131,14 @@ class BOOKBASE(object, metaclass=VALIDATE):
             self.info_init = self.info | {}
             # 加入class.objs
             self.objs[self.bid] = self
+
+    def __getattr__(self, name):
+        '''self.title = self.info['title']'''
+        if name in self.info_cols:
+            return self.info[name]
+        else:
+            raise AttributeError(f'無此屬性:【{name}】')
+
     # __________________________________________________________
 
     @property
@@ -202,9 +210,9 @@ class BOOKBASE(object, metaclass=VALIDATE):
         return proxy
 
     @property
-    def ss(self):
+    def ss(self) -> aiohttp.ClientSession:
         '''各家用自己家的一個session，存在base，登入過可reuse'''
-        store = self.info['store']
+        store = self.store
         if not self._ss.get(store, None):
             connector = aiohttp.TCPConnector(ssl=cacert, limit=100)
             TO = aiohttp.ClientTimeout(total=timeout)
@@ -238,10 +246,10 @@ class BOOKBASE(object, metaclass=VALIDATE):
         #
         print(f"{self.now_proxy:<30}, duration = {time()-stime}{save*', 【儲存DB】'}\n")
 
-    async def db_info(self, db=dbwtb) -> Dict[str, Any]:
-        '''從DB抓info'''
+    async def read_info(self, db=dbwtb) -> Dict[str, Any]:
+        '''select * from dbwtb.info'''
         cs = INFO.__table__.columns
-        w1 = INFO.store == self.info['store']
+        w1 = INFO.store == self.store
         w2 = INFO.bookid == self.bid
         #
         query = sa.select(cs).where(w1).where(w2)
@@ -253,12 +261,13 @@ class BOOKBASE(object, metaclass=VALIDATE):
         return info
 
     async def save_info(self, db=dbwtb):
-        '''儲存info至DB'''
+        '''self.info >> dbwtb.info'''
         cs = [
             INFO.idx,
         ]
-        w1 = INFO.store == self.info['store']
+        w1 = INFO.store == self.store
         w2 = INFO.bookid == self.bid
+        #
         query = sa.select(cs).where(w1).where(w2)
         rows = await db.fetch_all(query)
         if rows:
@@ -288,13 +297,13 @@ class BOOKBASE(object, metaclass=VALIDATE):
         else:
             print(f'top_proxy數量不變={cls.len_top_proxy}')
 
-    def price_list_handle(self, price_list):
+    def price_list_handle(self, price_list) -> Union[int, None]:
         '''定價售價統一base處理'''
         if price_list:
             price_list = not re.match(self.int_pattern, price_list) and self.int_err or int(price_list)
         return price_list
 
-    def price_sale_handle(self, price_sale):
+    def price_sale_handle(self, price_sale) -> Union[int, float, None]:
         '''定價售價統一base處理'''
         if price_sale:
             if not re.match(self.float_pattern, price_sale):
@@ -305,7 +314,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                     price_sale = tmp
         return price_sale
 
-    def update_handle(self, update, locals_var):
+    def update_handle(self, update, locals_var) -> Dict[str, Any]:
         '''爬成功的update統一base處理'''
         for col in self.info_cols:
             if (val := locals_var.get(col)) not in ['', None]:
