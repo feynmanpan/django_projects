@@ -48,6 +48,8 @@ class BOOKS(BOOKBASE):
     url_login = f'{url_cart_dns}/member/login'
     url_loginpost = f'{url_cart_dns}/member/login_do/'
     #
+    bookpage_str = '商品介紹'
+    lock18_str = '限制級商品'
     page_err = [
         '頁面連結錯誤',
         'disallowed characters',
@@ -88,10 +90,11 @@ class BOOKS(BOOKBASE):
                 # 成功的代理存到bookbase
                 self.top_proxy.add(self.now_proxy)
                 # 判斷商品，登入過18禁的session下次就不會再登入
-                enter_bookpage = '商品介紹' in rtext
-                self.lock18 = '限制級商品' in rtext  # 未登入/單書頁都有限制級商品字串
+                enter_bookpage = self.bookpage_str in rtext
+                if self._lock18 is None:
+                    self._lock18 = self.lock18_str in rtext  # 未登入/單書頁都有限制級商品字串
                 #
-                print(f'進入單書頁={enter_bookpage}, 限制級商品={self.lock18}')
+                print(f'進入單書頁={enter_bookpage}, 限制級商品={self._lock18}')
         except asyncio.exceptions.TimeoutError as e:
             update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
@@ -107,7 +110,7 @@ class BOOKS(BOOKBASE):
                     update['err'] = 'enter_bookpage_asyncio.exceptions.TimeoutError'
                 except Exception as e:
                     update['err'] = str(e)
-            elif self.lock18:
+            elif self._lock18:
                 # 18禁，直到登入成功
                 print('嘗試登入---------------------')
                 try:
@@ -131,7 +134,7 @@ class BOOKS(BOOKBASE):
                 else:
                     update['err'] = f'status={status},rtext={rtext[:100]}'
         finally:
-            if self.lock18 and login_success:
+            if self._lock18 and login_success:
                 self.update_errcnt = 0
                 print('登入成功，重get 18禁單書頁')
                 await self.update_info(proxy=self.now_proxy, uid=uid, db=db)
@@ -148,7 +151,7 @@ class BOOKS(BOOKBASE):
 
     async def bookpage_handle(self, rtext) -> Dict[str, Any]:
         '''單書頁處理，回傳locals()'''
-        lock18 = self.lock18
+        lock18 = self._lock18
         # (1) ajax 抓庫存及評論 =========================================================================
         stock = await self.stock_handle()
         comment = await self.comment_handle()

@@ -99,8 +99,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
     uids = 0
     objs = {}
     _ss = {}
-    lock18 = False  # 預設都是非限制級
     now_proxy = ''
+    _lock18 = None
     #
     cwd = os.path.dirname(os.path.realpath(__file__))
     #
