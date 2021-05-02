@@ -32,16 +32,7 @@ async def show_books(request: Request, bookid: str = '0010770978'):
     }
     try:
         book = BOOKS(**init)
-        #
-        if not book.create_dt:
-            if info := await book.read_info():
-                print('從db抓')
-                book.info = info
-            else:
-                print('重新爬蟲')
-                await book.update_info()
-        else:
-            print('沿用cls.objs裡面')
+        await book.read_or_update()
     except Exception as e:
         return HTMLResponse(str(e))
     #

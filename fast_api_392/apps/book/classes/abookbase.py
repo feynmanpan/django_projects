@@ -157,6 +157,10 @@ class BOOKBASE(object, metaclass=VALIDATE):
         set1 = set(val.keys())
         if (rest := set1 - set0) != self.empty:
             raise KeyError(f'assign給info的欄位{rest}不在BOOKBASE的info_cols裡面')
+        if (rest := set0 - set1) != self.empty:
+            raise KeyError(f'assign給info的欄位缺少:{rest}')
+        if set0 != set1:
+            raise KeyError(f'assign給info的欄位不等於info_cols')
         # (2)檢查bookid格式
         bid = val.get(self.INFO_COLS.bookid)
         bid_pn = self.bookid_pattern
@@ -232,6 +236,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 while self.uids == 1:
                     await asyncio.sleep(0.5)
                 print('等待uids=1...over')
+        # 回傳 1 或 None
         return uid
 
     async def update_stop(self, update, stime, save=True):
@@ -246,7 +251,18 @@ class BOOKBASE(object, metaclass=VALIDATE):
         #
         print(f"{self.now_proxy:<30}, duration = {time()-stime}{save*', 【儲存DB】'}\n")
 
-    async def read_info(self, db=dbwtb) -> Dict[str, Any]:
+    async def read_or_update(self, db=dbwtb):
+        '''讀取cls.objs > db > 重新爬蟲'''
+        if not self.create_dt:
+            if await self.read_info(db=db):
+                print('從db抓')
+            else:
+                print('重新爬蟲')
+                await self.update_info()
+        else:
+            print('沿用cls.objs裡面')
+
+    async def read_info(self, db=dbwtb):
         '''select * from dbwtb.info'''
         cs = INFO.__table__.columns
         w1 = INFO.store == self.store
@@ -258,7 +274,10 @@ class BOOKBASE(object, metaclass=VALIDATE):
         info = rows and dict(rows[0]) or {}
         info.pop('idx', None)
         #
-        return info
+        if info:
+            self.info = info
+        #
+        return bool(info)
 
     async def save_info(self, db=dbwtb):
         '''self.info >> dbwtb.info'''
