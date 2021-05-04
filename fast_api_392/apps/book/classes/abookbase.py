@@ -225,7 +225,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         return self._ss[store]
 
     @abstractmethod
-    async def update_info(self, uid=None) -> Union[int, None]:
+    async def update_info(self, uid=None, proxy=None) -> Union[tuple, None]:
         '''爬蟲更新self.info，並只留 uid=1 進行爬蟲 '''
         if uid is None:
             if self.uids == 0:
@@ -236,8 +236,17 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 while self.uids == 1:
                     await asyncio.sleep(0.5)
                 print('等待uids=1...over')
-        # 回傳 1 或 None
-        return uid
+        # 回傳 tuple 或 None
+        if uid == 1:
+            self.now_proxy = proxy or await self.proxy
+            #
+            enter_bookpage = False
+            login_success = False
+            update: Dict[str, Any] = self.update_default | {}  # 不加型別提示，後面更新err時會有紅波浪
+            #
+            return uid, enter_bookpage, login_success, update
+        else:
+            return None
 
     async def update_stop(self, update, stime, save=True, db=dbwtb):
         '''更新爬蟲停止，依狀況存或不存db'''
@@ -249,7 +258,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         self.update_errcnt = 0
         self.uids = 0
         #
-        print(f"{self.now_proxy:<30}, duration = {time()-stime}{save*', 【儲存DB】'}\n")
+        print(f"{self.now_proxy:<30}, duration = {time()-stime}{save*', 【儲存DB】'}{(not save)*', 【爬蟲次數用盡】'}\n")
 
     async def read_or_update(self, db=dbwtb, fd: int = 0):
         '''讀取cls.objs > db > 重新爬蟲'''

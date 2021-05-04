@@ -71,14 +71,11 @@ class BOOKS(BOOKBASE):
     async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None, db=dbwtb):
         stime = time()
         # ================ 只留 uid=1 進行爬蟲 ===============
-        if (uid := await super().update_info(uid)) is None:
+        if (tmp := await super().update_info(uid=uid, proxy=proxy)) is None:
             return None
+        else:
+            uid, enter_bookpage, login_success, update = tmp
         # ===================================================
-        self.now_proxy = proxy or await self.proxy
-        enter_bookpage = False
-        login_success = False
-        update: Dict[str, Any] = self.update_default | {}  # 不加型別提示，後面更新err時會有紅波浪
-        #
         try:
             # 抓單書頁資訊
             print('get 單書頁---------------------')
