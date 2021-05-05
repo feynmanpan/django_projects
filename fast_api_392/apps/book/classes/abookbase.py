@@ -236,7 +236,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 while self.uids == 1:
                     await asyncio.sleep(0.5)
                 print('等待uids=1>0...over')
-        #
+        # 沒有指定，就重抓proxy cycle
         if uid == 1:
             self.now_proxy = proxy or await self.proxy
         #
