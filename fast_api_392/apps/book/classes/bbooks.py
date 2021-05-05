@@ -71,10 +71,9 @@ class BOOKS(BOOKBASE):
     async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None, db=dbwtb):
         stime = time()
         # ================ 只留 uid=1 進行爬蟲 ===============
-        if (tmp := await super().update_info(uid=uid, proxy=proxy)) is None:
+        uid, enter_bookpage, login_success, update = await super().update_info(uid=uid, proxy=proxy)
+        if uid is None:
             return None
-        else:
-            uid, enter_bookpage, login_success, update = tmp
         # ===================================================
         try:
             # 抓單書頁資訊
