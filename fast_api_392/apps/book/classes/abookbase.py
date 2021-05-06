@@ -169,10 +169,10 @@ class BOOKBASE(object, metaclass=VALIDATE):
         # (3)檢查定價售價
         if PL := val.get(self.INFO_COLS.price_list):
             if not isinstance(PL, int) or PL < 0:
-                raise ValueError(f'price_list="{PL}" 需為int，且>0')
+                raise ValueError(f'price_list="{PL}" 需為int，且>=0')
         if PS := val.get(self.INFO_COLS.price_sale):
-            if not (isinstance(PS, float) or isinstance(PS, int)) or PS < 0:
-                raise ValueError(f'price_sale="{PS}" 需為float/int，且>0')
+            if not isinstance(PS, (float, int)) or PS < 0:
+                raise ValueError(f'price_sale="{PS}" 需為float/int，且>=0')
         #
         self._info = val
 
