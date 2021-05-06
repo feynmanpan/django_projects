@@ -68,12 +68,12 @@ class BOOKS(BOOKBASE):
         self.headers_Referer_login = headers | {'Referer': f'{self.url_login}?url={self.url_prod}'}
     # __________________________________________________________
 
-    async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None, db=dbwtb):
+    async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None, db=dbwtb) -> bool:
         stime = time()
         # ======== 只留 uid=1 進行爬蟲，其他則等待及結束 =======
         uid, enter_bookpage, login_success, update = await super().update_info(uid=uid, proxy=proxy)
         if uid is None:
-            return None
+            return False
         # ===================================================
         try:
             # 抓單書頁資訊
@@ -133,17 +133,20 @@ class BOOKS(BOOKBASE):
             if self._lock18 and login_success:
                 self.update_errcnt = 0
                 print('登入成功，重get 18禁單書頁')
-                await self.update_info(proxy=self.now_proxy, uid=uid, db=db)
+                result = await self.update_info(proxy=self.now_proxy, uid=uid, db=db)
             else:
                 # 抓成功，或頁面連接錯誤，可以存db
                 success = not update['err'] or update['err'] in self.page_err
                 limit = self.update_errcnt == update_errcnt_max
                 if success or limit:
                     await self.update_stop(update, stime, save=success, db=db)
+                    result = success
                 else:
                     self.update_errcnt += 1
                     print(f"{self.now_proxy:<30}, errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={update['err']}\n")
-                    await self.update_info(uid=uid, db=db)
+                    result = await self.update_info(uid=uid, db=db)
+            #
+            return result
 
     async def bookpage_handle(self, rtext) -> Dict[str, Any]:
         '''單書頁處理，回傳locals()'''
