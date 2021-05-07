@@ -31,7 +31,7 @@ from apps.sql.config import dbwtb
 async def get_freeproxy(t, once=True):
     get_freeproxy_cnt = 0
     while 1:
-        T = (ips_cfg.ips_cycle and os.path.isfile(ips_csv_path))*t  # 沒有 csv 或 ips_cycle 就馬上爬
+        T = 0.2 + (ips_cfg.ips_cycle and os.path.isfile(ips_csv_path)) * t  # 沒有 csv 或 ips_cycle 就馬上爬
         await asyncio.sleep(T)
         stime = time()
         url_free = next(url_free_cycle)

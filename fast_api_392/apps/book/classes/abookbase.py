@@ -225,7 +225,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         return self._ss[store]
 
     @abstractmethod
-    async def update_info(self, uid=None, proxy=None) -> Union[int, None]:
+    async def update_info(self, uid=None, proxy=None, db=dbwtb) -> Union[int, None, bool]:
         '''爬蟲更新self.info，並只留 uid=1 進行爬蟲 '''
         if uid is None:
             if self.uids == 0:
@@ -236,7 +236,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 while self.uids == 1:
                     await asyncio.sleep(0.5)
                 print('等待uids=1>0...over')
-        # 沒有指定，就重抓proxy cycle
+        # 要爬蟲時，對所需變數進行初始化
         if uid == 1:
             self.now_proxy = proxy or await self.proxy
             self._enter_bookpage = False
@@ -245,17 +245,35 @@ class BOOKBASE(object, metaclass=VALIDATE):
         #
         return uid
 
-    async def update_stop(self, update, stime, save=True, db=dbwtb):
-        '''更新爬蟲停止，依狀況存或不存db'''
-        if save:
-            update['create_dt'] = datetime.today().strftime(dt_format)
-            self.info = self.info_init | update
-            await self.save_info(db=db)
+    async def update_final(self, uid, db=dbwtb) -> Union[int, None, bool]:
+        '''每次爬蟲結束，finally進行判斷: 停止/繼續'''
+        if (not self._enter_bookpage) and (self._lock18 and self._login_success):
+            self.update_errcnt = 0
+            print('登入成功，重get 18禁單書頁')
+            #
+            self._update_result = await self.update_info(proxy=self.now_proxy, uid=uid, db=db)
+        else:
+            success = not self._update['err'] or self._update['err'] in self.page_err
+            limit = self.update_errcnt == update_errcnt_max
+            # 成功或耗盡次數都stop，抓成功/頁面連接錯誤，可以存db
+            if success or limit:
+                if success:
+                    self._update['create_dt'] = datetime.today().strftime(dt_format)
+                    self.info = self.info_init | self._update
+                    await self.save_info(db=db)
+                #
+                self._update_result = success
+                self.update_errcnt = 0
+                self.uids = 0
+                #
+                print(f"{self.now_proxy:<30}, duration = {time()-self._stime}{success*', 【儲存DB】'}{(not success)*', 【爬蟲次數用盡】'}\n")
+            else:
+                self.update_errcnt += 1
+                print(f"{self.now_proxy:<30}, errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={self._update['err']}\n")
+                #
+                self._update_result = await self.update_info(uid=uid, db=db)
         #
-        self.update_errcnt = 0
-        self.uids = 0
-        #
-        print(f"{self.now_proxy:<30}, duration = {time()-stime}{save*', 【儲存DB】'}{(not save)*', 【爬蟲次數用盡】'}\n")
+        return self._update_result
 
     async def read_or_update(self, db=dbwtb, fd: int = 0):
         '''讀取cls.objs > db > 重新爬蟲'''
