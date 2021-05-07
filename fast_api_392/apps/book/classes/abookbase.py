@@ -279,7 +279,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         '''讀取cls.objs > db > 重新爬蟲'''
         if fd:
             print('強制重新爬蟲')
-            result = await self.update_info()
+            result = await self.update_info(db=db)
             print(f'強制重新爬蟲結果:{result}')
         elif self.create_dt:
             print('沿用cls.objs裡面')
@@ -287,7 +287,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
             print(f'從db抓結果:{result}')
         else:
             print('重新爬蟲')
-            result = await self.update_info()
+            result = await self.update_info(db=db)
             print(f'重新爬蟲結果:{result}')
 
     async def read_info(self, db=dbwtb) -> bool:
