@@ -225,7 +225,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         return self._ss[store]
 
     @abstractmethod
-    async def update_info(self, uid=None, proxy=None) -> tuple:
+    async def update_info(self, uid=None, proxy=None) -> Union[int, None]:
         '''爬蟲更新self.info，並只留 uid=1 進行爬蟲 '''
         if uid is None:
             if self.uids == 0:
@@ -239,8 +239,11 @@ class BOOKBASE(object, metaclass=VALIDATE):
         # 沒有指定，就重抓proxy cycle
         if uid == 1:
             self.now_proxy = proxy or await self.proxy
+            self._enter_bookpage = False
+            self._login_success = False
+            self._update: Dict[str, Any] = self.update_default | {}
         #
-        return uid, False, False, self.update_default | {}
+        return uid
 
     async def update_stop(self, update, stime, save=True, db=dbwtb):
         '''更新爬蟲停止，依狀況存或不存db'''
@@ -340,9 +343,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
                     price_sale = tmp
         return price_sale
 
-    def update_handle(self, update, locals_var) -> Dict[str, Any]:
+    def update_handle(self, locals_var):
         '''爬成功的update統一base處理'''
         for col in self.info_cols:
             if (val := locals_var.get(col)) not in ['', None]:
-                update[col] = val
-        return update
+                self._update[col] = val

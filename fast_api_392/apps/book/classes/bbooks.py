@@ -71,8 +71,7 @@ class BOOKS(BOOKBASE):
     async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None, db=dbwtb) -> bool:
         stime = time()
         # ======== 只留 uid=1 進行爬蟲，其他則等待及結束 =======
-        uid, enter_bookpage, login_success, update = await super().update_info(uid=uid, proxy=proxy)
-        if uid is None:
+        if (uid := await super().update_info(uid=uid, proxy=proxy)) is None:
             return False
         # ===================================================
         try:
@@ -86,64 +85,64 @@ class BOOKS(BOOKBASE):
                 # 成功的代理存到bookbase
                 self.top_proxy.add(self.now_proxy)
                 # 判斷商品，登入過18禁的session下次就不會再登入
-                enter_bookpage = self.bookpage_str in rtext
+                self._enter_bookpage = self.bookpage_str in rtext
                 if self._lock18 is None:
                     self._lock18 = self.lock18_str in rtext  # 未登入/單書頁都有限制級商品字串
                 #
-                print(f'進入單書頁={enter_bookpage}, 限制級商品={self._lock18}')
+                print(f'進入單書頁={self._enter_bookpage}, 限制級商品={self._lock18}')
         except asyncio.exceptions.TimeoutError as e:
-            update['err'] = 'asyncio.exceptions.TimeoutError'
+            self._update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
-            update['err'] = str(e)
+            self._update['err'] = str(e)
         else:
-            if enter_bookpage:
+            if self._enter_bookpage:
                 # 確定進入單書頁
                 print('bookpage_handle ---------------------')
                 try:
                     result = await self.bookpage_handle(rtext)
-                    update = self.update_handle(update, result)
+                    self.update_handle(result)
                 except asyncio.exceptions.TimeoutError as e:
-                    update['err'] = 'enter_bookpage_asyncio.exceptions.TimeoutError'
+                    self._update['err'] = 'enter_bookpage_asyncio.exceptions.TimeoutError'
                 except Exception as e:
-                    update['err'] = str(e)
+                    self._update['err'] = str(e)
             elif self._lock18:
                 # 18禁，直到登入成功
                 print('嘗試登入---------------------')
                 try:
-                    while not login_success:
+                    while not self._login_success:
                         capcha = await self.get_capcha()
                         if capcha:
-                            login_success = await self.loginpost(capcha)
-                            if login_success:
+                            self._login_success = await self.loginpost(capcha)
+                            if self._login_success:
                                 print('成功capcha=', capcha)
                             else:
                                 print('登入失敗')
                 except asyncio.exceptions.TimeoutError as e:
-                    update['err'] = 'lock18_asyncio.exceptions.TimeoutError'
+                    self._update['err'] = 'lock18_asyncio.exceptions.TimeoutError'
                 except Exception as e:
-                    update['err'] = str(e)
+                    self._update['err'] = str(e)
             else:
                 for pe in self.page_err:
                     if pe in rtext:
-                        update['err'] = pe
+                        self._update['err'] = pe
                         break
                 else:
-                    update['err'] = f'status={status},rtext={rtext[:100]}'
+                    self._update['err'] = f'status={status},rtext={rtext[:100]}'
         finally:
-            if self._lock18 and login_success:
+            if self._lock18 and self._login_success:
                 self.update_errcnt = 0
                 print('登入成功，重get 18禁單書頁')
                 result = await self.update_info(proxy=self.now_proxy, uid=uid, db=db)
             else:
                 # 抓成功，或頁面連接錯誤，可以存db
-                success = not update['err'] or update['err'] in self.page_err
+                success = not self._update['err'] or self._update['err'] in self.page_err
                 limit = self.update_errcnt == update_errcnt_max
                 if success or limit:
-                    await self.update_stop(update, stime, save=success, db=db)
+                    await self.update_stop(self._update, stime, save=success, db=db)
                     result = success
                 else:
                     self.update_errcnt += 1
-                    print(f"{self.now_proxy:<30}, errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={update['err']}\n")
+                    print(f"{self.now_proxy:<30}, errcnt={self.update_errcnt}/{update_errcnt_max}_uid={uid}, err={self._update['err']}\n")
                     result = await self.update_info(uid=uid, db=db)
             #
             return result
