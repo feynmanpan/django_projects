@@ -317,13 +317,14 @@ class BOOKBASE(object, metaclass=VALIDATE):
         #
         query = sa.select(cs).where(w1).where(w2)
         rows = await db.fetch_all(query)
+        # 決定更新或插入
         if rows:
             idx = rows[0]['idx']
-            U_query = sa.update(INFO).values(**self.info).where(INFO.idx == idx)
-            await db.execute(U_query)
+            UI_query = sa.update(INFO).values(**self.info).where(INFO.idx == idx)
         else:
-            I_query = sa.insert(INFO).values(**self.info)
-            await db.execute(I_query)
+            UI_query = sa.insert(INFO).values(**self.info)
+        #
+        await db.execute(UI_query)
 
     @classmethod
     async def close_ss(cls):

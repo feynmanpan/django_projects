@@ -1,53 +1,89 @@
 nohup: ignoring input
-[I 2021-05-04 08:17:58.798 ServerApp] jupyterlab | extension was successfully linked.
-[I 2021-05-04 08:17:58.798 ServerApp] jupyterlab_code_formatter | extension was successfully linked.
-[I 2021-05-04 08:17:59.038 ServerApp] nbclassic | extension was successfully linked.
-[I 2021-05-04 08:17:59.063 LabApp] JupyterLab extension loaded from /home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyterlab
-[I 2021-05-04 08:17:59.063 LabApp] JupyterLab application directory is /home/pan/anaconda3/envs/fast_env/share/jupyter/lab
-[I 2021-05-04 08:17:59.068 ServerApp] jupyterlab | extension was successfully loaded.
-[I 2021-05-04 08:17:59.069 ServerApp] jupyterlab_code_formatter | extension was successfully loaded.
-[I 2021-05-04 08:17:59.073 ServerApp] nbclassic | extension was successfully loaded.
-[I 2021-05-04 08:17:59.076 ServerApp] Serving notebooks from local directory: /home/pan/django_projects
-[I 2021-05-04 08:17:59.076 ServerApp] Jupyter Server 1.4.1 is running at:
-[I 2021-05-04 08:17:59.076 ServerApp] http://conda-20210309:4999/lab?token=cf4a93cc020e1221673a1a610f21bc610184bc9c4e63071a
-[I 2021-05-04 08:17:59.076 ServerApp]  or http://127.0.0.1:4999/lab?token=cf4a93cc020e1221673a1a610f21bc610184bc9c4e63071a
-[I 2021-05-04 08:17:59.076 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-[C 2021-05-04 08:17:59.079 ServerApp] 
+[I 2021-05-25 09:37:42.616 ServerApp] jupyterlab | extension was successfully linked.
+[I 2021-05-25 09:37:42.616 ServerApp] jupyterlab_code_formatter | extension was successfully linked.
+[I 2021-05-25 09:37:43.237 ServerApp] nbclassic | extension was successfully linked.
+[I 2021-05-25 09:37:43.282 LabApp] JupyterLab extension loaded from /home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyterlab
+[I 2021-05-25 09:37:43.283 LabApp] JupyterLab application directory is /home/pan/anaconda3/envs/fast_env/share/jupyter/lab
+[I 2021-05-25 09:37:43.288 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2021-05-25 09:37:43.289 ServerApp] jupyterlab_code_formatter | extension was successfully loaded.
+[I 2021-05-25 09:37:43.298 ServerApp] nbclassic | extension was successfully loaded.
+[I 2021-05-25 09:37:43.301 ServerApp] Serving notebooks from local directory: /home/pan/django_projects
+[I 2021-05-25 09:37:43.301 ServerApp] Jupyter Server 1.4.1 is running at:
+[I 2021-05-25 09:37:43.301 ServerApp] http://conda-20210525:4999/lab?token=cd739e9431153884c6b5f30086da4c6b1ddc1303cdb99cba
+[I 2021-05-25 09:37:43.301 ServerApp]  or http://127.0.0.1:4999/lab?token=cd739e9431153884c6b5f30086da4c6b1ddc1303cdb99cba
+[I 2021-05-25 09:37:43.301 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 2021-05-25 09:37:43.305 ServerApp] 
     
     To access the server, open this file in a browser:
-        file:///home/pan/.local/share/jupyter/runtime/jpserver-15015-open.html
+        file:///home/pan/.local/share/jupyter/runtime/jpserver-1582-open.html
     Or copy and paste one of these URLs:
-        http://conda-20210309:4999/lab?token=cf4a93cc020e1221673a1a610f21bc610184bc9c4e63071a
-     or http://127.0.0.1:4999/lab?token=cf4a93cc020e1221673a1a610f21bc610184bc9c4e63071a
-[I 2021-05-04 08:18:21.386 LabApp] Build is up to date
+        http://conda-20210525:4999/lab?token=cd739e9431153884c6b5f30086da4c6b1ddc1303cdb99cba
+     or http://127.0.0.1:4999/lab?token=cd739e9431153884c6b5f30086da4c6b1ddc1303cdb99cba
+[I 2021-05-25 09:37:59.486 LabApp] 302 GET /lab (220.138.234.88) 0.86ms
+[I 2021-05-25 09:38:21.544 ServerApp] 302 POST /login?next=%2Flab (220.138.234.88) 1.14ms
+[I 2021-05-25 09:38:30.252 LabApp] Build is up to date
+TermSocket.open: 2
+[I 2021-05-25 09:38:30.634 ServerApp] New terminal with specified name: 2
+TermSocket.open: Opened 2
+[I 2021-05-25 09:38:31.672 ServerApp] Kernel started: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-05-25 09:40:36.611 ServerApp] Saving file at /wtb/wtb/settings.py
+[I 2021-05-25 09:40:51.027 ServerApp] New terminal with automatic name: 1
 TermSocket.open: 1
-[I 2021-05-04 08:18:21.812 ServerApp] New terminal with specified name: 1
 TermSocket.open: Opened 1
+[I 2021-05-25 09:42:31.564 ServerApp] Saving file at /fast_api_392/99.ipynb
 Websocket closed
-[I 2021-05-04 08:18:43.809 ServerApp] 302 POST /login?next=%2F (220.138.25.238) 1.56ms
-[I 2021-05-04 08:18:43.841 ServerApp] 302 GET / (220.138.25.238) 0.67ms
-[I 2021-05-04 08:18:47.021 LabApp] Build is up to date
-TermSocket.open: 1
-TermSocket.open: Opened 1
+[I 2021-05-25 09:46:00.124 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:b7e50d9b-bfa3-4987-85a6-9855d725f966
 Websocket closed
-[I 2021-05-04 08:19:29.898 LabApp] Build is up to date
-[I 2021-05-04 08:19:46.729 LabApp] Build is up to date
-TermSocket.open: 1
-TermSocket.open: Opened 1
-[I 2021-05-04 08:20:30.099 ServerApp] New terminal with automatic name: 2
+[I 2021-05-25 09:46:03.205 LabApp] Build is up to date
 TermSocket.open: 2
 TermSocket.open: Opened 2
-TermSocket.open: 1
-TermSocket.open: Opened 1
 Websocket closed
-[I 2021-05-04 08:21:34.540 LabApp] Build is up to date
+[I 2021-05-25 09:53:11.149 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:f5df67a0-be6e-41e4-8564-82e2b6b5736f
+[I 2021-05-25 09:53:14.651 ServerApp] 302 POST /login?next=%2F (220.138.234.88) 1.15ms
+[I 2021-05-25 09:53:14.676 ServerApp] 302 GET / (220.138.234.88) 0.56ms
+[I 2021-05-25 09:53:17.900 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-25 09:56:38.762 ServerApp] Kernel started: 972483c8-2b83-4fba-bf6d-56847149b7f3
+[I 2021-05-25 10:00:41.939 ServerApp] Kernel shutdown: 972483c8-2b83-4fba-bf6d-56847149b7f3
+[I 2021-05-25 10:00:55.836 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-05-25 10:00:55.863 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:60673830-fef2-4358-b059-2c00fdccdfce
+[I 2021-05-25 10:00:55.900 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:60673830-fef2-4358-b059-2c00fdccdfce
+[I 2021-05-25 10:00:56.976 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-25 10:07:29.086 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:60673830-fef2-4358-b059-2c00fdccdfce
+Websocket closed
+[I 2021-05-25 10:07:33.499 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-25 10:07:42.030 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:a824db6c-6e03-4a18-a672-6c35ca642cd3
+Websocket closed
+[I 2021-05-25 10:07:45.474 ServerApp] 302 POST /login?next=%2F (220.138.234.88) 1.10ms
+[I 2021-05-25 10:07:45.499 ServerApp] 302 GET / (220.138.234.88) 0.49ms
+[I 2021-05-25 10:07:48.414 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-25 10:07:54.073 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:9d4a1798-37ee-4477-a1df-756ce0fe120d
+Websocket closed
+[I 2021-05-25 10:07:56.754 LabApp] Build is up to date
 TermSocket.open: 1
 TermSocket.open: Opened 1
 TermSocket.open: 2
 TermSocket.open: Opened 2
-[W 2021-05-04 08:22:00.211 ServerApp] WebSocket ping timeout after 90002 ms.
+[I 2021-05-25 10:10:08.389 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-25 10:12:23.941 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:05bcca2a-14ab-403a-8763-f15b0e46c6cb
 Websocket closed
-[W 2021-05-04 08:22:46.906 ServerApp] WebSocket ping timeout after 119964 ms.
+Websocket closed
+[I 2021-05-25 10:40:13.441 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-25 10:42:15.483 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-25 11:19:56.573 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:62ef6bc6-58ab-4d55-b252-1af2f40bab7a
+Websocket closed
+[I 2021-05-25 11:21:50.710 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-25 11:23:53.272 ServerApp] Saving file at /fast_api_392/99.ipynb
+[W 2021-05-25 12:02:51.006 ServerApp] WebSocket ping timeout after 119985 ms.
 Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
 handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
 Traceback (most recent call last):
@@ -66,6 +102,73 @@ Traceback (most recent call last):
   File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
     raise WebSocketClosedError()
 tornado.websocket.WebSocketClosedError
+[W 2021-05-25 12:02:52.695 ServerApp] WebSocket ping timeout after 119972 ms.
+Websocket closed
+[I 2021-05-25 12:02:57.698 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:136577c5-29f9-4f4c-85d9-d0adb25d17dc
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-25 12:11:16.297 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:136577c5-29f9-4f4c-85d9-d0adb25d17dc
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[W 2021-05-25 13:30:17.366 ServerApp] Replacing stale connection: 455837a3-e429-49a2-968e-f4483e451baa:136577c5-29f9-4f4c-85d9-d0adb25d17dc
+[I 2021-05-25 13:30:22.370 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:136577c5-29f9-4f4c-85d9-d0adb25d17dc
+[I 2021-05-25 13:30:22.371 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:136577c5-29f9-4f4c-85d9-d0adb25d17dc
+[W 2021-05-25 13:31:13.766 ServerApp] WebSocket ping timeout after 119782 ms.
+Websocket closed
+[I 2021-05-25 14:35:04.556 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:136577c5-29f9-4f4c-85d9-d0adb25d17dc
+Websocket closed
+[I 2021-05-26 07:49:03.772 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+Websocket closed
+[I 2021-05-26 07:49:51.994 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:4dbb977d-0c5f-4102-9751-a0dfd5af6a17
+[I 2021-05-26 11:11:33.833 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[W 2021-05-26 13:40:48.938 ServerApp] WebSocket ping timeout after 119964 ms.
+[I 2021-05-26 13:40:53.940 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:bc1f40e8-ce71-49f4-a895-5b4469187828
+[W 2021-05-26 13:41:04.066 ServerApp] WebSocket ping timeout after 119965 ms.
+Websocket closed
+[I 2021-05-26 13:47:04.159 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:bc1f40e8-ce71-49f4-a895-5b4469187828
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-26 15:55:18.347 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:bc1f40e8-ce71-49f4-a895-5b4469187828
+Websocket closed
+[I 2021-05-27 11:01:54.473 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+Websocket closed
+[I 2021-05-27 11:03:16.004 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:12808d92-869f-45c5-ad17-9e19cb91314e
+[I 2021-05-27 21:27:34.358 LabApp] 302 GET /lab/tree/fast_api_392 (180.177.89.24) 1.87ms
+[I 2021-05-27 21:27:57.580 ServerApp] 302 POST /login?next=%2Flab%2Ftree%2Ffast_api_392 (180.177.89.24) 1.65ms
+[I 2021-05-27 21:28:01.443 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-27 21:30:03.717 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 21:31:54.848 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 21:44:29.582 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 21:46:10.987 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 21:48:11.083 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 21:50:11.189 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 21:54:44.855 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 23:04:45.242 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 23:06:45.526 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 23:08:45.652 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 23:09:38.426 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-27 23:09:44.334 ServerApp] Saving file at /fast_api_392/99.ipynb
+Websocket closed
+[I 2021-05-27 23:15:03.282 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:81c95847-debc-4a4e-9dc0-02f753a045b6
+[I 2021-05-28 07:56:27.153 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[W 2021-05-28 09:25:57.401 ServerApp] WebSocket ping timeout after 119974 ms.
+[W 2021-05-28 09:25:59.135 ServerApp] WebSocket ping timeout after 119973 ms.
+Websocket closed
+[I 2021-05-28 09:26:04.137 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:459326ce-576b-4804-8737-49598ad85849
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-28 09:32:14.335 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:459326ce-576b-4804-8737-49598ad85849
+[W 2021-05-28 11:17:42.583 ServerApp] WebSocket ping timeout after 119971 ms.
 Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
 handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
 Traceback (most recent call last):
@@ -84,6 +187,30 @@ Traceback (most recent call last):
   File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
     raise WebSocketClosedError()
 tornado.websocket.WebSocketClosedError
+[W 2021-05-28 11:17:44.336 ServerApp] WebSocket ping timeout after 119960 ms.
+Websocket closed
+[I 2021-05-28 11:17:49.338 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:459326ce-576b-4804-8737-49598ad85849
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-28 11:23:59.538 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:459326ce-576b-4804-8737-49598ad85849
+Websocket closed
+[I 2021-05-28 12:37:44.291 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:459326ce-576b-4804-8737-49598ad85849
+[I 2021-05-28 13:37:07.408 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-28 13:55:30.972 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:9055619f-7026-4e62-a920-da1b0929d7fb
+Websocket closed
+[I 2021-05-28 14:47:41.673 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[W 2021-05-28 15:30:11.925 ServerApp] WebSocket ping timeout after 119971 ms.
+[W 2021-05-28 15:30:13.233 ServerApp] WebSocket ping timeout after 119976 ms.
+Websocket closed
+[I 2021-05-28 15:30:18.235 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:1e094458-ccb1-4a3f-a90a-44202377ce33
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-05-28 15:36:28.422 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:1e094458-ccb1-4a3f-a90a-44202377ce33
+[W 2021-05-28 16:12:57.135 ServerApp] WebSocket ping timeout after 119967 ms.
 Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
 handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
 Traceback (most recent call last):
@@ -102,419 +229,12 @@ Traceback (most recent call last):
   File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
     raise WebSocketClosedError()
 tornado.websocket.WebSocketClosedError
-Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
-handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
-Traceback (most recent call last):
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
-    self._context.run(self._callback, *self._args)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
-    handler_func(fileobj, events)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
-    client.on_pty_read(s)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
-    self.send_json_message(['stdout', text])
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
-    self.write_message(json_msg)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
-    super(TermSocket, self).write_message(message, binary=binary)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
-    raise WebSocketClosedError()
-tornado.websocket.WebSocketClosedError
-Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
-handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
-Traceback (most recent call last):
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
-    self._context.run(self._callback, *self._args)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
-    handler_func(fileobj, events)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
-    client.on_pty_read(s)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
-    self.send_json_message(['stdout', text])
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
-    self.write_message(json_msg)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
-    super(TermSocket, self).write_message(message, binary=binary)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
-    raise WebSocketClosedError()
-tornado.websocket.WebSocketClosedError
-Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
-handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
-Traceback (most recent call last):
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
-    self._context.run(self._callback, *self._args)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
-    handler_func(fileobj, events)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
-    client.on_pty_read(s)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
-    self.send_json_message(['stdout', text])
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
-    self.write_message(json_msg)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
-    super(TermSocket, self).write_message(message, binary=binary)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
-    raise WebSocketClosedError()
-tornado.websocket.WebSocketClosedError
-Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
-handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
-Traceback (most recent call last):
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
-    self._context.run(self._callback, *self._args)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
-    handler_func(fileobj, events)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
-    client.on_pty_read(s)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
-    self.send_json_message(['stdout', text])
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
-    self.write_message(json_msg)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
-    super(TermSocket, self).write_message(message, binary=binary)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
-    raise WebSocketClosedError()
-tornado.websocket.WebSocketClosedError
-Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
-handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
-Traceback (most recent call last):
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
-    self._context.run(self._callback, *self._args)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
-    handler_func(fileobj, events)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
-    client.on_pty_read(s)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
-    self.send_json_message(['stdout', text])
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
-    self.write_message(json_msg)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
-    super(TermSocket, self).write_message(message, binary=binary)
-  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
-    raise WebSocketClosedError()
-tornado.websocket.WebSocketClosedError
+[W 2021-05-28 16:12:58.423 ServerApp] WebSocket ping timeout after 119968 ms.
 Websocket closed
-TermSocket.open: 1
-TermSocket.open: Opened 1
-[I 2021-05-04 08:25:41.602 ServerApp] Kernel started: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-04 08:25:47.194 ServerApp] Kernel started: 1ca0eb49-90b6-4469-941a-93e8600a81ee
-TermSocket.open: 1
-TermSocket.open: Opened 1
-[I 2021-05-04 09:12:51.012 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 09:36:30.180 ServerApp] Starting buffering for 1ca0eb49-90b6-4469-941a-93e8600a81ee:5f70a27d-8057-4f89-943b-86d6bc1a7a9c
-Websocket closed
-[I 2021-05-04 09:51:28.627 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:e0c56670-9f7b-4cb7-af3b-484d6e9e807a
-Websocket closed
-Websocket closed
-Websocket closed
-[I 2021-05-04 09:56:38.532 LabApp] Build is up to date
+[I 2021-05-28 16:13:03.424 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:1e094458-ccb1-4a3f-a90a-44202377ce33
+[I 2021-05-28 16:13:28.534 LabApp] Build is up to date
 TermSocket.open: 2
 TermSocket.open: Opened 2
-TermSocket.open: 1
-TermSocket.open: Opened 1
-Websocket closed
-Websocket closed
-[I 2021-05-04 10:59:19.700 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[W 2021-05-04 11:59:19.870 ServerApp] WebSocket ping timeout after 119964 ms.
-Websocket closed
-[I 2021-05-04 12:23:46.544 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-04 12:26:20.151 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-04 12:26:41.061 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:33487c6e-299c-4797-9fdf-4cb88a2822b1
-Websocket closed
-[I 2021-05-04 12:28:34.015 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-04 12:30:36.228 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 12:32:32.920 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:82992054-6b5b-4cd0-a0a4-94c6a37e66f3
-Websocket closed
-[I 2021-05-04 13:35:37.306 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-04 13:47:13.336 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-04 13:47:13.363 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:774a2370-c054-4258-8b3f-ef9ddebee4b3
-[I 2021-05-04 13:47:13.409 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:774a2370-c054-4258-8b3f-ef9ddebee4b3
-[I 2021-05-04 13:47:15.952 ServerApp] Saving file at /fast_api_392/99.ipynb
-[W 2021-05-04 14:52:07.522 ServerApp] WebSocket ping timeout after 119978 ms.
-Websocket closed
-[W 2021-05-04 14:52:13.410 ServerApp] WebSocket ping timeout after 119978 ms.
-[I 2021-05-04 14:52:18.412 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:774a2370-c054-4258-8b3f-ef9ddebee4b3
-[I 2021-05-04 15:01:58.975 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:774a2370-c054-4258-8b3f-ef9ddebee4b3
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-04 15:56:51.065 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 15:58:51.168 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 15:59:04.135 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 15:59:10.043 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 15:59:17.337 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 15:59:25.452 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 15:59:32.085 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 15:59:35.644 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-04 15:59:35.662 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:774a2370-c054-4258-8b3f-ef9ddebee4b3
-[I 2021-05-04 15:59:35.694 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:774a2370-c054-4258-8b3f-ef9ddebee4b3
-[I 2021-05-04 16:01:26.307 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 16:05:29.784 LabApp] Build is up to date
-[W 2021-05-04 16:41:02.964 ServerApp] WebSocket ping timeout after 119972 ms.
-[W 2021-05-04 16:41:05.694 ServerApp] WebSocket ping timeout after 119974 ms.
-Websocket closed
-[I 2021-05-04 16:41:10.699 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:774a2370-c054-4258-8b3f-ef9ddebee4b3
-[I 2021-05-04 16:55:41.447 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-04 16:58:03.823 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:dccd64ea-7362-4abe-b96c-0f07a1a098bf
-[I 2021-05-04 17:09:21.504 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-04 17:10:27.697 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:292741f6-1f15-4c56-81f6-a0bdcb562bca
-TermSocket.open: 1
-TermSocket.open: Opened 1
-Websocket closed
-Websocket closed
-[I 2021-05-04 23:11:12.323 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-04 23:43:52.874 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-04 23:45:59.940 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-04 23:50:01.935 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 00:13:53.552 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:fdb546e5-971e-4e10-851d-b09b700c5b2f
-Websocket closed
-[I 2021-05-05 00:14:07.327 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-05 00:16:10.143 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 00:18:10.917 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 00:19:00.876 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:0d7b4159-3bae-4d61-ac9a-b0913b515318
-Websocket closed
-[I 2021-05-05 08:08:54.676 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-05 08:20:28.051 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:918318ac-f0b4-42da-974a-c6693fa939da
-TermSocket.open: 1
-TermSocket.open: Opened 1
-[I 2021-05-05 08:23:57.356 ServerApp] Saving file at /fast_api_392/99.ipynb
-[W 2021-05-05 08:29:57.307 ServerApp] WebSocket ping timeout after 119966 ms.
-[I 2021-05-05 08:30:02.309 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:c0beb6a2-e9c6-404d-80ae-c4110587cd06
-[W 2021-05-05 08:30:02.751 ServerApp] WebSocket ping timeout after 119967 ms.
-Websocket closed
-[W 2021-05-05 08:30:10.192 ServerApp] WebSocket ping timeout after 119963 ms.
-Websocket closed
-[I 2021-05-05 08:36:14.844 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:c0beb6a2-e9c6-404d-80ae-c4110587cd06
-TermSocket.open: 1
-TermSocket.open: Opened 1
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-05 08:37:24.474 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 08:39:25.273 ServerApp] Saving file at /fast_api_392/99.ipynb
-[W 2021-05-05 09:41:14.844 ServerApp] WebSocket ping timeout after 119954 ms.
-[W 2021-05-05 09:41:17.955 ServerApp] WebSocket ping timeout after 119959 ms.
-[I 2021-05-05 09:41:19.849 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:c0beb6a2-e9c6-404d-80ae-c4110587cd06
-Websocket closed
-[W 2021-05-05 09:41:25.393 ServerApp] WebSocket ping timeout after 119970 ms.
-Websocket closed
-[I 2021-05-05 09:47:30.042 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:c0beb6a2-e9c6-404d-80ae-c4110587cd06
-TermSocket.open: 1
-TermSocket.open: Opened 1
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-05 10:55:21.890 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:c0beb6a2-e9c6-404d-80ae-c4110587cd06
-TermSocket.open: 1
-TermSocket.open: Opened 1
-Websocket closed
-Websocket closed
-Websocket closed
-[I 2021-05-05 11:17:51.865 LabApp] 302 GET /lab (220.138.25.251) 1.36ms
-[I 2021-05-05 11:18:01.239 ServerApp] 302 POST /login?next=%2Flab (220.138.25.251) 1.46ms
-[I 2021-05-05 11:18:10.043 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-05 13:33:09.567 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-05 14:31:43.185 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-05 20:11:57.856 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-05 20:14:12.672 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:24:25.554 LabApp] Build is up to date
-TermSocket.open: 1
-TermSocket.open: Opened 1
-TermSocket.open: 2
-TermSocket.open: Opened 2
-TermSocket.open: 1
-TermSocket.open: Opened 1
-[I 2021-05-05 20:29:08.270 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:30:13.553 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:31:24.762 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-05 20:32:13.654 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:33:57.499 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-05 20:34:13.759 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:34:19.000 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:34:20.708 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:34:24.792 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-05 20:35:32.089 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:37:19.143 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-05 20:37:32.231 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:39:32.328 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:39:58.577 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:40:23.734 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-05 20:41:59.237 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:44:00.232 ServerApp] Saving file at /fast_api_392/99.ipynb
-Websocket closed
-Websocket closed
-Websocket closed
-[I 2021-05-05 20:48:44.070 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:9b7220a8-4569-4143-bbe2-042af071687a
-Websocket closed
-[I 2021-05-05 20:48:52.038 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-05 20:52:53.972 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 20:54:54.083 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:06:54.230 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:07:39.809 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-05 21:07:39.830 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:66ddf469-7d58-4382-ab0c-a2deda74f944
-[I 2021-05-05 21:07:39.858 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:66ddf469-7d58-4382-ab0c-a2deda74f944
-[I 2021-05-05 21:07:42.138 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:09:42.241 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:11:42.373 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:13:42.476 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:15:42.569 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:17:42.656 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:19:42.780 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:23:56.195 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:66ddf469-7d58-4382-ab0c-a2deda74f944
-Websocket closed
-[I 2021-05-05 21:37:17.779 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:66ddf469-7d58-4382-ab0c-a2deda74f944
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-05 21:39:14.234 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-05 21:41:14.347 ServerApp] Saving file at /fast_api_392/99.ipynb
-Websocket closed
-[I 2021-05-05 21:42:19.494 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:66ddf469-7d58-4382-ab0c-a2deda74f944
-[I 2021-05-05 22:33:00.772 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-06 08:11:10.253 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-TermSocket.open: 1
-TermSocket.open: Opened 1
-TermSocket.open: 1
-TermSocket.open: Opened 1
-[I 2021-05-06 08:58:53.148 ServerApp] Starting buffering for 1ca0eb49-90b6-4469-941a-93e8600a81ee:5779a7f7-30a2-4fc6-908e-dead459b8b00
-Websocket closed
-Websocket closed
-Websocket closed
-[I 2021-05-06 09:58:48.927 LabApp] 302 GET /lab (220.138.25.150) 1.67ms
-[I 2021-05-06 09:58:57.392 ServerApp] 302 POST /login?next=%2Flab (220.138.25.150) 1.57ms
-[I 2021-05-06 09:59:06.004 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-06 10:54:38.652 LabApp] 302 GET /lab (220.138.25.150) 1.04ms
-[I 2021-05-06 10:54:46.842 ServerApp] 302 POST /login?next=%2Flab (220.138.25.150) 1.53ms
-[I 2021-05-06 10:54:55.585 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-06 13:31:41.236 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-06 15:27:27.755 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-06 15:29:32.278 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 15:37:34.315 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 15:41:35.276 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 15:49:38.345 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 15:51:39.312 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 16:01:43.327 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 16:03:44.330 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 16:10:03.161 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:c58546fd-c4f4-48a1-bd67-041352dd48f2
-Websocket closed
-[I 2021-05-06 19:49:46.521 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-06 19:51:53.260 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 19:53:53.390 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 19:57:53.468 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 19:59:46.870 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 20:01:47.854 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 20:05:16.301 ServerApp] Kernel restarted: 1ca0eb49-90b6-4469-941a-93e8600a81ee
-[I 2021-05-06 20:05:16.347 ServerApp] Starting buffering for 1ca0eb49-90b6-4469-941a-93e8600a81ee:4c782734-e717-4913-bb6a-185db56a43c7
-[I 2021-05-06 20:05:16.739 ServerApp] Restoring connection for 1ca0eb49-90b6-4469-941a-93e8600a81ee:4c782734-e717-4913-bb6a-185db56a43c7
-[I 2021-05-06 20:07:07.090 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
-[I 2021-05-06 20:19:49.996 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 20:28:21.963 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:35f3d05b-bdcf-41be-9b97-e52c21483852
-[I 2021-05-06 20:28:23.836 ServerApp] Starting buffering for 1ca0eb49-90b6-4469-941a-93e8600a81ee:4c782734-e717-4913-bb6a-185db56a43c7
-TermSocket.open: 1
-TermSocket.open: Opened 1
-[I 2021-05-06 21:06:38.893 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:08:38.976 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:10:28.943 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:10:48.167 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:12:48.281 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:16:34.703 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:18:17.109 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:20:17.198 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:28:17.890 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:30:17.992 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:30:33.267 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-06 21:30:33.289 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:760817d7-62ce-4f93-ac88-c775e32b1a9a
-[I 2021-05-06 21:30:33.313 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:760817d7-62ce-4f93-ac88-c775e32b1a9a
-[I 2021-05-06 21:30:38.245 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:30:44.148 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:30:49.480 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:34:14.028 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:34:40.442 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-06 21:34:40.466 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:760817d7-62ce-4f93-ac88-c775e32b1a9a
-[I 2021-05-06 21:34:40.494 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:760817d7-62ce-4f93-ac88-c775e32b1a9a
-[I 2021-05-06 21:34:42.984 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:36:24.365 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:36:32.113 ServerApp] Kernel restarted: 2d13caa7-fb86-4420-9bb0-5cf28ed386b2
-[I 2021-05-06 21:36:32.137 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:760817d7-62ce-4f93-ac88-c775e32b1a9a
-[I 2021-05-06 21:36:32.168 ServerApp] Restoring connection for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:760817d7-62ce-4f93-ac88-c775e32b1a9a
-[I 2021-05-06 21:36:33.676 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:36:37.018 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:40:38.891 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-06 21:52:16.167 ServerApp] Starting buffering for 2d13caa7-fb86-4420-9bb0-5cf28ed386b2:760817d7-62ce-4f93-ac88-c775e32b1a9a
-TermSocket.open: 1
-TermSocket.open: Opened 1
-Websocket closed
-Websocket closed
-Websocket closed
-[I 2021-05-06 23:02:17.832 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-Websocket closed
-[I 2021-05-07 08:18:06.190 LabApp] Build is up to date
-TermSocket.open: 2
-TermSocket.open: Opened 2
-TermSocket.open: 1
-TermSocket.open: Opened 1
-[W 2021-05-07 09:57:51.942 ServerApp] WebSocket ping timeout after 119962 ms.
-Websocket closed
-[W 2021-05-07 09:58:06.759 ServerApp] WebSocket ping timeout after 119977 ms.
-Websocket closed
-TermSocket.open: 1
-TermSocket.open: Opened 1
-TermSocket.open: 2
-TermSocket.open: Opened 2
-[I 2021-05-07 11:25:11.269 ServerApp] Saving file at /fast_api_392/99.ipynb
-[I 2021-05-07 11:27:11.428 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-05-28 16:15:30.421 ServerApp] Saving file at /fast_api_392/99.ipynb
 TermSocket.open: 1
 TermSocket.open: Opened 1
