@@ -32,7 +32,7 @@ class BOOKS(BOOKBASE):
     info_default = {
         "bookid": "0010770978",  # 刺殺騎士團長
     }
-    bookid_pattern = '^[a-zA-Z0-9]{10}$'  # 博客來書號格式
+    bookid_pattern = '^[0-9]{10}$|^CN[0-9]{8}$|^F[0-9]{9}$'  # 中文_簡體_外文
     comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
     # 首頁
     url_home = 'https://www.books.com.tw'
