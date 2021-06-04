@@ -295,6 +295,14 @@ class BOOKS(BOOKBASE):
         '''製造書號'''
         # bookid_pattern = '^00[0-9]{8}$|^CN[0-9]{8}$|^F0[0-9]{8}$'  # 中文_簡體_外文
         # 從 0 到 99999999 不斷循環
+        # (1) 檢查prefix
+        bid_pattern = cls.bookid_pattern
+        prefixs = [p[1:3] for p in bid_pattern.split('|')]
+        if prefix not in prefixs:
+            raise ValueError(f'書號prefix: {prefix} 不對，須為{prefixs}之一')
+        # (2) 循環輸出流水書號
         for i in itertools.cycle(range(0, 10**digits)):
             bid = f'{prefix}{i:0{digits}}'
+            if not re.match(bid_pattern, bid):
+                raise ValueError(f'{bid} 不符合bookid_pattern="{bid_pattern}"')
             yield bid
