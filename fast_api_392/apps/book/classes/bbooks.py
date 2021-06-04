@@ -12,6 +12,7 @@ from typing import Dict, Any, Callable, Awaitable, Coroutine, Optional, Union
 from PIL import Image
 import pytesseract
 import copy
+import itertools
 #
 from apps.sql.config import dbwtb
 from apps.book.classes.abookbase import BOOKBASE
@@ -32,7 +33,7 @@ class BOOKS(BOOKBASE):
     info_default = {
         "bookid": "0010770978",  # 刺殺騎士團長
     }
-    bookid_pattern = '^[0-9]{10}$|^CN[0-9]{8}$|^F[0-9]{9}$'  # 中文_簡體_外文
+    bookid_pattern = '^00[0-9]{8}$|^CN[0-9]{8}$|^F0[0-9]{8}$'  # 中文_簡體_外文
     comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
     # 首頁
     url_home = 'https://www.books.com.tw'
@@ -288,3 +289,12 @@ class BOOKS(BOOKBASE):
                 else:
                     pixels[x, y] = (255, 255, 255)
         return img
+
+    @classmethod
+    def bid_cycle(cls, prefix: str = '00', digits: int = 8):
+        '''製造書號'''
+        # bookid_pattern = '^00[0-9]{8}$|^CN[0-9]{8}$|^F0[0-9]{8}$'  # 中文_簡體_外文
+        # 從 0 到 99999999 不斷循環
+        for i in itertools.cycle(range(0, 10**digits)):
+            bid = f'{prefix}{i:0{digits}}'
+            yield bid
