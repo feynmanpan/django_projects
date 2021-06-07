@@ -337,7 +337,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     @classmethod
     def top_proxy_tocsv(cls):
         '''app shutdown時儲存top_proxy'''
-        if cls.top_proxy and (len_top_proxy := len(cls.top_proxy)) > cls.len_top_proxy:
+        if cls.top_proxy and ((len_top_proxy := len(cls.top_proxy)) > cls.len_top_proxy):
             print(f'top_proxy增加為{len_top_proxy}，上限{top_proxy_max}個，儲存csv')
             tmp = list(cls.top_proxy)
             random.shuffle(tmp)
