@@ -1579,3 +1579,283 @@ TermSocket.open: Opened 2
 TermSocket.open: 1
 TermSocket.open: Opened 1
 [I 2021-06-07 15:45:05.052 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:187b6410-be2e-4222-a6bd-a106d4fe720b
+[I 2021-06-07 16:00:56.184 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[W 2021-06-07 16:01:01.370 ServerApp] WebSocket ping timeout after 119964 ms.
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+[W 2021-06-07 16:01:02.217 ServerApp] WebSocket ping timeout after 119965 ms.
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Websocket closed
+Websocket closed
+Websocket closed
+Websocket closed
+[I 2021-06-07 19:36:44.061 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-07 19:40:58.340 ServerApp] Uploading file to /fast_api_392/apps/book/classes/national_income.ipynb
+[W 2021-06-07 19:41:00.102 ServerApp] Notebook fast_api_392/apps/book/classes/national_income.ipynb is not trusted
+[I 2021-06-07 19:41:24.495 ServerApp] Kernel started: 233a2cf2-e521-4857-a9e6-c9f63c27b5ea
+[I 2021-06-07 19:43:01.198 ServerApp] Uploading file to /fast_api_392/apps/book/classes/amis_query.ipynb
+[I 2021-06-07 19:43:13.194 ServerApp] Kernel started: 8d9b16cd-4c09-4ef3-94a5-58cff8a35821
+[I 2021-06-07 19:43:23.115 ServerApp] Saving file at /fast_api_392/apps/book/classes/national_income.ipynb
+[W 2021-06-07 19:43:23.116 ServerApp] Notebook fast_api_392/apps/book/classes/national_income.ipynb is not trusted
+[I 2021-06-07 19:48:35.272 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:48:39.697 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:49:08.007 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:51:08.364 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:51:12.154 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:53:12.512 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:55:12.849 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:56:47.779 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:58:26.229 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 19:58:49.160 ServerApp] Kernel restarted: c09d92b8-9653-49c7-9067-6f1c1bfeac4f
+[I 2021-06-07 19:58:49.201 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 19:58:49.232 ServerApp] Restoring connection for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 19:58:54.012 ServerApp] Kernel restarted: c09d92b8-9653-49c7-9067-6f1c1bfeac4f
+[I 2021-06-07 19:58:54.033 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 19:58:54.057 ServerApp] Restoring connection for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:00:26.603 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:01:42.764 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:02:39.876 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:03:24.117 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:03:48.287 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:04:02.943 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:04:37.256 ServerApp] Kernel restarted: c09d92b8-9653-49c7-9067-6f1c1bfeac4f
+[I 2021-06-07 20:04:37.275 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:04:37.302 ServerApp] Restoring connection for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:06:03.325 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:06:09.676 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:08:11.069 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:10:11.476 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:12:11.881 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:12:28.978 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:12:31.496 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:13:32.102 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:14:02.695 ServerApp] Kernel restarted: c09d92b8-9653-49c7-9067-6f1c1bfeac4f
+[I 2021-06-07 20:14:02.715 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:14:02.759 ServerApp] Restoring connection for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:15:32.511 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:17:33.023 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:24:01.475 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:24:34.594 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:24:52.891 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:24:57.158 ServerApp] Kernel restarted: c09d92b8-9653-49c7-9067-6f1c1bfeac4f
+[I 2021-06-07 20:24:57.180 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:24:57.207 ServerApp] Restoring connection for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:25:01.264 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:27:02.043 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:29:03.039 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:33:04.115 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:33:35.905 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:34:08.945 ServerApp] Kernel restarted: c09d92b8-9653-49c7-9067-6f1c1bfeac4f
+[I 2021-06-07 20:34:08.967 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:34:08.997 ServerApp] Restoring connection for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:35:36.254 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:36:36.451 ServerApp] Kernel restarted: c09d92b8-9653-49c7-9067-6f1c1bfeac4f
+[I 2021-06-07 20:36:36.474 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:36:36.511 ServerApp] Restoring connection for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 20:37:36.646 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:39:37.043 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:41:37.423 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:43:37.800 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:45:38.177 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:47:38.556 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:47:42.621 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 20:49:34.277 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 21:03:36.561 ServerApp] Kernel restarted: c09d92b8-9653-49c7-9067-6f1c1bfeac4f
+[I 2021-06-07 21:03:36.583 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 21:03:36.633 ServerApp] Restoring connection for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 21:03:38.355 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 21:05:38.722 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 21:05:39.062 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-07 21:05:39.129 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:3f2b6f5b-15e6-4ef4-ab3b-28f681684032
+[I 2021-06-07 21:05:40.208 ServerApp] Starting buffering for 8d9b16cd-4c09-4ef3-94a5-58cff8a35821:a9a9648f-93fb-40e0-89e4-83f4dd7c0176
+[I 2021-06-07 21:05:49.214 ServerApp] Kernel shutdown: 8d9b16cd-4c09-4ef3-94a5-58cff8a35821
+[W 2021-06-07 21:05:49.558 ServerApp] delete /fast_api_392/apps/book/classes/amis_query.ipynb
+[I 2021-06-07 21:05:53.163 ServerApp] Kernel shutdown: 233a2cf2-e521-4857-a9e6-c9f63c27b5ea
+[W 2021-06-07 21:05:53.513 ServerApp] delete /fast_api_392/apps/book/classes/national_income.ipynb
+Websocket closed
+[I 2021-06-08 08:16:23.160 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-08 08:35:07.789 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:371ab57f-37fc-4dbf-a3d2-143695a8eb2d
+[I 2021-06-08 08:35:12.761 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 08:35:12.786 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 08:35:12.825 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 08:36:35.385 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 08:36:35.412 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 08:36:35.450 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 08:36:38.095 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 08:36:38.122 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 08:36:38.165 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 08:36:38.891 ServerApp] Kernel interrupted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 08:36:43.420 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 08:36:43.445 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 08:36:43.488 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 08:37:05.600 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 08:49:55.786 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 10:18:49.276 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:20:49.857 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:22:50.383 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:28:26.131 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:28:48.530 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:28:57.895 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:29:57.407 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:30:05.761 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:30:10.249 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:32:12.724 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[W 2021-06-08 10:34:13.490 ServerApp] WebSocket ping timeout after 119966 ms.
+[W 2021-06-08 10:34:15.719 ServerApp] WebSocket ping timeout after 119963 ms.
+[I 2021-06-08 10:34:18.492 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:bfdecc20-60e4-40a8-a910-b4e235405403
+[I 2021-06-08 10:34:20.722 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:149a2c7c-1a0e-4cd7-919f-4f48616650bc
+[W 2021-06-08 10:34:23.384 ServerApp] WebSocket ping timeout after 119964 ms.
+Websocket closed
+[I 2021-06-08 10:40:13.315 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:40:27.107 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-08 10:41:49.441 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:43:49.986 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:45:41.540 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:47:42.091 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 10:47:56.124 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:03:52.099 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:05:53.322 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:07:53.870 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:09:54.467 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:10:52.600 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:11:56.741 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:12:05.179 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:13:07.474 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:17:12.494 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:26:51.123 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+[I 2021-06-08 11:30:17.747 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:ada88d5f-a984-4591-b8d4-d0f817c74472
+[W 2021-06-08 11:55:00.188 ServerApp] WebSocket ping timeout after 119976 ms.
+[I 2021-06-08 11:55:05.190 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:ffb9eaea-5ebb-4ad2-9265-f9e1335608dd
+[W 2021-06-08 11:55:27.264 ServerApp] WebSocket ping timeout after 119968 ms.
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Websocket closed
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[W 2021-06-08 12:01:51.005 ServerApp] WebSocket ping timeout after 119963 ms.
+Websocket closed
+Websocket closed
+[I 2021-06-08 12:29:47.890 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-08 12:29:58.552 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+Websocket closed
+[I 2021-06-08 12:30:47.861 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:6198aa6e-bff3-4d07-ab63-aea0afd54aef
+[I 2021-06-08 16:10:25.571 LabApp] Build is up to date
+[I 2021-06-08 20:09:34.330 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-08 20:10:21.690 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:81700921-2730-464b-9781-8933d7551dfd
+[I 2021-06-08 20:11:22.086 ServerApp] Kernel interrupted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:11:27.554 ServerApp] Kernel interrupted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:11:29.875 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:11:29.895 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:11:29.920 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:11:34.413 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:11:34.441 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:11:34.460 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:12:23.121 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 20:12:23.976 ServerApp] Kernel interrupted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:12:27.467 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:12:27.487 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:12:27.515 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:12:52.950 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 20:13:04.761 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 20:13:23.729 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 20:13:33.933 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 20:14:13.292 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 20:15:07.964 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:15:07.983 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:15:08.007 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:15:08.815 ServerApp] Kernel interrupted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:15:16.784 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 20:15:38.747 ServerApp] Kernel interrupted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:15:39.458 ServerApp] Kernel interrupted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:15:45.035 ServerApp] Kernel restarted: 455837a3-e429-49a2-968e-f4483e451baa
+[I 2021-06-08 20:15:45.055 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:15:45.086 ServerApp] Restoring connection for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 20:17:17.539 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 21:04:19.600 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-08 21:07:50.863 ServerApp] Starting buffering for 455837a3-e429-49a2-968e-f4483e451baa:5c92bd47-14a7-47fd-b777-c7f5f70e1d75
+[I 2021-06-08 21:38:16.773 ServerApp] Starting buffering for c09d92b8-9653-49c7-9067-6f1c1bfeac4f:f669035f-60a6-40bc-8ef0-7079c4c0c91a
+TermSocket.open: 1
+TermSocket.open: Opened 1

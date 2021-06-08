@@ -1,5 +1,6 @@
 import os
 import itertools
+import asyncio
 #
 from fastapi.templating import Jinja2Templates
 ########################################################
@@ -19,7 +20,7 @@ level_https = [
     ('anonymous', 'no'),
     ('elite proxy', 'no'),
 ]
-get_freeproxy_delta = 4*60
+get_freeproxy_delta = 4 * 60
 timeout = 15
 proxy_checkurls = [
     "http://210.240.175.62/NTIIS/IP_test.asp",
@@ -38,7 +39,7 @@ cacert = [False, True][1]
 cwd = os.path.dirname(os.path.realpath(__file__))
 templates = 'templates'
 jinja_templates = Jinja2Templates(directory=os.path.join(cwd, templates))
-#
+# ______________________________________
 ips_csv = 'ips.csv'
 ips_html = 'ips.html'
 ips_csv_tb_html = 'ips_csv_tb.html'
@@ -49,6 +50,8 @@ ips_err_csv_path = os.path.join(cwd, ips_err_csv)
 ips_html_path = os.path.join(cwd, templates, ips_html)
 #
 ips_cycle = False
+ips_Queue = asyncio.Queue(1)
+# ______________________________________
 dtype = {'port': str}
 dt_format = "%Y-%m-%d_%H:%M:%S"
 ipcols = ['ip', 'port', 'now']

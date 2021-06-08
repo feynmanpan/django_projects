@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 import asyncio
-import requests
+# import requests
 import aiohttp
 from pyquery import PyQuery as pq
 import pandas as pd
 import os
-import sys
+# import sys
 from datetime import datetime
 import itertools
 import random
 from time import time
+import sqlalchemy as sa
 #
 from fastapi import Request
 # 為了在jupyter中試，從apps開始import
@@ -28,7 +29,34 @@ from apps.sql.config import dbwtb
 ###############################################################################
 
 
+async def ips_Queue_put(t):
+    '''''從 ips_cycle 抓一個到 ips_Queue'''
+    await asyncio.sleep(t)
+    # (1) 先讀csv ____________________________________________________________________________
+    if not ips_cfg.ips_cycle:
+        if os.path.isfile(ips_cfg.ips_csv_path):
+            rows = pd.read_csv(ips_cfg.ips_csv_path, usecols=['ip', 'port']).to_dict('records')
+            if rows:
+                ips_cfg.ips_cycle = itertools.cycle(rows)
+    # (2) 再讀DB ____________________________________________________________________________
+    if not ips_cfg.ips_cycle:
+        cs = [
+            IPS.ip,
+            IPS.port,
+        ]
+        query = sa.select(cs)  # .order_by('idx').where(tb_ips.columns.id > 100)
+        records = await dbwtb.fetch_all(query)
+        if records:
+            ips_cfg.ips_cycle = itertools.cycle([dict(r) for r in records])
+    # (3) 阻塞 put ____________________________________________________________________________
+    while True:
+        ippt = next(ips_cfg.ips_cycle)
+        await ips_cfg.ips_Queue.put(ippt)
+        print(f'\nips_Queue_put {ippt}\n')
+
+
 async def get_freeproxy(t, once=True):
+    '''代理proxy篩選'''
     get_freeproxy_cnt = 0
     while 1:
         T = 0.2 + (ips_cfg.ips_cycle and os.path.isfile(ips_csv_path)) * t  # 沒有 csv 或 ips_cycle 就馬上爬
@@ -96,6 +124,7 @@ async def get_freeproxy(t, once=True):
 ###############################################################################
 tasks_list = [
     (get_freeproxy, [get_freeproxy_delta, False]),
+    (ips_Queue_put, [0.5]),
 ]
 ###############################################################################
 

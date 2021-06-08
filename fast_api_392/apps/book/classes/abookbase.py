@@ -178,39 +178,20 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     @property
     async def proxy(self) -> Union[str, None]:
-        '''依序從global/csv/db抓cycle代理，每次get就next'''
+        '''從 top_proxy 及 ips_Queue 取proxy'''
         proxy = None
+        # 抓top_proxy
         if top_proxy := list(self.top_proxy):
             proxy = random.choice(top_proxy)
-        #
-        ippt = None
-        # 依序從global/csv/db抓cycle
-        if ips_cycle := ipscfg.ips_cycle:
-            ippt = next(ips_cycle)
-        elif os.path.isfile(ipscfg.ips_csv_path):
-            rows = pd.read_csv(ipscfg.ips_csv_path, usecols=['ip', 'port']).to_dict('records')
-            if rows:
-                ipscfg.ips_cycle = itertools.cycle(rows)
-                ippt = next(ipscfg.ips_cycle)
-        else:
-            cs = [
-                IPS.ip,
-                IPS.port,
-            ]
-            query = sa.select(cs)  # .order_by('idx').where(tb_ips.columns.id > 100)
-            records = await dbwtb.fetch_all(query)
-            if records:
-                ipscfg.ips_cycle = itertools.cycle([dict(r) for r in records])
-                ippt = next(ipscfg.ips_cycle)
-        # 最後比較
-        if ippt:
+        # 抓ips_Queue
+        if ippt := await ipscfg.ips_Queue.get():
             tmp = f"http://{ippt['ip']}:{ippt['port']}"
             if proxy:
                 # 失敗越多次，提供top_proxy的選取機率
                 proxy = random.choice([proxy] + [tmp] * (update_errcnt_max + 3 - self.update_errcnt))
             else:
                 proxy = tmp
-        #
+        # ______________________________________
         return proxy
 
     @property
