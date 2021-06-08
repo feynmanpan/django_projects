@@ -49,7 +49,7 @@ ips_csv_path = os.path.join(cwd, ips_csv)
 ips_err_csv_path = os.path.join(cwd, ips_err_csv)
 ips_html_path = os.path.join(cwd, templates, ips_html)
 #
-ips_cycle = False
+ips_cycle = False  # 在task時有用來定義起始時間，所以不用None
 ips_Queue = asyncio.Queue(1)
 # ______________________________________
 dtype = {'port': str}

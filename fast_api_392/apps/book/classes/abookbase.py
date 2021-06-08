@@ -180,10 +180,10 @@ class BOOKBASE(object, metaclass=VALIDATE):
     async def proxy(self) -> Union[str, None]:
         '''從 top_proxy 及 ips_Queue 取proxy'''
         proxy = None
-        # 抓top_proxy
+        # (1) 抓top_proxy
         if top_proxy := list(self.top_proxy):
             proxy = random.choice(top_proxy)
-        # 抓ips_Queue
+        # (2) 抓ips_Queue
         if ippt := await ipscfg.ips_Queue.get():
             tmp = f"http://{ippt['ip']}:{ippt['port']}"
             if proxy:

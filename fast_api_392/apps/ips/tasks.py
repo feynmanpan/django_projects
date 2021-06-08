@@ -48,7 +48,10 @@ async def ips_Queue_put(t):
         records = await dbwtb.fetch_all(query)
         if records:
             ips_cfg.ips_cycle = itertools.cycle([dict(r) for r in records])
-    # (3) 阻塞 put ____________________________________________________________________________
+    # (3) 都沒有就給None ____________________________________________________________________________
+    if not ips_cfg.ips_cycle:
+        ips_cfg.ips_cycle = itertools.cycle([None])
+    # (4) 阻塞 put ____________________________________________________________________________
     while True:
         ippt = next(ips_cfg.ips_cycle)
         await ips_cfg.ips_Queue.put(ippt)
