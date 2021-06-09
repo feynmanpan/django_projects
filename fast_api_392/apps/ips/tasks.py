@@ -134,6 +134,7 @@ tasks_list = [
 
 if __name__ == '__main__':
     try:
+        from IPython import get_ipython
         tmp = 'zmqshell' in str(type(get_ipython()))  # 在jupyter
         print(tmp, '在jupyter')
     except Exception:
@@ -141,5 +142,6 @@ if __name__ == '__main__':
         task = loop.create_task(get_freeproxy(1))
         loop.run_until_complete(task)
 else:
+    # print(__name__) # apps.ips.tasks
     if 0:
         asyncio.create_task(get_freeproxy(3, False))
