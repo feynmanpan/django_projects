@@ -31,7 +31,7 @@ async def del_store_objs(t):
 
 
 async def bid_Queue_put(cycle, queue):
-    '''書號queue 無窮 put'''
+    '''書號queue無窮put'''
     while 1:
         bid = next(cycle)
         await queue.put(bid)
@@ -39,7 +39,7 @@ async def bid_Queue_put(cycle, queue):
 
 
 async def BOOKS_bid_Queue_put(t):
-    '''博客來三種書號的無窮輸出'''
+    '''創造博客來三種書號的無窮put'''
     await asyncio.sleep(t)
     #
     bid_pattern = BOOKS.bookid_pattern
