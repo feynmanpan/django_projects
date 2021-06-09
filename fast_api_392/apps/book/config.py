@@ -24,3 +24,5 @@ top_proxy_max = 100
 objs_max = 200
 del_store_objs_delta = 60 * 2
 dt_format = "%Y-%m-%d_%H:%M:%S"
+#
+q_size = 3

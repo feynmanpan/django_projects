@@ -52,7 +52,7 @@ async def ips_Queue_put(t):
     if not ips_cfg.ips_cycle:
         ips_cfg.ips_cycle = itertools.cycle([None])
     # (4) 阻塞 put ____________________________________________________________________________
-    while True:
+    while 1:
         ippt = next(ips_cfg.ips_cycle)
         await ips_cfg.ips_Queue.put(ippt)
         print(f'\nips_Queue_put {ippt}\n')

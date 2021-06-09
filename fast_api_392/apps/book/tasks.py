@@ -2,8 +2,8 @@ import asyncio
 from datetime import datetime
 #
 from .config import objs_max, del_store_objs_delta, dt_format
-from .classes.zimportall import BOOKBASE
-
+from .classes.zimportall import BOOKBASE, BOOKS
+from apps.book.config import q_size
 ###############################################################################
 
 
@@ -30,8 +30,32 @@ async def del_store_objs(t):
         print(f'del_store_objs 第{del_cnt}次處理完畢:{now}\n')
 
 
+async def bid_Queue_put(cycle, queue):
+    '''書號queue 無窮 put'''
+    while 1:
+        bid = next(cycle)
+        await queue.put(bid)
+        print(f'bid_Queue_put {bid}')
+
+
+async def BOOKS_bid_Queue_put(t):
+    '''博客來三種書號的無窮輸出'''
+    await asyncio.sleep(t)
+    #
+    bid_pattern = BOOKS.bookid_pattern
+    prefixs = [p[1:3] for p in bid_pattern.split('|')]
+    # 根據前綴數量，造對應數量的cycle, queue
+    BOOKS.bid_Cs = [BOOKS.bid_cycle(prefix=p, digits=8, start=0) for p in prefixs]
+    BOOKS.bid_Qs = [asyncio.Queue(q_size) for _ in prefixs]
+    # 每組CQ各自task
+    for C, Q in zip(BOOKS.bid_Cs, BOOKS.bid_Qs):
+        c = bid_Queue_put(C, Q)
+        asyncio.create_task(c)
+
+
 ###############################################################################
 tasks_list = [
     (del_store_objs, [del_store_objs_delta]),
+    (BOOKS_bid_Queue_put, [0.5]),
 ]
 ###############################################################################
