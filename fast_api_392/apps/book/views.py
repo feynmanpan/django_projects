@@ -1,9 +1,9 @@
-
 import json
 from typing import Optional
 #
 from fastapi import Request
 from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
+import pandas as pd
 #
 from .config import jinja_templates
 # from .classes.abookbase import BOOKBASE
@@ -15,6 +15,10 @@ from .classes.zimportall import (
     TAAZE,
     ELITE,
 )
+#
+import sqlalchemy as sa
+from apps.sql.config import dbwtb
+from apps.book.model import INFO
 ###############################################
 
 
@@ -46,3 +50,20 @@ async def show_books(request: Request, bookid: str = '0010770978', fd: int = 0):
         # return ORJSONResponse(book.info)
     finally:
         return result
+
+
+async def show_info(request: Request):
+    '''顯示所有書籍資訊'''
+    cs = INFO.__table__.columns
+    query = sa.select(cs)
+    rows = await dbwtb.fetch_all(query)
+    #
+    df = pd.DataFrame(rows)[['idx'] + BOOKBASE.info_cols].to_html()
+    #
+    context = {
+        'request': request,
+        'df': df,
+    }
+    result = jinja_templates.TemplateResponse('show_info.html', context)
+    #
+    return result

@@ -24,7 +24,7 @@ from apps.ips.config import get_freeproxy_delta
 from apps.ips.views import show_freeproxy, get_next_ip, check_proxy
 #
 from apps.book.classes import zimportall  # 載入所有subclass，使其註冊入BOOKBASE
-from apps.book.views import show_books, show_base
+from apps.book.views import show_books, show_base, show_info
 #
 import apps.sql.config as sqlcfg
 from apps.sql.views import dbwtb_isconnected
@@ -72,8 +72,9 @@ path_get("/proxy", show_freeproxy)
 path_get("/nextip", get_next_ip)
 path_get("/check_proxy", check_proxy)
 #
-path_get("/books/{bookid}", show_books)
 path_get("/sb", show_base)
+path_get("/books/{bookid}", show_books)
+path_get("/show_info", show_info)
 #
 path_get("/dbwtb", dbwtb_isconnected)
 

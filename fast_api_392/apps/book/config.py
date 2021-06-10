@@ -18,7 +18,7 @@ templates = 'templates'
 jinja_templates = Jinja2Templates(directory=os.path.join(cwd, templates))
 #
 timeout = 7
-update_errcnt_max = 5
+update_errcnt_max = 50  # 一本書的爬蟲次數
 #
 top_proxy_max = 100
 objs_max = 200

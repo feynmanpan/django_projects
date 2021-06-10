@@ -33,7 +33,10 @@ class BOOKS(BOOKBASE):
     info_default = {
         "bookid": "0010770978",  # 刺殺騎士團長
     }
-    bookid_pattern = '^00[0-9]{8}$|^CN[0-9]{8}$|^F0[0-9]{8}$'  # 中文_簡體_外文
+    #
+    bid_prefixes = ['00', 'CN', 'F0']  # 中文_簡體_外文
+    bid_digits = 8
+    bookid_pattern = '^00[0-9]{8}$|^CN[0-9]{8}$|^F0[0-9]{8}$'
     comment_js_pattern = '<script type="text/javascript">(.|\n)+?</script>'
     # 首頁
     url_home = 'https://www.books.com.tw'
@@ -297,9 +300,9 @@ class BOOKS(BOOKBASE):
         # 從 0 到 99999999 不斷循環
         # (1) 檢查prefix
         bid_pattern = cls.bookid_pattern
-        prefixs = [p[1:3] for p in bid_pattern.split('|')]
-        if prefix not in prefixs:
-            raise ValueError(f'書號prefix: {prefix} 不對，須為{prefixs}之一')
+        bid_prefixes = cls.bid_prefixes  # [p[1:3] for p in bid_pattern.split('|')]
+        if prefix not in bid_prefixes:
+            raise ValueError(f'書號prefix: {prefix} 不對，須為{bid_prefixes}之一')
         # (2) 循環輸出流水書號
         for i in itertools.cycle(range(start, 10**digits)):
             bid = f'{prefix}{i:0{digits}}'
