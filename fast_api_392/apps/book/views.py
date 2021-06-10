@@ -57,7 +57,7 @@ async def show_info(request: Request):
     cs = INFO.__table__.columns
     query = sa.select(cs)
     rows = await dbwtb.fetch_all(query)
-    #
+    # price_list/_sale 為 None 者，pd會轉 float64 變成 np.nan，輸出 html字串 NaN
     df = pd.DataFrame(rows)[['idx'] + BOOKBASE.info_cols].to_html()
     #
     context = {
