@@ -347,12 +347,9 @@ class BOOKS(BOOKBASE):
             rows = await dbwtb.fetch_all(query)
             # DB有已經爬過的書號時，進行篩選，有些不重爬
             if rows:
-                tmp = [r['bookid'] for r in rows if r['err'] not in cls.page_err]
-                if tmp:
-                    bids = tmp
-                else:
-                    # 全篩掉就下一組
-                    continue
+                bids = [r['bookid'] for r in rows if r['err'] not in cls.page_err]  # 篩過的更新bids
+                if not bids:
+                    continue  # 全篩掉就下一組
             # (3) 剩下的書號進行 update_info 重爬 ________________________________________________________
             tasks = []
             for bid in bids:

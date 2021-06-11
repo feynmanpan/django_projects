@@ -3801,3 +3801,154 @@ TermSocket.open: Opened 2
 [I 2021-06-11 13:47:35.718 ServerApp] Saving file at /fast_api_392/99.ipynb
 TermSocket.open: 1
 TermSocket.open: Opened 1
+TermSocket.open: 1
+TermSocket.open: Opened 1
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[W 2021-06-11 15:05:05.048 ServerApp] Replacing stale connection: f2385be8-ae71-4802-8749-b474ea72f31f:f27d042e-53a7-4a5c-83fa-e0c38f1fa159
+TermSocket.open: 2
+TermSocket.open: Opened 2
+Websocket closed
+Websocket closed
+Websocket closed
+[I 2021-06-11 15:05:25.779 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[W 2021-06-11 15:05:58.619 ServerApp] WebSocket ping timeout after 119962 ms.
+[W 2021-06-11 15:05:59.825 ServerApp] WebSocket ping timeout after 119928 ms.
+[W 2021-06-11 15:05:59.850 ServerApp] WebSocket ping timeout after 119953 ms.
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+[I 2021-06-11 15:06:03.622 ServerApp] Starting buffering for f2385be8-ae71-4802-8749-b474ea72f31f:62f31deb-f993-41a6-9389-fc7f017d687a
+Websocket closed
+Websocket closed
+[I 2021-06-11 15:31:48.286 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-11 15:33:48.798 ServerApp] Saving file at /fast_api_392/99.ipynb
+TermSocket.open: 1
+TermSocket.open: Opened 1

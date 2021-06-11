@@ -352,7 +352,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 self._update[col] = val
 
     @classmethod
-    async def bid_Queue_put(cls, cycle, queue, clsname):
+    async def bid_Queue_put(cls, cycle, queue: asyncio.Queue, clsname: str):
         '''base 對書號queue無窮put'''
         while 1:
             bid = next(cycle)
