@@ -1,13 +1,13 @@
 import asyncio
 from datetime import datetime
-import sqlalchemy as sa
+# import sqlalchemy as sa
 #
 from .config import objs_max, del_store_objs_delta, dt_format
 from .classes.zimportall import BOOKBASE, BOOKS
 #
-from apps.book.model import INFO
-from apps.book.config import q_size
-from apps.sql.config import dbwtb
+# from apps.book.model import INFO
+# from apps.book.config import q_size
+# from apps.sql.config import dbwtb
 
 ###############################################################################
 
@@ -35,65 +35,23 @@ async def del_store_objs(t):
         print(f'del_store_objs 第{del_cnt}次處理完畢:{now}\n')
 
 
-async def bid_Queue_put(cycle, queue):
-    '''書號queue無窮put'''
-    while 1:
-        bid = next(cycle)
-        await queue.put(bid)
-        print(f'bid_Queue_put {bid}')
-
-
-async def BOOKS_bid_Queue_put(t):
-    '''創造博客來三種書號的無窮put'''
+async def store_bid_loop(t):
+    '''各家的書號queue的無窮put及update'''
     await asyncio.sleep(t)
     #
-    prefixes = BOOKS.bid_prefixes
-    digits = BOOKS.bid_digits
-    # 根據前綴數量，造對應數量的cycle, queue
-    BOOKS.bid_Cs = [BOOKS.bid_cycle(prefix=p, digits=digits, start=0) for p in prefixes]
-    BOOKS.bid_Qs = [asyncio.Queue(q_size) for _ in prefixes]
-    # 每組CQ各自task
-    for C, Q in zip(BOOKS.bid_Cs, BOOKS.bid_Qs):
-        c = bid_Queue_put(C, Q)
-        asyncio.create_task(c)
-
-
-async def BOOKS_bid_get_loop(t):
-    '''對博客來三種書號的無窮爬蟲'''
-    await asyncio.sleep(t)
-    #
-    while 1:
-        # 三個書號一組
-        bids = [await Q.get() for Q in BOOKS.bid_Qs]
-        # 確認DB是否有書號
-        cs = [INFO.bookid, INFO.err]
-        w1 = INFO.store == 'BOOKS'
-        w2 = INFO.bookid.in_(bids)
-        #
-        query = sa.select(cs).where(w1 & w2)
-        rows = await dbwtb.fetch_all(query)
-        # DB有已經爬過的書號時，進行篩選，有些不重爬
-        if rows:
-            tmp = [r['bookid'] for r in rows if r['err'] not in BOOKS.page_err]
-            if tmp:
-                bids = tmp
-            else:
-                # 全篩掉就下一組
-                continue
-        # 剩下的書號進行重爬 ________________________________________________________
-        tasks = []
-        for bid in bids:
-            book = BOOKS(bookid=bid)
-            c = book.update_info()
-            tasks.append(asyncio.create_task(c))
-
-        await asyncio.wait(tasks)
+    for store_name, store_cls in BOOKBASE.register_subclasses.items():
+        try:
+            for c_name in ['bid_Queue_put', 'bid_update_loop']:
+                c = getattr(store_cls, c_name)()
+                asyncio.create_task(c)
+                print(f'開始{store_name}的{c_name}')
+        except:
+            continue
 
 
 ###############################################################################
 tasks_list = [
     (del_store_objs, [del_store_objs_delta]),
-    (BOOKS_bid_Queue_put, [0.5]),
-    (BOOKS_bid_get_loop, [1]),
+    (store_bid_loop, [0.5]),
 ]
 ###############################################################################

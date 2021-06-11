@@ -350,3 +350,11 @@ class BOOKBASE(object, metaclass=VALIDATE):
         for col in self.info_cols:
             if (val := locals_var.get(col)) not in ['', None]:
                 self._update[col] = val
+
+    @classmethod
+    async def bid_Queue_put(cls, cycle, queue, clsname):
+        '''base 對書號queue無窮put'''
+        while 1:
+            bid = next(cycle)
+            await queue.put(bid)
+            print(f'{clsname:<10}:bid_Queue_put {bid}')

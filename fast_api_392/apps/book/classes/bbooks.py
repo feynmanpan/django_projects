@@ -13,8 +13,10 @@ from PIL import Image
 import pytesseract
 import copy
 import itertools
+import sqlalchemy as sa
 #
 from apps.sql.config import dbwtb
+from apps.book.model import INFO
 from apps.book.classes.abookbase import BOOKBASE
 import apps.ips.config as ipscfg
 from apps.ips.config import ips_csv_path, dtype, cacert, headers
@@ -24,6 +26,7 @@ from apps.book.config import (
     # timeout,
     update_errcnt_max,
     login,
+    q_size, q_batch
 )
 ###################################################
 
@@ -309,3 +312,52 @@ class BOOKS(BOOKBASE):
             if not re.match(bid_pattern, bid):
                 raise ValueError(f'{bid} 不符合bookid_pattern="{bid_pattern}"')
             yield bid
+
+    @classmethod
+    async def bid_Queue_put(cls, t=0):
+        '''創造博客來三種書號的無窮put'''
+        await asyncio.sleep(t)
+        #
+        prefixes = cls.bid_prefixes
+        digits = cls.bid_digits
+        # 根據前綴數量，造對應數量的cycle, queue
+        cls.bid_Cs = [cls.bid_cycle(prefix=p, digits=digits, start=0) for p in prefixes]
+        cls.bid_Qs = [asyncio.Queue(q_size) for _ in prefixes]
+        # 每組CQ各自task
+        for C, Q in zip(cls.bid_Cs, cls.bid_Qs):
+            c = BOOKBASE.bid_Queue_put(C, Q, cls.__name__)
+            asyncio.create_task(c)
+
+    @classmethod
+    async def bid_update_loop(cls, t=1):
+        '''對博客來三種書號的無窮爬蟲'''
+        await asyncio.sleep(t)
+        #
+        while 1:
+            # (1) 6個書號一組，3種書號每種各2個 ________________________________________________________
+            bids = []
+            for _ in range(q_batch):
+                bids += [await Q.get() for Q in cls.bid_Qs]
+            # (2) 確認DB是否有書號 ________________________________________________________
+            cs = [INFO.bookid, INFO.err]
+            w1 = INFO.store == cls.__name__
+            w2 = INFO.bookid.in_(bids)
+            #
+            query = sa.select(cs).where(w1 & w2)
+            rows = await dbwtb.fetch_all(query)
+            # DB有已經爬過的書號時，進行篩選，有些不重爬
+            if rows:
+                tmp = [r['bookid'] for r in rows if r['err'] not in cls.page_err]
+                if tmp:
+                    bids = tmp
+                else:
+                    # 全篩掉就下一組
+                    continue
+            # (3) 剩下的書號進行 update_info 重爬 ________________________________________________________
+            tasks = []
+            for bid in bids:
+                book = cls(bookid=bid)
+                c = book.update_info()
+                tasks.append(asyncio.create_task(c))
+            #
+            await asyncio.wait(tasks)

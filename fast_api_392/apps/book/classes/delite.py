@@ -12,6 +12,3 @@ class ELITE(BOOKBASE):
 
     def update_info(self):
         pass
-
-    def save_info(self):
-        pass

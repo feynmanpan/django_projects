@@ -26,3 +26,4 @@ del_store_objs_delta = 60 * 2
 dt_format = "%Y-%m-%d_%H:%M:%S"
 #
 q_size = 3
+q_batch = 2
