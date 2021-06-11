@@ -58,7 +58,10 @@ async def show_info(request: Request):
     query = sa.select(cs)
     rows = await dbwtb.fetch_all(query)
     # price_list/_sale 為 None 者，pd會轉 float64 變成 np.nan，輸出 html字串 NaN
-    df = pd.DataFrame(rows)[['idx'] + BOOKBASE.info_cols].to_html()
+    # notin = ['intro','comment']
+    # cols = ['idx']+[col for col in BOOKBASE.info_cols if col not in notin]
+    cols = ['idx', 'store', 'bookid', 'isbn10', 'isbn13', 'title', 'price_list', 'price_sale', 'err']
+    df = pd.DataFrame(rows)[cols].to_html()
     #
     context = {
         'request': request,

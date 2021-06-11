@@ -322,8 +322,11 @@ class BOOKS(BOOKBASE):
         prefixes = cls.bid_prefixes
         digits = cls.bid_digits
         # 根據前綴數量，造對應數量的cycle, queue
-        cls.bid_Cs = [cls.bid_cycle(prefix=p, digits=digits, start=0) for p in prefixes]
-        cls.bid_Qs = [asyncio.Queue(q_size) for _ in prefixes]
+        cls.bid_Cs = []
+        cls.bid_Qs = []
+        for start in [0, 10**7]:
+            cls.bid_Cs += [cls.bid_cycle(prefix=p, digits=digits, start=start) for p in prefixes]
+            cls.bid_Qs += [asyncio.Queue(q_size) for _ in prefixes]
         # 每組CQ各自task
         for C, Q in zip(cls.bid_Cs, cls.bid_Qs):
             c = BOOKBASE.bid_Queue_put(C, Q, cls.__name__)
@@ -335,10 +338,8 @@ class BOOKS(BOOKBASE):
         await asyncio.sleep(t)
         #
         while 1:
-            # (1) 6個書號一組，3種書號每種各2個 ________________________________________________________
-            bids = []
-            for _ in range(q_batch):
-                bids += [await Q.get() for Q in cls.bid_Qs]
+            # (1) 6個書號一組，3種書號每種各2個，一個0開始，一個10000000 ____________________
+            bids = [await Q.get() for Q in cls.bid_Qs]
             # (2) 確認DB是否有書號 ________________________________________________________
             cs = [INFO.bookid, INFO.err]
             w1 = INFO.store == cls.__name__
@@ -348,7 +349,7 @@ class BOOKS(BOOKBASE):
             rows = await dbwtb.fetch_all(query)
             # DB有已經爬過的書號時，進行篩選，有些不重爬
             if rows:
-                bids = [r['bookid'] for r in rows if r['err'] not in cls.page_err]  # 篩過的更新bids
+                bids = set(bids) - set(r['bookid'] for r in rows if r['err'] in cls.page_err)
                 if not bids:
                     continue  # 全篩掉就下一組
             # (3) 剩下的書號進行 update_info 重爬 ________________________________________________________
