@@ -206,6 +206,8 @@ class BOOKS(BOOKBASE):
     def price_handle(self, el) -> tuple:
         price_list = el.find("em").eq(0).text().strip()
         price_sale = el.find("strong.price01").eq(-1).find("b").eq(0).text().strip()  # 有優惠價跟特價，要找最後一個
+        if price_sale and not price_list:
+            price_list, price_sale = price_sale, price_list  # F010000010 的情形
         # 定價售價統一base處理
         price_list = self.price_list_handle(price_list)
         price_sale = self.price_sale_handle(price_sale)
