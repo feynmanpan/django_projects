@@ -297,7 +297,6 @@ class BOOKS(BOOKBASE):
         return img
 
     ##################  連續書號查詢 ##################
-
     @classmethod
     def bid_cycle(cls, prefix: str = '00', digits: int = 8, start: int = 0):
         '''製造書號'''
