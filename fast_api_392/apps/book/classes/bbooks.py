@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from asyncio.tasks import create_task
 import aiohttp
 import aiofiles
 import asyncio
@@ -21,7 +22,7 @@ from apps.book.classes.abookbase import BOOKBASE
 import apps.ips.config as ipscfg
 from apps.ips.config import ips_csv_path, dtype, cacert, headers
 from apps.book.config import (
-    # dt_format,
+    dt_format,
     # pub_dt_format,
     # timeout,
     update_errcnt_max,
@@ -339,11 +340,13 @@ class BOOKS(BOOKBASE):
         '''對博客來三種書號的無窮爬蟲'''
         await asyncio.sleep(t)
         #
+        today = datetime.today()
+        #
         while 1:
             # (1) 6個書號一組，3種書號每種各2個，一個0開始，一個10000000 ____________________
             bids = [await Q.get() for Q in cls.bid_Qs]
             # (2) 確認DB是否有書號 ________________________________________________________
-            cs = [INFO.bookid, INFO.err]
+            cs = [INFO.bookid, INFO.err, INFO.create_dt]
             w1 = INFO.store == cls.__name__
             w2 = INFO.bookid.in_(bids)
             #
@@ -351,7 +354,14 @@ class BOOKS(BOOKBASE):
             rows = await dbwtb.fetch_all(query)
             # DB有已經爬過的書號時，進行篩選，有些不重爬
             if rows:
-                bids = set(bids) - set(r['bookid'] for r in rows if r['err'] in cls.page_err)
+                skip = set()
+                for r in rows:
+                    create_dt = datetime.strptime(r['create_dt'], dt_format)
+                    D = (today - create_dt).days
+                    if D <= 3 or r['err'] in cls.page_err:
+                        skip.add(r['bookid'])
+                #
+                bids = set(bids) - skip
                 if not bids:
                     continue  # 全篩掉就下一組
             # (3) 剩下的書號進行 update_info 重爬 ________________________________________________________
