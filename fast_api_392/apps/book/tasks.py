@@ -34,6 +34,8 @@ async def del_store_objs(t):
         now = datetime.today().strftime(dt_format)
         print(f'del_store_objs 第{del_cnt}次處理完畢:{now}\n')
 
+##################  連續書號查詢 ##################
+
 
 async def store_bid_loop(t):
     '''各家的書號queue的無窮put及update'''
