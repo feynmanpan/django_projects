@@ -330,7 +330,7 @@ class BOOKS(BOOKBASE):
             cls.bid_Qs += [asyncio.Queue(q_size) for _ in prefixes]
         # 每組CQ各自task
         for C, Q in zip(cls.bid_Cs, cls.bid_Qs):
-            c = BOOKBASE.bid_Queue_put(C, Q, cls.__name__)
+            c = super().bid_Queue_put(C, Q)
             asyncio.create_task(c)
 
     @classmethod
@@ -339,29 +339,12 @@ class BOOKS(BOOKBASE):
         await asyncio.sleep(t)
         #
         while 1:
-            # (1) 6個書號一組，3種書號每種各2個，一個0開始，一個10000000 ____________________
+            # (1) 6個書號一組，3種書號每種各2個，一個0開始，一個10000000
             bids = [await Q.get() for Q in cls.bid_Qs]
-            # (2) 確認DB是否有書號 ________________________________________________________
-            cs = [INFO.bookid, INFO.err, INFO.create_dt]
-            w1 = INFO.store == cls.__name__
-            w2 = INFO.bookid.in_(bids)
-            #
-            query = sa.select(cs).where(w1 & w2)
-            rows = await dbwtb.fetch_all(query)
-            # DB有已經爬過的書號時，進行篩選，有些不重爬
-            if rows:
-                skip = set()
-                today = datetime.today()
-                for r in rows:
-                    create_dt = datetime.strptime(r['create_dt'], dt_format)
-                    D = (today - create_dt).days
-                    if D <= days_without_update or r['err'] in cls.page_err:
-                        skip.add(r['bookid'])
-                #
-                bids = set(bids) - skip
-                if not bids:
-                    continue  # 全篩掉就下一組
-            # (3) 剩下的書號進行 update_info 重爬 ________________________________________________________
+            bids = await cls.bid_filter(bids)
+            if not bids:
+                continue  # 全篩掉就下一組
+            # (2) 剩下的書號進行 update_info 重爬
             tasks = []
             for bid in bids:
                 book = cls(bookid=bid)

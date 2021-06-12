@@ -24,6 +24,7 @@ from apps.book.config import (
     timeout,
     top_proxy_max,
     update_errcnt_max,
+    days_without_update,
 )
 #
 ##########################################################
@@ -353,9 +354,32 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     ##################  連續書號查詢 ##################
     @classmethod
-    async def bid_Queue_put(cls, cycle, queue: asyncio.Queue, clsname: str):
-        '''base 對書號queue無窮put'''
+    async def bid_Queue_put(cls, C, Q: asyncio.Queue):
+        '''base對書號queue無窮put'''
         while 1:
-            bid = next(cycle)
-            await queue.put(bid)
-            print(f'{clsname:<10}:bid_Queue_put {bid}')
+            bid = next(C)
+            await Q.put(bid)
+            print(f'{cls.__name__:<10}:bid_Queue_put {bid}')
+
+    @classmethod
+    async def bid_filter(cls, bids: list) -> Union[list, set]:
+        '''DB有已經爬過的書號時，進行篩選，有些不重爬'''
+        cs = [INFO.bookid, INFO.err, INFO.create_dt]
+        w1 = INFO.store == cls.__name__
+        w2 = INFO.bookid.in_(bids)
+        #
+        query = sa.select(cs).where(w1 & w2)
+        rows = await dbwtb.fetch_all(query)
+        #
+        if rows:
+            skip = set()
+            today = datetime.today()
+            for r in rows:
+                create_dt = datetime.strptime(r['create_dt'], dt_format)
+                D = (today - create_dt).days
+                if D <= days_without_update or r['err'] in cls.page_err:
+                    skip.add(r['bookid'])
+            #
+            bids = set(bids) - skip
+        #
+        return bids
