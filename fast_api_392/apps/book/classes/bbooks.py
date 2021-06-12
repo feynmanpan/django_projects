@@ -23,11 +23,9 @@ import apps.ips.config as ipscfg
 from apps.ips.config import ips_csv_path, dtype, cacert, headers
 from apps.book.config import (
     dt_format,
-    # pub_dt_format,
-    # timeout,
-    update_errcnt_max,
     login,
-    q_size, q_batch
+    q_size,
+    days_without_update,
 )
 ###################################################
 
@@ -340,8 +338,6 @@ class BOOKS(BOOKBASE):
         '''對博客來三種書號的無窮爬蟲'''
         await asyncio.sleep(t)
         #
-        today = datetime.today()
-        #
         while 1:
             # (1) 6個書號一組，3種書號每種各2個，一個0開始，一個10000000 ____________________
             bids = [await Q.get() for Q in cls.bid_Qs]
@@ -355,10 +351,11 @@ class BOOKS(BOOKBASE):
             # DB有已經爬過的書號時，進行篩選，有些不重爬
             if rows:
                 skip = set()
+                today = datetime.today()
                 for r in rows:
                     create_dt = datetime.strptime(r['create_dt'], dt_format)
                     D = (today - create_dt).days
-                    if D <= 3 or r['err'] in cls.page_err:
+                    if D <= days_without_update or r['err'] in cls.page_err:
                         skip.add(r['bookid'])
                 #
                 bids = set(bids) - skip
