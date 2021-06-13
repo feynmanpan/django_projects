@@ -341,14 +341,5 @@ class BOOKS(BOOKBASE):
         while 1:
             # (1) 6個書號一組，3種書號每種各2個，一個0開始，一個10000000
             bids = [await Q.get() for Q in cls.bid_Qs]
-            bids = await cls.bid_filter(bids)
-            if not bids:
-                continue  # 全篩掉就下一組
-            # (2) 剩下的書號進行 update_info 重爬
-            tasks = []
-            for bid in bids:
-                book = cls(bookid=bid)
-                c = book.update_info()
-                tasks.append(asyncio.create_task(c))
-            #
-            await asyncio.wait(tasks)
+            # (2) 由父類篩選書號，跑task
+            await super().bid_update_loop(bids)

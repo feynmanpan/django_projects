@@ -362,7 +362,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
             print(f'{cls.__name__:<10}:bid_Queue_put {bid}')
 
     @classmethod
-    async def bid_filter(cls, bids: list) -> Union[list, set]:
+    async def bid_update_loop(cls, bids: list) -> Union[list, set]:
         '''DB有已經爬過的書號時，進行篩選，有些不重爬'''
         cs = [INFO.bookid, INFO.err, INFO.create_dt]
         w1 = INFO.store == cls.__name__
@@ -370,7 +370,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         #
         query = sa.select(cs).where(w1 & w2)
         rows = await dbwtb.fetch_all(query)
-        #
+        # (1) DB有書號，進行篩選
         if rows:
             skip = set()
             today = datetime.today()
@@ -381,5 +381,12 @@ class BOOKBASE(object, metaclass=VALIDATE):
                     skip.add(r['bookid'])
             #
             bids = set(bids) - skip
-        #
-        return bids
+        # (2) 篩選後有剩，進行重爬
+        if bids:
+            tasks = []
+            for bid in bids:
+                book = cls(bookid=bid)
+                c = book.update_info()
+                tasks.append(asyncio.create_task(c))
+            #
+            await asyncio.wait(tasks)
