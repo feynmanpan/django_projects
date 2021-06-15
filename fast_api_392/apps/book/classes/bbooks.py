@@ -146,7 +146,7 @@ class BOOKS(BOOKBASE):
         # (2) 單書頁 =========================================================================
         doc = pq(rtext, parser='html')
         #
-        isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li").eq(0).text().replace("ISBN：", "").strip()
+        isbn = doc.find(".mod_b.type02_m058.clearfix .bd ul li:Contains('ISBN')").eq(0).text().replace("ISBN：", "").strip()
         if (len_isbn := len(isbn)) >= 10:
             isbn10 = (len_isbn == 10 and isbn) or None
             isbn13 = (len_isbn == 13 and isbn) or None

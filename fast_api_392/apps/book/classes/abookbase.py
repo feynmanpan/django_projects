@@ -89,6 +89,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     bookid_default = '__1234567890'
     info_default = {**dict.fromkeys(info_cols, None), **{'bookid': bookid_default}}
     #
+    isbn_pattern = '^[0-9A-Z]{10}$|^[0-9A-Z]{13}$'
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'
     float_pattern = r'^[0-9]*\.*[0-9]*$'
@@ -167,7 +168,15 @@ class BOOKBASE(object, metaclass=VALIDATE):
         bid_pn = self.bookid_pattern
         if (bid and bid_pn) and not re.match(bid_pn, bid):
             raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
-        # (3)檢查定價售價
+        # (3)檢查isbn
+        isbn_pn = self.isbn_pattern
+        isbn10 = val.get(self.INFO_COLS.isbn10)
+        isbn13 = val.get(self.INFO_COLS.isbn13)
+        if (isbn10 and isbn_pn) and not re.match(isbn_pn, isbn10):
+            raise ValueError(f'isbn10="{isbn10}" 不符合isbn_pattern="{isbn_pn}"')
+        if (isbn13 and isbn_pn) and not re.match(isbn_pn, isbn13):
+            raise ValueError(f'isbn13="{isbn13}" 不符合isbn_pattern="{isbn_pn}"')
+        # (4)檢查定價售價
         if PL := val.get(self.INFO_COLS.price_list):
             if not isinstance(PL, int) or PL < 0:
                 raise ValueError(f'price_list="{PL}" 需為int，且>=0')
