@@ -151,10 +151,10 @@ class BOOKBASE(object, metaclass=VALIDATE):
     @info.setter
     def info(self, val: Dict[str, Any]):
         '''self.info被assign時，用property驗證'''
-        # (0)檢查assign為dict
+        # (0)檢查assign為dict _________________________________________________________________
         if not isinstance(val, dict):
             raise TypeError('assign給info的值不是dict')
-        # (1)檢查欄位
+        # (1)檢查欄位 _________________________________________________________________
         set0 = set(self.info_cols)
         set1 = set(val.keys())
         if (rest := set1 - set0) != self.empty:
@@ -163,12 +163,12 @@ class BOOKBASE(object, metaclass=VALIDATE):
             raise KeyError(f'assign給info的欄位缺少:{rest}')
         if set0 != set1:
             raise KeyError(f'assign給info的欄位不等於info_cols')
-        # (2)檢查bookid格式
+        # (2)檢查bookid格式 _________________________________________________________________
         bid = val.get(self.INFO_COLS.bookid)
         bid_pn = self.bookid_pattern
         if (bid and bid_pn) and not re.match(bid_pn, bid):
             raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
-        # (3)檢查isbn
+        # (3)檢查isbn _________________________________________________________________
         isbn_pn = self.isbn_pattern
         isbn10 = val.get(self.INFO_COLS.isbn10)
         isbn13 = val.get(self.INFO_COLS.isbn13)
@@ -182,7 +182,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 raise ValueError(f'isbn13="{isbn13}" 不符合isbn_pattern="{isbn_pn}"')
             if not self.isbn_check(isbn13):
                 raise ValueError(f'isbn13="{isbn13}" 沒通過isbn_check')
-        # (4)檢查定價售價
+        # (4)檢查定價售價 _________________________________________________________________
         if PL := val.get(self.INFO_COLS.price_list):
             if not isinstance(PL, int) or PL < 0:
                 raise ValueError(f'price_list="{PL}" 需為int，且>=0')
@@ -377,7 +377,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     ##################  連續書號查詢 ##################
 
     @classmethod
-    def isbn_check(cls, isbn: str):
+    def isbn_check(cls, isbn: str) -> bool:
         '''
         檢查ISBN格式
         https://zerojudge.tw/ShowProblem?problemid=b536
@@ -386,7 +386,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         '''
         #
         result = False
-        isbn = isbn and isbn.replace('-', '')
+        isbn = isbn and isbn.replace('-', '').strip().upper()
         if not isbn or not re.match(cls.isbn_pattern, isbn):
             return result
         #
