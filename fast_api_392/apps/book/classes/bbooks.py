@@ -15,6 +15,8 @@ import pytesseract
 import copy
 import itertools
 import sqlalchemy as sa
+from sqlalchemy import desc
+from sqlalchemy.sql import func
 #
 from apps.sql.config import dbwtb
 from apps.book.model import INFO
@@ -315,12 +317,24 @@ class BOOKS(BOOKBASE):
         '''創造博客來三種書號的無窮put'''
         await asyncio.sleep(t)
         #
+        start_L = [0, 10**7]
         prefixes = cls.bid_prefixes
         digits = cls.bid_digits
-        # 根據前綴數量，造對應數量的cycle, queue
+        # (1) 查詢DB最大書號，更新 start_L
+        # cs = [INFO.bookid]
+        cs = [sa.func.max(INFO.bookid)]
+        w1 = INFO.store == cls.__name__
+        # w2 = INFO.bookid == func.max(INFO.bookid).select()
+        query = sa.select(cs).where(w1)  # .order_by(desc(INFO.bookid)).limit(1)
+        rows = await dbwtb.fetch_all(query)
+        if rows:
+            max_bid = int(rows[0]['max_1'][2:])
+            if max_bid > start_L[1]:
+                start_L = [max_bid - start_L[1], max_bid]
+        # (2) 根據前綴及start_L，造對應數量的cycle, queue
         cls.bid_Cs = []
         cls.bid_Qs = []
-        for start in [0, 10**7]:
+        for start in start_L:
             cls.bid_Cs += [cls.bid_cycle(prefix=p, digits=digits, start=start) for p in prefixes]
             cls.bid_Qs += [asyncio.Queue(q_size) for _ in prefixes]
         # 每組CQ各自task
