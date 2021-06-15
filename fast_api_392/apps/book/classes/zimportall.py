@@ -4,3 +4,4 @@ from .abookbase import BOOKBASE
 from .bbooks import BOOKS
 from .ctaaze import TAAZE
 from .delite import ELITE
+from .emollie import MOLLIE

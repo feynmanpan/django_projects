@@ -128,12 +128,7 @@ class BOOKS(BOOKBASE):
                 except Exception as e:
                     self._update['err'] = str(e)
             else:
-                for pe in self.page_err:
-                    if pe in rtext:
-                        self._update['err'] = pe
-                        break
-                else:
-                    self._update['err'] = f'status={status},rtext={rtext[:100]}'
+                self.page_err_handle(rtext, status)
         finally:
             return await self.update_final(uid=uid, db=db)
 

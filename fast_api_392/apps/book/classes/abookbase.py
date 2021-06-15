@@ -90,6 +90,10 @@ class BOOKBASE(object, metaclass=VALIDATE):
     info_default = {**dict.fromkeys(info_cols, None), **{'bookid': bookid_default}}
     #
     isbn_pattern = '^[0-9A-Z]{10}$|^[0-9A-Z]{13}$'
+    isbn10_check = {
+        10: 'X',
+        11: 0,
+    }
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'
     float_pattern = r'^[0-9]*\.*[0-9]*$'
@@ -361,7 +365,33 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if (val := locals_var.get(col)) not in ['', None]:
                 self._update[col] = val
 
+    def page_err_handle(self, rtext, status):
+        for pe in self.page_err:
+            if pe in rtext:
+                self._update['err'] = pe
+                break
+        else:
+            self._update['err'] = f'status={status},rtext={rtext[:100]}'
     ##################  連續書號查詢 ##################
+
+    @classmethod
+    def isbn_check(cls, isbn: str):
+        '''
+        檢查ISBN格式
+        https://zerojudge.tw/ShowProblem?problemid=b536
+        '''
+        if not isbn or not re.match(cls.isbn_pattern, isbn):
+            return False
+        #
+        len_isbn = len(isbn)
+        isbn_L = list(isbn)
+        if len_isbn == 10:
+            S = sum(n * (i != 'X' and int(i) or 10) for n, i in zip(range(1, 11), isbn_L))
+            M = S % 11
+            # X = cls.isbn10_check.get(N, N)
+            #
+            return M == 0
+
     @classmethod
     async def bid_Queue_put(cls, C, Q: asyncio.Queue):
         '''base對書號queue無窮put'''
