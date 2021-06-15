@@ -56,6 +56,11 @@ class MOLLIE(BOOKBASE):
     # __________________________________________________________
 
     def __init__(self, **init):
+        # 書號=isbn
+        is_isbn13 = len(self.bid) == 13
+        init['isbn10'] = ((not is_isbn13) and self.bid) or None
+        init['isbn13'] = (is_isbn13 and self.bid) or None
+        #
         super().__init__(**init)
 
     async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None, db=dbwtb):
@@ -93,10 +98,6 @@ class MOLLIE(BOOKBASE):
     def bookpage_handle(self, rtext) -> Dict[str, Any]:
         doc = pq(rtext, parser='html')
         td = doc.find("section#A table.table.table-bordered.text tr").eq(1).find('td').eq(0)
-        # ________________________________________
-        is_isbn13 = len(self.bid) == 13
-        isbn10 = ((not is_isbn13) and self.bid) or None
-        isbn13 = (is_isbn13 and self.bid) or None
         # ________________________________________
         if self._enter_bookpage == [False, True]:
             title = td.find('span').eq(0).text().strip()

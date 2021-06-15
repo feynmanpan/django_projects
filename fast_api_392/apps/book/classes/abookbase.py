@@ -89,11 +89,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     bookid_default = '__1234567890'
     info_default = {**dict.fromkeys(info_cols, None), **{'bookid': bookid_default}}
     #
-    isbn_pattern = '^[0-9A-Z]{10}$|^[0-9A-Z]{13}$'
-    isbn10_check = {
-        10: 'X',
-        11: 0,
-    }
+    isbn_pattern = '^[0-9]{9}[0-9X]$|^[0-9]{13}$'
     bookid_pattern = ''
     int_pattern = '^[0-9]+$'
     float_pattern = r'^[0-9]*\.*[0-9]*$'
@@ -176,10 +172,16 @@ class BOOKBASE(object, metaclass=VALIDATE):
         isbn_pn = self.isbn_pattern
         isbn10 = val.get(self.INFO_COLS.isbn10)
         isbn13 = val.get(self.INFO_COLS.isbn13)
-        if (isbn10 and isbn_pn) and not re.match(isbn_pn, isbn10):
-            raise ValueError(f'isbn10="{isbn10}" 不符合isbn_pattern="{isbn_pn}"')
-        if (isbn13 and isbn_pn) and not re.match(isbn_pn, isbn13):
-            raise ValueError(f'isbn13="{isbn13}" 不符合isbn_pattern="{isbn_pn}"')
+        if isbn10 and isbn_pn:
+            if not re.match(isbn_pn, isbn10):
+                raise ValueError(f'isbn10="{isbn10}" 不符合isbn_pattern="{isbn_pn}"')
+            if not self.isbn_check(isbn10):
+                raise ValueError(f'isbn10="{isbn10}" 沒通過isbn_check')
+        if isbn13 and isbn_pn:
+            if not re.match(isbn_pn, isbn13):
+                raise ValueError(f'isbn13="{isbn13}" 不符合isbn_pattern="{isbn_pn}"')
+            if not self.isbn_check(isbn13):
+                raise ValueError(f'isbn13="{isbn13}" 沒通過isbn_check')
         # (4)檢查定價售價
         if PL := val.get(self.INFO_COLS.price_list):
             if not isinstance(PL, int) or PL < 0:
@@ -379,18 +381,26 @@ class BOOKBASE(object, metaclass=VALIDATE):
         '''
         檢查ISBN格式
         https://zerojudge.tw/ShowProblem?problemid=b536
+        http://www.shute.kh.edu.tw/~92d314/email/E16.htm
+        http://www.appsbarcode.com/ISBN.php
         '''
+        #
+        result = False
+        isbn = isbn and isbn.replace('-', '')
         if not isbn or not re.match(cls.isbn_pattern, isbn):
-            return False
+            return result
         #
         len_isbn = len(isbn)
         isbn_L = list(isbn)
+        #
         if len_isbn == 10:
-            S = sum(n * (i != 'X' and int(i) or 10) for n, i in zip(range(1, 11), isbn_L))
-            M = S % 11
-            # X = cls.isbn10_check.get(N, N)
-            #
-            return M == 0
+            S = sum(n * (i == 'X' and 10 or int(i)) for n, i in zip(range(10, 0, -1), isbn_L))
+            result = S % 11 == 0
+        else:
+            S = sum(n * int(i) for n, i in zip([1, 3] * 6, isbn_L[:-1]))
+            result = (10 - S % 10) == int(isbn_L[-1])
+        #
+        return result
 
     @classmethod
     async def bid_Queue_put(cls, C, Q: asyncio.Queue):
