@@ -34,14 +34,21 @@
             display: none;
         }
 
+        /* title 欄位 */
+        .dataframe tr td:nth-child(7) {
+            min-width: 300px;
+        }
+
         .dataframe td {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             width: 11%;
-            max-width: 400px;
+            max-width: 300px;
             text-align: right;
         }
+
+
 
         .dataframe tbody tr {
             transition: all 0.1s ease;
