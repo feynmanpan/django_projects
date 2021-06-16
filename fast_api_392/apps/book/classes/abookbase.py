@@ -367,40 +367,49 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if (val := locals_var.get(col)) not in ['', None]:
                 self._update[col] = val
 
-    def page_err_handle(self, rtext, status):
+    def page_err_handle(self, rtext: str, status):
+        '''有回應，但不是要爬的單書頁時之處理'''
         for pe in self.page_err:
             if pe in rtext:
                 self._update['err'] = pe
                 break
         else:
             self._update['err'] = f'status={status},rtext={rtext[:100]}'
+
     ##################  連續書號查詢 ##################
+
+    @staticmethod
+    def isbn_generator(body: str) -> str:
+        '''
+        body為前9位或12位數，根據檢查規則產出末位檢查碼
+        https://zerojudge.tw/ShowProblem?problemid=b536
+        '''
+        #
+        body = body and body.replace('-', '').strip()
+        if not body or not re.match('^[0-9]{9}$|^[0-9]{12}$', body):
+            return '123456789X'
+        #
+        body_L = list(body)
+        if len(body) == 9:
+            S = sum(n * int(i) for n, i in zip(range(10, 1, -1), body_L))
+            N = 11 - S % 11
+            X = (N == 10) * 'X' or (N == 11) * '0' or N
+        else:
+            S = sum(n * int(i) for n, i in zip([1, 3] * 6, body_L))  # 12位分別乘以1,3,1,3,1,3,....
+            N = 10 - S % 10
+            X = (N == 10) * '0' or N
+        #
+        return f'{body}{X}'
 
     @classmethod
     def isbn_check(cls, isbn: str) -> bool:
-        '''
-        檢查ISBN格式
-        https://zerojudge.tw/ShowProblem?problemid=b536
-        http://www.shute.kh.edu.tw/~92d314/email/E16.htm
-        http://www.appsbarcode.com/ISBN.php
-        '''
+        '''根據 isbn_generator 檢查ISBN格式'''
         #
-        result = False
         isbn = isbn and isbn.replace('-', '').strip().upper()
         if not isbn or not re.match(cls.isbn_pattern, isbn):
-            return result
+            return False
         #
-        len_isbn = len(isbn)
-        isbn_L = list(isbn)
-        #
-        if len_isbn == 10:
-            S = sum(n * (i == 'X' and 10 or int(i)) for n, i in zip(range(10, 0, -1), isbn_L))
-            result = S % 11 == 0
-        else:
-            S = sum(n * int(i) for n, i in zip([1, 3] * 6, isbn_L[:-1]))
-            result = (10 - S % 10) == int(isbn_L[-1])
-        #
-        return result
+        return isbn == cls.isbn_generator(isbn[:-1])
 
     @classmethod
     async def bid_Queue_put(cls, C, Q: asyncio.Queue):
