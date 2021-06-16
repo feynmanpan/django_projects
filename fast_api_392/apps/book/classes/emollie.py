@@ -150,7 +150,7 @@ class MOLLIE(BOOKBASE):
         '''從博客來的isbn塞進茉莉的Q'''
         await asyncio.sleep(t)
         #
-        cls.bid_C = cls.bid_cycle()
+        cls.bid_C = cls.bid_cycle()  # collections.abc.AsyncGenerator
         cls.bid_Q = asyncio.Queue(q_size)
         #
         c = super().bid_Queue_put(cls.bid_C, cls.bid_Q)
