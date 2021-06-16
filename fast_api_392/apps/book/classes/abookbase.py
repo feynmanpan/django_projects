@@ -389,13 +389,15 @@ class BOOKBASE(object, metaclass=VALIDATE):
         if not body or not re.match('^[0-9]{9}$|^[0-9]{12}$', body):
             return '123456789X'
         #
-        body_L = list(body)
+        body_L = [int(i) for i in list(body)]
         if len(body) == 9:
-            S = sum(n * int(i) for n, i in zip(range(10, 1, -1), body_L))
+            # 9位分別乘以10 9 8 7 6 5 4 3 2
+            S = sum(n * i for n, i in zip(range(10, 1, -1), body_L))
             N = 11 - S % 11
             X = (N == 10) * 'X' or (N == 11) * '0' or N
         else:
-            S = sum(n * int(i) for n, i in zip([1, 3] * 6, body_L))  # 12位分別乘以1,3,1,3,1,3,....
+            # 12位分別乘以1,3,1,3,1,3,1,3,1,3,1,3
+            S = sum(n * i for n, i in zip([1, 3] * 6, body_L))
             N = 10 - S % 10
             X = (N == 10) * '0' or N
         #
