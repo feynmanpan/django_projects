@@ -351,4 +351,4 @@ class BOOKS(BOOKBASE):
             # (1) 6個書號一組，3種書號每種各2個，一個0開始，一個10000000
             bids = [await Q.get() for Q in cls.bid_Qs]
             # (2) 由父類篩選書號，跑task
-            await super().bid_update_loop(bids)
+            await super().bid_update_loop(bids=bids)

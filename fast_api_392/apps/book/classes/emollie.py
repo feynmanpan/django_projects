@@ -13,12 +13,16 @@ from typing import Dict, Any, Callable, Awaitable, Coroutine, Optional, Union
 from PIL import Image
 import pytesseract
 import copy
+from copy import deepcopy
 import itertools
 import sqlalchemy as sa
+from sqlalchemy import or_
+import pandas as pd
 #
 from apps.sql.config import dbwtb
 from apps.book.model import INFO
 from apps.book.classes.abookbase import BOOKBASE
+from apps.book.classes.bbooks import BOOKS
 from apps.book.utils import write_file
 #
 import apps.ips.config as ipscfg
@@ -106,3 +110,24 @@ class MOLLIE(BOOKBASE):
             stock = self.stock_none
         #
         return locals()
+
+    ##################  連續書號查詢 ##################
+    @classmethod
+    async def bid_Queue_put(cls, t=0):
+        '''從博客來的isbn建立茉莉的書號'''
+        # 從博客來的Q 抓對應的ISBN
+        cs = [INFO.isbn10, INFO.isbn13]
+        w1 = INFO.store == 'BOOKS'
+        w2 = INFO.err == None
+        w3 = INFO.bookid.in_([await Q.get() for Q in BOOKS.bid_Qs])
+        w4 = or_(INFO.isbn10 != None, INFO.isbn13 != None)
+        #
+        query = sa.select(cs).where(w1 & w2 & w3).where(w4)
+        rows = await dbwtb.fetch_all(query)
+        df = pd.DataFrame(rows)
+        # bids_10 = df.isbn10.dropna().unique()
+        # bids_13 = df.isbn10.dropna().unique()
+        isbns = pd.concat([df.isbn10.dropna(), df.isbn13.dropna()]).unique().tolist()
+
+        # cls.bid_Cs = deepcopy(BOOKS.bid_Cs)
+        # cls.bid_Qs = [asyncio.Queue(q_size) for _ in prefixes]
