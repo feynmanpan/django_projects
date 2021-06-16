@@ -4869,3 +4869,200 @@ TermSocket.open: Opened 2
 [I 2021-06-16 15:40:11.897 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
 [I 2021-06-16 16:14:11.938 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
 [I 2021-06-16 16:18:13.990 ServerApp] Saving file at /fast_api_392/apps/book/classes/00_book.ipynb
+Websocket closed
+[I 2021-06-16 16:29:23.533 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:58d4919d-4542-4c67-a9b6-5d8b97f9c552
+Websocket closed
+[I 2021-06-16 16:29:23.639 ServerApp] Starting buffering for a39c415c-bde8-4391-92c3-f5d47f8d4d0e:77245806-c8c8-427c-9cbc-5f4775c057cd
+[I 2021-06-16 17:35:18.102 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[I 2021-06-16 17:37:29.249 ServerApp] Saving file at /fast_api_392/99.ipynb
+Websocket closed
+[I 2021-06-16 17:43:00.098 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:4a22caf1-f22d-4f2d-9a97-ce2a671c2da9
+[I 2021-06-16 17:43:00.099 ServerApp] Starting buffering for a39c415c-bde8-4391-92c3-f5d47f8d4d0e:dab91d2f-dec4-4563-a344-b6c6cc2e0199
+Websocket closed
+[I 2021-06-16 17:43:12.416 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 1
+TermSocket.open: Opened 1
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[W 2021-06-16 17:53:00.087 ServerApp] Replacing stale connection: a39c415c-bde8-4391-92c3-f5d47f8d4d0e:e268bbcb-4abb-477b-923c-bb6ca72721ec
+[I 2021-06-16 17:53:05.088 ServerApp] Starting buffering for a39c415c-bde8-4391-92c3-f5d47f8d4d0e:e268bbcb-4abb-477b-923c-bb6ca72721ec
+[I 2021-06-16 17:53:05.089 ServerApp] Restoring connection for a39c415c-bde8-4391-92c3-f5d47f8d4d0e:e268bbcb-4abb-477b-923c-bb6ca72721ec
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[W 2021-06-16 17:53:05.213 ServerApp] Replacing stale connection: 23572f83-e932-4019-a42c-b5948c85c015:0fb214a5-8202-4d8b-ab50-c94dd7dd77b0
+[I 2021-06-16 17:53:10.214 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:0fb214a5-8202-4d8b-ab50-c94dd7dd77b0
+[I 2021-06-16 17:53:10.215 ServerApp] Restoring connection for 23572f83-e932-4019-a42c-b5948c85c015:0fb214a5-8202-4d8b-ab50-c94dd7dd77b0
+[W 2021-06-16 17:54:42.729 ServerApp] WebSocket ping timeout after 119986 ms.
+[W 2021-06-16 17:54:42.775 ServerApp] WebSocket ping timeout after 119983 ms.
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Websocket closed
+Websocket closed
+[I 2021-06-16 17:56:06.772 ServerApp] Starting buffering for a39c415c-bde8-4391-92c3-f5d47f8d4d0e:e268bbcb-4abb-477b-923c-bb6ca72721ec
+Websocket closed
+Websocket closed
+[I 2021-06-16 17:56:06.777 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:0fb214a5-8202-4d8b-ab50-c94dd7dd77b0
+[I 2021-06-16 17:58:22.269 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 1
+TermSocket.open: Opened 1
+Websocket closed
+Websocket closed
+[I 2021-06-16 17:58:47.199 ServerApp] Starting buffering for a39c415c-bde8-4391-92c3-f5d47f8d4d0e:dd73897d-848a-46d3-b79b-ea98eeabde83
+[I 2021-06-16 17:58:47.200 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:b76c469a-57d6-4ce2-a4e5-bae570a1d998
+[I 2021-06-16 18:16:43.431 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+TermSocket.open: 1
+TermSocket.open: Opened 1
+[I 2021-06-16 18:26:48.386 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:4edd8cd4-fae8-4f2d-85e9-7d89bcf45743
+Websocket closed
+Websocket closed
+[I 2021-06-16 18:28:55.808 ServerApp] Starting buffering for a39c415c-bde8-4391-92c3-f5d47f8d4d0e:b828c365-d094-4370-aeec-92cff2c6a431
+[I 2021-06-16 19:37:29.165 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-16 19:49:42.552 ServerApp] Starting buffering for a39c415c-bde8-4391-92c3-f5d47f8d4d0e:7d196221-2877-4a64-80be-32e852f01246
+Websocket closed
+[I 2021-06-16 20:03:12.130 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-16 20:04:43.854 ServerApp] Kernel interrupted: 23572f83-e932-4019-a42c-b5948c85c015
+[I 2021-06-16 20:05:33.177 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:07:34.111 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:24:25.142 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:32:00.363 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:34:00.500 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:34:01.932 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:36:02.092 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:37:23.154 ServerApp] Kernel interrupted: 23572f83-e932-4019-a42c-b5948c85c015
+[I 2021-06-16 20:38:03.155 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:40:47.094 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:42:47.220 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:44:48.130 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:46:49.132 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:48:49.320 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:48:52.728 ServerApp] Kernel restarted: 23572f83-e932-4019-a42c-b5948c85c015
+[I 2021-06-16 20:48:52.808 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:2949a8bd-d4cb-4780-81df-07c9a33780f5
+[I 2021-06-16 20:48:52.856 ServerApp] Restoring connection for 23572f83-e932-4019-a42c-b5948c85c015:2949a8bd-d4cb-4780-81df-07c9a33780f5
+[I 2021-06-16 20:48:52.978 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:50:21.631 ServerApp] Kernel restarted: 23572f83-e932-4019-a42c-b5948c85c015
+[I 2021-06-16 20:50:21.659 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:2949a8bd-d4cb-4780-81df-07c9a33780f5
+[I 2021-06-16 20:50:21.687 ServerApp] Restoring connection for 23572f83-e932-4019-a42c-b5948c85c015:2949a8bd-d4cb-4780-81df-07c9a33780f5
+[I 2021-06-16 20:50:53.124 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-16 20:52:54.142 ServerApp] Saving file at /fast_api_392/99.ipynb
+TermSocket.open: 1
+TermSocket.open: Opened 1

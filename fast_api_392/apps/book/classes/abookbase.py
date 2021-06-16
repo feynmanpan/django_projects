@@ -9,6 +9,7 @@ from typing import Dict, Any, Awaitable, Union
 import random
 from time import time
 from datetime import datetime
+import collections
 #
 import sqlalchemy as sa
 import pandas as pd
@@ -417,7 +418,11 @@ class BOOKBASE(object, metaclass=VALIDATE):
     async def bid_Queue_put(cls, C, Q: asyncio.Queue):
         '''base對書號queue無窮put'''
         while 1:
-            bid = next(C)
+            if isinstance(C, collections.abc.AsyncGenerator):
+                bid = await C.__anext__()
+            else:
+                bid = next(C)
+            #
             await Q.put(bid)
             print(f'{cls.__name__:<10}:bid_Queue_put {bid}')
 

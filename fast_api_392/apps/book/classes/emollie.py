@@ -24,6 +24,7 @@ from apps.book.model import INFO
 from apps.book.classes.abookbase import BOOKBASE
 from apps.book.classes.bbooks import BOOKS
 from apps.book.utils import write_file
+from apps.book.config import q_size
 #
 import apps.ips.config as ipscfg
 from apps.ips.config import headers
@@ -112,22 +113,57 @@ class MOLLIE(BOOKBASE):
         return locals()
 
     ##################  連續書號查詢 ##################
-    @classmethod
-    async def bid_Queue_put(cls, t=0):
-        '''從博客來的isbn建立茉莉的書號'''
-        # 從博客來的Q 抓對應的ISBN
-        cs = [INFO.isbn10, INFO.isbn13]
-        w1 = INFO.store == 'BOOKS'
-        w2 = INFO.err == None
-        w3 = INFO.bookid.in_([await Q.get() for Q in BOOKS.bid_Qs])
-        w4 = or_(INFO.isbn10 != None, INFO.isbn13 != None)
-        #
-        query = sa.select(cs).where(w1 & w2 & w3).where(w4)
-        rows = await dbwtb.fetch_all(query)
-        df = pd.DataFrame(rows)
-        # bids_10 = df.isbn10.dropna().unique()
-        # bids_13 = df.isbn10.dropna().unique()
-        isbns = pd.concat([df.isbn10.dropna(), df.isbn13.dropna()]).unique().tolist()
 
-        # cls.bid_Cs = deepcopy(BOOKS.bid_Cs)
-        # cls.bid_Qs = [asyncio.Queue(q_size) for _ in prefixes]
+    @classmethod
+    async def bid_cycle(cls):
+        '''從博客來的isbn建立茉莉的書號'''
+        #
+        cls.BOOKS_bid_Cs = []
+        start_L = [s - 3000 for s in BOOKS.start_L]  # 落後3000個書號開始
+        if start_L[0] < 0:
+            start_L = BOOKS.start_L
+        for s in start_L:
+            cls.BOOKS_bid_Cs += [BOOKS.bid_cycle(prefix=p, digits=BOOKS.bid_digits, start=s) for p in BOOKS.bid_prefixes]
+        #
+        while 1:
+            # 從 bid_Cs 抓對應的ISBN
+            cs = [INFO.isbn10, INFO.isbn13]
+            w1 = INFO.store == 'BOOKS'
+            w2 = INFO.err == None
+            #
+            bids = [next(C) for C in cls.BOOKS_bid_Cs]
+            w3 = INFO.bookid.in_(bids)
+            #
+            w4 = or_(INFO.isbn10 != None, INFO.isbn13 != None)
+            #
+            query = sa.select(cs).where(w1 & w2 & w3).where(w4)
+            rows = await dbwtb.fetch_all(query)
+            if rows:
+                df = pd.DataFrame(rows)
+                isbns = pd.concat([df.isbn10.dropna(), df.isbn13.dropna()]).unique()
+                # 一次輸出一個
+                for isbn in isbns:
+                    yield isbn
+
+    @classmethod
+    async def bid_Queue_put(cls, t=1):
+        '''從博客來的isbn塞進茉莉的Q'''
+        await asyncio.sleep(t)
+        #
+        cls.bid_C = cls.bid_cycle()
+        cls.bid_Q = asyncio.Queue(q_size)
+        #
+        c = super().bid_Queue_put(cls.bid_C, cls.bid_Q)
+        asyncio.create_task(c)
+
+    @classmethod
+    async def bid_update_loop(cls, t=2):
+        '''茉莉對博客來isbn的無窮爬蟲'''
+        await asyncio.sleep(t)
+        #
+        while 1:
+            # (1)
+            bids = [await cls.bid_Q.get() for _ in range(q_size)]
+            # (2) 由父類篩選書號，跑task
+            await super().bid_update_loop(bids=bids, DWU=1)
+            await asyncio.sleep(1)

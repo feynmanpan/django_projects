@@ -83,7 +83,7 @@ async def show_info(request: Request):
     # price_list/_sale 為 None 者，pd會轉 float64 變成 np.nan，輸出 html字串 NaN
     # notin = ['intro','comment']
     # cols = ['idx']+[col for col in BOOKBASE.info_cols if col not in notin]
-    cols = ['idx', 'store', 'bookid', 'isbn10', 'isbn13', 'title', 'price_list', 'price_sale', 'err']
+    cols = ['idx', 'store', 'bookid', 'isbn10', 'isbn13', 'title', 'price_list', 'stock', 'err']
     df = pd.DataFrame(rows)[cols].to_html()
     #
     context = {

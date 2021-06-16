@@ -67,6 +67,8 @@ class BOOKS(BOOKBASE):
     # 登入18禁用的帳密
     account = login['BOOKS'][0]
     passwd = login['BOOKS'][1]
+    #
+    start_L = [0, 10**7]
     # __________________________________________________________
 
     def __init__(self, **init):
@@ -295,6 +297,7 @@ class BOOKS(BOOKBASE):
         return img
 
     ##################  連續書號查詢 ##################
+
     @classmethod
     def bid_cycle(cls, prefix: str = '00', digits: int = 8, start: int = 0):
         '''製造書號'''
@@ -317,7 +320,6 @@ class BOOKS(BOOKBASE):
         '''創造博客來三種書號的無窮put'''
         await asyncio.sleep(t)
         #
-        start_L = [0, 10**7]
         prefixes = cls.bid_prefixes
         digits = cls.bid_digits
         # (1) 查詢DB最大書號，更新 start_L
@@ -329,12 +331,12 @@ class BOOKS(BOOKBASE):
         rows = await dbwtb.fetch_all(query)
         if rows:
             max_bid = int(rows[0]['max_1'][2:])
-            if max_bid > start_L[1]:
-                start_L = [max_bid - start_L[1], max_bid]
+            if cls.start_L[1] * 10 - 1 > max_bid > cls.start_L[1]:
+                cls.start_L = [max_bid - cls.start_L[1], max_bid]
         # (2) 根據前綴及start_L，造對應數量的cycle, queue
         cls.bid_Cs = []
         cls.bid_Qs = []
-        for start in start_L:
+        for start in cls.start_L:
             cls.bid_Cs += [cls.bid_cycle(prefix=p, digits=digits, start=start) for p in prefixes]
             cls.bid_Qs += [asyncio.Queue(q_size) for _ in prefixes]
         # 每組CQ各自task
