@@ -69,6 +69,7 @@ class BOOKS(BOOKBASE):
     passwd = login['BOOKS'][1]
     #
     start_L = [0, 10**7]
+    start_L_new = start_L[:]
     # __________________________________________________________
 
     def __init__(self, **init):
@@ -332,11 +333,11 @@ class BOOKS(BOOKBASE):
         if rows:
             max_bid = int(rows[0]['max_1'][2:])
             if cls.start_L[1] * 10 - 1 > max_bid > cls.start_L[1]:
-                cls.start_L = [max_bid - cls.start_L[1], max_bid]
+                cls.start_L_new = [max_bid - cls.start_L[1], max_bid]
         # (2) 根據前綴及start_L，造對應數量的cycle, queue
         cls.bid_Cs = []
         cls.bid_Qs = []
-        for start in cls.start_L:
+        for start in cls.start_L_new:
             cls.bid_Cs += [cls.bid_cycle(prefix=p, digits=digits, start=start) for p in prefixes]
             cls.bid_Qs += [asyncio.Queue(q_size) for _ in prefixes]
         # 每組CQ各自task

@@ -90,7 +90,7 @@ class MOLLIE(BOOKBASE):
         except Exception as e:
             self._update['err'] = str(e)
         else:
-            if sum(self._enter_bookpage) == 1:
+            if (status == 200) and sum(self._enter_bookpage) == 1:
                 # 確定有查詢結果
                 print('bookpage_handle ---------------------')
                 result = self.bookpage_handle(rtext)
@@ -119,7 +119,7 @@ class MOLLIE(BOOKBASE):
         '''從博客來的isbn建立茉莉的書號'''
         #
         cls.BOOKS_bid_Cs = []
-        start_L = [s - 3000 for s in BOOKS.start_L]  # 落後3000個書號開始
+        start_L = [s - 4000 for s in BOOKS.start_L_new]  # 落後4000個書號開始
         if start_L[0] < 0:
             start_L = BOOKS.start_L
         for s in start_L:
