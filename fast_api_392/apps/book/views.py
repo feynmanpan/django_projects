@@ -53,28 +53,6 @@ async def showbook(request: Request, store: str = 'BOOKS', bookid: str = '001077
         return result
 
 
-# async def show_books(request: Request, bookid: str = '0010770978', fd: int = 0):
-#     result = None
-#     try:
-#         init = {
-#             'bookid': bookid,
-#         }
-#         book = BOOKS(**init)
-#         await book.read_or_update(fd=fd)
-#     except Exception as e:
-#         result = HTMLResponse(str(e))
-#     else:
-#         context = {
-#             'request': request,
-#             'res': json.dumps(book.info, indent=2, ensure_ascii=False),
-#             'info': book.info,
-#         }
-#         result = jinja_templates.TemplateResponse('show_books.html', context)
-#         # return ORJSONResponse(book.info)
-#     finally:
-#         return result
-
-
 async def show_info(request: Request):
     '''顯示所有書籍資訊'''
     cs = INFO.__table__.columns
