@@ -83,14 +83,14 @@ class MOLLIE(BOOKBASE):
                 status = r.status
                 rtext = (await r.text(encoding='big5')).replace('big5', 'utf8')
                 #
-                if status == 200:
+                if status == 200 and rtext:
                     self._enter_bookpage = [s in rtext for s in self.search_OK]  # 要回傳有無庫存
         except asyncio.exceptions.TimeoutError as e:
             self._update['err'] = 'asyncio.exceptions.TimeoutError'
         except Exception as e:
             self._update['err'] = str(e)
         else:
-            if (status == 200) and sum(self._enter_bookpage) == 1:
+            if (status == 200) and rtext and sum(self._enter_bookpage) == 1:
                 # 確定有查詢結果
                 print('bookpage_handle ---------------------')
                 result = self.bookpage_handle(rtext)
