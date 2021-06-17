@@ -130,7 +130,7 @@ class MOLLIE(BOOKBASE):
             cs = [INFO.isbn10, INFO.isbn13]
             w1 = INFO.store == 'BOOKS'
             w2 = INFO.err == None
-            #
+            # 跟在博客來後面爬其 isbn
             bids = [next(C) for C in cls.BOOKS_bid_Cs]
             w3 = INFO.bookid.in_(bids)
             #
