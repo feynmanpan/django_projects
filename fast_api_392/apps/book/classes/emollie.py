@@ -162,8 +162,8 @@ class MOLLIE(BOOKBASE):
         await asyncio.sleep(t)
         #
         while 1:
-            # (1)
-            bids = [await cls.bid_Q.get()]
+            # (1) 茉莉太快，一次2個就好
+            bids = [await cls.bid_Q.get() for _ in range(2)]
             # (2) 由父類篩選書號，跑task
             await super().bid_update_loop(bids=bids, DWU=1)
             await asyncio.sleep(3)
