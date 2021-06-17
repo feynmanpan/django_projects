@@ -133,7 +133,7 @@ class MOLLIE(BOOKBASE):
             # 跟在博客來後面爬其 isbn
             bids = [next(C) for C in cls.BOOKS_bid_Cs]
             w3 = INFO.bookid.in_(bids)
-            #
+            # 至少要有一種isbn
             w4 = or_(INFO.isbn10 != None, INFO.isbn13 != None)
             #
             query = sa.select(cs).where(w1 & w2 & w3).where(w4)
