@@ -5298,3 +5298,60 @@ TermSocket.open: Opened 1
 [I 2021-06-17 13:50:13.583 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:c24697c4-4730-43de-b313-e6442e253dc5
 [I 2021-06-17 13:50:13.626 ServerApp] Restoring connection for 23572f83-e932-4019-a42c-b5948c85c015:c24697c4-4730-43de-b313-e6442e253dc5
 [I 2021-06-17 13:51:51.592 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-17 13:55:30.197 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:c24697c4-4730-43de-b313-e6442e253dc5
+Websocket closed
+Websocket closed
+[I 2021-06-17 14:09:43.533 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-17 14:11:45.612 ServerApp] Saving file at /fast_api_392/99.ipynb
+[W 2021-06-17 14:42:13.737 ServerApp] WebSocket ping timeout after 119965 ms.
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+Exception in callback BaseAsyncIOLoop._handle_events(18, 1)
+handle: <Handle BaseAsyncIOLoop._handle_events(18, 1)>
+Traceback (most recent call last):
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/platform/asyncio.py", line 189, in _handle_events
+    handler_func(fileobj, events)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/management.py", line 212, in pty_read
+    client.on_pty_read(s)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 73, in on_pty_read
+    self.send_json_message(['stdout', text])
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/terminado/websocket.py", line 77, in send_json_message
+    self.write_message(json_msg)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/jupyter_server/terminal/handlers.py", line 32, in write_message
+    super(TermSocket, self).write_message(message, binary=binary)
+  File "/home/pan/anaconda3/envs/fast_env/lib/python3.9/site-packages/tornado/websocket.py", line 337, in write_message
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+[W 2021-06-17 14:42:14.743 ServerApp] WebSocket ping timeout after 119965 ms.
+Websocket closed
+[I 2021-06-17 14:42:19.744 ServerApp] Starting buffering for 23572f83-e932-4019-a42c-b5948c85c015:17c21762-8213-4e87-8bb1-7bdf53c1ee86
+[I 2021-06-17 14:52:30.367 ServerApp] Kernel interrupted: 23572f83-e932-4019-a42c-b5948c85c015
+[I 2021-06-17 14:54:08.649 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-17 14:56:28.035 LabApp] Build is up to date
+TermSocket.open: 2
+TermSocket.open: Opened 2
+[I 2021-06-17 14:58:29.153 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-17 15:00:29.672 ServerApp] Saving file at /fast_api_392/99.ipynb
+[I 2021-06-17 15:08:33.679 ServerApp] Saving file at /fast_api_392/99.ipynb
+TermSocket.open: 1
+TermSocket.open: Opened 1

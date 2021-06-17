@@ -119,13 +119,19 @@ class MOLLIE(BOOKBASE):
         '''從博客來的isbn建立茉莉的書號'''
         #
         cls.BOOKS_bid_Cs = []
-        start_L = [s - 5000 for s in BOOKS.start_L_new]  # 落後 5000 個書號開始
-        if start_L[0] < 0:
-            start_L = BOOKS.start_L
-        for s in start_L:
-            cls.BOOKS_bid_Cs += [BOOKS.bid_cycle(prefix=p, digits=BOOKS.bid_digits, start=s) for p in BOOKS.bid_prefixes]
+        no_rows_counter = 0
+        no_rows_counter_max = 2000
+        get_back = 10000
         #
         while 1:
+            if cls.BOOKS_bid_Cs == [] or no_rows_counter > no_rows_counter_max:
+                # 茉莉超前博客來 2000 個書號時，落後 get_back 個書號重新開始
+                start_L = [s - get_back for s in BOOKS.start_L_new]
+                if start_L[0] < 0:
+                    start_L = BOOKS.start_L
+                # 重造 BOOKS_bid_Cs
+                cls.BOOKS_bid_Cs = [BOOKS.bid_cycle(prefix=p, digits=BOOKS.bid_digits, start=s) for s in start_L for p in BOOKS.bid_prefixes]
+            ##########################################################
             # 從 BOOKS_bid_Cs 抓對應的ISBN
             cs = [INFO.isbn10, INFO.isbn13]
             w1 = INFO.store == 'BOOKS'
@@ -144,6 +150,8 @@ class MOLLIE(BOOKBASE):
                 # 一次輸出一個
                 for isbn in isbns:
                     yield isbn
+            else:
+                no_rows_counter += 1
 
     @classmethod
     async def bid_Queue_put(cls, t=1):
