@@ -427,7 +427,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
             print(f'{cls.__name__:<10}:bid_Queue_put {bid}')
 
     @classmethod
-    async def bid_update_loop(cls, bids: list, DWU: int = days_without_update) -> Union[list, set]:
+    async def bid_update_loop(cls, bids: list, DWU: int = days_without_update) -> bool:
         '''DB有已經爬過的書號時，進行篩選，有些不重爬'''
         cs = [INFO.bookid, INFO.err, INFO.create_dt]
         w1 = INFO.store == cls.__name__
@@ -455,3 +455,5 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 tasks.append(asyncio.create_task(c))
             #
             await asyncio.wait(tasks)
+        #
+        return bool(bids)

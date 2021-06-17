@@ -119,7 +119,7 @@ class MOLLIE(BOOKBASE):
         '''從博客來的isbn建立茉莉的書號'''
         #
         cls.BOOKS_bid_Cs = []
-        start_L = [s - 4000 for s in BOOKS.start_L_new]  # 落後4000個書號開始
+        start_L = [s - 5000 for s in BOOKS.start_L_new]  # 落後 5000 個書號開始
         if start_L[0] < 0:
             start_L = BOOKS.start_L
         for s in start_L:
@@ -165,5 +165,6 @@ class MOLLIE(BOOKBASE):
             # (1) 茉莉太快，一次2個就好
             bids = [await cls.bid_Q.get() for _ in range(2)]
             # (2) 由父類篩選書號，跑task
-            await super().bid_update_loop(bids=bids, DWU=1)
-            await asyncio.sleep(3)
+            result = await super().bid_update_loop(bids=bids, DWU=1)
+            # (3) 有爬，下次等十秒
+            await asyncio.sleep(result * 10)
