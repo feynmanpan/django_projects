@@ -151,47 +151,53 @@ class BOOKBASE(object, metaclass=VALIDATE):
 
     @info.setter
     def info(self, val: Dict[str, Any]):
-        '''self.info被assign時，用property驗證'''
-        # (0)檢查assign為dict _________________________________________________________________
-        if not isinstance(val, dict):
-            raise TypeError('assign給info的值不是dict')
-        # (1)檢查欄位 _________________________________________________________________
-        set0 = set(self.info_cols)
-        set1 = set(val.keys())
-        if (rest := set1 - set0) != self.empty:
-            raise KeyError(f'assign給info的欄位{rest}不在BOOKBASE的info_cols裡面')
-        if (rest := set0 - set1) != self.empty:
-            raise KeyError(f'assign給info的欄位缺少:{rest}')
-        if set0 != set1:
-            raise KeyError(f'assign給info的欄位不等於info_cols')
-        # (2)檢查bookid格式 _________________________________________________________________
-        bid = val.get(self.INFO_COLS.bookid)
-        bid_pn = self.bookid_pattern
-        if (bid and bid_pn) and not re.match(bid_pn, bid):
-            raise ValueError(f'bookid="{bid}" 不符合bookid_pattern="{bid_pn}"')
-        # (3)檢查isbn _________________________________________________________________
-        isbn_pn = self.isbn_pattern
-        isbn10 = val.get(self.INFO_COLS.isbn10)
-        isbn13 = val.get(self.INFO_COLS.isbn13)
-        if isbn10 and isbn_pn:
-            if not re.match(isbn_pn, isbn10):
-                raise ValueError(f'isbn10="{isbn10}" 不符合isbn_pattern="{isbn_pn}"')
-            if not self.isbn_check(isbn10):
-                raise ValueError(f'isbn10="{isbn10}" 沒通過isbn_check')
-        if isbn13 and isbn_pn:
-            if not re.match(isbn_pn, isbn13):
-                raise ValueError(f'isbn13="{isbn13}" 不符合isbn_pattern="{isbn_pn}"')
-            if not self.isbn_check(isbn13):
-                raise ValueError(f'isbn13="{isbn13}" 沒通過isbn_check')
-        # (4)檢查定價售價 _________________________________________________________________
-        if PL := val.get(self.INFO_COLS.price_list):
-            if not isinstance(PL, int) or PL < 0:
-                raise ValueError(f'price_list="{PL}" 需為int，且>=0')
-        if PS := val.get(self.INFO_COLS.price_sale):
-            if not isinstance(PS, (float, int)) or PS < 0:
-                raise ValueError(f'price_sale="{PS}" 需為float/int，且>=0')
-        #
-        self._info = val
+        '''self.info被assign時，用property驗證，驗證失敗也記錄在err'''
+        try:
+            # (0)檢查assign為dict _________________________________________________________________
+            if not isinstance(val, dict):
+                raise TypeError('assign給info的值不是dict')
+            # (1)檢查欄位 _________________________________________________________________
+            set0 = set(self.info_cols)
+            set1 = set(val.keys())
+            if (rest := set1 - set0) != self.empty:
+                raise KeyError(f'assign給info的欄位{rest}不在BOOKBASE的info_cols裡面')
+            if (rest := set0 - set1) != self.empty:
+                raise KeyError(f'assign給info的欄位缺少:{rest}')
+            if set0 != set1:
+                raise KeyError(f'assign給info的欄位不等於info_cols')
+            # (2)檢查bookid格式 _________________________________________________________________
+            bid = val.get(self.INFO_COLS.bookid)
+            bid_pn = self.bookid_pattern
+            if (bid and bid_pn) and not re.match(bid_pn, bid):
+                raise ValueError(f'bookid=【{bid}】 不符合bookid_pattern=【{bid_pn}】')
+            # (3)檢查isbn _________________________________________________________________
+            isbn_pn = self.isbn_pattern
+            isbn10 = val.get(self.INFO_COLS.isbn10)
+            isbn13 = val.get(self.INFO_COLS.isbn13)
+            if isbn10 and isbn_pn:
+                if not re.match(isbn_pn, isbn10):
+                    raise ValueError(f'isbn10=【{isbn10}】 不符合isbn_pattern=【{isbn_pn}】')
+                if not self.isbn_check(isbn10):
+                    raise ValueError(f'isbn10=【{isbn10}】 沒通過isbn_check')
+            if isbn13 and isbn_pn:
+                if not re.match(isbn_pn, isbn13):
+                    raise ValueError(f'isbn13=【{isbn13}】 不符合isbn_pattern=【{isbn_pn}】')
+                if not self.isbn_check(isbn13):
+                    raise ValueError(f'isbn13=【{isbn13}】 沒通過isbn_check')
+            # (4)檢查定價售價 _________________________________________________________________
+            if PL := val.get(self.INFO_COLS.price_list):
+                if not isinstance(PL, int) or PL < 0:
+                    raise ValueError(f'price_list=【{PL}】 需為int，且>=0')
+            if PS := val.get(self.INFO_COLS.price_sale):
+                if not isinstance(PS, (float, int)) or PS < 0:
+                    raise ValueError(f'price_sale=【{PS}】 需為float/int，且>=0')
+        except Exception as e:
+            err1 = val.get('err', '') or ''
+            err2 = str(e)
+            err = (err1 == err2) and err1 or f"{err2}{'_'*bool(err1)}{err1}"
+            val['err'] = err
+        finally:
+            self._info = val
 
     @property
     async def proxy(self) -> Union[str, None]:
@@ -260,7 +266,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 if success:
                     self._update['create_dt'] = datetime.today().strftime(dt_format)
                     self.info = self.info_init | self._update
-                    await self.save_info(db=db)
+                    await self.save_info(db=db)  # 資料都通過info setter的檢查才存db
                 #
                 self._update_result = success
                 self.update_errcnt = 0

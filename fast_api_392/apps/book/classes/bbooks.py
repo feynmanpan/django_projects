@@ -335,11 +335,8 @@ class BOOKS(BOOKBASE):
             if cls.start_L[1] * 10 - 1 > max_bid > cls.start_L[1]:
                 cls.start_L_new = [max_bid - cls.start_L[1], max_bid]
         # (2) 根據前綴及start_L，造對應數量的cycle, queue
-        cls.bid_Cs = []
-        cls.bid_Qs = []
-        for start in cls.start_L_new:
-            cls.bid_Cs += [cls.bid_cycle(prefix=p, digits=digits, start=start) for p in prefixes]
-            cls.bid_Qs += [asyncio.Queue(q_size) for _ in prefixes]
+        cls.bid_Cs = [cls.bid_cycle(prefix=p, digits=digits, start=s) for s in cls.start_L_new for p in prefixes]
+        cls.bid_Qs = [asyncio.Queue(q_size) for _ in cls.start_L_new for __ in prefixes]
         # 每組CQ各自task
         for C, Q in zip(cls.bid_Cs, cls.bid_Qs):
             c = super().bid_Queue_put(C, Q)

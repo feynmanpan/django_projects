@@ -132,7 +132,7 @@ class MOLLIE(BOOKBASE):
                 # 重造 BOOKS_bid_Cs
                 cls.BOOKS_bid_Cs = [BOOKS.bid_cycle(prefix=p, digits=BOOKS.bid_digits, start=s) for s in start_L for p in BOOKS.bid_prefixes]
             ##########################################################
-            # 從 BOOKS_bid_Cs 抓對應的ISBN，只抓完全沒err的isbn
+            # 從 BOOKS_bid_Cs 抓對應的ISBN
             cs = [INFO.isbn10, INFO.isbn13]
             w1 = INFO.store == 'BOOKS'
             w2 = INFO.err == None
