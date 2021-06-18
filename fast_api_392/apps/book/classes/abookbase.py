@@ -153,6 +153,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     def info(self, val: Dict[str, Any]):
         '''self.info被assign時，用property驗證，驗證失敗也記錄在err'''
         try:
+            ######################## 嚴重err ########################
             # (0)檢查assign為dict _________________________________________________________________
             if not isinstance(val, dict):
                 raise TypeError('assign給info的值不是dict')
@@ -165,6 +166,8 @@ class BOOKBASE(object, metaclass=VALIDATE):
                 raise KeyError(f'assign給info的欄位缺少:{rest}')
             if set0 != set1:
                 raise KeyError(f'assign給info的欄位不等於info_cols')
+            ######################## 嚴重err ########################
+
             # (2)檢查bookid格式 _________________________________________________________________
             bid = val.get(self.INFO_COLS.bookid)
             bid_pn = self.bookid_pattern
@@ -191,13 +194,16 @@ class BOOKBASE(object, metaclass=VALIDATE):
             if PS := val.get(self.INFO_COLS.price_sale):
                 if not isinstance(PS, (float, int)) or PS < 0:
                     raise ValueError(f'price_sale=【{PS}】 需為float/int，且>=0')
+        #
+        except (TypeError, KeyError) as e:
+            raise e  # 嚴重err繼續提報
         except Exception as e:
             err1 = val.get('err', '') or ''
             err2 = str(e)
             err = (err1 == err2) and err1 or f"{err2}{'_'*bool(err1)}{err1}"
             val['err'] = err
-        finally:
-            self._info = val
+        ######################################
+        self._info = val
 
     @property
     async def proxy(self) -> Union[str, None]:
