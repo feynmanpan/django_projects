@@ -200,7 +200,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
         except Exception as e:
             err1 = val.get('err', '') or ''
             err2 = str(e)
-            err = (err1 == err2) and err1 or f"{err2}{'_'*bool(err1)}{err1}"
+            err = (err2 in err1) and err1 or f"{err2}{'_'*bool(err1)}{err1}"
             val['err'] = err
         ######################################
         self._info = val
