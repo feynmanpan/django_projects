@@ -174,5 +174,6 @@ class MOLLIE(BOOKBASE):
             bids = [await cls.bid_Q.get() for _ in range(2)]
             # (2) 由父類篩選書號，跑task
             result = await super().bid_update_loop(bids=bids, DWU=1)
-            # (3) 有爬，下次等十秒
-            await asyncio.sleep(result * 10)
+            # (3) 有爬等十秒，沒爬等5秒
+            delay = 5 * (1 + result)
+            await asyncio.sleep(delay)
