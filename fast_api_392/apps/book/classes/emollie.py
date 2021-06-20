@@ -152,6 +152,7 @@ class MOLLIE(BOOKBASE):
                     yield isbn
             else:
                 no_rows_counter += 1
+                print(f'茉莉_no_rows_counter={no_rows_counter}')
 
     @classmethod
     async def bid_Queue_put(cls, t=1):
