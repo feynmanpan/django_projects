@@ -124,7 +124,10 @@ class MOLLIE(BOOKBASE):
         get_back = 10000
         #
         while 1:
+            ##########################################################
             if cls.BOOKS_bid_Cs == [] or no_rows_counter > no_rows_counter_max:
+                # 歸零
+                no_rows_counter = 0
                 # 茉莉超前博客來 2000 個書號時，落後 get_back 個書號重新開始
                 start_L = [s - get_back for s in BOOKS.start_L_new]
                 if start_L[0] < 0:
