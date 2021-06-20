@@ -172,7 +172,7 @@ class MOLLIE(BOOKBASE):
         #
         while 1:
             # (1) 茉莉太快，一次2個就好
-            bids = [await cls.bid_Q.get() for _ in range(2)]
+            bids = [await cls.bid_Q.get() for _ in range(3)]
             # (2) 由父類篩選書號，跑task
             result = await super().bid_update_loop(bids=bids, DWU=1)
             # (3) 有爬等十秒，沒爬等2秒
