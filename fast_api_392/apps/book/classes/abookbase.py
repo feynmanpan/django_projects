@@ -237,6 +237,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     @abstractmethod
     async def update_info(self, uid=None, proxy=None, db=dbwtb) -> Union[int, None, bool]:
         '''爬蟲更新self.info，並只留 uid=1 進行爬蟲 '''
+        self._stime = time()
         await asyncio.sleep(random.random())
         #
         if uid is None:

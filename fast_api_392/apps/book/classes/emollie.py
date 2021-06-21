@@ -69,7 +69,6 @@ class MOLLIE(BOOKBASE):
         super().__init__(**init)
 
     async def update_info(self, proxy: Optional[str] = None, uid: Optional[int] = None, db=dbwtb):
-        self._stime = time()
         # ======== 只留 uid=1 進行爬蟲，其他則等待及結束 =======
         if (uid := await super().update_info(uid=uid, proxy=proxy)) != 1:
             return self._update_result
