@@ -8,7 +8,7 @@ from os import path
 from starlette.templating import _TemplateResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
-from fastapi import Request, BackgroundTasks
+from fastapi import Request, BackgroundTasks, Path, Query
 #
 import config
 from utils import static_makeornot
@@ -21,12 +21,16 @@ startBGT_tasks = None
 
 
 # 沒有await就不要async，一般def會加開thread
-async def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
+async def test(request: Request,
+               p: str,
+               q: str = Path(..., title="QQQ"),
+               r: int = Query(..., title="RRR", ge=1),
+               ) -> _TemplateResponse:
     if (plen := len(p)) > 2:
         print(f'path len={plen}')
     # sleep(10)
     await asyncio.sleep(0)
-    print(f"p={p},q={q}")
+    print(f"p={p},q={q},r={r}")
     print(f'locals()={locals()}')
     # _______________________________________________
     if request.query_params.get('q') is None:
@@ -34,7 +38,7 @@ async def test(request: Request, p: str, q: str = 'query') -> _TemplateResponse:
     #
     tmp1 = set(locals().keys())
     tmp2 = set(request.query_params.keys())
-    tmpd = tmp2-tmp1
+    tmpd = tmp2 - tmp1
     for k in tmpd:
         print(f'多的query參數: {k}')
     # _______________________________________________

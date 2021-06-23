@@ -70,7 +70,7 @@ for mw in mw_list:
 
 
 #################### urlpattern ################################
-# path_get("/test/{p}", test)
+path_get("/test/{p}/{q}", test)
 path_get("/pig_d", pig_d)
 #
 path_get("/proxy", show_freeproxy)
