@@ -55,13 +55,15 @@ async def showbook(request: Request, store: str = 'BOOKS', bookid: str = '001077
 
 async def show_info(request: Request):
     '''顯示所有書籍資訊'''
-    cs = INFO.__table__.columns
-    query = sa.select(cs)
+    cols = ['store', 'bookid', 'isbn10', 'isbn13', 'title', 'price_list', 'stock', 'err', 'create_dt']
+    # cs = INFO.__table__.columns
+    cs = [INFO.__dict__[col] for col in cols]
+    # w = INFO.err==None
+    query = sa.select(cs)  # .where(w)
     rows = await dbwtb.fetch_all(query)
     # price_list/_sale 為 None 者，pd會轉 float64 變成 np.nan，輸出 html字串 NaN
     # notin = ['intro','comment']
     # cols = ['idx']+[col for col in BOOKBASE.info_cols if col not in notin]
-    cols = ['store', 'bookid', 'isbn10', 'isbn13', 'title', 'price_list', 'stock', 'err', 'create_dt']
     df = pd.DataFrame(rows)[cols].to_html()
     #
     context = {

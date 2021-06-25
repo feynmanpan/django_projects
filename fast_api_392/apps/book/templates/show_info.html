@@ -34,11 +34,6 @@
             display: none;
         }
 
-        /* title 欄位 */
-        .dataframe tr td:nth-child(6) {
-            min-width: 200px;
-        }
-
         .dataframe td {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -48,6 +43,15 @@
             text-align: right;
         }
 
+        /* title 欄位 */
+        .dataframe tr td:nth-child(6) {
+            min-width: 200px;
+        }
+
+        /* err 欄位 */
+        .dataframe tr td:nth-child(9) {
+            max-width: 10px;
+        }
 
 
         .dataframe tbody tr {

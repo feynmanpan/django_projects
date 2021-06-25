@@ -104,6 +104,7 @@ class BOOKBASE(object, metaclass=VALIDATE):
     _ss = {}
     now_proxy = ''
     _lock18 = None
+    page_err = []
     #
     cwd = os.path.dirname(os.path.realpath(__file__))
     #
